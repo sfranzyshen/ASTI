@@ -4,9 +4,9 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "analogInPin", "value": 36, "timestamp": 0, "isConst": true
+    "type": "VAR_SET", "variable": "analogInPin", "value": 36, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "analogOutPin", "value": 9, "timestamp": 0, "isConst": true
+    "type": "VAR_SET", "variable": "analogOutPin", "value": 9, "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {

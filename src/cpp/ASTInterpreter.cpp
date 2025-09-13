@@ -2398,7 +2398,8 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                                name == "Serial2.begin" || name == "Serial2.print" || name == "Serial2.println" ||
                                name == "Serial3.begin" || name == "Serial3.print" || name == "Serial3.println" ||
                                name == "pinMode" || name == "digitalWrite" || name == "digitalRead" ||
-                               name == "analogWrite" || name == "analogRead" || name == "delay" || name == "delayMicroseconds");
+                               name == "analogWrite" || name == "analogRead" || name == "delay" || name == "delayMicroseconds" ||
+                               name == "millis" || name == "micros");
     
     if (!hasSpecificHandler) {
         std::vector<std::string> argStrings;

@@ -120,7 +120,10 @@
       "Bash(./extract_cpp_commands:*)",
       "Bash(./build/single_test_compare 0)",
       "Bash(./validate_cross_platform:*)",
-      "Bash(./build/validate_cross_platform:*)"
+      "Bash(./build/validate_cross_platform:*)",
+      "Bash(do echo \"Testing $i:\")",
+      "Bash(./debug_constants)",
+      "Bash(../debug_constants)"
     ],
     "deny": [],
     "ask": [],

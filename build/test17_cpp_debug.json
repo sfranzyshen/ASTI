@@ -4,9 +4,9 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "lowestPin", "value": 2, "timestamp": 0, "isConst": true
+    "type": "VAR_SET", "variable": "lowestPin", "value": 2, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "highestPin", "value": 13, "timestamp": 0, "isConst": true
+    "type": "VAR_SET", "variable": "highestPin", "value": 13, "isConst": true, "timestamp": 0
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {

@@ -1,0 +1,67 @@
+[
+  {
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+  }, {
+    "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
+  }, {
+    "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.begin", "arguments": [
+      9600
+    ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
+  }, {
+    "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 1"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "n1", "value": {
+      "structName": "Node", "fields": {}, "type": "struct", "structId": "struct_1757637420403_412tm"
+    }, "structType": "Node", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "n2", "value": {
+      "structName": "Node", "fields": {}, "type": "struct", "structId": "struct_1757637420403_rc0k3"
+    }, "structType": "Node", "timestamp": 0
+  }, {
+    "type": "STRUCT_FIELD_SET", "struct": "Node", "field": "data", "value": 10, "timestamp": 0, "message": "Node.data = 10"
+  }, {
+    "type": "STRUCT_FIELD_SET", "struct": "Node", "field": "next", "value": {
+      "type": "ArduinoPointer", "address": 0, "pointsTo": "undefined"
+    }, "timestamp": 0, "message": "Node.next = ArduinoPointer(ptr_1757637420403_gbq3f -> n2)"
+  }, {
+    "type": "STRUCT_FIELD_SET", "struct": "Node", "field": "data", "value": 20, "timestamp": 0, "message": "Node.data = 20"
+  }, {
+    "type": "STRUCT_FIELD_SET", "struct": "Node", "field": "next", "timestamp": 0, "message": "Node.next = undefined"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Data from n1: \""
+    ], "data": "Data from n1: ", "timestamp": 0, "message": "Serial.print(\"Data from n1: \")"
+  }, {
+    "type": "STRUCT_FIELD_ACCESS", "struct": "Node", "field": "data", "value": 10, "timestamp": 0, "message": "Node.data = 10"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Data from n2 via n1: \""
+    ], "data": "Data from n2 via n1: ", "timestamp": 0, "message": "Serial.print(\"Data from n2 via n1: \")"
+  }, {
+    "type": "STRUCT_FIELD_ACCESS", "struct": "Node", "field": "next", "value": {
+      "type": "ArduinoPointer", "address": 0, "pointsTo": "undefined"
+    }, "timestamp": 0, "message": "Node.next = ArduinoPointer(ptr_1757637420403_gbq3f -> n2)"
+  }, {
+    "type": "STRUCT_FIELD_ACCESS", "struct": "Node", "field": "data", "value": 20, "timestamp": 0, "message": "Node.data = 20"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
+  }
+]

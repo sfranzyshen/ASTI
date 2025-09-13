@@ -135,8 +135,8 @@ public:
                 jsOrder = {"type", "function", "message", "iteration", "completed", "timestamp"};
             }
         } else if (cmdType == "VAR_SET") {
-            // VAR_SET: type, variable, value, timestamp (JavaScript order)
-            jsOrder = {"type", "variable", "value", "timestamp"};
+            // VAR_SET: type, variable, value, isConst, timestamp (JavaScript field order)
+            jsOrder = {"type", "variable", "value", "isConst", "timestamp"};
         } else if (cmdType == "PIN_MODE") {
             // PIN_MODE: type, pin, mode, timestamp
             jsOrder = {"type", "pin", "mode", "timestamp"};
@@ -146,6 +146,9 @@ public:
         } else if (cmdType == "ANALOG_READ_REQUEST") {
             // ANALOG_READ_REQUEST: type, pin, requestId, timestamp (match JavaScript field order)
             jsOrder = {"type", "pin", "requestId", "timestamp"};
+        } else if (cmdType == "MILLIS_REQUEST") {
+            // MILLIS_REQUEST: type, requestId, timestamp (JavaScript field order)
+            jsOrder = {"type", "requestId", "timestamp"};
         } else if (cmdType == "DELAY") {
             // DELAY: type, duration, actualDelay, timestamp
             jsOrder = {"type", "duration", "actualDelay", "timestamp"};
@@ -299,6 +302,31 @@ namespace FlexibleCommandFactory {
             message = type + " loop started";
         }
         return FlexibleCommand("LOOP_START")
+            .set("message", message);
+    }
+
+    // FOR_LOOP phase start: {type, phase, timestamp, message} - JavaScript compatible
+    inline FlexibleCommand createForLoopStart() {
+        return FlexibleCommand("FOR_LOOP")
+            .set("phase", std::string("start"))
+            .set("message", std::string("for loop started"));
+    }
+
+    // FOR_LOOP phase iteration: {type, phase, iteration, timestamp, message} - JavaScript compatible
+    inline FlexibleCommand createForLoopIteration(uint32_t iteration) {
+        return FlexibleCommand("FOR_LOOP")
+            .set("phase", std::string("iteration"))
+            .set("iteration", static_cast<int32_t>(iteration))
+            .set("message", std::string("for loop iteration ") + std::to_string(iteration));
+    }
+
+    // LOOP_LIMIT_REACHED: {type, phase, iterations, timestamp, message} - JavaScript compatible
+    inline FlexibleCommand createForLoopEnd(uint32_t iterations, uint32_t maxIterations) {
+        std::string message = "For loop limit reached: completed " + std::to_string(iterations) + 
+                             " iterations (max: " + std::to_string(maxIterations) + ")";
+        return FlexibleCommand("LOOP_LIMIT_REACHED")
+            .set("phase", std::string("end"))
+            .set("iterations", static_cast<int32_t>(iterations))
             .set("message", message);
     }
 

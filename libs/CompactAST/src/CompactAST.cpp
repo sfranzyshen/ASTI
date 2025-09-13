@@ -618,7 +618,7 @@ void CompactASTReader::linkNodeChildren() {
                 if (funcDefNode) {
                     DEBUG_OUT << "linkNodeChildren(): Setting up FuncDefNode child " << childIndex << std::endl;
                     
-                    // Determine child role based on type and position
+                    // Determine child role based on type - be flexible about order
                     auto childType = childNodeRef->getType();
                     if (childType == ASTNodeType::TYPE_NODE && !funcDefNode->getReturnType()) {
                         DEBUG_OUT << "linkNodeChildren(): Setting return type" << std::endl;
@@ -626,11 +626,14 @@ void CompactASTReader::linkNodeChildren() {
                     } else if (childType == ASTNodeType::DECLARATOR_NODE && !funcDefNode->getDeclarator()) {
                         DEBUG_OUT << "linkNodeChildren(): Setting declarator" << std::endl;
                         funcDefNode->setDeclarator(std::move(nodes_[childIndex]));
+                    } else if (childType == ASTNodeType::PARAM_NODE) {
+                        DEBUG_OUT << "linkNodeChildren(): Adding parameter" << std::endl;
+                        funcDefNode->addParameter(std::move(nodes_[childIndex]));
                     } else if (childType == ASTNodeType::COMPOUND_STMT && !funcDefNode->getBody()) {
                         DEBUG_OUT << "linkNodeChildren(): Setting body" << std::endl;
                         funcDefNode->setBody(std::move(nodes_[childIndex]));
                     } else {
-                        DEBUG_OUT << "linkNodeChildren(): Adding as generic child" << std::endl;
+                        DEBUG_OUT << "linkNodeChildren(): Adding as generic child (type: " << static_cast<int>(childType) << ")" << std::endl;
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }
                 } else {
@@ -902,6 +905,28 @@ void CompactASTReader::linkNodeChildren() {
                         assignmentNode->setRight(std::move(nodes_[childIndex]));
                     } else {
                         DEBUG_OUT << "linkNodeChildren(): Too many children for assignment, adding as generic child" << std::endl;
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
+            } else if (parentNode->getType() == ASTNodeType::PARAM_NODE) {
+                DEBUG_OUT << "linkNodeChildren(): Found PARAM_NODE parent node!" << std::endl;
+                auto* paramNode = dynamic_cast<arduino_ast::ParamNode*>(parentNode.get());
+                if (paramNode) {
+                    DEBUG_OUT << "linkNodeChildren(): Setting up ParamNode child " << childIndex << std::endl;
+                    
+                    auto childType = childNodeRef->getType();
+                    // According to JavaScript CompactAST export order: 
+                    // ParamNode: ['paramType', 'declarator', 'defaultValue']
+                    if (childType == ASTNodeType::TYPE_NODE && !paramNode->getParamType()) {
+                        DEBUG_OUT << "linkNodeChildren(): Setting param type" << std::endl;
+                        paramNode->setParamType(std::move(nodes_[childIndex]));
+                    } else if (childType == ASTNodeType::DECLARATOR_NODE && !paramNode->getDeclarator()) {
+                        DEBUG_OUT << "linkNodeChildren(): Setting declarator" << std::endl;
+                        paramNode->setDeclarator(std::move(nodes_[childIndex]));
+                    } else {
+                        DEBUG_OUT << "linkNodeChildren(): Adding as generic child to ParamNode (type: " << static_cast<int>(childType) << ")" << std::endl;
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }
                 } else {

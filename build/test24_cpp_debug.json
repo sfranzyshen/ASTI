@@ -26,37 +26,19 @@
       "144", "30", "69"
     ]
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: cmd", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Undefined variable: cmd"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": [
-      "undefined"
-    ]
+    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Serial.write", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Serial.write"
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: pitch", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Undefined variable: pitch"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": [
-      "undefined"
-    ]
+    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Serial.write", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Serial.write"
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: velocity", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Undefined variable: velocity"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": [
-      "undefined"
-    ]
+    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Serial.write", "errorType": "RuntimeError"
   }, {
@@ -68,37 +50,19 @@
       "144", "30", "0"
     ]
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: cmd", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Undefined variable: cmd"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": [
-      "undefined"
-    ]
+    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Serial.write", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Serial.write"
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: pitch", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Undefined variable: pitch"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": [
-      "undefined"
-    ]
+    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Serial.write", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Serial.write"
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: velocity", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Undefined variable: velocity"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": [
-      "undefined"
-    ]
+    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write()", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Serial.write", "errorType": "RuntimeError"
   }, {

@@ -4,9 +4,9 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "buttonPin", "value": 2, "timestamp": 0, "isConst": true
+    "type": "VAR_SET", "variable": "buttonPin", "value": 2, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "ledPin", "value": 13, "timestamp": 0, "isConst": true
+    "type": "VAR_SET", "variable": "ledPin", "value": 13, "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "buttonPushCounter", "value": 0, "timestamp": 0
   }, {
@@ -40,9 +40,9 @@
   }, {
     "type": "VAR_SET", "variable": "lastButtonState", "value": 0, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
-    "type": "DIGITAL_WRITE", "pin": 13, "value": 0, "timestamp": 0
+    "type": "DIGITAL_WRITE", "pin": 13, "value": 1, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

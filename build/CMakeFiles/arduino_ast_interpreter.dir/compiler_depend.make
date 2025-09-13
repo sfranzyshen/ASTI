@@ -1522,7 +1522,8 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/CommandProtocol.cpp.o: ../src/cpp
   /usr/include/c++/11/bits/locale_conv.h \
   /usr/include/c++/11/bits/quoted_string.h \
   /usr/include/c++/11/algorithm \
-  /usr/include/c++/11/pstl/glue_algorithm_defs.h
+  /usr/include/c++/11/pstl/glue_algorithm_defs.h \
+  /usr/include/c++/11/iostream
 
 CMakeFiles/arduino_ast_interpreter.dir/src/cpp/EnhancedInterpreter.cpp.o: ../src/cpp/EnhancedInterpreter.cpp \
   /usr/include/stdc-predef.h \

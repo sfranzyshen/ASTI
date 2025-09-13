@@ -10,6 +10,7 @@
 
 #include "ASTNodes.hpp"
 #include <sstream>
+#include <iostream>
 
 namespace arduino_ast {
 
@@ -68,7 +69,9 @@ void ExpressionStatement::accept(ASTVisitor& visitor) {
 }
 
 void IfStatement::accept(ASTVisitor& visitor) {
+    std::cout << "🔥 IfStatement::accept() CALLED! About to call visitor.visit(*this)" << std::endl;
     visitor.visit(*this);
+    std::cout << "🔥 IfStatement::accept() COMPLETED visitor.visit(*this)" << std::endl;
 }
 
 void WhileStatement::accept(ASTVisitor& visitor) {

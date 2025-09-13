@@ -4,7 +4,7 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "numReadings", "value": 10, "timestamp": 0, "isConst": true
+    "type": "VAR_SET", "variable": "numReadings", "value": 10, "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "readIndex", "value": 0, "timestamp": 0
   }, {

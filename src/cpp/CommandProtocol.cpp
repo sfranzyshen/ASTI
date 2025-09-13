@@ -11,6 +11,7 @@
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
+#include <iostream>
 
 namespace arduino_interpreter {
 
@@ -580,16 +581,31 @@ std::string commandValueToString(const CommandValue& value) {
 }
 
 bool commandValuesEqual(const CommandValue& a, const CommandValue& b) {
-    if (a.index() != b.index()) return false;
+    if (a.index() != b.index()) {
+        // Handle numeric type mismatches (int32_t vs double)
+        bool aIsNumeric = std::holds_alternative<int32_t>(a) || std::holds_alternative<double>(a);
+        bool bIsNumeric = std::holds_alternative<int32_t>(b) || std::holds_alternative<double>(b);
+        
+        if (aIsNumeric && bIsNumeric) {
+            // Convert both to double for comparison
+            double aVal = std::holds_alternative<int32_t>(a) ? static_cast<double>(std::get<int32_t>(a)) : std::get<double>(a);
+            double bVal = std::holds_alternative<int32_t>(b) ? static_cast<double>(std::get<int32_t>(b)) : std::get<double>(b);
+            return aVal == bVal;
+        }
+        
+        return false; // Different non-numeric types
+    }
     
-    return std::visit([&b](const auto& aVal) -> bool {
+    return std::visit([&a, &b](const auto& aVal) -> bool {
         using T = std::decay_t<decltype(aVal)>;
         if constexpr (std::is_same_v<T, std::vector<CommandValue>>) {
             const auto& bVal = std::get<T>(b);
             if (aVal.size() != bVal.size()) return false;
             return std::equal(aVal.begin(), aVal.end(), bVal.begin(), commandValuesEqual);
         } else {
-            return aVal == std::get<T>(b);
+            const auto& bVal = std::get<T>(b);
+            bool result = aVal == bVal;
+            return result;
         }
     }, a);
 }

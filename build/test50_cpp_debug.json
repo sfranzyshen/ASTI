@@ -1,0 +1,197 @@
+[
+  {
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+  }, {
+    "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": "", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringTwo", "value": "", "timestamp": 0
+  }, {
+    "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.begin", "arguments": [
+      9600
+    ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: Serial", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Undefined variable: Serial"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "while loop started"
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 0 iterations (max: 0)", "iterations": 0, "limitReached": true
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+      "\"this\""
+    ]
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": "this", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+      "\"that\""
+    ]
+  }, {
+    "type": "VAR_SET", "variable": "stringTwo", "value": "that", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"\n\nComparing Strings: \""
+    ], "data": "\"\n\nComparing Strings: \"", "timestamp": 0, "message": "Serial.println(\"\n\nComparing Strings: \")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
+  }, {
+    "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 1"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": "This", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringTwo", "value": "this", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"\"\"This\"\" =! \"\"\"this\"\""
+    ], "data": "\"\"\"This\"\" =! \"\"\"this\"\"", "timestamp": 0, "message": "Serial.println(\"\"\"This\"\" =! \"\"\"this\"\")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "stringOne.equals", "message": "stringOne.equals()", "timestamp": 0, "arguments": [
+      "\"this\""
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: stringOne.equals", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: stringOne.equals"
+  }, {
+    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"\"\"This\"\" does not equal \"\"\"this\"\""
+    ], "data": "\"\"\"This\"\" does not equal \"\"\"this\"\"", "timestamp": 0, "message": "Serial.println(\"\"\"This\"\" does not equal \"\"\"this\"\")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "stringOne.equalsIgnoreCase", "message": "stringOne.equalsIgnoreCase()", "timestamp": 0, "arguments": [
+      "\"this\""
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: stringOne.equalsIgnoreCase", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: stringOne.equalsIgnoreCase"
+  }, {
+    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"\"\"This\"\" does not equal (ignoring case) \"\"\"this\"\""
+    ], "data": "\"\"\"This\"\" does not equal (ignoring case) \"\"\"this\"\"", "timestamp": 0, "message": "Serial.println(\"\"\"This\"\" does not equal (ignoring case) \"\"\"this\"\")"
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": "1", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "numberOne", "value": 1, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "stringOne.toInt", "message": "stringOne.toInt()", "timestamp": 0
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: stringOne.toInt", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: stringOne.toInt"
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": "2", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringTwo", "value": "1", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"\"\"2\"\" >= \"\"\"1\"\""
+    ], "data": "\"\"\"2\"\" >= \"\"\"1\"\"", "timestamp": 0, "message": "Serial.println(\"\"\"2\"\" >= \"\"\"1\"\")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+      "\"Brown\""
+    ]
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": "Brown", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"\"Brown\"\" <= Browne\"\""
+    ], "data": "\"\"Brown\"\" <= Browne\"\"", "timestamp": 0, "message": "Serial.println(\"\"Brown\"\" <= Browne\"\")"
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"\"Brown\"\" >= Brow\"\""
+    ], "data": "\"\"Brown\"\" >= Brow\"\"", "timestamp": 0, "message": "Serial.println(\"\"Brown\"\" >= Brow\"\")"
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": "Cucumber", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringTwo", "value": "Cucuracha", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "stringOne.compareTo", "message": "stringOne.compareTo()", "timestamp": 0, "arguments": [
+      "\"Cucuracha\""
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: stringOne.compareTo", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: stringOne.compareTo"
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"\"\"Cucumber\"\" comes after \"\"\"Cucuracha\"\""
+    ], "data": "\"\"\"Cucumber\"\" comes after \"\"\"Cucuracha\"\"", "timestamp": 0, "message": "Serial.println(\"\"\"Cucumber\"\" comes after \"\"\"Cucuracha\"\")"
+  }, {
+    "type": "DELAY", "duration": 10000, "actualDelay": 10000, "timestamp": 0
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "while loop started"
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": "Sensor: ", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringTwo", "value": "Sensor: ", "timestamp": 0
+  }, {
+    "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": 975, "timestamp": 0
+  }, {
+    "type": "ANALOG_READ_REQUEST", "pin": 33, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringTwo", "value": 975, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "stringOne.compareTo", "message": "stringOne.compareTo()", "timestamp": 0, "arguments": ["0"]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: stringOne.compareTo", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: stringOne.compareTo"
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"\"975\" comes after \"\"975\""
+    ], "data": "\"\"975\" comes after \"\"975\"", "timestamp": 0, "message": "Serial.println(\"\"975\" comes after \"\"975\")"
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 0 iterations (max: 0)", "iterations": 0, "limitReached": true
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
+  }
+]

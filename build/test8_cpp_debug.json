@@ -4,9 +4,9 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "buttonPin", "value": 2, "timestamp": 0, "isConst": true
+    "type": "VAR_SET", "variable": "buttonPin", "value": 2, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "ledPin", "value": 13, "timestamp": 0, "isConst": true
+    "type": "VAR_SET", "variable": "ledPin", "value": 13, "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "ledState", "value": 1, "timestamp": 0
   }, {
@@ -40,9 +40,7 @@
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "millis", "message": "millis()", "timestamp": 0
-  }, {
-    "type": "MILLIS_REQUEST", "timestamp": 0, "requestId": "normalized"
+    "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
