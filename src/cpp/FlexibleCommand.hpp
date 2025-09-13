@@ -832,7 +832,32 @@ namespace FlexibleCommandFactory {
 template<typename OldCommandValue>
 inline FlexibleCommandValue convertCommandValue(const OldCommandValue& oldValue) {
     return std::visit([](auto&& arg) -> FlexibleCommandValue {
-        return arg;  // Direct conversion works since FlexibleCommandValue is a superset
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, std::vector<int32_t>>) {
+            // Convert typed int array to mixed array format
+            std::vector<std::variant<bool, int32_t, double, std::string>> mixedArray;
+            for (const auto& elem : arg) {
+                mixedArray.emplace_back(elem);
+            }
+            return mixedArray;
+        } else if constexpr (std::is_same_v<T, std::vector<double>>) {
+            // Convert typed double array to mixed array format
+            std::vector<std::variant<bool, int32_t, double, std::string>> mixedArray;
+            for (const auto& elem : arg) {
+                mixedArray.emplace_back(elem);
+            }
+            return mixedArray;
+        } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
+            // Convert typed string array to mixed array format
+            std::vector<std::variant<bool, int32_t, double, std::string>> mixedArray;
+            for (const auto& elem : arg) {
+                mixedArray.emplace_back(elem);
+            }
+            return mixedArray;
+        } else {
+            // Direct conversion for basic types
+            return arg;
+        }
     }, oldValue);
 }
 

@@ -1746,17 +1746,17 @@ void ASTInterpreter::visit(arduino_ast::RangeBasedForStatement& node) {
 
 void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
     debugLog("Visiting ArrayAccessNode");
-    
+
     try {
-        // COMPLETE IMPLEMENTATION: Array access support
-        
+        // SIMPLIFIED ARRAY ACCESS: Focus on basic functionality
+
         if (!node.getArray() || !node.getIndex()) {
             emitError("Invalid array access: missing array or index");
             lastExpressionResult_ = std::monostate{};
             return;
         }
-        
-        // Get array name (for now, support simple identifier arrays)
+
+        // Get array name (support simple identifier arrays)
         std::string arrayName;
         if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(node.getArray())) {
             arrayName = identifier->getName();
@@ -1765,68 +1765,71 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
             lastExpressionResult_ = std::monostate{};
             return;
         }
-        
+
         // Evaluate index expression
         CommandValue indexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getIndex()));
-        
-        // Enhanced Error Handling: Validate index type
-        if (!validateType(indexValue, "int", "array index for " + arrayName)) {
+
+        // Convert index to integer
+        int32_t index = 0;
+        if (std::holds_alternative<int32_t>(indexValue)) {
+            index = std::get<int32_t>(indexValue);
+        } else if (std::holds_alternative<uint32_t>(indexValue)) {
+            index = static_cast<int32_t>(std::get<uint32_t>(indexValue));
+        } else {
+            emitError("Array index must be integer");
             lastExpressionResult_ = std::monostate{};
             return;
         }
-        
-        int32_t index = convertToInt(indexValue);
-        
-        // Enhanced Error Handling: Validate array bounds
-        if (!validateArrayBounds(indexValue, index, arrayName)) {
-            lastExpressionResult_ = getDefaultValueForType("int"); // Return safe default
-            if (safeMode_) return; // In safe mode, continue with default value
-            return; // Otherwise stop execution
-        }
-        
+
         debugLog("Array access: " + arrayName + "[" + std::to_string(index) + "]");
-        
-        // Track array access statistics
-        arrayAccessCount_++;
-        
-        // Get array variable using enhanced scope system
-        EnhancedVariable* arrayVar = enhancedScopeManager_->getVariable(arrayName);
-        
+
+        // Get array variable from basic scope manager
+        Variable* arrayVar = scopeManager_->getVariable(arrayName);
+
         if (!arrayVar) {
             emitError("Array variable '" + arrayName + "' not found");
             lastExpressionResult_ = std::monostate{};
             return;
         }
-        
-        EnhancedCommandValue arrayValue = arrayVar->value;
-        
-        EnhancedCommandValue result;
-        
-        if (isArrayType(arrayValue)) {
-            // Enhanced array access with bounds checking
-            auto arrayPtr = std::get<std::shared_ptr<ArduinoArray>>(arrayValue);
-            if (arrayPtr) {
-                size_t idx = static_cast<size_t>(index);
-                if (idx < arrayPtr->size()) {
-                    result = arrayPtr->getElement(idx);
-                } else {
-                    emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(arrayPtr->size()) + ")");
-                    lastExpressionResult_ = std::monostate{};
-                    return;
-                }
-            } else {
-                emitError("Null array pointer");
+
+        // Check array type and access element
+        size_t idx = static_cast<size_t>(index);
+
+        if (std::holds_alternative<std::vector<int32_t>>(arrayVar->value)) {
+            auto& arrayVector = std::get<std::vector<int32_t>>(arrayVar->value);
+            if (index < 0 || idx >= arrayVector.size()) {
+                emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
                 lastExpressionResult_ = std::monostate{};
                 return;
             }
+            lastExpressionResult_ = arrayVector[idx];
+            debugLog("Integer array element " + arrayName + "[" + std::to_string(index) + "] = " + std::to_string(arrayVector[idx]));
+
+        } else if (std::holds_alternative<std::vector<double>>(arrayVar->value)) {
+            auto& arrayVector = std::get<std::vector<double>>(arrayVar->value);
+            if (index < 0 || idx >= arrayVector.size()) {
+                emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
+                lastExpressionResult_ = std::monostate{};
+                return;
+            }
+            lastExpressionResult_ = arrayVector[idx];
+            debugLog("Double array element " + arrayName + "[" + std::to_string(index) + "] = " + std::to_string(arrayVector[idx]));
+
+        } else if (std::holds_alternative<std::vector<std::string>>(arrayVar->value)) {
+            auto& arrayVector = std::get<std::vector<std::string>>(arrayVar->value);
+            if (index < 0 || idx >= arrayVector.size()) {
+                emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
+                lastExpressionResult_ = std::monostate{};
+                return;
+            }
+            lastExpressionResult_ = arrayVector[idx];
+            debugLog("String array element " + arrayName + "[" + std::to_string(index) + "] = " + arrayVector[idx]);
+
         } else {
-            // Fall back to legacy array access system for basic arrays
-            result = MemberAccessHelper::getArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(index));
+            emitError("Variable '" + arrayName + "' is not an array (type: " + commandValueToString(arrayVar->value) + ")");
+            lastExpressionResult_ = std::monostate{};
+            return;
         }
-        
-        // Convert EnhancedCommandValue back to CommandValue for compatibility
-        lastExpressionResult_ = downgradeCommandValue(result);
-        debugLog("Array access result: " + enhancedCommandValueToString(result));
         
     } catch (const std::exception& e) {
         emitError("Array access error: " + std::string(e.what()));
@@ -1905,16 +1908,71 @@ void ASTInterpreter::visit(arduino_ast::ConstantNode& node) {
 
 void ASTInterpreter::visit(arduino_ast::ArrayInitializerNode& node) {
     debugLog("Visiting ArrayInitializerNode");
-    
+
     try {
-        // Process array initializer elements
-        for (const auto& child : node.getChildren()) {
+        debugLog("ArrayInitializer has " + std::to_string(node.getChildren().size()) + " elements");
+
+        // Evaluate each array element to determine type
+        std::vector<CommandValue> tempElements;
+        bool allInts = true;
+        bool allDoubles = true;
+        bool allStrings = true;
+
+        for (size_t i = 0; i < node.getChildren().size(); ++i) {
+            const auto& child = node.getChildren()[i];
             if (child) {
-                child->accept(*this);
+                debugLog("Processing array element " + std::to_string(i));
+                CommandValue elementValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(child.get()));
+                tempElements.push_back(elementValue);
+                debugLog("Array element " + std::to_string(i) + " = " + commandValueToString(elementValue));
+
+                // Check types
+                if (!std::holds_alternative<int32_t>(elementValue)) allInts = false;
+                if (!std::holds_alternative<double>(elementValue)) allDoubles = false;
+                if (!std::holds_alternative<std::string>(elementValue)) allStrings = false;
+            } else {
+                debugLog("Array element " + std::to_string(i) + " is null, using 0");
+                tempElements.push_back(0); // Default for null elements
+                allDoubles = false;
+                allStrings = false;
             }
         }
+
+        // Create typed array based on element types
+        if (allInts) {
+            std::vector<int32_t> intArray;
+            for (const auto& elem : tempElements) {
+                intArray.push_back(std::get<int32_t>(elem));
+            }
+            lastExpressionResult_ = intArray;
+            debugLog("Created integer array with " + std::to_string(intArray.size()) + " elements");
+        } else if (allDoubles) {
+            std::vector<double> doubleArray;
+            for (const auto& elem : tempElements) {
+                doubleArray.push_back(std::get<double>(elem));
+            }
+            lastExpressionResult_ = doubleArray;
+            debugLog("Created double array with " + std::to_string(doubleArray.size()) + " elements");
+        } else if (allStrings) {
+            std::vector<std::string> stringArray;
+            for (const auto& elem : tempElements) {
+                stringArray.push_back(std::get<std::string>(elem));
+            }
+            lastExpressionResult_ = stringArray;
+            debugLog("Created string array with " + std::to_string(stringArray.size()) + " elements");
+        } else {
+            // Mixed types - convert everything to strings for now
+            std::vector<std::string> mixedArray;
+            for (const auto& elem : tempElements) {
+                mixedArray.push_back(commandValueToString(elem));
+            }
+            lastExpressionResult_ = mixedArray;
+            debugLog("Created mixed-type array (as strings) with " + std::to_string(mixedArray.size()) + " elements");
+        }
+
     } catch (const std::exception& e) {
         emitError("Array initializer error: " + std::string(e.what()));
+        lastExpressionResult_ = std::monostate{};
     }
 }
 

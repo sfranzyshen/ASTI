@@ -147,16 +147,15 @@ enum class DigitalValue {
  * Type-safe value container for command parameters
  * Must handle JavaScript's dynamic typing in a C++ context
  */
-// Forward declaration for recursive type
-struct CommandValueArray;
-
 using CommandValue = std::variant<
-    std::monostate,     // void/undefined
-    bool,               // boolean
-    int32_t,            // integer (Arduino pins, values)
-    double,             // floating point numbers
-    std::string         // strings and identifiers
-    // TODO: Add array support later with proper recursive handling
+    std::monostate,                          // void/undefined
+    bool,                                    // boolean
+    int32_t,                                 // integer (Arduino pins, values)
+    double,                                  // floating point numbers
+    std::string,                             // strings and identifiers
+    std::vector<int32_t>,                    // simple integer arrays (most common)
+    std::vector<double>,                     // double arrays
+    std::vector<std::string>                 // string arrays
 >;
 
 /**
