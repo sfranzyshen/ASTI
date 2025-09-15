@@ -22,7 +22,7 @@
   }, {
     "type": "VAR_SET", "variable": "b", "value": 3, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "result1", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "result1", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "result2", "value": 3.3333333333, "timestamp": 0
   }, {
@@ -32,7 +32,9 @@
       "Result 1 (int div, cast): "
     ], "data": "Result 1 (int div, cast): ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "undefined"
+    ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Result 2 (float div): )", "timestamp": 0, "arguments": [
       "Result 2 (float div): "

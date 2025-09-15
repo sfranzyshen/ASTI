@@ -50,31 +50,31 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "redSensorValue", "value": 975, "timestamp": 0
+    "type": "VAR_SET", "variable": "redSensorValue", "value": 350, "timestamp": 0
   }, {
     "type": "DELAY", "duration": 5, "actualDelay": 5, "timestamp": 0
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 39, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "greenSensorValue", "value": 975, "timestamp": 0
+    "type": "VAR_SET", "variable": "greenSensorValue", "value": 461, "timestamp": 0
   }, {
     "type": "DELAY", "duration": 5, "actualDelay": 5, "timestamp": 0
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 34, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "blueSensorValue", "value": 975, "timestamp": 0
+    "type": "VAR_SET", "variable": "blueSensorValue", "value": 276, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(raw sensor Values \t red: )", "timestamp": 0, "arguments": [
       "raw sensor Values \t red: "
     ], "data": "raw sensor Values \t red: ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(975)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(350)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t green: )", "timestamp": 0, "arguments": [
       "\t green: "
     ], "data": "\t green: ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(975)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(461)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t Blue: )", "timestamp": 0, "arguments": [
       "\t Blue: "
@@ -82,23 +82,23 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "VAR_SET", "variable": "redValue", "value": 243.7500000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "redValue", "value": 87.5000000000, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "greenValue", "value": 243.7500000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "greenValue", "value": 115.2500000000, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "blueValue", "value": 243.7500000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "blueValue", "value": 69, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Mapped sensor Values \t red: )", "timestamp": 0, "arguments": [
       "Mapped sensor Values \t red: "
     ], "data": "Mapped sensor Values \t red: ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(243.750000)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "FLOAT"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(87.500000)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "FLOAT"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t green: )", "timestamp": 0, "arguments": [
       "\t green: "
     ], "data": "\t green: ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(243.750000)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "FLOAT"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(115.250000)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "FLOAT"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t Blue: )", "timestamp": 0, "arguments": [
       "\t Blue: "
@@ -106,11 +106,11 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "ANALOG_WRITE", "pin": 10, "value": 243, "timestamp": 0
+    "type": "ANALOG_WRITE", "pin": 10, "value": 87, "timestamp": 0
   }, {
-    "type": "ANALOG_WRITE", "pin": 9, "value": 243, "timestamp": 0
+    "type": "ANALOG_WRITE", "pin": 9, "value": 115, "timestamp": 0
   }, {
-    "type": "ANALOG_WRITE", "pin": 11, "value": 243, "timestamp": 0
+    "type": "ANALOG_WRITE", "pin": 11, "value": 69, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

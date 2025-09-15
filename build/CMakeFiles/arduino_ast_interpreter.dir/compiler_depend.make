@@ -967,6 +967,17 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoDataTypes.cpp.o: ../src/cp
   /usr/include/c++/11/bits/basic_string.tcc \
   /usr/include/c++/11/variant \
   /usr/include/c++/11/bits/parse_numbers.h \
+  ../src/cpp/CommandProtocol.hpp \
+  /usr/include/c++/11/functional \
+  /usr/include/c++/11/bits/std_function.h \
+  /usr/include/c++/11/bits/stl_algo.h \
+  /usr/include/c++/11/bits/algorithmfwd.h \
+  /usr/include/c++/11/bits/stl_heap.h \
+  /usr/include/c++/11/bits/uniform_int_dist.h \
+  /usr/include/c++/11/chrono \
+  /usr/include/c++/11/ratio \
+  /usr/include/c++/11/limits \
+  /usr/include/c++/11/ctime \
   /usr/include/c++/11/sstream \
   /usr/include/c++/11/istream \
   /usr/include/c++/11/ios \

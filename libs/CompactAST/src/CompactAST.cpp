@@ -643,13 +643,17 @@ void CompactASTReader::linkNodeChildren() {
                 auto* varDeclNode = dynamic_cast<arduino_ast::VarDeclNode*>(parentNode.get());
                 if (varDeclNode) {
                     DEBUG_OUT << "linkNodeChildren(): Setting up VarDeclNode child " << childIndex << std::endl;
-                    
+
                     auto childType = childNodeRef->getType();
+                    std::cerr << "*** CHILD TYPE IS: " << static_cast<int>(childType) << " ***" << std::endl;
                     if (childType == ASTNodeType::TYPE_NODE && !varDeclNode->getVarType()) {
                         DEBUG_OUT << "linkNodeChildren(): Setting var type" << std::endl;
                         varDeclNode->setVarType(std::move(nodes_[childIndex]));
                     } else if (childType == ASTNodeType::DECLARATOR_NODE) {
                         DEBUG_OUT << "linkNodeChildren(): Adding DeclaratorNode to declarations" << std::endl;
+                        varDeclNode->addDeclaration(std::move(nodes_[childIndex]));
+                    } else if (childType == ASTNodeType::ARRAY_DECLARATOR) {
+                        DEBUG_OUT << "linkNodeChildren(): Adding ArrayDeclaratorNode to declarations" << std::endl;
                         varDeclNode->addDeclaration(std::move(nodes_[childIndex]));
                     } else if (childType == ASTNodeType::NUMBER_LITERAL || 
                                childType == ASTNodeType::STRING_LITERAL ||
@@ -927,6 +931,23 @@ void CompactASTReader::linkNodeChildren() {
                         paramNode->setDeclarator(std::move(nodes_[childIndex]));
                     } else {
                         DEBUG_OUT << "linkNodeChildren(): Adding as generic child to ParamNode (type: " << static_cast<int>(childType) << ")" << std::endl;
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
+            } else if (parentNode->getType() == ASTNodeType::POSTFIX_EXPRESSION) {
+                DEBUG_OUT << "linkNodeChildren(): Found POSTFIX_EXPRESSION parent node!" << std::endl;
+                auto* postfixNode = dynamic_cast<arduino_ast::PostfixExpressionNode*>(parentNode.get());
+                if (postfixNode) {
+                    DEBUG_OUT << "linkNodeChildren(): Setting up PostfixExpressionNode child " << childIndex << std::endl;
+
+                    // PostfixExpressionNode expects: operand
+                    if (!postfixNode->getOperand()) {
+                        DEBUG_OUT << "linkNodeChildren(): Setting operand" << std::endl;
+                        postfixNode->setOperand(std::move(nodes_[childIndex]));
+                    } else {
+                        DEBUG_OUT << "linkNodeChildren(): Too many children for postfix expression, adding as generic child" << std::endl;
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }
                 } else {

@@ -28,7 +28,7 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "analogValue", "value": 374, "timestamp": 0
+    "type": "VAR_SET", "variable": "analogValue", "value": 173, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

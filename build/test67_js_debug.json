@@ -7,7 +7,7 @@
     "type": "LIBRARY_OBJECT_INSTANTIATION", "library": "Servo", "variableName": "myServo", "constructorArgs": [], "timestamp": 0, "message": "Servo()"
   }, {
     "type": "VAR_SET", "variable": "myServo", "value": {
-      "__type": "ArduinoObject", "className": "Servo", "constructorArgs": [], "objectId": "Servo_1757637419301_l9irr58a6"
+      "__type": "ArduinoObject", "className": "Servo", "constructorArgs": [], "objectId": "Servo_1757900065994_fa6z12cxn"
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "potPin", "value": 14, "timestamp": 0
@@ -18,7 +18,7 @@
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1757637419301_l9irr58a6", "variableName": "myServo", "method": "attach", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1757900065994_fa6z12cxn", "variableName": "myServo", "method": "attach", "args": [
       9
     ], "message": "myServo.attach(9)", "timestamp": 0
   }, {
@@ -36,15 +36,15 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "potVal", "value": 430, "timestamp": 0
+    "type": "VAR_SET", "variable": "potVal", "value": 68, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"potVal: \""
     ], "data": "potVal: ", "timestamp": 0, "message": "Serial.print(\"potVal: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(430)"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(68)"
   }, {
-    "type": "VAR_SET", "variable": "angle", "value": 75, "timestamp": 0
+    "type": "VAR_SET", "variable": "angle", "value": 12, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\", angle: \""
@@ -52,9 +52,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1757637419301_l9irr58a6", "variableName": "myServo", "method": "write", "args": [
-      75
-    ], "message": "myServo.write(75)", "timestamp": 0
+    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1757900065994_fa6z12cxn", "variableName": "myServo", "method": "write", "args": [
+      12
+    ], "message": "myServo.write(12)", "timestamp": 0
   }, {
     "type": "DELAY", "duration": 15, "actualDelay": 15, "timestamp": 0
   }, {

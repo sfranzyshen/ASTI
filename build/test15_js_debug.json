@@ -30,15 +30,15 @@
   }, {
     "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "outputValue", "value": 64, "timestamp": 0
+    "type": "VAR_SET", "variable": "outputValue", "value": 140, "timestamp": 0
   }, {
-    "type": "ANALOG_WRITE", "pin": 9, "value": 64, "timestamp": 0
+    "type": "ANALOG_WRITE", "pin": 9, "value": 140, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"sensor = \""
     ], "data": "sensor = ", "timestamp": 0, "message": "Serial.print(\"sensor = \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(257)"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(562)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"\t output = \""

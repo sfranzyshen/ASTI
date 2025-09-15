@@ -48,11 +48,7 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.write", "arguments": [
-      117
-    ], "timestamp": 0, "message": "Keyboard.write(117)"
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 3, "requestId": "normalized", "timestamp": 0
   }, {

@@ -20,15 +20,15 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorReading", "value": 71, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorReading", "value": 702, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "VAR_SET", "variable": "thisPitch", "value": -637, "timestamp": 0
+    "type": "VAR_SET", "variable": "thisPitch", "value": 815, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "tone", "arguments": [
-      9, -637, 10
-    ], "pin": 9, "frequency": -637, "duration": 10, "timestamp": 0, "message": "tone(9, -637, 10)"
+      9, 815, 10
+    ], "pin": 9, "frequency": 815, "duration": 10, "timestamp": 0, "message": "tone(9, 815, 10)"
   }, {
     "type": "DELAY", "duration": 1, "actualDelay": 1, "timestamp": 0
   }, {

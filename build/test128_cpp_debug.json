@@ -33,8 +33,8 @@
     ], "data": "After increment (rollover): ", "format": "STRING"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "-2147483648"
-    ], "data": "-2147483648", "timestamp": 0, "message": "Serial.println(-2147483648)"
+      "-2147483647"
+    ], "data": "-2147483647", "timestamp": 0, "message": "Serial.println(-2147483647)"
   }, {
     "type": "VAR_SET", "variable": "i", "value": 0, "timestamp": 0
   }, {
@@ -42,7 +42,9 @@
       "After decrement (rollover): "
     ], "data": "After decrement (rollover): ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "-1"
+    ], "data": "-1", "timestamp": 0, "message": "Serial.println(-1)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

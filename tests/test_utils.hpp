@@ -47,7 +47,8 @@ public:
         if (verbose_) {
             logStream_ << "[COMMAND] " << command.toJSON() << std::endl;
         }
-        
+
+
         capturedCommands_.push_back(command);
     }
     

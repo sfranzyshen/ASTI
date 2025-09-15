@@ -38,11 +38,11 @@
   }, {
     "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "pitch", "value": 2645, "timestamp": 0
+    "type": "VAR_SET", "variable": "pitch", "value": 3618, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "tone", "arguments": [
-      8, 2645, 20
-    ], "pin": 8, "frequency": 2645, "duration": 20, "timestamp": 0, "message": "tone(8, 2645, 20)"
+      8, 3618, 20
+    ], "pin": 8, "frequency": 3618, "duration": 20, "timestamp": 0, "message": "tone(8, 3618, 20)"
   }, {
     "type": "DELAY", "duration": 10, "actualDelay": 10, "timestamp": 0
   }, {

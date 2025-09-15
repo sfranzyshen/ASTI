@@ -24,21 +24,25 @@
   }, {
     "type": "VAR_SET", "variable": "k", "value": 1, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "val1", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "val1", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "val2", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "val2", "value": null, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Val 1: )", "timestamp": 0, "arguments": [
       "Val 1: "
     ], "data": "Val 1: ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "undefined"
+    ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Val 2: )", "timestamp": 0, "arguments": [
       "Val 2: "
     ], "data": "Val 2: ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "undefined"
+    ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

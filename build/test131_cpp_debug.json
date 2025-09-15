@@ -4,7 +4,7 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "externalVariable", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "externalVariable", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "externalVariable", "value": 5, "timestamp": 0
   }, {

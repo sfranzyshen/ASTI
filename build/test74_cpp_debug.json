@@ -4,7 +4,7 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "myServo", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "myServo", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "piezo", "value": 36, "isConst": true, "timestamp": 0
   }, {
@@ -16,9 +16,9 @@
   }, {
     "type": "VAR_SET", "variable": "redLed", "value": 5, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "knockVal", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "knockVal", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "switchVal", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "switchVal", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "quietKnock", "value": 10, "isConst": true, "timestamp": 0
   }, {

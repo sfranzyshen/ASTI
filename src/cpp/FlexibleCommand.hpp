@@ -26,6 +26,15 @@
 namespace arduino_interpreter {
 
 /**
+ * String wrapper to indicate object format serialization
+ * When serialized, becomes {"value": "content"}
+ */
+struct StringObject {
+    std::string value;
+    explicit StringObject(const std::string& v) : value(v) {}
+};
+
+/**
  * Dynamic command value that can hold any JSON-compatible type
  */
 using FlexibleCommandValue = std::variant<
@@ -35,6 +44,7 @@ using FlexibleCommandValue = std::variant<
     int64_t,           // long integer (64-bit, for timestamps)
     double,            // floating point
     std::string,       // string
+    StringObject,      // string object wrapper
     std::vector<std::variant<bool, int32_t, double, std::string>>  // array
 >;
 
@@ -109,16 +119,16 @@ public:
     std::string toJSON() const {
         std::ostringstream oss;
         oss << "{\n";
-        
+
         bool first = true;
-        
+
         // JavaScript field order varies by command type
         std::vector<std::string> jsOrder;
-        
+
         // Check command type and set appropriate field order
         auto typeIt = fields_.find("type");
         std::string cmdType = (typeIt != fields_.end()) ? std::get<std::string>(typeIt->second) : "";
-        
+
         if (cmdType == "FUNCTION_CALL") {
             // FUNCTION_CALL: Check for specific function patterns
             auto funcIt = fields_.find("function");
@@ -130,6 +140,9 @@ public:
             } else if (functionName == "Serial.println") {
                 // Serial.println: type, function, arguments, data, timestamp, message
                 jsOrder = {"type", "function", "arguments", "data", "timestamp", "message"};
+            } else if (functionName == "tone" || functionName == "noTone") {
+                // tone/noTone: type, function, arguments, pin, timestamp, message
+                jsOrder = {"type", "function", "arguments", "pin", "timestamp", "message"};
             } else {
                 // Other FUNCTION_CALL: type, function, message, iteration, completed, timestamp
                 jsOrder = {"type", "function", "message", "iteration", "completed", "timestamp"};
@@ -208,6 +221,8 @@ private:
                 oss << std::fixed << std::setprecision(10) << arg;
             } else if constexpr (std::is_same_v<T, std::string>) {
                 oss << "\"" << this->escapeString(arg) << "\"";
+            } else if constexpr (std::is_same_v<T, StringObject>) {
+                oss << "{\n    \"value\": \"" << this->escapeString(arg.value) << "\"\n  }";
             } else if constexpr (std::is_same_v<T, std::vector<std::variant<bool, int32_t, double, std::string>>>) {
                 oss << "[\n";
                 for (size_t i = 0; i < arg.size(); ++i) {
@@ -237,6 +252,7 @@ private:
             }
         }, elem);
     }
+
 
     /**
      * Escape special characters in JSON strings
@@ -322,12 +338,58 @@ namespace FlexibleCommandFactory {
 
     // LOOP_LIMIT_REACHED: {type, phase, iterations, timestamp, message} - JavaScript compatible
     inline FlexibleCommand createForLoopEnd(uint32_t iterations, uint32_t maxIterations) {
-        std::string message = "For loop limit reached: completed " + std::to_string(iterations) + 
+        std::string message = "For loop limit reached: completed " + std::to_string(iterations) +
                              " iterations (max: " + std::to_string(maxIterations) + ")";
         return FlexibleCommand("LOOP_LIMIT_REACHED")
             .set("phase", std::string("end"))
             .set("iterations", static_cast<int32_t>(iterations))
             .set("message", message);
+    }
+
+    // WHILE_LOOP phase start: {type, phase, timestamp, message} - JavaScript compatible
+    inline FlexibleCommand createWhileLoopStart() {
+        return FlexibleCommand("WHILE_LOOP")
+            .set("phase", std::string("start"))
+            .set("message", std::string("while loop started"));
+    }
+
+    // WHILE_LOOP phase iteration: {type, phase, iteration, timestamp, message} - JavaScript compatible
+    inline FlexibleCommand createWhileLoopIteration(uint32_t iteration) {
+        return FlexibleCommand("WHILE_LOOP")
+            .set("phase", std::string("iteration"))
+            .set("iteration", static_cast<int32_t>(iteration))
+            .set("message", std::string("while loop iteration ") + std::to_string(iteration));
+    }
+
+    // WHILE_LOOP end: {type, phase, iterations, timestamp, message} - JavaScript compatible
+    inline FlexibleCommand createWhileLoopEnd(uint32_t iterations) {
+        return FlexibleCommand("WHILE_LOOP")
+            .set("phase", std::string("end"))
+            .set("iterations", static_cast<int32_t>(iterations))
+            .set("message", std::string("while loop completed"));
+    }
+
+    // DO_WHILE_LOOP phase start: {type, phase, timestamp, message} - JavaScript compatible
+    inline FlexibleCommand createDoWhileLoopStart() {
+        return FlexibleCommand("DO_WHILE_LOOP")
+            .set("phase", std::string("start"))
+            .set("message", std::string("do-while loop started"));
+    }
+
+    // DO_WHILE_LOOP phase iteration: {type, phase, iteration, timestamp, message} - JavaScript compatible
+    inline FlexibleCommand createDoWhileLoopIteration(uint32_t iteration) {
+        return FlexibleCommand("DO_WHILE_LOOP")
+            .set("phase", std::string("iteration"))
+            .set("iteration", static_cast<int32_t>(iteration))
+            .set("message", std::string("do-while loop iteration ") + std::to_string(iteration));
+    }
+
+    // DO_WHILE_LOOP end: {type, phase, iterations, timestamp, message} - JavaScript compatible
+    inline FlexibleCommand createDoWhileLoopEnd(uint32_t iterations) {
+        return FlexibleCommand("DO_WHILE_LOOP")
+            .set("phase", std::string("end"))
+            .set("iterations", static_cast<int32_t>(iterations))
+            .set("message", std::string("do-while loop completed"));
     }
 
     // FUNCTION_CALL variant 1: {type, timestamp, function, arguments, baudRate, message}
@@ -411,6 +473,14 @@ namespace FlexibleCommandFactory {
         return FlexibleCommand("VAR_SET")
             .set("variable", variable)
             .set("value", value)
+            .set("isConst", true);
+    }
+
+    // VAR_SET variant for const strings with object wrapper (JavaScript compatibility)
+    inline FlexibleCommand createVarSetConstString(const std::string& variable, const std::string& stringValue) {
+        return FlexibleCommand("VAR_SET")
+            .set("variable", variable)
+            .set("value", StringObject(stringValue))
             .set("isConst", true);
     }
 
@@ -613,6 +683,19 @@ namespace FlexibleCommandFactory {
             .set("arguments", args)
             .set("pin", pin)
             .set("message", std::string("noTone(") + std::to_string(pin) + ")");
+    }
+
+    // PULSE OPERATIONS
+    inline FlexibleCommand createPulseInRequest(int32_t pin, int32_t value, int32_t timeout, const std::string& requestId) {
+        std::vector<std::variant<bool, int32_t, double, std::string>> args = {pin, value, timeout};
+        return FlexibleCommand("PULSE_IN_REQUEST")
+            .set("function", std::string("pulseIn"))
+            .set("arguments", args)
+            .set("pin", pin)
+            .set("value", value)
+            .set("timeout", timeout)
+            .set("requestId", requestId)
+            .set("message", std::string("pulseIn(") + std::to_string(pin) + ", " + std::to_string(value) + ", " + std::to_string(timeout) + ")");
     }
 
     // MULTI-SERIAL OPERATIONS
@@ -854,6 +937,9 @@ inline FlexibleCommandValue convertCommandValue(const OldCommandValue& oldValue)
                 mixedArray.emplace_back(elem);
             }
             return mixedArray;
+        } else if constexpr (std::is_same_v<T, uint32_t>) {
+            // Convert uint32_t to int64_t for FlexibleCommandValue
+            return static_cast<int64_t>(arg);
         } else {
             // Direct conversion for basic types
             return arg;

@@ -18,7 +18,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "a", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "a", "value": null, "timestamp": 0
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Undefined variable: b", "errorType": "RuntimeError"
   }, {
@@ -28,15 +28,15 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Undefined variable: b"
   }, {
-    "type": "VAR_SET", "variable": "result", "value": "0undefined", "timestamp": 0
+    "type": "VAR_SET", "variable": "result", "value": "undefinedundefined", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Final result: )", "timestamp": 0, "arguments": [
       "Final result: "
     ], "data": "Final result: ", "format": "STRING"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"0undefined\""
-    ], "data": "\"0undefined\"", "timestamp": 0, "message": "Serial.println(\"0undefined\")"
+      "\"undefinedundefined\""
+    ], "data": "\"undefinedundefined\"", "timestamp": 0, "message": "Serial.println(\"undefinedundefined\")"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

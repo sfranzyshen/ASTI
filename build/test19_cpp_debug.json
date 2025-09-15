@@ -16,33 +16,33 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
+    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+  }, {
     "type": "VAR_SET", "variable": "fadeValue", "value": 0, "timestamp": 0
   }, {
-    "type": "LOOP_START", "timestamp": 0, "message": "for loop started"
+    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
   }, {
     "type": "ANALOG_WRITE", "pin": 9, "value": 0, "timestamp": 0
   }, {
     "type": "DELAY", "duration": 30, "actualDelay": 30, "timestamp": 0
   }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 0 iterations (max: 0)", "iterations": 0, "limitReached": true
-  }, {
     "type": "VAR_SET", "variable": "fadeValue", "value": 5, "timestamp": 0
   }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+    "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
+  }, {
+    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
   }, {
     "type": "VAR_SET", "variable": "fadeValue", "value": 255, "timestamp": 0
   }, {
-    "type": "LOOP_START", "timestamp": 0, "message": "for loop started"
+    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
   }, {
     "type": "ANALOG_WRITE", "pin": 9, "value": 255, "timestamp": 0
   }, {
     "type": "DELAY", "duration": 30, "actualDelay": 30, "timestamp": 0
   }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 0 iterations (max: 0)", "iterations": 0, "limitReached": true
-  }, {
     "type": "VAR_SET", "variable": "fadeValue", "value": 5, "timestamp": 0
   }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+    "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

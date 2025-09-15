@@ -10,15 +10,15 @@
       9600
     ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
   }, {
+    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop started", "phase": "start"
+  }, {
     "type": "ERROR", "timestamp": 0, "message": "Undefined variable: Serial", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Undefined variable: Serial"
   }, {
-    "type": "LOOP_START", "timestamp": 0, "message": "while loop started"
+    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0, "phase": "iteration"
   }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 0 iterations (max: 0)", "iterations": 0, "limitReached": true
-  }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop completed", "iterations": 1, "phase": "end"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\n\nString charAt() and setCharAt(): \""
@@ -37,8 +37,6 @@
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"SensorReading: 456\""
     ], "data": "\"SensorReading: 456\"", "timestamp": 0, "message": "Serial.println(\"SensorReading: 456\")"
-  }, {
-    "type": "FUNCTION_CALL", "function": "reportString.charAt", "message": "reportString.charAt()", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: reportString.charAt", "errorType": "RuntimeError"
   }, {
@@ -66,11 +64,11 @@
       "\"SensorReading: 456\""
     ], "data": "\"SensorReading: 456\"", "timestamp": 0, "message": "Serial.println(\"SensorReading: 456\")"
   }, {
-    "type": "LOOP_START", "timestamp": 0, "message": "while loop started"
+    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop started", "phase": "start"
   }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 0 iterations (max: 0)", "iterations": 0, "limitReached": true
+    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0, "phase": "iteration"
   }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop completed", "iterations": 1, "phase": "end"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

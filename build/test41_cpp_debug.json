@@ -26,49 +26,41 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "pulseX", "value": 0, "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "pulseY", "value": 0, "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "accelerationX", "value": 0, "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "accelerationY", "value": 0, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "pulseIn", "message": "pulseIn()", "timestamp": 0, "arguments": [
-      "2", "1"
-    ]
-  }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: pulseIn", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: pulseIn"
-  }, {
     "type": "VAR_SET", "variable": "pulseX", "value": null, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "pulseIn", "message": "pulseIn()", "timestamp": 0, "arguments": [
-      "3", "1"
-    ]
-  }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: pulseIn", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: pulseIn"
   }, {
     "type": "VAR_SET", "variable": "pulseY", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "accelerationX", "value": -4000, "timestamp": 0
+    "type": "VAR_SET", "variable": "accelerationX", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "accelerationY", "value": -4000, "timestamp": 0
+    "type": "VAR_SET", "variable": "accelerationY", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(-4000)", "timestamp": 0, "arguments": [
-      "-4000"
-    ], "data": "-4000", "format": "FLOAT"
+    "type": "PULSE_IN_REQUEST", "timestamp": 0, "message": "pulseIn(2, 1, 1000000)", "requestId": "normalized", "arguments": [
+      2, 1, 1000000
+    ], "function": "pulseIn", "pin": 2, "timeout": 1000000, "value": 1
+  }, {
+    "type": "VAR_SET", "variable": "pulseX", "value": 1500, "timestamp": 0
+  }, {
+    "type": "PULSE_IN_REQUEST", "timestamp": 0, "message": "pulseIn(3, 1, 1000000)", "requestId": "normalized", "arguments": [
+      3, 1, 1000000
+    ], "function": "pulseIn", "pin": 3, "timeout": 1000000, "value": 1
+  }, {
+    "type": "VAR_SET", "variable": "pulseY", "value": 1500, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "accelerationX", "value": -2800, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "accelerationY", "value": -2800, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(-2800)", "timestamp": 0, "arguments": [
+      "-2800"
+    ], "data": "-2800", "format": "FLOAT"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t)", "timestamp": 0, "arguments": [
       "\t"
     ], "data": "\t", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(-4000)", "timestamp": 0, "arguments": [
-      "-4000"
-    ], "data": "-4000", "format": "FLOAT"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(-2800)", "timestamp": 0, "arguments": [
+      "-2800"
+    ], "data": "-2800", "format": "FLOAT"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
   }, {

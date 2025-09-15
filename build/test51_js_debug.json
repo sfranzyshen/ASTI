@@ -71,12 +71,12 @@
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": {
-      "value": "182"
+      "value": "511"
     }, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"182\""
-    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"182\")"
+      "\"511\""
+    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"511\")"
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": {
       "value": "45"
@@ -97,12 +97,12 @@
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": {
-      "value": "18864"
+      "value": "64578"
     }, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"18864\""
-    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"18864\")"
+      "\"64578\""
+    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"64578\")"
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": {
       "value": "5.698"

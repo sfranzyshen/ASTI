@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1757637418148,
+    "timestamp": 1757900062216,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1757637418148,
+    "timestamp": 1757900062216,
     "message": "Program execution started"
   },
   {
@@ -16,7 +16,7 @@
     "variable": "numReadings",
     "value": 10,
     "isConst": true,
-    "timestamp": 1757637418148
+    "timestamp": 1757900062216
   },
   {
     "type": "VAR_SET",
@@ -33,35 +33,35 @@
       0,
       0
     ],
-    "timestamp": 1757637418148
+    "timestamp": 1757900062216
   },
   {
     "type": "VAR_SET",
     "variable": "readIndex",
     "value": 0,
-    "timestamp": 1757637418148
+    "timestamp": 1757900062216
   },
   {
     "type": "VAR_SET",
     "variable": "total",
     "value": 0,
-    "timestamp": 1757637418148
+    "timestamp": 1757900062216
   },
   {
     "type": "VAR_SET",
     "variable": "average",
     "value": 0,
-    "timestamp": 1757637418148
+    "timestamp": 1757900062216
   },
   {
     "type": "VAR_SET",
     "variable": "inputPin",
     "value": 14,
-    "timestamp": 1757637418148
+    "timestamp": 1757900062216
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1757637418148,
+    "timestamp": 1757900062216,
     "message": "Executing setup() function"
   },
   {
@@ -71,44 +71,44 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1757637418148,
+    "timestamp": 1757900062216,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1757637418148,
+    "timestamp": 1757900062217,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "thisReading",
     "value": 0,
-    "timestamp": 1757637418148
+    "timestamp": 1757900062217
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1757637418149,
+    "timestamp": 1757900062217,
     "message": "for loop iteration 0"
   },
   {
     "type": "VAR_SET",
     "variable": "thisReading",
     "value": 1,
-    "timestamp": 1757637418149
+    "timestamp": 1757900062217
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1757637418154,
+    "timestamp": 1757900062223,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1757637418154,
+    "timestamp": 1757900062223,
     "message": "Completed setup() function"
   }
 ]

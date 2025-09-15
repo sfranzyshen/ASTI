@@ -20,23 +20,15 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorReading", "value": 975, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorReading", "value": 350, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "FUNCTION_CALL", "function": "map", "message": "map()", "timestamp": 0, "arguments": [
-      "975", "400", "1000", "120", "1500"
-    ]
+    "type": "VAR_SET", "variable": "thisPitch", "value": 5, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "thisPitch", "value": 1442, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "tone", "message": "tone()", "timestamp": 0, "arguments": [
-      "9", "1442", "10"
-    ]
-  }, {
-    "type": "FUNCTION_CALL", "function": "tone", "message": "tone(9, 1442, 10)", "timestamp": 0, "arguments": [
-      9, 1442, 10
-    ], "duration": 10, "frequency": 1442, "pin": 9
+    "type": "FUNCTION_CALL", "function": "tone", "message": "tone(9, 5, 10)", "timestamp": 0, "arguments": [
+      9, 5, 10
+    ], "duration": 10, "frequency": 5, "pin": 9
   }, {
     "type": "DELAY", "duration": 1, "actualDelay": 1, "timestamp": 0
   }, {

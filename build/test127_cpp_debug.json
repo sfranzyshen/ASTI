@@ -6,7 +6,7 @@
   }, {
     "type": "VAR_SET", "variable": "global_counter", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "incrementCounter", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "incrementCounter", "value": null, "timestamp": 0
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {

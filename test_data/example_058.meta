@@ -3,7 +3,7 @@ source=unknown
 astSize=2650
 codeSize=1256
 mode=AST_AND_COMMANDS
-commandCount=22
+commandCount=17
 content=// 09.USB Keyboard/KeyboardLogout
 
 #define OSX 0

@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1757637417967,
+    "timestamp": 1757900061649,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1757637417967,
+    "timestamp": 1757900061649,
     "message": "Program execution started"
   },
   {
@@ -24,7 +24,7 @@
       null,
       null
     ],
-    "timestamp": 1757637417968
+    "timestamp": 1757900061649
   },
   {
     "type": "VAR_SET",
@@ -39,37 +39,37 @@
       4,
       4
     ],
-    "timestamp": 1757637417968
+    "timestamp": 1757900061649
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1757637417968,
+    "timestamp": 1757900061650,
     "message": "Executing setup() function"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1757637417968,
+    "timestamp": 1757900061650,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "thisNote",
     "value": 0,
-    "timestamp": 1757637417968
+    "timestamp": 1757900061650
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1757637417968,
+    "timestamp": 1757900061650,
     "message": "for loop iteration 0"
   },
   {
     "type": "VAR_SET",
     "variable": "noteDuration",
     "value": 250,
-    "timestamp": 1757637417968
+    "timestamp": 1757900061650
   },
   {
     "type": "FUNCTION_CALL",
@@ -81,20 +81,20 @@
     ],
     "pin": 8,
     "duration": 250,
-    "timestamp": 1757637417968,
+    "timestamp": 1757900061650,
     "message": "tone(8, undefined, 250)"
   },
   {
     "type": "VAR_SET",
     "variable": "pauseBetweenNotes",
     "value": 325,
-    "timestamp": 1757637417968
+    "timestamp": 1757900061650
   },
   {
     "type": "DELAY",
     "duration": 325,
     "actualDelay": 325,
-    "timestamp": 1757637417968
+    "timestamp": 1757900061650
   },
   {
     "type": "FUNCTION_CALL",
@@ -103,25 +103,25 @@
       8
     ],
     "pin": 8,
-    "timestamp": 1757637417969,
+    "timestamp": 1757900061650,
     "message": "noTone(8)"
   },
   {
     "type": "VAR_SET",
     "variable": "thisNote",
     "value": 1,
-    "timestamp": 1757637417969
+    "timestamp": 1757900061650
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1757637417973,
+    "timestamp": 1757900061655,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1757637417973,
+    "timestamp": 1757900061656,
     "message": "Completed setup() function"
   }
 ]

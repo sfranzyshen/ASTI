@@ -3,7 +3,7 @@ source=unknown
 astSize=2034
 codeSize=940
 mode=AST_AND_COMMANDS
-commandCount=26
+commandCount=22
 content=// 10.StarterKit_BasicKit p02_SpaceshipInterface
 
 int switchstate = 0;

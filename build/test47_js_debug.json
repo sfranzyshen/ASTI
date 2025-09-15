@@ -87,12 +87,12 @@
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": {
-      "value": "Sensor value for input 650: 111"
+      "value": "Sensor value for input 650: 546"
     }, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"Sensor value for input 650: 111\""
-    ], "data": "Sensor value for input 650: 111", "timestamp": 0, "message": "Serial.println(\"Sensor value for input 650: 111\")"
+      "\"Sensor value for input 650: 546\""
+    ], "data": "Sensor value for input 650: 546", "timestamp": 0, "message": "Serial.println(\"Sensor value for input 650: 546\")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\n\nchanging the Strings' values\""

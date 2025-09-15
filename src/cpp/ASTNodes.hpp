@@ -700,7 +700,18 @@ public:
     
     const ASTNode* getOperand() const { return operand_.get(); }
     std::string getOperator() const { return operator_; }
-    
+
+    // CRITICAL FIX: Override setValue to extract operator string from ASTValue
+    void setValue(const ASTValue& value) override {
+        // Call base class first
+        ASTNode::setValue(value);
+
+        // Extract operator string if the value contains one
+        if (std::holds_alternative<std::string>(value)) {
+            operator_ = std::get<std::string>(value);
+        }
+    }
+
     void accept(ASTVisitor& visitor) override;
 };
 

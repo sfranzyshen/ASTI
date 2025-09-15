@@ -151,6 +151,7 @@ using CommandValue = std::variant<
     std::monostate,                          // void/undefined
     bool,                                    // boolean
     int32_t,                                 // integer (Arduino pins, values)
+    uint32_t,                                // unsigned integer (compatibility)
     double,                                  // floating point numbers
     std::string,                             // strings and identifiers
     std::vector<int32_t>,                    // simple integer arrays (most common)

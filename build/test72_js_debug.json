@@ -54,7 +54,7 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 5, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "onOffSwitchState", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "onOffSwitchState", "value": 1, "timestamp": 0
   }, {
     "type": "DELAY", "duration": 1, "actualDelay": 1, "timestamp": 0
   }, {
@@ -64,9 +64,13 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "motorSpeed", "value": 138.25, "timestamp": 0
+    "type": "VAR_SET", "variable": "motorSpeed", "value": 229.25, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "motorEnabled", "value": false, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
@@ -82,7 +86,7 @@
   }, {
     "type": "VAR_SET", "variable": "previousDirectionSwitchState", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "previousOnOffSwitchState", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "previousOnOffSwitchState", "value": 1, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

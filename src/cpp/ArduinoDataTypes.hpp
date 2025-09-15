@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <variant>
+#include "CommandProtocol.hpp"  // For CommandValue definition
 
 // Forward declarations
 namespace arduino_interpreter {
@@ -194,6 +195,15 @@ public:
 // Convert between basic CommandValue and EnhancedCommandValue
 EnhancedCommandValue upgradeCommandValue(const std::variant<std::monostate, bool, int32_t, double, std::string>& basic);
 std::variant<std::monostate, bool, int32_t, double, std::string> downgradeCommandValue(const EnhancedCommandValue& enhanced);
+
+// Forward declare extended CommandValue conversion (include will be in .cpp)
+EnhancedCommandValue upgradeExtendedCommandValue(const std::variant<std::monostate, bool, int32_t, uint32_t, double, std::string, std::vector<int32_t>, std::vector<double>, std::vector<std::string>>& extended);
+
+// Overload for full CommandValue type
+EnhancedCommandValue upgradeCommandValue(const CommandValue& command);
+
+// Extended downgrade function that returns extended CommandValue
+CommandValue downgradeExtendedCommandValue(const EnhancedCommandValue& enhanced);
 
 // Type checking utilities
 bool isStructType(const EnhancedCommandValue& value);

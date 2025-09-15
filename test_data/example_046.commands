@@ -1,37 +1,37 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1757637418724,
+    "timestamp": 1757900064198,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1757637418724,
+    "timestamp": 1757900064198,
     "message": "Program execution started"
   },
   {
     "type": "VAR_SET",
     "variable": "stringOne",
     "value": null,
-    "timestamp": 1757637418724
+    "timestamp": 1757900064198
   },
   {
     "type": "VAR_SET",
     "variable": "stringTwo",
     "value": null,
-    "timestamp": 1757637418724
+    "timestamp": 1757900064198
   },
   {
     "type": "VAR_SET",
     "variable": "stringThree",
     "value": null,
-    "timestamp": 1757637418724
+    "timestamp": 1757900064198
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1757637418724,
+    "timestamp": 1757900064198,
     "message": "Executing setup() function"
   },
   {
@@ -41,20 +41,20 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1757637418724,
+    "timestamp": 1757900064198,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1757637418724,
+    "timestamp": 1757900064198,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "end",
     "iterations": 0,
-    "timestamp": 1757637418725,
+    "timestamp": 1757900064198,
     "message": "while loop completed (0 iterations)"
   },
   {
@@ -63,7 +63,7 @@
     "value": {
       "value": "You added "
     },
-    "timestamp": 1757637418725
+    "timestamp": 1757900064199
   },
   {
     "type": "VAR_SET",
@@ -71,7 +71,7 @@
     "value": {
       "value": "this string"
     },
-    "timestamp": 1757637418725
+    "timestamp": 1757900064199
   },
   {
     "type": "VAR_SET",
@@ -79,7 +79,7 @@
     "value": {
       "value": ""
     },
-    "timestamp": 1757637418725
+    "timestamp": 1757900064199
   },
   {
     "type": "FUNCTION_CALL",
@@ -88,29 +88,29 @@
       "\"\n\nAdding Strings together (concatenation):\""
     ],
     "data": "\n\nAdding Strings together (concatenation):",
-    "timestamp": 1757637418725,
+    "timestamp": 1757900064199,
     "message": "Serial.println(\"\n\nAdding Strings together (concatenation):\")"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [],
-    "timestamp": 1757637418725,
+    "timestamp": 1757900064199,
     "message": "Serial.println()"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1757637418725,
+    "timestamp": 1757900064199,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1757637418725,
+    "timestamp": 1757900064199,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1757637418725,
+    "timestamp": 1757900064199,
     "message": "Starting loop iteration 1"
   },
   {
@@ -118,7 +118,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1757637418725
+    "timestamp": 1757900064199
   },
   {
     "type": "VAR_SET",
@@ -126,7 +126,7 @@
     "value": {
       "value": "You added 123"
     },
-    "timestamp": 1757637418725
+    "timestamp": 1757900064199
   },
   {
     "type": "FUNCTION_CALL",
@@ -135,7 +135,7 @@
       "\"You added 123\""
     ],
     "data": "You added 123",
-    "timestamp": 1757637418725,
+    "timestamp": 1757900064199,
     "message": "Serial.println(\"You added 123\")"
   },
   {
@@ -144,7 +144,7 @@
     "value": {
       "value": "You added 123456789"
     },
-    "timestamp": 1757637418725
+    "timestamp": 1757900064199
   },
   {
     "type": "FUNCTION_CALL",
@@ -153,7 +153,7 @@
       "\"You added 123456789\""
     ],
     "data": "You added 123456789",
-    "timestamp": 1757637418725,
+    "timestamp": 1757900064199,
     "message": "Serial.println(\"You added 123456789\")"
   },
   {
@@ -162,7 +162,7 @@
     "value": {
       "value": "You added 65"
     },
-    "timestamp": 1757637418725
+    "timestamp": 1757900064199
   },
   {
     "type": "FUNCTION_CALL",
@@ -171,7 +171,7 @@
       "\"You added 65\""
     ],
     "data": "You added 65",
-    "timestamp": 1757637418725,
+    "timestamp": 1757900064199,
     "message": "Serial.println(\"You added 65\")"
   },
   {
@@ -180,7 +180,7 @@
     "value": {
       "value": "You added abc"
     },
-    "timestamp": 1757637418725
+    "timestamp": 1757900064199
   },
   {
     "type": "FUNCTION_CALL",
@@ -189,7 +189,7 @@
       "\"You added abc\""
     ],
     "data": "You added abc",
-    "timestamp": 1757637418725,
+    "timestamp": 1757900064199,
     "message": "Serial.println(\"You added abc\")"
   },
   {
@@ -198,7 +198,7 @@
     "value": {
       "value": "You added this string"
     },
-    "timestamp": 1757637418725
+    "timestamp": 1757900064199
   },
   {
     "type": "FUNCTION_CALL",
@@ -207,20 +207,20 @@
       "\"You added this string\""
     ],
     "data": "You added this string",
-    "timestamp": 1757637418726,
+    "timestamp": 1757900064199,
     "message": "Serial.println(\"You added this string\")"
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
-    "requestId": "analogRead_1757637418726_0.3197290448604244",
-    "timestamp": 1757637418726
+    "requestId": "analogRead_1757900064199_0.44625569482004757",
+    "timestamp": 1757900064199
   },
   {
     "type": "VAR_SET",
     "variable": "sensorValue",
-    "value": 671,
-    "timestamp": 1757637418727
+    "value": 223,
+    "timestamp": 1757900064206
   },
   {
     "type": "VAR_SET",
@@ -228,25 +228,25 @@
     "value": {
       "value": "Sensor value: "
     },
-    "timestamp": 1757637418727
+    "timestamp": 1757900064206
   },
   {
     "type": "VAR_SET",
     "variable": "stringThree",
     "value": {
-      "value": "Sensor value: 671"
+      "value": "Sensor value: 223"
     },
-    "timestamp": 1757637418727
+    "timestamp": 1757900064207
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "\"Sensor value: 671\""
+      "\"Sensor value: 223\""
     ],
-    "data": "Sensor value: 671",
-    "timestamp": 1757637418727,
-    "message": "Serial.println(\"Sensor value: 671\")"
+    "data": "Sensor value: 223",
+    "timestamp": 1757900064207,
+    "message": "Serial.println(\"Sensor value: 223\")"
   },
   {
     "type": "VAR_SET",
@@ -254,49 +254,49 @@
     "value": {
       "value": "millis() value: "
     },
-    "timestamp": 1757637418727
+    "timestamp": 1757900064207
   },
   {
     "type": "MILLIS_REQUEST",
-    "requestId": "millis_1757637418727_0.28358112611589825",
-    "timestamp": 1757637418727
+    "requestId": "millis_1757900064207_0.8013688644022785",
+    "timestamp": 1757900064207
   },
   {
     "type": "VAR_SET",
     "variable": "stringThree",
     "value": {
-      "value": "millis() value: 18727"
+      "value": "millis() value: 64207"
     },
-    "timestamp": 1757637418732
+    "timestamp": 1757900064209
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "\"millis() value: 18727\""
+      "\"millis() value: 64207\""
     ],
-    "data": "millis() value: 18727",
-    "timestamp": 1757637418732,
-    "message": "Serial.println(\"millis() value: 18727\")"
+    "data": "millis() value: 64207",
+    "timestamp": 1757900064209,
+    "message": "Serial.println(\"millis() value: 64207\")"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1757637418732,
+    "timestamp": 1757900064209,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1757637418732,
+    "timestamp": 1757900064209,
     "message": "while loop iteration 0"
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1757637418736,
+    "timestamp": 1757900064215,
     "message": "While loop limit reached: completed 1 iterations (max: 1)"
   },
   {
@@ -305,6 +305,6 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1757637418736
+    "timestamp": 1757900064215
   }
 ]

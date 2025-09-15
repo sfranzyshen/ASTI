@@ -24,97 +24,13 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "WHILE_LOOP", "phase": "end", "iterations": 0, "timestamp": 0, "message": "while loop completed (0 iterations)"
-  }, {
-    "type": "DELAY", "duration": 1000, "actualDelay": 1000, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.press", "arguments": [
-      131
-    ], "timestamp": 0, "message": "Keyboard.press(131)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.press", "arguments": [
-      110
-    ], "timestamp": 0, "message": "Keyboard.press(110)"
-  }, {
-    "type": "DELAY", "duration": 100, "actualDelay": 100, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.releaseAll", "arguments": [], "timestamp": 0, "message": "Keyboard.releaseAll()"
-  }, {
-    "type": "DELAY", "duration": 1000, "actualDelay": 1000, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.press", "arguments": [
-      131
-    ], "timestamp": 0, "message": "Keyboard.press(131)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.press", "arguments": [
-      97
-    ], "timestamp": 0, "message": "Keyboard.press(97)"
+    "type": "WHILE_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "while loop iteration 0"
   }, {
     "type": "DELAY", "duration": 500, "actualDelay": 500, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.releaseAll", "arguments": [], "timestamp": 0, "message": "Keyboard.releaseAll()"
+    "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.write", "arguments": [
-      178
-    ], "timestamp": 0, "message": "Keyboard.write(178)"
-  }, {
-    "type": "DELAY", "duration": 500, "actualDelay": 500, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "arguments": [
-      {
-        "value": "void setup() {"
-      }
-    ], "timestamp": 0, "message": "Keyboard.println(void setup() {)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "arguments": [
-      {
-        "value": "pinMode(13, 1);"
-      }
-    ], "timestamp": 0, "message": "Keyboard.println(pinMode(13, 1);)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "arguments": [
-      {
-        "value": "}"
-      }
-    ], "timestamp": 0, "message": "Keyboard.println(})"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "arguments": [
-      ""
-    ], "timestamp": 0, "message": "Keyboard.println()"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "arguments": [
-      {
-        "value": "void loop() {"
-      }
-    ], "timestamp": 0, "message": "Keyboard.println(void loop() {)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "arguments": [
-      {
-        "value": "digitalWrite(13, 1);"
-      }
-    ], "timestamp": 0, "message": "Keyboard.println(digitalWrite(13, 1);)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.print", "arguments": [
-      {
-        "value": "delay(3000);"
-      }
-    ], "timestamp": 0, "message": "Keyboard.print(delay(3000);)"
-  }, {
-    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
-  }, {
-    "type": "VAR_SET", "variable": "keystrokes", "value": 0, "timestamp": 0
-  }, {
-    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
-  }, {
-    "type": "DELAY", "duration": 500, "actualDelay": 500, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.write", "arguments": [
-      178
-    ], "timestamp": 0, "message": "Keyboard.write(178)"
-  }, {
-    "type": "VAR_SET", "variable": "keystrokes", "value": 1, "timestamp": 0
-  }, {
-    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "While loop limit reached: completed 1 iterations (max: 1)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }

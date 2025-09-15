@@ -1,4 +1,5 @@
 #include "ArduinoDataTypes.hpp"
+#include "CommandProtocol.hpp"  // For CommandValue definition
 #include <sstream>
 #include <stdexcept>
 
@@ -388,10 +389,39 @@ bool ArduinoString::operator>=(const ArduinoString& other) const {
 // UTILITY FUNCTION IMPLEMENTATIONS
 // =============================================================================
 
+// Original upgradeCommandValue for basic types
 EnhancedCommandValue upgradeCommandValue(const std::variant<std::monostate, bool, int32_t, double, std::string>& basic) {
     return std::visit([](auto&& arg) -> EnhancedCommandValue {
         return arg;  // Direct conversion works for shared types
     }, basic);
+}
+
+// Overload for full CommandValue type
+EnhancedCommandValue upgradeCommandValue(const CommandValue& command) {
+    return std::visit([](auto&& arg) -> EnhancedCommandValue {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, std::monostate> ||
+                      std::is_same_v<T, bool> ||
+                      std::is_same_v<T, int32_t> ||
+                      std::is_same_v<T, double> ||
+                      std::is_same_v<T, std::string>) {
+            return arg;  // Direct conversion for shared types
+        } else if constexpr (std::is_same_v<T, uint32_t>) {
+            return static_cast<int32_t>(arg);  // Convert uint32_t to int32_t
+        } else if constexpr (std::is_same_v<T, std::vector<int32_t>> ||
+                           std::is_same_v<T, std::vector<double>> ||
+                           std::is_same_v<T, std::vector<std::string>>) {
+            // Convert vectors to ArduinoArray
+            auto array = std::make_shared<ArduinoArray>();
+            array->resize(arg.size());
+            for (size_t i = 0; i < arg.size(); ++i) {
+                array->setElement(i, arg[i]);
+            }
+            return array;
+        } else {
+            return std::monostate{};  // Fallback for unsupported types
+        }
+    }, command);
 }
 
 std::variant<std::monostate, bool, int32_t, double, std::string> downgradeCommandValue(const EnhancedCommandValue& enhanced) {
@@ -473,6 +503,102 @@ std::shared_ptr<ArduinoArray> createArray(const std::string& elementType, const 
 
 std::shared_ptr<ArduinoString> createString(const std::string& initialValue) {
     return std::make_shared<ArduinoString>(initialValue);
+}
+
+} // namespace arduino_interpreter
+
+// =============================================================================
+// EXTENDED COMMAND VALUE SUPPORT (after namespace to avoid circular includes)
+// =============================================================================
+
+#include "CommandProtocol.hpp"
+
+namespace arduino_interpreter {
+
+EnhancedCommandValue upgradeExtendedCommandValue(const CommandValue& extended) {
+    return std::visit([](auto&& arg) -> EnhancedCommandValue {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, std::vector<int32_t>> ||
+                      std::is_same_v<T, std::vector<double>> ||
+                      std::is_same_v<T, std::vector<std::string>>) {
+            // Convert typed arrays to ArduinoArray
+            auto arduinoArray = std::make_shared<ArduinoArray>("auto");
+
+            // Resize to match the source array
+            arduinoArray->resize(arg.size());
+
+            // Copy elements
+            for (size_t i = 0; i < arg.size(); ++i) {
+                if constexpr (std::is_same_v<T, std::vector<int32_t>>) {
+                    arduinoArray->setElement(i, EnhancedCommandValue(arg[i]));
+                } else if constexpr (std::is_same_v<T, std::vector<double>>) {
+                    arduinoArray->setElement(i, EnhancedCommandValue(arg[i]));
+                } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
+                    arduinoArray->setElement(i, EnhancedCommandValue(arg[i]));
+                }
+            }
+
+            return arduinoArray;
+        } else if constexpr (std::is_same_v<T, uint32_t>) {
+            // Convert uint32_t to int32_t for EnhancedCommandValue compatibility
+            return static_cast<int32_t>(arg);
+        } else {
+            return arg;  // Direct conversion for shared types
+        }
+    }, extended);
+}
+
+// Extended downgrade function that returns extended CommandValue
+CommandValue downgradeExtendedCommandValue(const EnhancedCommandValue& enhanced) {
+    return std::visit([](auto&& arg) -> CommandValue {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, std::monostate> ||
+                      std::is_same_v<T, bool> ||
+                      std::is_same_v<T, int32_t> ||
+                      std::is_same_v<T, double> ||
+                      std::is_same_v<T, std::string>) {
+            return arg;  // Direct conversion for basic types
+        } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoArray>>) {
+            // Convert ArduinoArray back to typed vector based on element types
+            if (arg && arg->size() > 0) {
+                EnhancedCommandValue firstElement = arg->getElement(0);
+                if (std::holds_alternative<int32_t>(firstElement)) {
+                    std::vector<int32_t> vec;
+                    for (size_t i = 0; i < arg->size(); ++i) {
+                        vec.push_back(std::get<int32_t>(arg->getElement(i)));
+                    }
+                    return vec;
+                } else if (std::holds_alternative<double>(firstElement)) {
+                    std::vector<double> vec;
+                    for (size_t i = 0; i < arg->size(); ++i) {
+                        vec.push_back(std::get<double>(arg->getElement(i)));
+                    }
+                    return vec;
+                } else if (std::holds_alternative<std::string>(firstElement)) {
+                    std::vector<std::string> vec;
+                    for (size_t i = 0; i < arg->size(); ++i) {
+                        vec.push_back(std::get<std::string>(arg->getElement(i)));
+                    }
+                    return vec;
+                } else {
+                    return std::vector<int32_t>{}; // Default empty array
+                }
+            } else {
+                return std::vector<int32_t>{}; // Empty array
+            }
+        } else {
+            // Convert complex types to strings for other cases
+            if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoStruct>>) {
+                return arg ? arg->toString() : std::string("null_struct");
+            } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoString>>) {
+                return arg ? std::string(arg->c_str()) : std::string("");
+            } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoPointer>>) {
+                return arg ? arg->toString() : std::string("null_pointer");
+            } else {
+                return std::string("unknown_type");
+            }
+        }
+    }, enhanced);
 }
 
 } // namespace arduino_interpreter

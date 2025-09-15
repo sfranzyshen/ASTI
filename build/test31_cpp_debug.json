@@ -22,16 +22,6 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.available", "message": "Serial.available()", "timestamp": 0
-  }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Serial.available", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: Serial.available"
-  }, {
-    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial1.available", "message": "Serial1.available()", "timestamp": 0
-  }, {
     "type": "SERIAL_REQUEST", "timestamp": 0, "message": "Serial.available()", "requestId": "normalized", "operation": "available"
   }, {
     "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0

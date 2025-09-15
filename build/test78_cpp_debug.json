@@ -8,17 +8,17 @@
   }, {
     "type": "VAR_SET", "variable": "pmode", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "here", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "here", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "param", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "param", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "hbval", "value": 128, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "hbdelta", "value": 8, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "rst_active_high", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "rst_active_high", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "current_page", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "current_page", "value": null, "timestamp": 0
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
@@ -80,19 +80,13 @@
   }, {
     "type": "ANALOG_WRITE", "pin": 7, "value": 8, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.available", "message": "Serial.available()", "timestamp": 0
-  }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Serial.available", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: Serial.available"
+    "type": "SERIAL_REQUEST", "timestamp": 0, "message": "Serial.available()", "requestId": "normalized", "operation": "available"
   }, {
     "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {
     "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
-  }, {
-    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
   }, {
     "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
   }

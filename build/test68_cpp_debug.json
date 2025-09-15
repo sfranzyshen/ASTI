@@ -4,7 +4,7 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorValue", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "sensorLow", "value": 1023, "timestamp": 0
   }, {
@@ -18,7 +18,11 @@
   }, {
     "type": "DIGITAL_WRITE", "pin": 13, "value": 1, "timestamp": 0
   }, {
+    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop started", "phase": "start"
+  }, {
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop completed", "iterations": 0, "phase": "end"
   }, {
     "type": "DIGITAL_WRITE", "pin": 13, "value": 0, "timestamp": 0
   }, {
@@ -34,19 +38,11 @@
   }, {
     "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "map", "message": "map()", "timestamp": 0, "arguments": [
-      "975", "1023", "0", "50", "4000"
-    ]
+    "type": "VAR_SET", "variable": "pitch", "value": 2648, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "pitch", "value": 235, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "tone", "message": "tone()", "timestamp": 0, "arguments": [
-      "8", "235", "20"
-    ]
-  }, {
-    "type": "FUNCTION_CALL", "function": "tone", "message": "tone(8, 235, 20)", "timestamp": 0, "arguments": [
-      8, 235, 20
-    ], "duration": 20, "frequency": 235, "pin": 8
+    "type": "FUNCTION_CALL", "function": "tone", "message": "tone(8, 2648, 20)", "timestamp": 0, "arguments": [
+      8, 2648, 20
+    ], "duration": 20, "frequency": 2648, "pin": 8
   }, {
     "type": "DELAY", "duration": 10, "actualDelay": 10, "timestamp": 0
   }, {

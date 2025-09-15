@@ -50,11 +50,11 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 3, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "downState", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "downState", "value": 1, "timestamp": 0
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 5, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "rightState", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "rightState", "value": 1, "timestamp": 0
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 4, "requestId": "normalized", "timestamp": 0
   }, {
@@ -64,11 +64,19 @@
   }, {
     "type": "VAR_SET", "variable": "clickState", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "xDistance", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "xDistance", "value": -5, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "yDistance", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "yDistance", "value": -5, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Mouse.move", "message": "Mouse.move()", "timestamp": 0, "arguments": [
+      "-5", "-5", "0"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Mouse.move", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: Mouse.move"
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

@@ -22,9 +22,13 @@
   }, {
     "type": "VAR_SET", "variable": "escapedChar", "value": 10, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "str1", "value": "Hello", "isConst": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "str1", "value": {
+      "value": "Hello"
+    }, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "str2", "value": " world!", "isConst": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "str2", "value": {
+      "value": " world!"
+    }, "isConst": true, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Hello)", "timestamp": 0, "arguments": [
       "Hello"

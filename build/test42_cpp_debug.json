@@ -20,11 +20,11 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "duration", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "duration", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "inches", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "inches", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "cm", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "cm", "value": null, "timestamp": 0
   }, {
     "type": "PIN_MODE", "pin": 7, "mode": 1, "timestamp": 0
   }, {
@@ -40,19 +40,13 @@
   }, {
     "type": "PIN_MODE", "pin": 7, "mode": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "pulseIn", "message": "pulseIn()", "timestamp": 0, "arguments": [
-      "7", "1"
-    ]
+    "type": "PULSE_IN_REQUEST", "timestamp": 0, "message": "pulseIn(7, 1, 1000000)", "requestId": "normalized", "arguments": [
+      7, 1, 1000000
+    ], "function": "pulseIn", "pin": 7, "timeout": 1000000, "value": 1
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: pulseIn", "errorType": "RuntimeError"
+    "type": "VAR_SET", "variable": "duration", "value": 1500, "timestamp": 0
   }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: pulseIn"
-  }, {
-    "type": "VAR_SET", "variable": "duration", "value": null, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "microsecondsToInches", "message": "microsecondsToInches()", "timestamp": 0, "arguments": [
-      "undefined"
-    ]
+    "type": "FUNCTION_CALL", "function": "microsecondsToInches", "message": "microsecondsToInches()", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: microsecondsToInches", "errorType": "RuntimeError"
   }, {
@@ -60,9 +54,7 @@
   }, {
     "type": "VAR_SET", "variable": "inches", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "microsecondsToCentimeters", "message": "microsecondsToCentimeters()", "timestamp": 0, "arguments": [
-      "undefined"
-    ]
+    "type": "FUNCTION_CALL", "function": "microsecondsToCentimeters", "message": "microsecondsToCentimeters()", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: microsecondsToCentimeters", "errorType": "RuntimeError"
   }, {

@@ -24,21 +24,11 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "WHILE_LOOP", "phase": "end", "iterations": 0, "timestamp": 0, "message": "while loop completed (0 iterations)"
-  }, {
-    "type": "DELAY", "duration": 1000, "actualDelay": 1000, "timestamp": 0
-  }, {
-    "type": "SWITCH_STATEMENT", "discriminant": 0, "timestamp": 0, "message": "switch (0)"
-  }, {
-    "type": "SWITCH_CASE", "caseValue": 0, "matched": false, "timestamp": 0
-  }, {
-    "type": "SWITCH_CASE", "caseValue": 1, "matched": false, "timestamp": 0
-  }, {
-    "type": "SWITCH_CASE", "caseValue": 2, "matched": false, "timestamp": 0
-  }, {
-    "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
-  }, {
     "type": "WHILE_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "while loop iteration 0"
+  }, {
+    "type": "DELAY", "duration": 500, "actualDelay": 500, "timestamp": 0
+  }, {
+    "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
     "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "While loop limit reached: completed 1 iterations (max: 1)"
   }, {

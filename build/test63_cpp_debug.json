@@ -76,7 +76,7 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 3, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Undefined variable: MOUSE_LEFT", "errorType": "RuntimeError"
   }, {
@@ -90,7 +90,19 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Mouse.isPressed"
   }, {
-    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: MOUSE_LEFT", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Undefined variable: MOUSE_LEFT"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Mouse.press", "message": "Mouse.press()", "timestamp": 0, "arguments": [
+      "undefined"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Mouse.press", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: Mouse.press"
   }, {
     "type": "DELAY", "duration": 5, "actualDelay": 5, "timestamp": 0
   }, {

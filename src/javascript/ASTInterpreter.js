@@ -8004,7 +8004,7 @@ class ASTInterpreter {
         if (obj === null || obj === undefined) {
             return obj;
         }
-        
+
         // If it's an ArduinoObject, create a safe representation
         if (obj && obj.constructor && obj.constructor.name === 'ArduinoObject') {
             return {
@@ -8015,7 +8015,7 @@ class ASTInterpreter {
                 // Exclude 'interpreter' and 'libraryInfo' to prevent circular references
             };
         }
-        
+
         // For other objects, return as-is
         return obj;
     }

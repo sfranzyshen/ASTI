@@ -18,11 +18,11 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "a", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "a", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "b", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "b", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "c", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "c", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "c", "value": 5, "timestamp": 0
   }, {
@@ -38,7 +38,7 @@
   }, {
     "type": "VAR_SET", "variable": "y", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "z", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "z", "value": null, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(a: )", "timestamp": 0, "arguments": [
       "a: "
@@ -64,7 +64,9 @@
       "z: "
     ], "data": "z: ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "undefined"
+    ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Increment/decrement operators require variable context", "errorType": "RuntimeError"
   }, {

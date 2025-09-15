@@ -10,7 +10,7 @@
   }, {
     "type": "VAR_SET", "variable": "ledState", "value": 1, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "buttonState", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "buttonState", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "lastButtonState", "value": 0, "timestamp": 0
   }, {
@@ -43,6 +43,10 @@
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "buttonState", "value": 0, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

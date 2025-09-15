@@ -1,0 +1,891 @@
+=== C++ COMMAND STREAM EXTRACTION ===
+Test Number: 11
+AST File: ../test_data/example_011.ast
+
+Loaded 1537 bytes from AST file
+CompactASTReader::parse(): Starting parse...
+CompactASTReader::parse(): Parsing header...
+Raw header bytes:
+  [0] = 0x41
+  [1] = 0x53
+  [2] = 0x54
+  [3] = 0x50
+  [4] = 0x0
+  [5] = 0x1
+  [6] = 0x0
+  [7] = 0x0
+  [8] = 0x2e
+  [9] = 0x0
+  [10] = 0x0
+  [11] = 0x0
+  [12] = 0x78
+  [13] = 0x0
+  [14] = 0x0
+  [15] = 0x0
+Before endianness conversion:
+  magic: 0x50545341
+  version: 0x100
+  flags: 0x0
+  nodeCount: 46
+  stringTableSize: 120
+After endianness conversion:
+  magic: 0x50545341
+  version: 0x100
+  flags: 0x0
+  nodeCount: 46
+  stringTableSize: 120
+CompactASTReader::parse(): Header parsed successfully
+CompactASTReader::parse(): Parsing string table...
+parseStringTableInternal(): Starting at position 16
+parseStringTableInternal(): String table size from header: 120
+parseStringTableInternal(): String count: 13, position now: 20
+parseStringTableInternal(): String 0 length: 9, position: 22
+parseStringTableInternal(): String 0: "const int", position now: 32
+parseStringTableInternal(): String 1 length: 9, position: 34
+parseStringTableInternal(): String 1: "threshold", position now: 44
+parseStringTableInternal(): String 2 length: 3, position: 46
+parseStringTableInternal(): String 2: "int", position now: 50
+parseStringTableInternal(): String 3 length: 4, position: 52
+parseStringTableInternal(): String 3: "void", position now: 57
+parseStringTableInternal(): String 4 length: 5, position: 59
+parseStringTableInternal(): String 4: "setup", position now: 65
+parseStringTableInternal(): String 5 length: 4, position: 67
+parseStringTableInternal(): String 5: "loop", position now: 72
+parseStringTableInternal(): String 6 length: 10, position: 74
+parseStringTableInternal(): String 6: "thisSensor", position now: 85
+parseStringTableInternal(): String 7 length: 1, position: 87
+parseStringTableInternal(): String 7: "<", position now: 89
+parseStringTableInternal(): String 8 length: 2, position: 91
+parseStringTableInternal(): String 8: "++", position now: 94
+parseStringTableInternal(): String 9 length: 13, position: 96
+parseStringTableInternal(): String 9: "sensorReading", position now: 110
+parseStringTableInternal(): String 10 length: 10, position: 112
+parseStringTableInternal(): String 10: "analogRead", position now: 123
+parseStringTableInternal(): String 11 length: 1, position: 125
+parseStringTableInternal(): String 11: ">", position now: 127
+parseStringTableInternal(): String 12 length: 4, position: 129
+parseStringTableInternal(): String 12: "tone", position now: 134
+parseStringTableInternal(): Before alignment, position: 134
+parseStringTableInternal(): After alignment, position: 136
+CompactASTReader::parse(): String table parsed successfully
+CompactASTReader::parse(): Parsing nodes...
+parseNodesInternal(): About to parse 46 nodes
+parseNodesInternal(): Parsing node 0
+parseNode(0): Starting parse at position 136
+parseNode(0): nodeType=1, flags=1, dataSize=8
+parseNode(0): Creating node of type 1
+parseNode(0): Creating ProgramNode
+parseNode(0): Parsing children...
+parseNode(0): Expected 4 children (remainingBytes=8)
+parseNode(0): Child 0 index: 1
+parseNode(0): Child 1 index: 5
+parseNode(0): Child 2 index: 9
+parseNode(0): Child 3 index: 13
+parseNodesInternal(): Node 0 parsed successfully
+parseNodesInternal(): Parsing node 1
+parseNode(1): Starting parse at position 148
+parseNode(1): nodeType=32, flags=1, dataSize=6
+parseNode(1): Creating node of type 32
+parseNode(1): Creating VarDeclNode
+parseNode(1): Parsing children...
+parseNode(1): Expected 3 children (remainingBytes=6)
+parseNode(1): Child 0 index: 2
+parseNode(1): Child 1 index: 3
+parseNode(1): Child 2 index: 4
+parseNodesInternal(): Node 1 parsed successfully
+parseNodesInternal(): Parsing node 2
+parseNode(2): Starting parse at position 158
+parseNode(2): nodeType=80, flags=2, dataSize=3
+parseNode(2): Creating node of type 80
+parseNode(2): Creating TypeNode
+parseNode(2): Parsing value...
+parseValue(): valueType = 12
+parseNode(2): Value parsed
+parseNodesInternal(): Node 2 parsed successfully
+parseNodesInternal(): Parsing node 3
+parseNode(3): Starting parse at position 165
+parseNode(3): nodeType=81, flags=2, dataSize=3
+parseNode(3): Creating node of type 81
+parseNode(3): Creating DeclaratorNode
+parseNode(3): Parsing value...
+parseValue(): valueType = 12
+parseNode(3): Value parsed
+parseNodesInternal(): Node 3 parsed successfully
+parseNodesInternal(): Parsing node 4
+parseNode(4): Starting parse at position 172
+parseNode(4): nodeType=64, flags=2, dataSize=2
+parseNode(4): Creating node of type 64
+parseNode(4): Creating NumberNode
+parseNode(4): Parsing value...
+parseValue(): valueType = 3
+parseValue(): UINT8_VAL rawValue=10, returning double=10
+parseNode(4): Value parsed
+parseNodesInternal(): Node 4 parsed successfully
+parseNodesInternal(): Parsing node 5
+parseNode(5): Starting parse at position 178
+parseNode(5): nodeType=32, flags=1, dataSize=6
+parseNode(5): Creating node of type 32
+parseNode(5): Creating VarDeclNode
+parseNode(5): Parsing children...
+parseNode(5): Expected 3 children (remainingBytes=6)
+parseNode(5): Child 0 index: 6
+parseNode(5): Child 1 index: 7
+parseNode(5): Child 2 index: 8
+parseNodesInternal(): Node 5 parsed successfully
+parseNodesInternal(): Parsing node 6
+parseNode(6): Starting parse at position 188
+parseNode(6): nodeType=80, flags=2, dataSize=3
+parseNode(6): Creating node of type 80
+parseNode(6): Creating TypeNode
+parseNode(6): Parsing value...
+parseValue(): valueType = 12
+parseNode(6): Value parsed
+parseNodesInternal(): Node 6 parsed successfully
+parseNodesInternal(): Parsing node 7
+parseNode(7): Starting parse at position 195
+parseNode(7): nodeType=87, flags=0, dataSize=0
+parseNode(7): Creating node of type 87
+parseNode(7): Creating ArrayDeclaratorNode
+parseNodesInternal(): Node 7 parsed successfully
+parseNodesInternal(): Parsing node 8
+parseNode(8): Starting parse at position 199
+parseNode(8): nodeType=69, flags=0, dataSize=0
+parseNode(8): Creating node of type 69
+parseNode(8): Creating ArrayInitializerNode
+parseNodesInternal(): Node 8 parsed successfully
+parseNodesInternal(): Parsing node 9
+parseNode(9): Starting parse at position 203
+parseNode(9): nodeType=33, flags=1, dataSize=6
+parseNode(9): Creating node of type 33
+parseNode(9): Creating FuncDefNode
+parseNode(9): Parsing children...
+parseNode(9): Expected 3 children (remainingBytes=6)
+parseNode(9): Child 0 index: 10
+parseNode(9): Child 1 index: 11
+parseNode(9): Child 2 index: 12
+parseNodesInternal(): Node 9 parsed successfully
+parseNodesInternal(): Parsing node 10
+parseNode(10): Starting parse at position 213
+parseNode(10): nodeType=80, flags=2, dataSize=3
+parseNode(10): Creating node of type 80
+parseNode(10): Creating TypeNode
+parseNode(10): Parsing value...
+parseValue(): valueType = 12
+parseNode(10): Value parsed
+parseNodesInternal(): Node 10 parsed successfully
+parseNodesInternal(): Parsing node 11
+parseNode(11): Starting parse at position 220
+parseNode(11): nodeType=81, flags=2, dataSize=3
+parseNode(11): Creating node of type 81
+parseNode(11): Creating DeclaratorNode
+parseNode(11): Parsing value...
+parseValue(): valueType = 12
+parseNode(11): Value parsed
+parseNodesInternal(): Node 11 parsed successfully
+parseNodesInternal(): Parsing node 12
+parseNode(12): Starting parse at position 227
+parseNode(12): nodeType=16, flags=0, dataSize=0
+parseNode(12): Creating node of type 16
+parseNode(12): Creating CompoundStmtNode
+parseNodesInternal(): Node 12 parsed successfully
+parseNodesInternal(): Parsing node 13
+parseNode(13): Starting parse at position 231
+parseNode(13): nodeType=33, flags=1, dataSize=6
+parseNode(13): Creating node of type 33
+parseNode(13): Creating FuncDefNode
+parseNode(13): Parsing children...
+parseNode(13): Expected 3 children (remainingBytes=6)
+parseNode(13): Child 0 index: 14
+parseNode(13): Child 1 index: 15
+parseNode(13): Child 2 index: 16
+parseNodesInternal(): Node 13 parsed successfully
+parseNodesInternal(): Parsing node 14
+parseNode(14): Starting parse at position 241
+parseNode(14): nodeType=80, flags=2, dataSize=3
+parseNode(14): Creating node of type 80
+parseNode(14): Creating TypeNode
+parseNode(14): Parsing value...
+parseValue(): valueType = 12
+parseNode(14): Value parsed
+parseNodesInternal(): Node 14 parsed successfully
+parseNodesInternal(): Parsing node 15
+parseNode(15): Starting parse at position 248
+parseNode(15): nodeType=81, flags=2, dataSize=3
+parseNode(15): Creating node of type 81
+parseNode(15): Creating DeclaratorNode
+parseNode(15): Parsing value...
+parseValue(): valueType = 12
+parseNode(15): Value parsed
+parseNodesInternal(): Node 15 parsed successfully
+parseNodesInternal(): Parsing node 16
+parseNode(16): Starting parse at position 255
+parseNode(16): nodeType=16, flags=1, dataSize=2
+parseNode(16): Creating node of type 16
+parseNode(16): Creating CompoundStmtNode
+parseNode(16): Parsing children...
+parseNode(16): Expected 1 children (remainingBytes=2)
+parseNode(16): Child 0 index: 17
+parseNodesInternal(): Node 16 parsed successfully
+parseNodesInternal(): Parsing node 17
+parseNode(17): Starting parse at position 261
+parseNode(17): nodeType=21, flags=1, dataSize=8
+parseNode(17): Creating node of type 21
+parseNode(17): Creating ForStatement
+parseNode(17): Parsing children...
+parseNode(17): Expected 4 children (remainingBytes=8)
+parseNode(17): Child 0 index: 18
+parseNode(17): Child 1 index: 22
+parseNode(17): Child 2 index: 25
+parseNode(17): Child 3 index: 27
+parseNodesInternal(): Node 17 parsed successfully
+parseNodesInternal(): Parsing node 18
+parseNode(18): Starting parse at position 273
+parseNode(18): nodeType=32, flags=1, dataSize=6
+parseNode(18): Creating node of type 32
+parseNode(18): Creating VarDeclNode
+parseNode(18): Parsing children...
+parseNode(18): Expected 3 children (remainingBytes=6)
+parseNode(18): Child 0 index: 19
+parseNode(18): Child 1 index: 20
+parseNode(18): Child 2 index: 21
+parseNodesInternal(): Node 18 parsed successfully
+parseNodesInternal(): Parsing node 19
+parseNode(19): Starting parse at position 283
+parseNode(19): nodeType=80, flags=2, dataSize=3
+parseNode(19): Creating node of type 80
+parseNode(19): Creating TypeNode
+parseNode(19): Parsing value...
+parseValue(): valueType = 12
+parseNode(19): Value parsed
+parseNodesInternal(): Node 19 parsed successfully
+parseNodesInternal(): Parsing node 20
+parseNode(20): Starting parse at position 290
+parseNode(20): nodeType=81, flags=2, dataSize=3
+parseNode(20): Creating node of type 81
+parseNode(20): Creating DeclaratorNode
+parseNode(20): Parsing value...
+parseValue(): valueType = 12
+parseNode(20): Value parsed
+parseNodesInternal(): Node 20 parsed successfully
+parseNodesInternal(): Parsing node 21
+parseNode(21): Starting parse at position 297
+parseNode(21): nodeType=64, flags=2, dataSize=2
+parseNode(21): Creating node of type 64
+parseNode(21): Creating NumberNode
+parseNode(21): Parsing value...
+parseValue(): valueType = 3
+parseValue(): UINT8_VAL rawValue=0, returning double=0
+parseNode(21): Value parsed
+parseNodesInternal(): Node 21 parsed successfully
+parseNodesInternal(): Parsing node 22
+parseNode(22): Starting parse at position 303
+parseNode(22): nodeType=48, flags=3, dataSize=7
+OPERATOR NODE DEBUG: nodeType=48, flags=3, HAS_VALUE=YES
+parseNode(22): Creating node of type 48
+parseNode(22): Creating BinaryOpNode
+parseNode(22): Parsing value...
+parseValue(): valueType = 12
+parseNode(22): Value parsed
+parseNode(22): Parsing children...
+parseNode(22): Expected 2 children (remainingBytes=4)
+parseNode(22): Child 0 index: 23
+parseNode(22): Child 1 index: 24
+parseNodesInternal(): Node 22 parsed successfully
+parseNodesInternal(): Parsing node 23
+parseNode(23): Starting parse at position 314
+parseNode(23): nodeType=67, flags=2, dataSize=3
+parseNode(23): Creating node of type 67
+parseNode(23): Creating IdentifierNode
+parseNode(23): Parsing value...
+parseValue(): valueType = 12
+parseNode(23): Value parsed
+parseNodesInternal(): Node 23 parsed successfully
+parseNodesInternal(): Parsing node 24
+parseNode(24): Starting parse at position 321
+parseNode(24): nodeType=64, flags=2, dataSize=2
+parseNode(24): Creating node of type 64
+parseNode(24): Creating NumberNode
+parseNode(24): Parsing value...
+parseValue(): valueType = 3
+parseValue(): UINT8_VAL rawValue=3, returning double=3
+parseNode(24): Value parsed
+parseNodesInternal(): Node 24 parsed successfully
+parseNodesInternal(): Parsing node 25
+parseNode(25): Starting parse at position 327
+parseNode(25): nodeType=83, flags=3, dataSize=5
+parseNode(25): Creating node of type 83
+parseNode(25): Creating PostfixExpressionNode
+parseNode(25): Parsing value...
+parseValue(): valueType = 12
+parseNode(25): Value parsed
+parseNode(25): Parsing children...
+parseNode(25): Expected 1 children (remainingBytes=2)
+parseNode(25): Child 0 index: 26
+parseNodesInternal(): Node 25 parsed successfully
+parseNodesInternal(): Parsing node 26
+parseNode(26): Starting parse at position 336
+parseNode(26): nodeType=67, flags=2, dataSize=3
+parseNode(26): Creating node of type 67
+parseNode(26): Creating IdentifierNode
+parseNode(26): Parsing value...
+parseValue(): valueType = 12
+parseNode(26): Value parsed
+parseNodesInternal(): Node 26 parsed successfully
+parseNodesInternal(): Parsing node 27
+parseNode(27): Starting parse at position 343
+parseNode(27): nodeType=16, flags=1, dataSize=4
+parseNode(27): Creating node of type 16
+parseNode(27): Creating CompoundStmtNode
+parseNode(27): Parsing children...
+parseNode(27): Expected 2 children (remainingBytes=4)
+parseNode(27): Child 0 index: 28
+parseNode(27): Child 1 index: 34
+parseNodesInternal(): Node 27 parsed successfully
+parseNodesInternal(): Parsing node 28
+parseNode(28): Starting parse at position 351
+parseNode(28): nodeType=32, flags=1, dataSize=6
+parseNode(28): Creating node of type 32
+parseNode(28): Creating VarDeclNode
+parseNode(28): Parsing children...
+parseNode(28): Expected 3 children (remainingBytes=6)
+parseNode(28): Child 0 index: 29
+parseNode(28): Child 1 index: 30
+parseNode(28): Child 2 index: 31
+parseNodesInternal(): Node 28 parsed successfully
+parseNodesInternal(): Parsing node 29
+parseNode(29): Starting parse at position 361
+parseNode(29): nodeType=80, flags=2, dataSize=3
+parseNode(29): Creating node of type 80
+parseNode(29): Creating TypeNode
+parseNode(29): Parsing value...
+parseValue(): valueType = 12
+parseNode(29): Value parsed
+parseNodesInternal(): Node 29 parsed successfully
+parseNodesInternal(): Parsing node 30
+parseNode(30): Starting parse at position 368
+parseNode(30): nodeType=81, flags=2, dataSize=3
+parseNode(30): Creating node of type 81
+parseNode(30): Creating DeclaratorNode
+parseNode(30): Parsing value...
+parseValue(): valueType = 12
+parseNode(30): Value parsed
+parseNodesInternal(): Node 30 parsed successfully
+parseNodesInternal(): Parsing node 31
+parseNode(31): Starting parse at position 375
+parseNode(31): nodeType=51, flags=1, dataSize=4
+parseNode(31): Creating node of type 51
+parseNode(31): Creating FuncCallNode
+parseNode(31): Parsing children...
+parseNode(31): Expected 2 children (remainingBytes=4)
+parseNode(31): Child 0 index: 32
+parseNode(31): Child 1 index: 33
+parseNodesInternal(): Node 31 parsed successfully
+parseNodesInternal(): Parsing node 32
+parseNode(32): Starting parse at position 383
+parseNode(32): nodeType=67, flags=2, dataSize=3
+parseNode(32): Creating node of type 67
+parseNode(32): Creating IdentifierNode
+parseNode(32): Parsing value...
+parseValue(): valueType = 12
+parseNode(32): Value parsed
+parseNodesInternal(): Node 32 parsed successfully
+parseNodesInternal(): Parsing node 33
+parseNode(33): Starting parse at position 390
+parseNode(33): nodeType=67, flags=2, dataSize=3
+parseNode(33): Creating node of type 67
+parseNode(33): Creating IdentifierNode
+parseNode(33): Parsing value...
+parseValue(): valueType = 12
+parseNode(33): Value parsed
+parseNodesInternal(): Node 33 parsed successfully
+parseNodesInternal(): Parsing node 34
+parseNode(34): Starting parse at position 397
+parseNode(34): nodeType=18, flags=1, dataSize=4
+parseNode(34): Creating node of type 18
+parseNode(34): Creating IfStatement
+parseNode(34): Parsing children...
+parseNode(34): Expected 2 children (remainingBytes=4)
+parseNode(34): Child 0 index: 35
+parseNode(34): Child 1 index: 38
+parseNodesInternal(): Node 34 parsed successfully
+parseNodesInternal(): Parsing node 35
+parseNode(35): Starting parse at position 405
+parseNode(35): nodeType=48, flags=3, dataSize=7
+OPERATOR NODE DEBUG: nodeType=48, flags=3, HAS_VALUE=YES
+parseNode(35): Creating node of type 48
+parseNode(35): Creating BinaryOpNode
+parseNode(35): Parsing value...
+parseValue(): valueType = 12
+parseNode(35): Value parsed
+parseNode(35): Parsing children...
+parseNode(35): Expected 2 children (remainingBytes=4)
+parseNode(35): Child 0 index: 36
+parseNode(35): Child 1 index: 37
+parseNodesInternal(): Node 35 parsed successfully
+parseNodesInternal(): Parsing node 36
+parseNode(36): Starting parse at position 416
+parseNode(36): nodeType=67, flags=2, dataSize=3
+parseNode(36): Creating node of type 67
+parseNode(36): Creating IdentifierNode
+parseNode(36): Parsing value...
+parseValue(): valueType = 12
+parseNode(36): Value parsed
+parseNodesInternal(): Node 36 parsed successfully
+parseNodesInternal(): Parsing node 37
+parseNode(37): Starting parse at position 423
+parseNode(37): nodeType=67, flags=2, dataSize=3
+parseNode(37): Creating node of type 67
+parseNode(37): Creating IdentifierNode
+parseNode(37): Parsing value...
+parseValue(): valueType = 12
+parseNode(37): Value parsed
+parseNodesInternal(): Node 37 parsed successfully
+parseNodesInternal(): Parsing node 38
+parseNode(38): Starting parse at position 430
+parseNode(38): nodeType=16, flags=1, dataSize=2
+parseNode(38): Creating node of type 16
+parseNode(38): Creating CompoundStmtNode
+parseNode(38): Parsing children...
+parseNode(38): Expected 1 children (remainingBytes=2)
+parseNode(38): Child 0 index: 39
+parseNodesInternal(): Node 38 parsed successfully
+parseNodesInternal(): Parsing node 39
+parseNode(39): Starting parse at position 436
+parseNode(39): nodeType=17, flags=1, dataSize=2
+parseNode(39): Creating node of type 17
+parseNode(39): Creating ExpressionStatement
+parseNode(39): Parsing children...
+parseNode(39): Expected 1 children (remainingBytes=2)
+parseNode(39): Child 0 index: 40
+parseNodesInternal(): Node 39 parsed successfully
+parseNodesInternal(): Parsing node 40
+parseNode(40): Starting parse at position 442
+parseNode(40): nodeType=51, flags=1, dataSize=8
+parseNode(40): Creating node of type 51
+parseNode(40): Creating FuncCallNode
+parseNode(40): Parsing children...
+parseNode(40): Expected 4 children (remainingBytes=8)
+parseNode(40): Child 0 index: 41
+parseNode(40): Child 1 index: 42
+parseNode(40): Child 2 index: 43
+parseNode(40): Child 3 index: 45
+parseNodesInternal(): Node 40 parsed successfully
+parseNodesInternal(): Parsing node 41
+parseNode(41): Starting parse at position 454
+parseNode(41): nodeType=67, flags=2, dataSize=3
+parseNode(41): Creating node of type 67
+parseNode(41): Creating IdentifierNode
+parseNode(41): Parsing value...
+parseValue(): valueType = 12
+parseNode(41): Value parsed
+parseNodesInternal(): Node 41 parsed successfully
+parseNodesInternal(): Parsing node 42
+parseNode(42): Starting parse at position 461
+parseNode(42): nodeType=64, flags=2, dataSize=2
+parseNode(42): Creating node of type 64
+parseNode(42): Creating NumberNode
+parseNode(42): Parsing value...
+parseValue(): valueType = 3
+parseValue(): UINT8_VAL rawValue=8, returning double=8
+parseNode(42): Value parsed
+parseNodesInternal(): Node 42 parsed successfully
+parseNodesInternal(): Parsing node 43
+parseNode(43): Starting parse at position 467
+parseNode(43): nodeType=53, flags=1, dataSize=2
+parseNode(43): Creating node of type 53
+parseNode(43): Creating ArrayAccessNode
+parseNode(43): Parsing children...
+parseNode(43): Expected 1 children (remainingBytes=2)
+parseNode(43): Child 0 index: 44
+parseNodesInternal(): Node 43 parsed successfully
+parseNodesInternal(): Parsing node 44
+parseNode(44): Starting parse at position 473
+parseNode(44): nodeType=67, flags=2, dataSize=3
+parseNode(44): Creating node of type 67
+parseNode(44): Creating IdentifierNode
+parseNode(44): Parsing value...
+parseValue(): valueType = 12
+parseNode(44): Value parsed
+parseNodesInternal(): Node 44 parsed successfully
+parseNodesInternal(): Parsing node 45
+parseNode(45): Starting parse at position 480
+parseNode(45): nodeType=64, flags=2, dataSize=2
+parseNode(45): Creating node of type 64
+parseNode(45): Creating NumberNode
+parseNode(45): Parsing value...
+parseValue(): valueType = 3
+parseValue(): UINT8_VAL rawValue=20, returning double=20
+parseNode(45): Value parsed
+parseNodesInternal(): Node 45 parsed successfully
+parseNodesInternal(): All nodes parsed successfully
+CompactASTReader::parse(): Nodes parsed successfully
+CompactASTReader::parse(): Linking node children...
+linkNodeChildren(): Linking children for 19 parent nodes
+linkNodeChildren(): Node 43 has 1 children
+linkNodeChildren(): Linking child 44 to parent 43
+linkNodeChildren(): Child 44 linked successfully
+linkNodeChildren(): Node 40 has 4 children
+linkNodeChildren(): Linking child 41 to parent 40
+linkNodeChildren(): Found FUNC_CALL parent node!
+linkNodeChildren(): Setting up FuncCallNode child 41
+linkNodeChildren(): Setting callee
+linkNodeChildren(): Child 41 linked successfully
+linkNodeChildren(): Linking child 42 to parent 40
+linkNodeChildren(): Found FUNC_CALL parent node!
+linkNodeChildren(): Setting up FuncCallNode child 42
+linkNodeChildren(): Adding argument
+linkNodeChildren(): Child 42 linked successfully
+linkNodeChildren(): Linking child 43 to parent 40
+linkNodeChildren(): Found FUNC_CALL parent node!
+linkNodeChildren(): Setting up FuncCallNode child 43
+linkNodeChildren(): Adding argument
+linkNodeChildren(): Child 43 linked successfully
+linkNodeChildren(): Linking child 45 to parent 40
+linkNodeChildren(): Found FUNC_CALL parent node!
+linkNodeChildren(): Setting up FuncCallNode child 45
+linkNodeChildren(): Adding argument
+linkNodeChildren(): Child 45 linked successfully
+linkNodeChildren(): Node 39 has 1 children
+linkNodeChildren(): Linking child 40 to parent 39
+linkNodeChildren(): Found EXPRESSION_STMT parent node!
+linkNodeChildren(): Setting up ExpressionStatement child 40
+linkNodeChildren(): Setting expression
+linkNodeChildren(): Child 40 linked successfully
+linkNodeChildren(): Node 38 has 1 children
+linkNodeChildren(): Linking child 39 to parent 38
+linkNodeChildren(): Child 39 linked successfully
+linkNodeChildren(): Node 35 has 2 children
+linkNodeChildren(): Linking child 36 to parent 35
+linkNodeChildren(): Found BINARY_OP parent node!
+linkNodeChildren(): Setting up BinaryOpNode child 36
+linkNodeChildren(): Setting left operand
+linkNodeChildren(): Child 36 linked successfully
+linkNodeChildren(): Linking child 37 to parent 35
+linkNodeChildren(): Found BINARY_OP parent node!
+linkNodeChildren(): Setting up BinaryOpNode child 37
+linkNodeChildren(): Setting right operand
+linkNodeChildren(): Child 37 linked successfully
+linkNodeChildren(): Node 34 has 2 children
+linkNodeChildren(): Linking child 35 to parent 34
+linkNodeChildren(): Found IF_STMT parent node!
+linkNodeChildren(): Setting up IfStatement child 35 (relative position: 0)
+linkNodeChildren(): Setting condition
+linkNodeChildren(): Child 35 linked successfully
+linkNodeChildren(): Linking child 38 to parent 34
+linkNodeChildren(): Found IF_STMT parent node!
+linkNodeChildren(): Setting up IfStatement child 38 (relative position: 1)
+linkNodeChildren(): Setting consequent
+linkNodeChildren(): Child 38 linked successfully
+linkNodeChildren(): Node 31 has 2 children
+linkNodeChildren(): Linking child 32 to parent 31
+linkNodeChildren(): Found FUNC_CALL parent node!
+linkNodeChildren(): Setting up FuncCallNode child 32
+linkNodeChildren(): Setting callee
+linkNodeChildren(): Child 32 linked successfully
+linkNodeChildren(): Linking child 33 to parent 31
+linkNodeChildren(): Found FUNC_CALL parent node!
+linkNodeChildren(): Setting up FuncCallNode child 33
+linkNodeChildren(): Adding argument
+linkNodeChildren(): Child 33 linked successfully
+linkNodeChildren(): Node 28 has 3 children
+linkNodeChildren(): Linking child 29 to parent 28
+linkNodeChildren(): Setting up VarDeclNode child 29
+linkNodeChildren(): Setting var type
+linkNodeChildren(): Child 29 linked successfully
+linkNodeChildren(): Linking child 30 to parent 28
+linkNodeChildren(): Setting up VarDeclNode child 30
+linkNodeChildren(): Adding DeclaratorNode to declarations
+linkNodeChildren(): Child 30 linked successfully
+linkNodeChildren(): Linking child 31 to parent 28
+linkNodeChildren(): Setting up VarDeclNode child 31
+linkNodeChildren(): Found expression initializer (type: 51)
+linkNodeChildren(): Adding initializer as child to DeclaratorNode
+linkNodeChildren(): Child 31 linked successfully
+linkNodeChildren(): Node 27 has 2 children
+linkNodeChildren(): Linking child 28 to parent 27
+linkNodeChildren(): Child 28 linked successfully
+linkNodeChildren(): Linking child 34 to parent 27
+linkNodeChildren(): Child 34 linked successfully
+linkNodeChildren(): Node 25 has 1 children
+linkNodeChildren(): Linking child 26 to parent 25
+linkNodeChildren(): Found POSTFIX_EXPRESSION parent node!
+linkNodeChildren(): Setting up PostfixExpressionNode child 26
+linkNodeChildren(): Setting operand
+linkNodeChildren(): Child 26 linked successfully
+linkNodeChildren(): Node 22 has 2 children
+linkNodeChildren(): Linking child 23 to parent 22
+linkNodeChildren(): Found BINARY_OP parent node!
+linkNodeChildren(): Setting up BinaryOpNode child 23
+linkNodeChildren(): Setting left operand
+linkNodeChildren(): Child 23 linked successfully
+linkNodeChildren(): Linking child 24 to parent 22
+linkNodeChildren(): Found BINARY_OP parent node!
+linkNodeChildren(): Setting up BinaryOpNode child 24
+linkNodeChildren(): Setting right operand
+linkNodeChildren(): Child 24 linked successfully
+linkNodeChildren(): Node 18 has 3 children
+linkNodeChildren(): Linking child 19 to parent 18
+linkNodeChildren(): Setting up VarDeclNode child 19
+linkNodeChildren(): Setting var type
+linkNodeChildren(): Child 19 linked successfully
+linkNodeChildren(): Linking child 20 to parent 18
+linkNodeChildren(): Setting up VarDeclNode child 20
+linkNodeChildren(): Adding DeclaratorNode to declarations
+linkNodeChildren(): Child 20 linked successfully
+linkNodeChildren(): Linking child 21 to parent 18
+linkNodeChildren(): Setting up VarDeclNode child 21
+linkNodeChildren(): Found expression initializer (type: 64)
+linkNodeChildren(): Adding initializer as child to DeclaratorNode
+linkNodeChildren(): Child 21 linked successfully
+linkNodeChildren(): Node 17 has 4 children
+linkNodeChildren(): Linking child 18 to parent 17
+linkNodeChildren(): Found FOR_STMT parent node!
+linkNodeChildren(): Setting up ForStatement child 18 (relative position: 0)
+linkNodeChildren(): Setting initializer
+linkNodeChildren(): Child 18 linked successfully
+linkNodeChildren(): Linking child 22 to parent 17
+linkNodeChildren(): Found FOR_STMT parent node!
+linkNodeChildren(): Setting up ForStatement child 22 (relative position: 1)
+linkNodeChildren(): Setting condition
+linkNodeChildren(): Child 22 linked successfully
+linkNodeChildren(): Linking child 25 to parent 17
+linkNodeChildren(): Found FOR_STMT parent node!
+linkNodeChildren(): Setting up ForStatement child 25 (relative position: 2)
+linkNodeChildren(): Setting increment
+linkNodeChildren(): Child 25 linked successfully
+linkNodeChildren(): Linking child 27 to parent 17
+linkNodeChildren(): Found FOR_STMT parent node!
+linkNodeChildren(): Setting up ForStatement child 27 (relative position: 3)
+linkNodeChildren(): Setting body
+linkNodeChildren(): Child 27 linked successfully
+linkNodeChildren(): Node 16 has 1 children
+linkNodeChildren(): Linking child 17 to parent 16
+linkNodeChildren(): Child 17 linked successfully
+linkNodeChildren(): Node 13 has 3 children
+linkNodeChildren(): Linking child 14 to parent 13
+linkNodeChildren(): Setting up FuncDefNode child 14
+linkNodeChildren(): Setting return type
+linkNodeChildren(): Child 14 linked successfully
+linkNodeChildren(): Linking child 15 to parent 13
+linkNodeChildren(): Setting up FuncDefNode child 15
+linkNodeChildren(): Setting declarator
+linkNodeChildren(): Child 15 linked successfully
+linkNodeChildren(): Linking child 16 to parent 13
+linkNodeChildren(): Setting up FuncDefNode child 16
+linkNodeChildren(): Setting body
+linkNodeChildren(): Child 16 linked successfully
+linkNodeChildren(): Node 9 has 3 children
+linkNodeChildren(): Linking child 10 to parent 9
+linkNodeChildren(): Setting up FuncDefNode child 10
+linkNodeChildren(): Setting return type
+linkNodeChildren(): Child 10 linked successfully
+linkNodeChildren(): Linking child 11 to parent 9
+linkNodeChildren(): Setting up FuncDefNode child 11
+linkNodeChildren(): Setting declarator
+linkNodeChildren(): Child 11 linked successfully
+linkNodeChildren(): Linking child 12 to parent 9
+linkNodeChildren(): Setting up FuncDefNode child 12
+linkNodeChildren(): Setting body
+linkNodeChildren(): Child 12 linked successfully
+linkNodeChildren(): Node 5 has 3 children
+linkNodeChildren(): Linking child 6 to parent 5
+linkNodeChildren(): Setting up VarDeclNode child 6
+linkNodeChildren(): Setting var type
+linkNodeChildren(): Child 6 linked successfully
+linkNodeChildren(): Linking child 7 to parent 5
+linkNodeChildren(): Setting up VarDeclNode child 7
+linkNodeChildren(): Adding as generic child
+linkNodeChildren(): Child 7 linked successfully
+linkNodeChildren(): Linking child 8 to parent 5
+linkNodeChildren(): Setting up VarDeclNode child 8
+linkNodeChildren(): Found expression initializer (type: 69)
+linkNodeChildren(): No declarations to attach initializer to
+linkNodeChildren(): Child 8 linked successfully
+linkNodeChildren(): Node 1 has 3 children
+linkNodeChildren(): Linking child 2 to parent 1
+linkNodeChildren(): Setting up VarDeclNode child 2
+linkNodeChildren(): Setting var type
+linkNodeChildren(): Child 2 linked successfully
+linkNodeChildren(): Linking child 3 to parent 1
+linkNodeChildren(): Setting up VarDeclNode child 3
+linkNodeChildren(): Adding DeclaratorNode to declarations
+linkNodeChildren(): Child 3 linked successfully
+linkNodeChildren(): Linking child 4 to parent 1
+linkNodeChildren(): Setting up VarDeclNode child 4
+linkNodeChildren(): Found expression initializer (type: 64)
+linkNodeChildren(): Adding initializer as child to DeclaratorNode
+linkNodeChildren(): Child 4 linked successfully
+linkNodeChildren(): Node 0 has 4 children
+linkNodeChildren(): Linking child 1 to parent 0
+linkNodeChildren(): Child 1 linked successfully
+linkNodeChildren(): Linking child 5 to parent 0
+linkNodeChildren(): Child 5 linked successfully
+linkNodeChildren(): Linking child 9 to parent 0
+linkNodeChildren(): Child 9 linked successfully
+linkNodeChildren(): Linking child 13 to parent 0
+linkNodeChildren(): Child 13 linked successfully
+linkNodeChildren(): All children linked
+CompactASTReader::parse(): Children linked successfully
+CompactASTReader::parse(): Returning root node (index 0)
+*** VARDECLNODE VISITOR CALLED! ***
+*** VARDECLNODE VISITOR CALLED! ***
+DEBUG: Setup body found, type=16, about to call accept...
+DEBUG: Setup body accept() completed
+DEBUG: About to execute loop function body...
+DEBUG: Loop body found, type=16, calling accept...
+*** VARDECLNODE VISITOR CALLED! ***
+*** VARDECLNODE VISITOR CALLED! ***
+🔥 IfStatement::accept() CALLED! About to call visitor.visit(*this)
+🔥 IfStatement::accept() COMPLETED visitor.visit(*this)
+🚀🚀🚀 POSTFIX ACCEPT: PostfixExpressionNode::accept called!
+🚀🚀🚀 POSTFIX ACCEPT: About to call visitor.visit(*this)
+🚀🚀🚀 POSTFIX ACCEPT: visitor.visit(*this) completed!
+DEBUG: Loop body accept() completed
+Executed interpreter successfully
+Captured 22 commands
+
+C++ COMMAND STREAM:
+==================
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1757941940959,
+    "component": "interpreter",
+    "version": "7.3.0",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1757941940959,
+    "message": "Program execution started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "threshold",
+    "value": 10.0000000000,
+    "isConst": true,
+    "timestamp": 1757941940961
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1757941940962,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1757941940962,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1757941940963,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1757941940963,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1757941940963
+  },
+  {
+    "type": "FOR_LOOP",
+    "timestamp": 1757941940963,
+    "message": "for loop started",
+    "phase": "start"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisSensor",
+    "value": 0,
+    "timestamp": 1757941940964
+  },
+  {
+    "type": "FOR_LOOP",
+    "timestamp": 1757941940964,
+    "message": "for loop iteration 0",
+    "iteration": 0,
+    "phase": "iteration"
+  },
+  {
+    "type": "ANALOG_READ_REQUEST",
+    "pin": 0,
+    "requestId": "analogRead_1757941940964_0",
+    "timestamp": 1757941940964
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "sensorReading",
+    "value": 42,
+    "timestamp": 1757941940964
+  },
+  {
+    "type": "IF_STATEMENT",
+    "condition": true,
+    "result": true,
+    "branch": "then",
+    "timestamp": 1757941940965
+  },
+  {
+    "type": "ERROR",
+    "timestamp": 1757941940965,
+    "message": "Invalid array access: missing array or index",
+    "errorType": "RuntimeError"
+  },
+  {
+    "type": "error",
+    "timestamp": 1757941940965,
+    "message": "Invalid array access: missing array or index"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "tone",
+    "message": "tone(8, 0, 20)",
+    "timestamp": 1757941940965,
+    "arguments": [
+      8,
+      0,
+      20
+    ],
+    "duration": 20,
+    "frequency": 0,
+    "pin": 8
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "timestamp": 1757941940966,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "phase": "end"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1757941940967
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1757941940967,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1757941940967,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1757941940967,
+    "message": "Program execution stopped"
+  }
+]

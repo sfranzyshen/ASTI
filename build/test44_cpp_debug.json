@@ -10,9 +10,11 @@
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
+    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+  }, {
     "type": "VAR_SET", "variable": "thisLed", "value": 0, "timestamp": 0
   }, {
-    "type": "LOOP_START", "timestamp": 0, "message": "for loop started"
+    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Invalid array access: missing array or index", "errorType": "RuntimeError"
   }, {
@@ -20,9 +22,7 @@
   }, {
     "type": "PIN_MODE", "pin": 0, "mode": 1, "timestamp": 0
   }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 0 iterations (max: 0)", "iterations": 0, "limitReached": true
-  }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+    "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {
@@ -34,17 +34,15 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorReading", "value": 975, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorReading", "value": 350, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "map", "message": "map()", "timestamp": 0, "arguments": [
-      "975", "0", "1023", "0", "10"
-    ]
+    "type": "VAR_SET", "variable": "ledLevel", "value": 3, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "ledLevel", "value": 9, "timestamp": 0
+    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
   }, {
     "type": "VAR_SET", "variable": "thisLed", "value": 0, "timestamp": 0
   }, {
-    "type": "LOOP_START", "timestamp": 0, "message": "for loop started"
+    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
@@ -54,9 +52,7 @@
   }, {
     "type": "DIGITAL_WRITE", "pin": 0, "value": 1, "timestamp": 0
   }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 0 iterations (max: 0)", "iterations": 0, "limitReached": true
-  }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+    "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

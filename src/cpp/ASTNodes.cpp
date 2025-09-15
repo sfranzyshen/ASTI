@@ -155,7 +155,9 @@ void EmptyStatement::accept(ASTVisitor& visitor) {
 }
 
 void AssignmentNode::accept(ASTVisitor& visitor) {
+    std::cerr << "🔵 ASSIGNMENT ACCEPT: AssignmentNode::accept called!" << std::endl;
     visitor.visit(*this);
+    std::cerr << "🔵 ASSIGNMENT ACCEPT: visitor.visit(*this) completed!" << std::endl;
 }
 
 void CharLiteralNode::accept(ASTVisitor& visitor) {
@@ -163,7 +165,12 @@ void CharLiteralNode::accept(ASTVisitor& visitor) {
 }
 
 void PostfixExpressionNode::accept(ASTVisitor& visitor) {
+    std::cerr << "🚀🚀🚀 POSTFIX ACCEPT: PostfixExpressionNode::accept called!" << std::endl;
+    std::cout.flush();
+    std::cerr.flush();
+    std::cerr << "🚀🚀🚀 POSTFIX ACCEPT: About to call visitor.visit(*this)" << std::endl;
     visitor.visit(*this);
+    std::cerr << "🚀🚀🚀 POSTFIX ACCEPT: visitor.visit(*this) completed!" << std::endl;
 }
 
 void SwitchStatement::accept(ASTVisitor& visitor) {

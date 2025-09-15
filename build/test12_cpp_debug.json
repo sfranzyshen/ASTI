@@ -6,9 +6,11 @@
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
+    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+  }, {
     "type": "VAR_SET", "variable": "thisNote", "value": 0, "timestamp": 0
   }, {
-    "type": "LOOP_START", "timestamp": 0, "message": "for loop started"
+    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Invalid array access: missing array or index", "errorType": "RuntimeError"
   }, {
@@ -24,10 +26,6 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Invalid array access: missing array or index"
   }, {
-    "type": "FUNCTION_CALL", "function": "tone", "message": "tone()", "timestamp": 0, "arguments": [
-      "8", "undefined", "undefined"
-    ]
-  }, {
     "type": "FUNCTION_CALL", "function": "tone", "message": "tone(8, 0, 0)", "timestamp": 0, "arguments": [
       8, 0, 0
     ], "duration": 0, "frequency": 0, "pin": 8
@@ -36,15 +34,11 @@
   }, {
     "type": "DELAY", "duration": 0, "actualDelay": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "noTone", "message": "noTone()", "timestamp": 0, "arguments": ["0"]
-  }, {
     "type": "FUNCTION_CALL", "function": "noTone", "message": "noTone(8)", "timestamp": 0, "arguments": [
       8
     ], "pin": 8
   }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 0 iterations (max: 0)", "iterations": 0, "limitReached": true
-  }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+    "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {

@@ -34,31 +34,15 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "buttonState", "value": 1, "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "buttonPushCounter", "value": 1, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"on\""
-    ], "data": "on", "timestamp": 0, "message": "Serial.println(\"on\")"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
-      "\"number of button pushes: \""
-    ], "data": "number of button pushes: ", "timestamp": 0, "message": "Serial.print(\"number of button pushes: \")"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
-  }, {
-    "type": "DELAY", "duration": 50, "actualDelay": 50, "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "lastButtonState", "value": 1, "timestamp": 0
+    "type": "VAR_SET", "variable": "buttonState", "value": 0, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
-    "type": "DIGITAL_WRITE", "pin": 13, "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "lastButtonState", "value": 0, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "DIGITAL_WRITE", "pin": 13, "value": 1, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

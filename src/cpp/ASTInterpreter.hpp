@@ -765,6 +765,7 @@ private:
     
     void initializeInterpreter();
     void executeProgram();
+    void executeGlobalVariables();
     void executeSetup();
     void executeLoop();
     void executeFunctions();
@@ -781,6 +782,11 @@ private:
     CommandValue executeUserFunction(const std::string& name, const arduino_ast::FuncDefNode* funcDef, const std::vector<CommandValue>& args);
     CommandValue handlePinOperation(const std::string& function, const std::vector<CommandValue>& args);
     CommandValue handleTimingOperation(const std::string& function, const std::vector<CommandValue>& args);
+
+    // Deterministic mock value generation for cross-platform consistency
+    int32_t getDeterministicDigitalReadValue(int32_t pin);
+    int32_t getDeterministicAnalogReadValue(int32_t pin);
+    uint32_t getDeterministicMillisValue();
     CommandValue handleSerialOperation(const std::string& function, const std::vector<CommandValue>& args);
     CommandValue handleMultipleSerialOperation(const std::string& portName, const std::string& methodName, const std::vector<CommandValue>& args);
     

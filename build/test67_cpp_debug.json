@@ -4,13 +4,13 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "myServo", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "myServo", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "potPin", "value": 36, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "potVal", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "potVal", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "angle", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "angle", "value": null, "timestamp": 0
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
@@ -34,19 +34,15 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "potVal", "value": 975, "timestamp": 0
+    "type": "VAR_SET", "variable": "potVal", "value": 350, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(potVal: )", "timestamp": 0, "arguments": [
       "potVal: "
     ], "data": "potVal: ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(975)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(350)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
   }, {
-    "type": "FUNCTION_CALL", "function": "map", "message": "map()", "timestamp": 0, "arguments": [
-      "975", "0", "1023", "0", "179"
-    ]
-  }, {
-    "type": "VAR_SET", "variable": "angle", "value": 170, "timestamp": 0
+    "type": "VAR_SET", "variable": "angle", "value": 61, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(, angle: )", "timestamp": 0, "arguments": [
       ", angle: "
