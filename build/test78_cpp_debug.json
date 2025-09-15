@@ -10,6 +10,10 @@
   }, {
     "type": "VAR_SET", "variable": "here", "value": null, "timestamp": 0
   }, {
+    "type": "VAR_SET", "variable": "notes", "value": [
+      null, null, null
+    ], "timestamp": 0
+  }, {
     "type": "VAR_SET", "variable": "param", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "hbval", "value": 128, "timestamp": 0

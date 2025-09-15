@@ -4,17 +4,29 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
+    "type": "VAR_SET", "variable": "notes", "value": [
+      null, null, null
+    ], "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "notes", "value": [
+      null, null, null
+    ], "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "notes", "value": [
+      null, null, null
+    ], "timestamp": 0
+  }, {
     "type": "VAR_SET", "variable": "x", "value": 5, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "y", "value": 5, "timestamp": 0
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "thisPin", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Invalid array access: missing array or index", "errorType": "RuntimeError"
   }, {
@@ -36,17 +48,17 @@
   }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "x", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "y", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Invalid array access in assignment", "errorType": "RuntimeError"
   }, {
@@ -84,11 +96,11 @@
   }, {
     "type": "FUNCTION_CALL", "function": "refreshScreen", "message": "refreshScreen()", "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "thisRow", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Invalid array access: missing array or index", "errorType": "RuntimeError"
   }, {
@@ -96,11 +108,11 @@
   }, {
     "type": "DIGITAL_WRITE", "pin": 0, "value": 1, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "thisCol", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "VAR_SET", "variable": "thisPixel", "value": null, "timestamp": 0
   }, {

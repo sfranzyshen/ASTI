@@ -4,6 +4,10 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
+    "type": "VAR_SET", "variable": "notes", "value": [
+      null, null, null
+    ], "timestamp": 0
+  }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.begin", "arguments": [
@@ -32,9 +36,9 @@
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "noTone", "message": "noTone(8)", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "noTone", "arguments": [
       8
-    ], "pin": 8
+    ], "pin": 8, "timestamp": 0, "message": "noTone(8)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

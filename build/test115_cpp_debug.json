@@ -22,11 +22,11 @@
   }, {
     "type": "VAR_SET", "variable": "i", "value": 5, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "f", "value": 2.5000000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "f", "value": 2.5, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "result1", "value": 70, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "result2", "value": 12.5000000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "result2", "value": 12.5, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Result 1: )", "timestamp": 0, "arguments": [
       "Result 1: "

@@ -18,29 +18,29 @@
       9600
     ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop started", "phase": "start"
+    "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Undefined variable: Serial", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Undefined variable: Serial"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop completed", "iterations": 1, "phase": "end"
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
   }, {
     "type": "PIN_MODE", "pin": 2, "mode": 0, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "establishContact", "message": "establishContact()", "timestamp": 0
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop started", "phase": "start"
+    "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
     "type": "SERIAL_REQUEST", "timestamp": 0, "message": "Serial.available()", "requestId": "normalized", "operation": "available"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(65)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop completed", "iterations": 1, "phase": "end"
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {

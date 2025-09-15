@@ -6,6 +6,10 @@
   }, {
     "type": "VAR_SET", "variable": "numReadings", "value": 10, "isConst": true, "timestamp": 0
   }, {
+    "type": "VAR_SET", "variable": "notes", "value": [
+      null, null, null
+    ], "timestamp": 0
+  }, {
     "type": "VAR_SET", "variable": "readIndex", "value": 0, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "total", "value": 0, "timestamp": 0
@@ -20,11 +24,11 @@
       9600
     ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "thisReading", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Invalid array access in assignment", "errorType": "RuntimeError"
   }, {

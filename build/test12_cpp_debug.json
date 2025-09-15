@@ -4,13 +4,21 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
+    "type": "VAR_SET", "variable": "notes", "value": [
+      null, null, null
+    ], "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "notes", "value": [
+      null, null, null
+    ], "timestamp": 0
+  }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "thisNote", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Invalid array access: missing array or index", "errorType": "RuntimeError"
   }, {
@@ -26,17 +34,17 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Invalid array access: missing array or index"
   }, {
-    "type": "FUNCTION_CALL", "function": "tone", "message": "tone(8, 0, 0)", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "tone", "arguments": [
       8, 0, 0
-    ], "duration": 0, "frequency": 0, "pin": 8
+    ], "pin": 8, "frequency": 0, "duration": 0, "timestamp": 0, "message": "tone(8, 0, 0)"
   }, {
     "type": "VAR_SET", "variable": "pauseBetweenNotes", "value": 0, "timestamp": 0
   }, {
     "type": "DELAY", "duration": 0, "actualDelay": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "noTone", "message": "noTone(8)", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "noTone", "arguments": [
       8
-    ], "pin": 8
+    ], "pin": 8, "timestamp": 0, "message": "noTone(8)"
   }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {

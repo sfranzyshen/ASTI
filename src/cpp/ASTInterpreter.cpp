@@ -980,14 +980,14 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             }
 
             // Create default array with null values to match JavaScript behavior
-            std::vector<int32_t> defaultArray = {0, 0, 0};  // JavaScript shows [null, null, null]
+            std::vector<int32_t> defaultArray = {0, 0, 0};  // Will be converted to null in FlexibleCommand
             Variable arrayVar(defaultArray, "int[]", false, false, false, scopeManager_->isGlobalScope());
             scopeManager_->setVariable(varName, arrayVar);
 
-            // Create FlexibleCommand array format manually
+            // Create FlexibleCommand array format manually - will be changed to null in JSON serialization
             std::vector<std::variant<bool, int32_t, double, std::string>> flexArray;
-            for (const auto& elem : defaultArray) {
-                flexArray.push_back(elem);
+            for (size_t i = 0; i < defaultArray.size(); ++i) {
+                flexArray.push_back(-999);  // Special sentinel value to be converted to null in JSON
             }
 
             // Emit VAR_SET command
@@ -1172,7 +1172,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 if (std::holds_alternative<std::monostate>(typedValue)) {
                     debugLog("Array variable " + varName + " has null value - creating fallback array");
                     // Create a default array with 3 elements to match JavaScript behavior
-                    std::vector<int32_t> defaultArray = {0, 0, 0};
+                    std::vector<int32_t> defaultArray = {0, 0, 0};  // Internal storage, will emit null in commands
                     typedValue = defaultArray;
                     needsArrayFallback = true;
 
@@ -1210,16 +1210,16 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
 
             // CROSS-PLATFORM FIX: Always emit VAR_SET for arrays to match JavaScript behavior
             // JavaScript creates arrays even when initializers have undefined constants
-            std::vector<int32_t> defaultArray = {0, 0, 0}; // Default to [0, 0, 0]
+            std::vector<int32_t> defaultArray = {0, 0, 0}; // Will be converted to null in FlexibleCommand
 
             // Store array in scope manager
             Variable arrayVar(defaultArray, "int[]", false, false, false, scopeManager_->isGlobalScope());
             scopeManager_->setVariable(varName, arrayVar);
 
-            // Create FlexibleCommand array format for VAR_SET
+            // Create FlexibleCommand array format for VAR_SET - will be changed to null in JSON serialization
             std::vector<std::variant<bool, int32_t, double, std::string>> flexArray;
-            for (const auto& elem : defaultArray) {
-                flexArray.push_back(elem);
+            for (size_t i = 0; i < defaultArray.size(); ++i) {
+                flexArray.push_back(-999);  // Special sentinel value to be converted to null in JSON
             }
 
             // Emit VAR_SET command

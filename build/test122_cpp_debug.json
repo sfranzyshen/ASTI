@@ -22,7 +22,7 @@
   }, {
     "type": "VAR_SET", "variable": "b", "value": 66, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "c", "value": 3.1400000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "c", "value": 3.14, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Size of int: )", "timestamp": 0, "arguments": [
       "Size of int: "

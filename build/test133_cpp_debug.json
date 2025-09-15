@@ -52,7 +52,7 @@
       "undefined", "50"
     ]
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "i", "value": 0, "timestamp": 0
   }, {
@@ -76,7 +76,7 @@
       "undefined", "50"
     ]
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "i", "value": 0, "timestamp": 0
   }, {
@@ -100,7 +100,7 @@
       "undefined", "50"
     ]
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "i", "value": 0, "timestamp": 0
   }, {
@@ -124,17 +124,17 @@
       "undefined", "50"
     ]
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "a", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "b", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "FUNCTION_CALL", "function": "strip.clear", "message": "strip.clear()", "timestamp": 0
   }, {
@@ -142,7 +142,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: strip.clear"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "c", "value": 0, "timestamp": 0
   }, {
@@ -178,17 +178,17 @@
       "undefined", "50"
     ]
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "a", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "b", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "FUNCTION_CALL", "function": "strip.clear", "message": "strip.clear()", "timestamp": 0
   }, {
@@ -196,7 +196,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: strip.clear"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "c", "value": 0, "timestamp": 0
   }, {
@@ -232,17 +232,17 @@
       "undefined", "50"
     ]
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "a", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "b", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "FUNCTION_CALL", "function": "strip.clear", "message": "strip.clear()", "timestamp": 0
   }, {
@@ -250,7 +250,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: strip.clear"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "c", "value": 0, "timestamp": 0
   }, {
@@ -276,11 +276,11 @@
   }, {
     "type": "FUNCTION_CALL", "function": "rainbow", "message": "rainbow()", "timestamp": 0, "arguments": ["0"]
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "firstPixelHue", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "FUNCTION_CALL", "function": "strip.rainbow", "message": "strip.rainbow()", "timestamp": 0, "arguments": ["0"]
   }, {
@@ -304,17 +304,17 @@
   }, {
     "type": "VAR_SET", "variable": "firstPixelHue", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "a", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "b", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "FUNCTION_CALL", "function": "strip.clear", "message": "strip.clear()", "timestamp": 0
   }, {
@@ -322,7 +322,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: strip.clear"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "c", "value": 0, "timestamp": 0
   }, {

@@ -4,6 +4,10 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
+    "type": "VAR_SET", "variable": "notes", "value": [
+      null, null, null
+    ], "timestamp": 0
+  }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
     "type": "VAR_SET", "variable": "x", "value": null, "timestamp": 0

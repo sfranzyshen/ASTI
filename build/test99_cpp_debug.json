@@ -18,15 +18,15 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "f1", "value": 3.1400000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "f1", "value": 3.14, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "f2", "value": 2, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "i1", "value": 5, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "result1", "value": 6.2800000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "result1", "value": 6.28, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "result2", "value": 4.0700000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "result2", "value": 4.07, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {

@@ -28,11 +28,11 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop started", "phase": "start"
+    "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop completed", "iterations": 0, "phase": "end"
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 0, "timestamp": 0, "message": "while loop completed"
   }, {
     "type": "DELAY", "duration": 1000, "actualDelay": 1000, "timestamp": 0
   }, {
@@ -150,11 +150,11 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.print"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "keystrokes", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "DELAY", "duration": 500, "actualDelay": 500, "timestamp": 0
   }, {
@@ -250,11 +250,11 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.releaseAll"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop started", "phase": "start"
+    "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop completed", "iterations": 1, "phase": "end"
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

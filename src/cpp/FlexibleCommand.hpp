@@ -141,8 +141,8 @@ public:
                 // Serial.println: type, function, arguments, data, timestamp, message
                 jsOrder = {"type", "function", "arguments", "data", "timestamp", "message"};
             } else if (functionName == "tone" || functionName == "noTone") {
-                // tone/noTone: type, function, arguments, pin, timestamp, message
-                jsOrder = {"type", "function", "arguments", "pin", "timestamp", "message"};
+                // tone/noTone: type, function, arguments, pin, frequency, duration, timestamp, message
+                jsOrder = {"type", "function", "arguments", "pin", "frequency", "duration", "timestamp", "message"};
             } else {
                 // Other FUNCTION_CALL: type, function, message, iteration, completed, timestamp
                 jsOrder = {"type", "function", "message", "iteration", "completed", "timestamp"};
@@ -168,6 +168,12 @@ public:
         } else if (cmdType == "ANALOG_WRITE") {
             // ANALOG_WRITE: type, pin, value, timestamp
             jsOrder = {"type", "pin", "value", "timestamp"};
+        } else if (cmdType == "FOR_LOOP") {
+            // FOR_LOOP: type, phase, iteration, timestamp, message (JavaScript field order)
+            jsOrder = {"type", "phase", "iteration", "timestamp", "message"};
+        } else if (cmdType == "WHILE_LOOP") {
+            // WHILE_LOOP: type, phase, iterations, timestamp, message (JavaScript field order)
+            jsOrder = {"type", "phase", "iterations", "timestamp", "message"};
         } else if (cmdType == "IF_STATEMENT") {
             // IF_STATEMENT: type, condition, result, branch, timestamp
             jsOrder = {"type", "condition", "result", "branch", "timestamp"};
@@ -204,6 +210,22 @@ public:
 
 private:
     /**
+     * Format double to remove trailing zeros for JavaScript compatibility
+     */
+    std::string formatDouble(double value) const {
+        std::ostringstream temp;
+        temp << std::fixed << std::setprecision(10) << value;
+        std::string result = temp.str();
+
+        // Remove trailing zeros after decimal point
+        if (result.find('.') != std::string::npos) {
+            result.erase(result.find_last_not_of('0') + 1, std::string::npos);
+            result.erase(result.find_last_not_of('.') + 1, std::string::npos);
+        }
+        return result;
+    }
+
+    /**
      * Serialize a CommandValue to JSON
      */
     void serializeValue(std::ostringstream& oss, const FlexibleCommandValue& value) const {
@@ -218,7 +240,7 @@ private:
             } else if constexpr (std::is_same_v<T, int64_t>) {
                 oss << arg;
             } else if constexpr (std::is_same_v<T, double>) {
-                oss << std::fixed << std::setprecision(10) << arg;
+                oss << this->formatDouble(arg);
             } else if constexpr (std::is_same_v<T, std::string>) {
                 oss << "\"" << this->escapeString(arg) << "\"";
             } else if constexpr (std::is_same_v<T, StringObject>) {
@@ -244,9 +266,13 @@ private:
             if constexpr (std::is_same_v<ET, bool>) {
                 oss << (element ? "true" : "false");
             } else if constexpr (std::is_same_v<ET, int32_t>) {
-                oss << element;
+                if (element == -999) {
+                    oss << "null";  // Convert sentinel value to null for JavaScript compatibility
+                } else {
+                    oss << element;
+                }
             } else if constexpr (std::is_same_v<ET, double>) {
-                oss << std::fixed << std::setprecision(10) << element;
+                oss << this->formatDouble(element);
             } else if constexpr (std::is_same_v<ET, std::string>) {
                 oss << "\"" << this->escapeString(element) << "\"";
             }

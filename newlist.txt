@@ -1,0 +1,119 @@
+Test Analysis Results
+===================
+
+Failed Tests with Real Problems:
+
+8 - C++ has additional IF_STATEMENT and VAR_SET execution not in JS
+11 - C++ has runtime error "Invalid array access" and different tone function arguments
+12 - Different variable names (notes vs melody), array content, and C++ has multiple runtime errors
+15 - A0 pin mapping difference (36 vs 14) and different Serial.print arguments format
+16 - A0 pin mapping difference (36 vs 14)
+17 - Major execution flow difference - C++ executes full loop, JS stops early
+18 - A0 pin mapping difference (36 vs 14)
+19 - Major execution flow difference - C++ executes additional loop content, JS stops early
+20 - Different variable names (notes vs readings), A0 pin mapping, and C++ has multiple runtime errors
+21 - C++ shows "Undefined variable: Serial" error and different Serial function arguments format
+22 - Different Serial.available() call format (SERIAL_REQUEST vs FUNCTION_CALL)
+24 - Different noteOn function arguments format
+50 - C++ shows "Undefined variable: Serial" error
+25 - Different Serial request format and major execution flow difference
+26 - Different Serial.available() call format (SERIAL_REQUEST vs FUNCTION_CALL)
+27 - Different Serial.available() call format and minor message difference
+28 - C++ shows "Undefined variable: Serial" error and completely different execution flow
+29 - C++ shows "Undefined variable: Serial" error and different execution flow
+30 - Different string representation format, C++ runtime error for inputString.reserve, and different execution flow
+31 - Different Serial request format and execution flow difference
+32 - Multiple pin mapping differences (A0->14 vs 36, A1->15 vs 39, A2->16 vs 34) and Serial.print format differences
+33 - Different variable names (notes vs ledPins), C++ has multiple runtime errors, and major execution flow difference
+34 - Major execution flow difference - C++ executes full loop with multiple iterations, JS stops early
+35 - A0 pin mapping difference (36 vs 14)
+36 - A0 pin mapping difference (36 vs 14) and major execution flow difference
+37 - Different analogRead values causing different switch case execution
+38 - Major execution flow difference - C++ executes full loop with Serial operations, JS stops after setup
+39 - Multiple analog pin mapping differences (A3->17 vs 35, A2->16 vs 34, A1->15 vs 39) and Serial.print format differences
+40 - A0 pin mapping difference (36 vs 14) and different analogRead values causing different execution flow
+41 - Different pulseIn call format (PULSE_IN_REQUEST vs FUNCTION_CALL) and Serial.print format differences
+42 - Field ordering differences, different pulseIn format, C++ runtime errors for microsecondsToInches/microsecondsToCentimeters functions
+43 - Completely different variable names and structures (notes vs row/col/pixels arrays), C++ has multiple runtime errors
+44 - A0 pin mapping difference (36 vs 14), different variable names (notes vs ledPins), C++ has runtime errors
+45 - C++ shows "Undefined variable: Serial" error, different Serial request format, and execution flow differences
+46 - C++ shows "Undefined variable: Serial" error, different string representation format, and major string concatenation differences
+47 - C++ shows "Undefined variable: Serial" error, different string representation format, and major string operations differences
+48 - C++ shows "Undefined variable: Serial" error, C++ runtime errors for toUpperCase/toLowerCase functions
+49 - C++ shows "Undefined variable: Serial" error, C++ runtime errors for charAt/setCharAt functions
+50 - C++ shows "Undefined variable: Serial" error, C++ runtime errors for String constructor and compareTo functions
+51 - C++ shows "Undefined variable: Serial" error, C++ runtime errors for String constructor functions
+52 - C++ shows "Undefined variable: Serial" error, different Serial.available() call format (SERIAL_REQUEST vs FUNCTION_CALL)
+53 - C++ shows "Undefined variable: Serial" error, C++ runtime errors for string.trim() function
+54 - C++ shows "Undefined variable: Serial" error, C++ runtime errors for string.replace() function
+55 - C++ shows "Undefined variable: Serial" error, C++ runtime errors for string.startsWith() and endsWith() functions
+56 - C++ shows "Undefined variable: Serial" error, C++ runtime errors for string.substring() function
+57 - C++ shows "Undefined variable: Serial" error, different Serial.available() call format (SERIAL_REQUEST vs FUNCTION_CALL)
+58 - C++ runtime errors for Keyboard.begin() function and different execution flow
+59 - C++ runtime errors for Keyboard.begin() function
+60 - C++ runtime errors for Keyboard functions and undefined KEY_LEFT_GUI, KEY_BACKSPACE variables
+61 - C++ runtime errors for Mouse.begin() and Keyboard.begin() functions, different Serial.available() call format
+62 - C++ runtime errors for Mouse functions and undefined MOUSE_LEFT variable
+63 - A0/A1 pin mapping differences (36/39 vs 14/15), C++ runtime errors for Mouse functions and user-defined readAxis function
+64 - Mock data difference: digitalRead value (1 vs 0)
+65 - A0 pin mapping difference (36 vs 14) and major execution flow difference - C++ executes full loop with multiple iterations
+66 - Multiple analog pin mapping differences (A0->14 vs 36, A1->15 vs 39, A2->16 vs 34) and Serial.print format differences
+67 - A0 pin mapping difference (36 vs 14), C++ runtime errors for Servo library functions, different object instantiation
+68 - Mock data difference: different pitch values (2648 vs 3618)
+69 - Mock data difference: different keyVal values (350 vs 357) and array initialization
+70 - Major execution flow difference - C++ executes full loop with multiple operations, JS stops after setup
+71 - Mock data difference: digitalRead value (1 vs 0)
+72 - A0 pin mapping difference (36 vs 14) and mock data difference: motorSpeed (87.5 vs 229.25) and motorEnabled (true vs false)
+73 - C++ runtime errors for LiquidCrystal library functions, different object instantiation
+74 - A0 pin mapping difference (36 vs 14), C++ runtime errors for Servo library functions, different object instantiation, major execution flow difference
+75 - C++ runtime errors for CapacitiveSensor library functions, different object instantiation
+76 - Mock data difference: Serial.write argument values (87 vs 150.25)
+78 - Completely different variable names and structures (notes vs buff/param arrays), major execution flow difference - C++ executes loop, JS executes do-while
+79
+81 - Major execution flow difference - C++ executes full loop with multiple operations, JS stops after setup
+85
+86
+91 - C++ runtime error "Address-of operator requires variable name" and different pointer representation
+92 - Different variable assignment format for function pointers
+93 - Major execution flow difference - C++ executes partial loop, JS executes full do-while with Serial output
+94 - Different string representation format
+95 - Serial.print format differences
+96 - C++ runtime error "Unknown function: calculate" and Serial.print format differences
+97 - Serial.print format differences and major execution flow difference
+98 - C++ runtime errors for bitwise operators (&, |, ^, <<) and Serial.print format differences
+99 - Different string representation format and Serial.print format differences
+100 - Serial.print format differences
+101 - Different string representation format and major execution flow difference - C++ executes full loop with for loop, JS stops after while
+102 - Different calculation results and Serial.print format differences
+103 - Major execution flow difference - C++ stops after setup, JS executes switch statement
+104 - C++ runtime error "Undefined variable: PI" and Serial.print format differences
+105 - Completely different variable names and array content (notes vs arr/matrix), Serial.print format differences
+106 - C++ runtime errors for function pointer operations and undefined variables, Serial.print format differences
+107 - C++ runtime errors for increment/decrement operators and Serial.print format differences
+108 - Serial.print format differences and major execution flow difference
+109 - Major execution flow difference - C++ stops after loop, JS executes do-while with Serial output and user function
+110 - C++ runtime errors for struct operations ("Undefined variable: p1", "Object variable 'p1' not found") and Serial.print format differences
+111 - Serial.print format differences
+112 - Major execution flow difference - C++ executes full loop with for loop and IF_STATEMENT, JS stops after while
+113 - Completely different variable names (notes vs arr), C++ runtime errors for pointer operations and Serial.print format differences
+114 - Completely different variable names (notes vs numbers), C++ runtime errors for array access and struct access operators, Serial.print format differences
+115 - Serial.print format differences
+116 - C++ runtime errors for struct pointer operations ("Address-of operator requires variable name", "Unsupported access operator") and Serial.print format differences
+117 - Different static variable behavior (0 vs 1) and Serial.print format differences
+118 - Serial.print format differences
+119 - C++ runtime error "Unknown function: myFunc" and different string representation format
+120 - Serial.print format differences and major execution flow difference
+121 - Serial.print format differences and major execution flow difference
+122 - C++ returns undefined for sizeof operations and Serial.print format differences
+123 - Different variable assignment and scope behavior, Serial.print format differences, major execution flow difference
+124 - Serial.print format differences and major execution flow difference
+125 - C++ runtime errors for pointer operations ("Address-of operator requires variable name", "Pointer dereference requires pointer variable") and Serial.print format differences
+126 - C++ runtime errors for struct operations ("Object variable 'n1' not found", "Unsupported access operator") and Serial.print format differences
+127 - C++ runtime error "Unknown function: incrementCounter" and Serial.print format differences
+128 - Different integer overflow behavior and Serial.print format differences
+129 - C++ runtime errors for function pointers ("Undefined variable: add", "Unknown function: applyOperation") and Serial.print format differences
+130 - C++ runtime errors for bitfield operations ("Undefined variable: flags", "Object variable 'flags' not found") and Serial.print format differences
+131 - Different extern variable declaration format and Serial.print format differences
+132 - C++ runtime error "Undefined variable: b" and different variable assignment behavior, Serial.print format differences
+133 - C++ runtime errors for Adafruit_NeoPixel library functions, different object instantiation, major execution flow difference
+134 - C++ runtime errors for Adafruit_NeoPixel library functions, different object instantiation, major execution flow difference

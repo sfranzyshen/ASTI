@@ -18,6 +18,10 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
+    "type": "VAR_SET", "variable": "notes", "value": [
+      null, null, null
+    ], "timestamp": 0
+  }, {
     "type": "ERROR", "timestamp": 0, "message": "Undefined variable: arr", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Undefined variable: arr"

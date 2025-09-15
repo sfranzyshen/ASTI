@@ -82,9 +82,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "VAR_SET", "variable": "redValue", "value": 87.5000000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "redValue", "value": 87.5, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "greenValue", "value": 115.2500000000, "timestamp": 0
+    "type": "VAR_SET", "variable": "greenValue", "value": 115.25, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "blueValue", "value": 69, "timestamp": 0
   }, {

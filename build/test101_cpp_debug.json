@@ -30,19 +30,19 @@
   }, {
     "type": "VAR_SET", "variable": "i", "value": 0, "timestamp": 0
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop started", "phase": "start"
+    "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop completed", "iterations": 1, "phase": "end"
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop started", "phase": "start"
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
     "type": "VAR_SET", "variable": "j", "value": 0, "timestamp": 0
   }, {
-    "type": "FOR_LOOP", "timestamp": 0, "message": "for loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(J is: )", "timestamp": 0, "arguments": [
       "J is: "

@@ -10,15 +10,15 @@
       9600
     ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop started", "phase": "start"
+    "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Undefined variable: Serial", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Undefined variable: Serial"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop completed", "iterations": 1, "phase": "end"
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\n\nString Constructors: \""
@@ -140,11 +140,11 @@
       "\"5.698000\""
     ], "data": "\"5.698000\"", "timestamp": 0, "message": "Serial.println(\"5.698000\")"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop started", "phase": "start"
+    "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0, "phase": "iteration"
+    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
   }, {
-    "type": "WHILE_LOOP", "timestamp": 0, "message": "while loop completed", "iterations": 1, "phase": "end"
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {
