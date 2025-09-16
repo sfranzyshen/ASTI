@@ -1778,6 +1778,9 @@ class ASTInterpreter {
             maxLoopIterations: Infinity, // No artificial limit - runs like real Arduino
             ...options
         };
+
+        // Optional MockDataManager for deterministic test data generation
+        this.mockDataManager = options.mockDataManager || null;
         
         // Debug logging function that respects verbose flag
         debugLog = (...args) => {
@@ -7087,7 +7090,10 @@ class ASTInterpreter {
             return 0;
         }
         
-        const requestId = `digitalRead_${Date.now()}_${Math.random()}`;
+        // Use deterministic request ID generation if mockDataManager is available
+        const requestId = this.mockDataManager ?
+            this.mockDataManager.getRequestId('digitalRead') :
+            `digitalRead_${Date.now()}_${Math.random()}`;
         
         // Set state machine context for stepping/pausing compatibility
         this.previousExecutionState = this.state;
@@ -7160,7 +7166,10 @@ class ASTInterpreter {
             return 0;
         }
         
-        const requestId = `analogRead_${Date.now()}_${Math.random()}`;
+        // Use deterministic request ID generation if mockDataManager is available
+        const requestId = this.mockDataManager ?
+            this.mockDataManager.getRequestId('analogRead') :
+            `analogRead_${Date.now()}_${Math.random()}`;
         
         // Set state machine context
         this.previousExecutionState = this.state; // Remember the state before waiting
@@ -7204,15 +7213,18 @@ class ASTInterpreter {
     
     // Arduino timing functions
     async arduinoMillis(node = null) {
-        const requestId = `millis_${Date.now()}_${Math.random()}`;
-        
+        // Use deterministic request ID generation if mockDataManager is available
+        const requestId = this.mockDataManager ?
+            this.mockDataManager.getRequestId('millis') :
+            `millis_${Date.now()}_${Math.random()}`;
+
         // Set state machine context for stepping/pausing compatibility
         this.previousExecutionState = this.state;
         this.state = EXECUTION_STATE.WAITING_FOR_RESPONSE;
         this.waitingForRequestId = requestId;
         this.suspendedNode = node;
         this.suspendedFunction = 'millis';
-        
+
         // Emit request command
         this.emitCommand({
             type: COMMAND_TYPES.MILLIS_REQUEST,
@@ -7231,8 +7243,11 @@ class ASTInterpreter {
     }
     
     async arduinoMicros(node = null) {
-        const requestId = `micros_${Date.now()}_${Math.random()}`;
-        
+        // Use deterministic request ID generation if mockDataManager is available
+        const requestId = this.mockDataManager ?
+            this.mockDataManager.getRequestId('micros') :
+            `micros_${Date.now()}_${Math.random()}`;
+
         // Emit request command
         this.emitCommand({
             type: COMMAND_TYPES.MICROS_REQUEST,

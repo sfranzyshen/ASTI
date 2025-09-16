@@ -5,7 +5,15 @@
       "Bash(do if [ -f \"test_data/example_$i.meta\" ])",
       "Bash(then echo \"Example $i has constructor-style init:\")",
       "Bash(head:*)",
-      "Bash(build/extract_cpp_commands:*)"
+      "Bash(build/extract_cpp_commands:*)",
+      "Bash(make:*)",
+      "Bash(./validate_cross_platform 6 6)",
+      "Bash(node:*)",
+      "Bash(./validate_cross_platform 0 10)",
+      "Bash(./validate_cross_platform:*)",
+      "Bash(for i in {0..30})",
+      "Bash(do echo \"Testing $i...\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": [],

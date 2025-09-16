@@ -38,11 +38,19 @@
   }, {
     "type": "VAR_SET", "variable": "reading", "value": 0, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "lastDebounceTime", "value": 17807, "timestamp": 0
   }, {
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "buttonState", "value": 0, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

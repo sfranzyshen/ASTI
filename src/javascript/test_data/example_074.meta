@@ -3,7 +3,7 @@ source=unknown
 astSize=4013
 codeSize=3355
 mode=AST_AND_COMMANDS
-commandCount=55
+commandCount=38
 content=// 10.StarterKit_BasicKit p12_KnockLock
 
 // import the library

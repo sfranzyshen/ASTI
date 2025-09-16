@@ -3,7 +3,7 @@ source=unknown
 astSize=3125
 codeSize=2380
 mode=AST_AND_COMMANDS
-commandCount=50
+commandCount=48
 content=// 10.StarterKit_BasicKit p10_Zoetrope
 
 const int controlPin1 = 2;

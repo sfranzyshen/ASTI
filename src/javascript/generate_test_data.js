@@ -53,6 +53,7 @@ const isVerbose = cmdArgs.verbose;
 const { parse, exportCompactAST } = require('../../libs/ArduinoParser/src/ArduinoParser.js');
 const { examplesFiles } = require('../../examples.js');
 const { oldTestFiles } = require('../../old_test.js');
+const MockDataManager = require('./MockDataManager.js');
 const { neopixelFiles } = require('../../neopixel.js');
 
 // =============================================================================
@@ -200,11 +201,15 @@ function generateCommandsOptimized(ast, example) {
         try {
             const { ASTInterpreter } = require('./ASTInterpreter.js');
             
-            const interpreter = new ASTInterpreter(ast, { 
+            // Create deterministic mock data manager for this test
+            const mockData = new MockDataManager();
+
+            const interpreter = new ASTInterpreter(ast, {
                 verbose: false,
                 debug: false,
                 stepDelay: 0,
-                maxLoopIterations: 1  // Reduced from 3 to 1 for faster, consistent execution
+                maxLoopIterations: 1,  // Reduced from 3 to 1 for faster, consistent execution
+                mockDataManager: mockData  // Pass mock data manager to interpreter
             });
             
             const commands = [];
@@ -214,32 +219,32 @@ function generateCommandsOptimized(ast, example) {
                 // Capture command exactly as JavaScript interpreter produces it
                 commands.push(cmd);
                 
-                // CORRECT PATTERN: Handle request-response pattern for external data functions
-                // (Following the exact pattern from interpreter_playground.html)
+                // DETERMINISTIC PATTERN: Handle request-response with reproducible mock data
+                // Using MockDataManager for cross-platform consistency
                 switch (cmd.type) {
                     case 'ANALOG_READ_REQUEST':
-                        const analogValue = Math.floor(Math.random() * 1024); // 0-1023
+                        const analogValue = mockData.getAnalogReadValue(cmd.pin || 0);
                         setTimeout(() => {
                             interpreter.handleResponse(cmd.requestId, analogValue);
-                        }, Math.random() * 10); // Random delay 0-10ms like playground
+                        }, 5); // Fixed 5ms delay for determinism
                         break;
                     case 'DIGITAL_READ_REQUEST':
-                        const digitalValue = Math.random() > 0.5 ? 1 : 0; // HIGH or LOW
+                        const digitalValue = mockData.getDigitalReadValue(cmd.pin || 0);
                         setTimeout(() => {
                             interpreter.handleResponse(cmd.requestId, digitalValue);
-                        }, Math.random() * 10);
+                        }, 5); // Fixed 5ms delay for determinism
                         break;
                     case 'MILLIS_REQUEST':
-                        const millisValue = Date.now() % 100000; // Realistic millis
+                        const millisValue = mockData.getMillisValue();
                         setTimeout(() => {
                             interpreter.handleResponse(cmd.requestId, millisValue);
-                        }, Math.random() * 10);
+                        }, 5); // Fixed 5ms delay for determinism
                         break;
                     case 'MICROS_REQUEST':
-                        const microsValue = Date.now() * 1000 % 1000000; // Realistic micros
+                        const microsValue = mockData.getMicrosValue();
                         setTimeout(() => {
                             interpreter.handleResponse(cmd.requestId, microsValue);
-                        }, Math.random() * 10);
+                        }, 5); // Fixed 5ms delay for determinism
                         break;
                 }
                 

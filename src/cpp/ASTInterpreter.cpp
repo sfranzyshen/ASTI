@@ -3542,6 +3542,18 @@ CommandValue ASTInterpreter::handleTimingOperation(const std::string& function, 
         return std::monostate{};
         
     } else if (function == "micros") {
+        // TEST MODE: Synchronous response for JavaScript compatibility
+        if (options_.syncMode) {
+            // Emit the request command for consistency with JavaScript
+            auto cmd = FlexibleCommandFactory::createMicrosRequest();
+            emitCommand(std::move(cmd));
+
+            // Return deterministic mock response for cross-platform consistency
+            uint32_t mockValue = getDeterministicMicrosValue();
+            debugLog("HandleTimingOperation: micros syncMode, returning static value: " + std::to_string(mockValue));
+            return static_cast<int32_t>(mockValue);
+        }
+
         // CONTINUATION PATTERN: Check if we're returning a cached response
         if (state_ == ExecutionState::RUNNING && lastExpressionResult_.index() != 0) {
             // We have a cached response from the continuation system
@@ -3550,10 +3562,10 @@ CommandValue ASTInterpreter::handleTimingOperation(const std::string& function, 
             debugLog("HandleTimingOperation: Returning cached micros result: " + commandValueToString(result));
             return result;
         }
-        
+
         // First call - initiate the request using continuation system
         requestMicros();
-        
+
         // Return placeholder value - execution will be suspended
         debugLog("HandleTimingOperation: micros request initiated, suspending execution");
         return std::monostate{};
@@ -5714,9 +5726,6 @@ void ASTInterpreter::enterSafeMode(const std::string& reason) {
 
 int32_t ASTInterpreter::getDeterministicDigitalReadValue(int32_t pin) {
     // Return consistent values based on pin number for cross-platform determinism
-    // Reverse-engineered to match JavaScript platform behavior
-    // Pattern observed: pin 2 -> 1 (need to match JS exactly)
-
     // Use odd/even pattern to match JavaScript behavior exactly
     return (pin % 2) == 1 ? 1 : 0;  // Odd pins = 1, even pins = 0
 }
@@ -5728,9 +5737,29 @@ int32_t ASTInterpreter::getDeterministicAnalogReadValue(int32_t pin) {
 }
 
 uint32_t ASTInterpreter::getDeterministicMillisValue() {
-    // Return predictable millis value for deterministic testing
-    // Static value to match JavaScript platform behavior
-    return 17807;  // Restored to match test 6 baseline value
+    // Incremental millis value matching JavaScript MockDataManager behavior
+    // Start at 17807, increment by 100ms per call for time progression
+    static uint32_t millisCounter = 17807;
+    static uint32_t callCount = 0;
+
+    uint32_t currentValue = millisCounter;
+    callCount++;
+    millisCounter += 100;  // Increment by 100ms per call to match JavaScript
+
+    return currentValue;
+}
+
+uint32_t ASTInterpreter::getDeterministicMicrosValue() {
+    // Incremental micros value matching JavaScript MockDataManager behavior
+    // Start at 17807000, increment by 100000µs (100ms) per call, synchronized with millis
+    static uint32_t microsCounter = 17807000;
+    static uint32_t callCount = 0;
+
+    uint32_t currentValue = microsCounter;
+    callCount++;
+    microsCounter += 100000;  // Increment by 100000µs (100ms) per call to match JavaScript
+
+    return currentValue;
 }
 
 } // namespace arduino_interpreter

@@ -1,0 +1,87 @@
+{
+  "testNum": 8,
+  "exactMatch": false,
+  "differences": [
+    {
+      "lineNum": 47,
+      "type": "functional",
+      "cppLine": "    \"type\": \"IF_STATEMENT\", \"condition\": true, \"result\": true, \"branch\": \"then\", \"timestamp\": 0",
+      "jsLine": "    \"type\": \"IF_STATEMENT\", \"condition\": false, \"result\": false, \"branch\": \"else\", \"timestamp\": 0"
+    },
+    {
+      "lineNum": 49,
+      "type": "functional",
+      "cppLine": "    \"type\": \"VAR_SET\", \"variable\": \"buttonState\", \"value\": 0, \"timestamp\": 0",
+      "jsLine": "    \"type\": \"DIGITAL_WRITE\", \"pin\": 13, \"value\": 1, \"timestamp\": 0"
+    },
+    {
+      "lineNum": 51,
+      "type": "functional",
+      "cppLine": "    \"type\": \"IF_STATEMENT\", \"condition\": false, \"result\": false, \"branch\": \"else\", \"timestamp\": 0",
+      "jsLine": "    \"type\": \"VAR_SET\", \"variable\": \"lastButtonState\", \"value\": 0, \"timestamp\": 0"
+    },
+    {
+      "lineNum": 53,
+      "type": "functional",
+      "cppLine": "    \"type\": \"DIGITAL_WRITE\", \"pin\": 13, \"value\": 1, \"timestamp\": 0",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"loop\", \"message\": \"Completed loop() iteration 1\", \"iterati"
+    },
+    {
+      "lineNum": 55,
+      "type": "functional",
+      "cppLine": "    \"type\": \"VAR_SET\", \"variable\": \"lastButtonState\", \"value\": 0, \"timestamp\": 0",
+      "jsLine": "    \"type\": \"LOOP_END\", \"timestamp\": 0, \"message\": \"Loop limit reached: completed 1 iterations (max:"
+    },
+    {
+      "lineNum": 57,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"loop\", \"message\": \"Completed loop() iteration 1\", \"iterati",
+      "jsLine": "    \"type\": \"PROGRAM_END\", \"timestamp\": 0, \"message\": \"Program completed after 1 loop iterations (li"
+    },
+    {
+      "lineNum": 59,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_END\", \"timestamp\": 0, \"message\": \"Loop limit reached: completed 1 iterations (max:",
+      "jsLine": "    \"type\": \"PROGRAM_END\", \"timestamp\": 0, \"message\": \"Program execution stopped\""
+    },
+    {
+      "lineNum": 60,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": "  }"
+    },
+    {
+      "lineNum": 61,
+      "type": "functional",
+      "cppLine": "    \"type\": \"PROGRAM_END\", \"timestamp\": 0, \"message\": \"Program completed after 1 loop iterations (li",
+      "jsLine": "]"
+    },
+    {
+      "lineNum": 62,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 63,
+      "type": "functional",
+      "cppLine": "    \"type\": \"PROGRAM_END\", \"timestamp\": 0, \"message\": \"Program execution stopped\"",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 64,
+      "type": "functional",
+      "cppLine": "  }",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 65,
+      "type": "functional",
+      "cppLine": "]",
+      "jsLine": ""
+    }
+  ],
+  "executionIssues": [],
+  "harmlessVariations": [],
+  "severity": "NONE"
+}

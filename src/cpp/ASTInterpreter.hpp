@@ -787,6 +787,7 @@ private:
     int32_t getDeterministicDigitalReadValue(int32_t pin);
     int32_t getDeterministicAnalogReadValue(int32_t pin);
     uint32_t getDeterministicMillisValue();
+    uint32_t getDeterministicMicrosValue();
     CommandValue handleSerialOperation(const std::string& function, const std::vector<CommandValue>& args);
     CommandValue handleMultipleSerialOperation(const std::string& portName, const std::string& methodName, const std::vector<CommandValue>& args);
     

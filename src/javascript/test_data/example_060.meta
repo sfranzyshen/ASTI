@@ -3,7 +3,7 @@ source=unknown
 astSize=3303
 codeSize=1905
 mode=AST_AND_COMMANDS
-commandCount=17
+commandCount=40
 content=// 09.USB Keyboard/KeyboardSerial
 
 #include "Keyboard.h"
