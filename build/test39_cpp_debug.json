@@ -8,11 +8,11 @@
   }, {
     "type": "VAR_SET", "variable": "powerpin", "value": 19, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "xpin", "value": 35, "isConst": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "xpin", "value": 17, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "ypin", "value": 34, "isConst": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "ypin", "value": 16, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "zpin", "value": 39, "isConst": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "zpin", "value": 15, "isConst": true, "timestamp": 0
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
@@ -36,25 +36,25 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "ANALOG_READ_REQUEST", "pin": 35, "requestId": "normalized", "timestamp": 0
+    "type": "ANALOG_READ_REQUEST", "pin": 17, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(313)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t)", "timestamp": 0, "arguments": [
-      "\t"
-    ], "data": "\t", "format": "STRING"
-  }, {
-    "type": "ANALOG_READ_REQUEST", "pin": 34, "requestId": "normalized", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(276)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(671)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t)", "timestamp": 0, "arguments": [
       "\t"
     ], "data": "\t", "format": "STRING"
   }, {
-    "type": "ANALOG_READ_REQUEST", "pin": 39, "requestId": "normalized", "timestamp": 0
+    "type": "ANALOG_READ_REQUEST", "pin": 16, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(461)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(634)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t)", "timestamp": 0, "arguments": [
+      "\t"
+    ], "data": "\t", "format": "STRING"
+  }, {
+    "type": "ANALOG_READ_REQUEST", "pin": 15, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(597)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
   }, {

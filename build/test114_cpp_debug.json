@@ -28,10 +28,6 @@
       "Numbers[1]: "
     ], "data": "Numbers[1]: ", "format": "STRING"
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Invalid array access: missing array or index", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Invalid array access: missing array or index"
-  }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"

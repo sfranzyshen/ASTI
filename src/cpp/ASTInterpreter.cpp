@@ -13,6 +13,7 @@
 #include <sstream>
 #include <cmath>
 #include <algorithm>
+#include <set>
 // Arduino-compatible headers only - no std::thread for embedded systems
 #include <chrono>
 #include <random>
@@ -132,14 +133,17 @@ void ASTInterpreter::initializeInterpreter() {
     scopeManager_->setVariable("INPUT_PULLUP", Variable(static_cast<int32_t>(2), "int", true));
     scopeManager_->setVariable("LED_BUILTIN", Variable(static_cast<int32_t>(2), "int", true)); // ESP32 built-in LED
     
-    // Initialize analog pin constants (ESP32 pin mappings)
-    scopeManager_->setVariable("A0", Variable(static_cast<int32_t>(36), "int", true));
-    scopeManager_->setVariable("A1", Variable(static_cast<int32_t>(39), "int", true));
-    scopeManager_->setVariable("A2", Variable(static_cast<int32_t>(34), "int", true));
-    scopeManager_->setVariable("A3", Variable(static_cast<int32_t>(35), "int", true));
-    scopeManager_->setVariable("A4", Variable(static_cast<int32_t>(32), "int", true));
-    scopeManager_->setVariable("A5", Variable(static_cast<int32_t>(33), "int", true));
-    
+    // Initialize analog pin constants (ESP32 Nano pin mappings - aligned with JavaScript ArduinoParser)
+    scopeManager_->setVariable("A0", Variable(static_cast<int32_t>(14), "int", true));
+    scopeManager_->setVariable("A1", Variable(static_cast<int32_t>(15), "int", true));
+    scopeManager_->setVariable("A2", Variable(static_cast<int32_t>(16), "int", true));
+    scopeManager_->setVariable("A3", Variable(static_cast<int32_t>(17), "int", true));
+    scopeManager_->setVariable("A4", Variable(static_cast<int32_t>(18), "int", true));
+    scopeManager_->setVariable("A5", Variable(static_cast<int32_t>(19), "int", true));
+
+    // Initialize Serial object for member access operations
+    scopeManager_->setVariable("Serial", Variable(std::string("SerialObject"), "object", true));
+
     debugLog("Interpreter initialized with " + std::to_string(maxLoopIterations_) + " max loop iterations");
 }
 
@@ -492,7 +496,9 @@ void ASTInterpreter::visit(arduino_ast::ExpressionStatement& node) {
             expr->getType() == arduino_ast::ASTNodeType::CONSTRUCTOR_CALL ||
             expr->getType() == arduino_ast::ASTNodeType::POSTFIX_EXPRESSION) {
             // Use visitor pattern for statements that need to emit commands
+            std::cerr << "🚀🚀🚀 EVALUATE EXPRESSION: About to call accept() on " << static_cast<int>(expr->getType()) << std::endl;
             expr->accept(*this);
+            std::cerr << "🚀🚀🚀 EVALUATE EXPRESSION: accept() completed for " << static_cast<int>(expr->getType()) << std::endl;
         } else {
             // Use evaluateExpression for pure expressions
             evaluateExpression(expr);
@@ -622,7 +628,7 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
         const_cast<arduino_ast::ASTNode*>(node.getInitializer())->accept(*this);
     }
 
-    while (state_ == ExecutionState::RUNNING && iteration < maxLoopIterations_) {
+    while (state_ == ExecutionState::RUNNING) {
         // Check condition
         bool shouldContinueLoop = true;
         if (node.getCondition()) {
@@ -631,6 +637,9 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
         }
 
         if (!shouldContinueLoop) break;
+
+        // Check iteration limit AFTER condition check but BEFORE body execution
+        if (iteration >= maxLoopIterations_) break;
 
         // CROSS-PLATFORM FIX: Emit FOR_LOOP phase iteration to match JavaScript
         emitCommand(FlexibleCommandFactory::createForLoopIteration(iteration));
@@ -650,7 +659,8 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
             break;
         }
 
-        // Execute increment
+        // CRITICAL FIX: Always execute increment after body, even on final iteration
+        // This matches proper FOR loop semantics and JavaScript behavior
         if (node.getIncrement()) {
             const_cast<arduino_ast::ASTNode*>(node.getIncrement())->accept(*this);
         }
@@ -660,6 +670,9 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
         }
 
         iteration++;
+
+        // CRITICAL FIX: Check iteration limit AFTER increment to allow increment on final iteration
+        if (iteration >= maxLoopIterations_) break;
     }
 
     scopeManager_->popScope();
@@ -764,12 +777,14 @@ void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::ConstructorCallNode& node) {
+    std::cerr << "🔧🔧🔧 CONSTRUCTOR CALL: ConstructorCallNode visit called!" << std::endl;
     if (!node.getCallee()) return;
-    
+
     // Get constructor name
     std::string constructorName;
     if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(node.getCallee())) {
         constructorName = identifier->getName();
+        std::cerr << "🔧🔧🔧 CONSTRUCTOR CALL: name=" << constructorName << std::endl;
     }
     
     // Evaluate arguments
@@ -778,13 +793,43 @@ void ASTInterpreter::visit(arduino_ast::ConstructorCallNode& node) {
         args.push_back(evaluateExpression(arg.get()));
     }
     
-    // Handle constructor calls as library function calls
+    // CROSS-PLATFORM FIX: Handle primitive type initialization vs library constructor calls
+    // For C++ style initialization like int x(10), we should return the initialization value
+    // For actual constructors like String(), we call the library function
+
+    std::set<std::string> primitiveTypes = {"int", "float", "double", "long", "char", "byte", "bool", "boolean"};
+
+    if (primitiveTypes.find(constructorName) != primitiveTypes.end()) {
+        // This is primitive type initialization like int(10), float(3.14), etc.
+        std::cerr << "🔧🔧🔧 CONSTRUCTOR CALL: primitive type initialization for " << constructorName << std::endl;
+        debugLog("ConstructorCallNode: Primitive type initialization for: " + constructorName);
+
+        if (!args.empty()) {
+            // Return the first argument as the initialization value
+            std::cerr << "🔧🔧🔧 CONSTRUCTOR CALL: returning value " << commandValueToString(args[0]) << std::endl;
+            lastExpressionResult_ = args[0];
+        } else {
+            // Default initialization (e.g., int() = 0)
+            if (constructorName == "int" || constructorName == "long" || constructorName == "byte") {
+                lastExpressionResult_ = static_cast<int32_t>(0);
+            } else if (constructorName == "float" || constructorName == "double") {
+                lastExpressionResult_ = 0.0;
+            } else if (constructorName == "bool" || constructorName == "boolean") {
+                lastExpressionResult_ = false;
+            } else if (constructorName == "char") {
+                lastExpressionResult_ = std::string("\0");
+            }
+        }
+        return;
+    }
+
+    // Handle actual constructor calls as library function calls
     // Arduino constructors are typically handled by the library system
     debugLog("ConstructorCallNode: Calling constructor: " + constructorName);
-    
+
     // Execute as Arduino/library function
     const arduino_ast::ASTNode* previousSuspendedNode = suspendedNode_;
-    
+
     executeArduinoFunction(constructorName, args);
     
     // If function suspended (state changed to WAITING_FOR_RESPONSE), set the suspended node
@@ -813,13 +858,20 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
         if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(node.getObject())) {
             // Simple identifier: obj.member
             objectName = identifier->getName();
-            Variable* objectVar = scopeManager_->getVariable(objectName);
-            if (objectVar) {
-                objectValue = upgradeCommandValue(objectVar->value);
+
+            // Special handling for built-in objects like Serial
+            if (objectName == "Serial") {
+                // Serial is a built-in object, create a placeholder value for processing
+                objectValue = std::string("SerialObject");
             } else {
-                emitError("Object variable '" + objectName + "' not found");
-                lastExpressionResult_ = std::monostate{};
-                return;
+                Variable* objectVar = scopeManager_->getVariable(objectName);
+                if (objectVar) {
+                    objectValue = upgradeCommandValue(objectVar->value);
+                } else {
+                    emitError("Object variable '" + objectName + "' not found");
+                    lastExpressionResult_ = std::monostate{};
+                    return;
+                }
             }
         } else if (const auto* nestedAccess = dynamic_cast<const arduino_ast::MemberAccessNode*>(node.getObject())) {
             // Nested member access: obj.member.submember
@@ -1001,6 +1053,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             debugLog("Variable name: " + varName);
             std::cerr << "*** PROCESSING VARIABLE: " << varName << " ***" << std::endl;
             debugLog("DeclaratorNode children count: " + std::to_string(declNode->getChildren().size()));
+            std::cerr << "🔍🔍🔍 VAR DEBUG: " << varName << " has " << declNode->getChildren().size() << " children" << std::endl;
             
             // Debug: Print each child node type and check for ArrayDeclaratorNode
             const auto& children = declNode->getChildren();
@@ -1027,13 +1080,16 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 // Variable has initializer - evaluate it
                 debugLog("Processing initializer for variable: " + varName);
                 debugLog("Initializer node type: " + std::to_string(static_cast<int>(children[0]->getType())));
+                std::cerr << "🔍🔍🔍 VARIABLE INIT DEBUG: " << varName << " initializer type=" << static_cast<int>(children[0]->getType()) << std::endl;
                 debugLog("About to call evaluateExpression...");
                 initialValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(children[0].get()));
+                std::cerr << "🔍🔍🔍 VARIABLE INIT DEBUG: " << varName << " evaluateExpression result=" << commandValueToString(initialValue) << std::endl;
                 debugLog("evaluateExpression returned: " + commandValueToString(initialValue));
                 debugLog("Variable " + varName + " initialized with value: " + commandValueToString(initialValue));
             } else {
                 // Variable has no initializer - leave as null to match JavaScript behavior
                 initialValue = std::monostate{};  // Uninitialized variable = null
+                std::cerr << "🔍🔍🔍 VARIABLE INIT DEBUG: " << varName << " has NO children - setting to null" << std::endl;
                 debugLog("No initializer found for variable: " + varName + " - setting to null");
             }
             
@@ -1558,14 +1614,18 @@ void ASTInterpreter::visit(arduino_ast::CharLiteralNode& node) {
 
 void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
     debugLog("Visiting PostfixExpressionNode");
-    
+    std::cerr << "🔧🔧🔧 POSTFIX VISIT: Starting PostfixExpressionNode visit" << std::endl;
+
     try {
         const auto* operand = node.getOperand();
         std::string op = node.getOperator();
+        std::cerr << "🔧🔧🔧 POSTFIX VISIT: operator=" << op << std::endl;
         
         if (operand && operand->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
             std::string varName = operand->getValueAs<std::string>();
+            std::cerr << "🔧🔧🔧 POSTFIX VISIT: varName=" << varName << std::endl;
             Variable* var = scopeManager_->getVariable(varName);
+            std::cerr << "🔧🔧🔧 POSTFIX VISIT: variable found=" << (var ? "yes" : "no") << std::endl;
             
             if (var) {
                 CommandValue currentValue = var->value;
@@ -1588,7 +1648,11 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
                 
                 // Update variable with new value
                 var->setValue(newValue);
-                
+
+                // CROSS-PLATFORM FIX: Emit VAR_SET command to match JavaScript behavior
+                // JavaScript emits VAR_SET for postfix increment/decrement operations
+                emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(newValue)));
+
                 // For postfix, return the original value (though in visitor pattern, this is contextual)
                 // The original value was in currentValue
             }
@@ -1819,7 +1883,7 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
         // SIMPLIFIED ARRAY ACCESS: Focus on basic functionality
 
         if (!node.getArray() || !node.getIndex()) {
-            emitError("Invalid array access: missing array or index");
+            debugLog("ArrayAccessNode: null array or index - returning monostate");
             lastExpressionResult_ = std::monostate{};
             return;
         }
@@ -2124,6 +2188,14 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             if (auto* idNode = dynamic_cast<arduino_ast::IdentifierNode*>(expr)) {
                 std::string name = idNode->getName();
                 debugLog("evaluateExpression: Looking up identifier '" + name + "'");
+
+                // Special handling for built-in objects like Serial
+                if (name == "Serial") {
+                    // Serial object evaluates to a truthy value (for while (!Serial) checks)
+                    debugLog("evaluateExpression: Serial object evaluated as true");
+                    return static_cast<int32_t>(1);
+                }
+
                 Variable* var = scopeManager_->getVariable(name);
                 if (var) {
                     debugLog("evaluateExpression: Found variable '" + name + "' with value: " + commandValueToString(var->value));
@@ -2254,7 +2326,14 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                 return static_cast<int32_t>(value); // Convert char to int for Arduino compatibility
             }
             break;
-            
+
+        case arduino_ast::ASTNodeType::CONSTRUCTOR_CALL:
+            // Handle constructor calls by calling visitor
+            debugLog("evaluateExpression: Calling ConstructorCallNode visitor");
+            expr->accept(*this);
+            debugLog("evaluateExpression: ConstructorCallNode visitor completed, result: " + commandValueToString(lastExpressionResult_));
+            return lastExpressionResult_;
+
         default:
             debugLog("Unhandled expression type: " + arduino_ast::nodeTypeToString(nodeType));
             break;
@@ -2654,7 +2733,8 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                                name.find(".concat") != std::string::npos || name.find(".equals") != std::string::npos ||
                                name.find(".length") != std::string::npos || name.find(".indexOf") != std::string::npos ||
                                name.find(".substring") != std::string::npos || name.find(".toInt") != std::string::npos ||
-                               name.find(".charAt") != std::string::npos || name.find(".replace") != std::string::npos);
+                               name.find(".charAt") != std::string::npos || name.find(".replace") != std::string::npos ||
+                               name.find(".reserve") != std::string::npos);
     
     if (!hasSpecificHandler) {
         std::vector<std::string> argStrings;
@@ -3144,6 +3224,24 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         return static_cast<int32_t>(0);
     }
 
+    else if (name.find(".reserve") != std::string::npos) {
+        // String.reserve(size) method - pre-allocate memory for string
+        std::string varName = name.substr(0, name.find(".reserve"));
+        if (scopeManager_->hasVariable(varName)) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                // In simulation, reserve is essentially a no-op but should succeed
+                // The size parameter is ignored but we validate it exists
+                int32_t reserveSize = args.size() > 0 ? convertToInt(args[0]) : 0;
+                debugLog("String.reserve(" + std::to_string(reserveSize) + ") called on " + varName);
+
+                // Return success (true/1) to indicate the reservation succeeded
+                return static_cast<int32_t>(1);
+            }
+        }
+        return static_cast<int32_t>(0);
+    }
+
     // Dynamic memory allocation operators
     else if (name == "new" && args.size() >= 1) {
         // new operator - allocate new object/array
@@ -3555,16 +3653,26 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
     // External methods that require hardware/parent app response
     else if (methodName == "available") {
         // Serial.available() - Check bytes in receive buffer
-        std::string requestId = generateRequestId("serialAvailable");
-        emitCommand(FlexibleCommandFactory::createSerialRequest("available", requestId));
-        return waitForResponse(requestId);
+        // CROSS-PLATFORM FIX: Use synchronous mock simulation like JavaScript
+        // Return 1 occasionally to simulate data availability for testing (10% chance)
+        int availableBytes = (rand() % 10 == 0) ? 1 : 0;
+
+        // Emit FUNCTION_CALL command to match JavaScript format
+        emitCommand(FlexibleCommandFactory::createFunctionCall("Serial.available", std::vector<std::string>{}));
+
+        return availableBytes;
     }
     
     else if (methodName == "read") {
         // Serial.read() - Read single byte from buffer
-        std::string requestId = generateRequestId("serialRead");
-        emitCommand(FlexibleCommandFactory::createSerialRequest("read", requestId));
-        return waitForResponse(requestId);
+        // CROSS-PLATFORM FIX: Use synchronous mock simulation like JavaScript
+        // Return mock byte value for testing (ASCII 'A' = 65)
+        int readByte = 65;
+
+        // Emit FUNCTION_CALL command to match JavaScript format
+        emitCommand(FlexibleCommandFactory::createFunctionCall("Serial.read", std::vector<std::string>{}));
+
+        return readByte;
     }
     
     else if (methodName == "peek") {

@@ -4,7 +4,7 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "sensorPin", "value": 36, "isConst": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorPin", "value": 14, "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "ledPin", "value": 9, "isConst": true, "timestamp": 0
   }, {

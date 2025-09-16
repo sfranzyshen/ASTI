@@ -36,6 +36,8 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
+    "type": "VAR_SET", "variable": "i", "value": 1, "timestamp": 0
+  }, {
     "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
@@ -49,6 +51,8 @@
     ], "data": "J is: ", "format": "STRING"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+  }, {
+    "type": "VAR_SET", "variable": "j", "value": 1, "timestamp": 0
   }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {

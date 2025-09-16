@@ -14,12 +14,6 @@
       9600
     ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
   }, {
-    "type": "FUNCTION_CALL", "function": "inputString.reserve", "message": "inputString.reserve()", "timestamp": 0, "arguments": ["0"]
-  }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: inputString.reserve", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: inputString.reserve"
-  }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {
     "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"

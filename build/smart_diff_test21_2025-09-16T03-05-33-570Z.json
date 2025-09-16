@@ -1,0 +1,268 @@
+{
+  "testNum": 21,
+  "exactMatch": false,
+  "differences": [
+    {
+      "lineNum": 17,
+      "type": "functional",
+      "cppLine": "    \"type\": \"ERROR\", \"timestamp\": 0, \"message\": \"Undefined variable: Serial\", \"errorType\": \"RuntimeE",
+      "jsLine": "    \"type\": \"WHILE_LOOP\", \"phase\": \"end\", \"iterations\": 0, \"timestamp\": 0, \"message\": \"while loop co"
+    },
+    {
+      "lineNum": 19,
+      "type": "functional",
+      "cppLine": "    \"type\": \"error\", \"timestamp\": 0, \"message\": \"Undefined variable: Serial\"",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.println\", \"arguments\": ["
+    },
+    {
+      "lineNum": 20,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": "      \"\\\"ASCII Table ~ Character Map\\\"\""
+    },
+    {
+      "lineNum": 21,
+      "type": "functional",
+      "cppLine": "    \"type\": \"WHILE_LOOP\", \"phase\": \"iteration\", \"timestamp\": 0, \"message\": \"while loop iteration 0\",",
+      "jsLine": "    ], \"data\": \"ASCII Table ~ Character Map\", \"timestamp\": 0, \"message\": \"Serial.println(\\\"ASCII Tab"
+    },
+    {
+      "lineNum": 23,
+      "type": "functional",
+      "cppLine": "    \"type\": \"WHILE_LOOP\", \"phase\": \"end\", \"iterations\": 1, \"timestamp\": 0, \"message\": \"while loop co",
+      "jsLine": "    \"type\": \"SETUP_END\", \"timestamp\": 0, \"message\": \"Completed setup() function\""
+    },
+    {
+      "lineNum": 25,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.println\", \"arguments\": [",
+      "jsLine": "    \"type\": \"LOOP_START\", \"timestamp\": 0, \"message\": \"Starting loop() execution\""
+    },
+    {
+      "lineNum": 26,
+      "type": "functional",
+      "cppLine": "      \"\\\"ASCII Table ~ Character Map\\\"\"",
+      "jsLine": "  }, {"
+    },
+    {
+      "lineNum": 27,
+      "type": "functional",
+      "cppLine": "    ], \"data\": \"\\\"ASCII Table ~ Character Map\\\"\", \"timestamp\": 0, \"message\": \"Serial.println(\\\"ASCII",
+      "jsLine": "    \"type\": \"LOOP_START\", \"timestamp\": 0, \"message\": \"Starting loop iteration 1\""
+    },
+    {
+      "lineNum": 29,
+      "type": "functional",
+      "cppLine": "    \"type\": \"SETUP_END\", \"timestamp\": 0, \"message\": \"Completed setup() function\"",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"loop\", \"message\": \"Executing loop() iteration 1\", \"iterati"
+    },
+    {
+      "lineNum": 31,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_START\", \"timestamp\": 0, \"message\": \"Starting loop() execution\"",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.write\", \"arguments\": ["
+    },
+    {
+      "lineNum": 32,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": "      33"
+    },
+    {
+      "lineNum": 33,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_START\", \"timestamp\": 0, \"message\": \"Starting loop iteration 1\"",
+      "jsLine": "    ], \"timestamp\": 0, \"message\": \"Serial.write(33)\""
+    },
+    {
+      "lineNum": 35,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"loop\", \"message\": \"Executing loop() iteration 1\", \"iterati",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"arguments\": ["
+    },
+    {
+      "lineNum": 36,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": "      \"\\\", dec: \\\"\""
+    },
+    {
+      "lineNum": 37,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.write\", \"message\": \"Serial.write(33)\", \"timestamp\":",
+      "jsLine": "    ], \"data\": \", dec: \", \"timestamp\": 0, \"message\": \"Serial.print(\\\", dec: \\\")\""
+    },
+    {
+      "lineNum": 38,
+      "type": "functional",
+      "cppLine": "      33",
+      "jsLine": "  }, {"
+    },
+    {
+      "lineNum": 39,
+      "type": "functional",
+      "cppLine": "    ]",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"arguments\": [\"0\"], \"data\": \"0\", \"timestamp"
+    },
+    {
+      "lineNum": 41,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"message\": \"Serial.print(, dec: )\", \"timest",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"arguments\": ["
+    },
+    {
+      "lineNum": 42,
+      "type": "functional",
+      "cppLine": "      \", dec: \"",
+      "jsLine": "      \"\\\", hex: \\\"\""
+    },
+    {
+      "lineNum": 43,
+      "type": "functional",
+      "cppLine": "    ], \"data\": \", dec: \", \"format\": \"STRING\"",
+      "jsLine": "    ], \"data\": \", hex: \", \"timestamp\": 0, \"message\": \"Serial.print(\\\", hex: \\\")\""
+    },
+    {
+      "lineNum": 45,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"message\": \"Serial.print(33)\", \"timestamp\":",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"arguments\": [\"0\"], \"data\": \"0\", \"timestamp"
+    },
+    {
+      "lineNum": 47,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"message\": \"Serial.print(, hex: )\", \"timest",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"arguments\": ["
+    },
+    {
+      "lineNum": 48,
+      "type": "functional",
+      "cppLine": "      \", hex: \"",
+      "jsLine": "      \"\\\", oct: \\\"\""
+    },
+    {
+      "lineNum": 49,
+      "type": "functional",
+      "cppLine": "    ], \"data\": \", hex: \", \"format\": \"STRING\"",
+      "jsLine": "    ], \"data\": \", oct: \", \"timestamp\": 0, \"message\": \"Serial.print(\\\", oct: \\\")\""
+    },
+    {
+      "lineNum": 51,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"message\": \"Serial.print(33)\", \"timestamp\":",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"arguments\": [\"0\"], \"data\": \"0\", \"timestamp"
+    },
+    {
+      "lineNum": 53,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"message\": \"Serial.print(, oct: )\", \"timest",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"arguments\": ["
+    },
+    {
+      "lineNum": 54,
+      "type": "functional",
+      "cppLine": "      \", oct: \"",
+      "jsLine": "      \"\\\", bin: \\\"\""
+    },
+    {
+      "lineNum": 55,
+      "type": "functional",
+      "cppLine": "    ], \"data\": \", oct: \", \"format\": \"STRING\"",
+      "jsLine": "    ], \"data\": \", bin: \", \"timestamp\": 0, \"message\": \"Serial.print(\\\", bin: \\\")\""
+    },
+    {
+      "lineNum": 57,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"message\": \"Serial.print(33)\", \"timestamp\":",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.println\", \"arguments\": [\"0\"], \"data\": \"0\", \"timesta"
+    },
+    {
+      "lineNum": 59,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.print\", \"message\": \"Serial.print(, bin: )\", \"timest",
+      "jsLine": "    \"type\": \"IF_STATEMENT\", \"condition\": false, \"result\": false, \"branch\": \"else\", \"timestamp\": 0"
+    },
+    {
+      "lineNum": 60,
+      "type": "functional",
+      "cppLine": "      \", bin: \"",
+      "jsLine": "  }, {"
+    },
+    {
+      "lineNum": 61,
+      "type": "functional",
+      "cppLine": "    ], \"data\": \", bin: \", \"format\": \"STRING\"",
+      "jsLine": "    \"type\": \"VAR_SET\", \"variable\": \"thisByte\", \"value\": 34, \"timestamp\": 0"
+    },
+    {
+      "lineNum": 63,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.println\", \"arguments\": [\"0\"], \"data\": \"0\", \"timesta",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"loop\", \"message\": \"Completed loop() iteration 1\", \"iterati"
+    },
+    {
+      "lineNum": 65,
+      "type": "functional",
+      "cppLine": "    \"type\": \"IF_STATEMENT\", \"condition\": false, \"result\": false, \"branch\": \"else\", \"timestamp\": 0",
+      "jsLine": "    \"type\": \"LOOP_END\", \"timestamp\": 0, \"message\": \"Loop limit reached: completed 1 iterations (max:"
+    },
+    {
+      "lineNum": 67,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"loop\", \"message\": \"Completed loop() iteration 1\", \"iterati",
+      "jsLine": "    \"type\": \"PROGRAM_END\", \"timestamp\": 0, \"message\": \"Program completed after 1 loop iterations (li"
+    },
+    {
+      "lineNum": 69,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_END\", \"timestamp\": 0, \"message\": \"Loop limit reached: completed 1 iterations (max:",
+      "jsLine": "    \"type\": \"PROGRAM_END\", \"timestamp\": 0, \"message\": \"Program execution stopped\""
+    },
+    {
+      "lineNum": 70,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": "  }"
+    },
+    {
+      "lineNum": 71,
+      "type": "functional",
+      "cppLine": "    \"type\": \"PROGRAM_END\", \"timestamp\": 0, \"message\": \"Program completed after 1 loop iterations (li",
+      "jsLine": "]"
+    },
+    {
+      "lineNum": 72,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 73,
+      "type": "functional",
+      "cppLine": "    \"type\": \"PROGRAM_END\", \"timestamp\": 0, \"message\": \"Program execution stopped\"",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 74,
+      "type": "functional",
+      "cppLine": "  }",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 75,
+      "type": "functional",
+      "cppLine": "]",
+      "jsLine": ""
+    }
+  ],
+  "executionIssues": [
+    {
+      "category": "library_missing",
+      "severity": "CRITICAL",
+      "description": "Missing library functions or variables",
+      "pattern": "/Unknown function|Undefined variable/i"
+    }
+  ],
+  "harmlessVariations": [],
+  "severity": "CRITICAL"
+}

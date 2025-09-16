@@ -21,8 +21,8 @@
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.write", "arguments": [
-      150.25
-    ], "timestamp": 0, "message": "Serial.write(150.25)"
+      17
+    ], "timestamp": 0, "message": "Serial.write(17)"
   }, {
     "type": "DELAY", "duration": 1, "actualDelay": 1, "timestamp": 0
   }, {

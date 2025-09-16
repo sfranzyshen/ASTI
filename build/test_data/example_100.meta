@@ -1,0 +1,25 @@
+name=String_and_Character_Literals.ino
+source=unknown
+astSize=1742
+codeSize=362
+mode=AST_AND_COMMANDS
+commandCount=22
+content=// String and Character Literals
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  char myChar = 'A';
+  char escapedChar = '\n';
+  const char* str1 = "Hello";
+  const char* str2 = " world!";
+
+  Serial.print(str1);
+  Serial.println(str2);
+  Serial.print("My character is: ");
+  Serial.println(myChar);
+
+  Serial.print(myChar);
+  Serial.print(escapedChar);
+}

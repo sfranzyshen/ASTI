@@ -1,0 +1,21 @@
+{
+  "testNum": 6,
+  "exactMatch": false,
+  "differences": [
+    {
+      "lineNum": 29,
+      "type": "functional",
+      "cppLine": "    \"type\": \"VAR_SET\", \"variable\": \"currentMillis\", \"value\": 17807, \"timestamp\": 0",
+      "jsLine": "    \"type\": \"VAR_SET\", \"variable\": \"currentMillis\", \"value\": 70623, \"timestamp\": 0"
+    },
+    {
+      "lineNum": 33,
+      "type": "functional",
+      "cppLine": "    \"type\": \"VAR_SET\", \"variable\": \"previousMillis\", \"value\": 17807, \"timestamp\": 0",
+      "jsLine": "    \"type\": \"VAR_SET\", \"variable\": \"previousMillis\", \"value\": 70623, \"timestamp\": 0"
+    }
+  ],
+  "executionIssues": [],
+  "harmlessVariations": [],
+  "severity": "NONE"
+}

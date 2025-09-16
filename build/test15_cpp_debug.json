@@ -4,7 +4,7 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "analogInPin", "value": 36, "isConst": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "analogInPin", "value": 14, "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "analogOutPin", "value": 9, "isConst": true, "timestamp": 0
   }, {
@@ -30,15 +30,15 @@
   }, {
     "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "outputValue", "value": 87, "timestamp": 0
+    "type": "VAR_SET", "variable": "outputValue", "value": 139, "timestamp": 0
   }, {
-    "type": "ANALOG_WRITE", "pin": 9, "value": 87, "timestamp": 0
+    "type": "ANALOG_WRITE", "pin": 9, "value": 139, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(sensor = )", "timestamp": 0, "arguments": [
       "sensor = "
     ], "data": "sensor = ", "format": "STRING"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(350)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(560)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t output = )", "timestamp": 0, "arguments": [
       "\t output = "

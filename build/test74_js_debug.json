@@ -7,7 +7,7 @@
     "type": "LIBRARY_OBJECT_INSTANTIATION", "library": "Servo", "variableName": "myServo", "constructorArgs": [], "timestamp": 0, "message": "Servo()"
   }, {
     "type": "VAR_SET", "variable": "myServo", "value": {
-      "__type": "ArduinoObject", "className": "Servo", "constructorArgs": [], "objectId": "Servo_1757900066542_q1zie17f5"
+      "__type": "ArduinoObject", "className": "Servo", "constructorArgs": [], "objectId": "Servo_1758031972618_6y1r0pc2v"
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "piezo", "value": 14, "isConst": true, "timestamp": 0
@@ -34,7 +34,7 @@
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1757900066542_q1zie17f5", "variableName": "myServo", "method": "attach", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1758031972618_6y1r0pc2v", "variableName": "myServo", "method": "attach", "args": [
       9
     ], "message": "myServo.attach(9)", "timestamp": 0
   }, {
@@ -52,7 +52,7 @@
   }, {
     "type": "DIGITAL_WRITE", "pin": 4, "value": 1, "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1757900066542_q1zie17f5", "variableName": "myServo", "method": "write", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1758031972618_6y1r0pc2v", "variableName": "myServo", "method": "write", "args": [
       0
     ], "message": "myServo.write(0)", "timestamp": 0
   }, {
@@ -72,53 +72,9 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "switchVal", "value": 1, "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "locked", "value": true, "timestamp": 0
-  }, {
-    "type": "DIGITAL_WRITE", "pin": 4, "value": 0, "timestamp": 0
-  }, {
-    "type": "DIGITAL_WRITE", "pin": 5, "value": 1, "timestamp": 0
-  }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1757900066542_q1zie17f5", "variableName": "myServo", "method": "write", "args": [
-      90
-    ], "message": "myServo.write(90)", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"the box is locked!\""
-    ], "data": "the box is locked!", "timestamp": 0, "message": "Serial.println(\"the box is locked!\")"
-  }, {
-    "type": "DELAY", "duration": 1000, "actualDelay": 1000, "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "knockVal", "value": 555, "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "checkForKnock", "arguments": [
-      555
-    ], "timestamp": 0, "message": "checkForKnock(555)"
+    "type": "VAR_SET", "variable": "switchVal", "value": 0, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
-      "\"Bad knock value \""
-    ], "data": "Bad knock value ", "timestamp": 0, "message": "Serial.print(\"Bad knock value \")"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(3)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\" more knocks to go\""
-    ], "data": " more knocks to go", "timestamp": 0, "message": "Serial.println(\" more knocks to go\")"
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

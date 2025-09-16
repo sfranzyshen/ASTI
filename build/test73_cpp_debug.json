@@ -4,6 +4,14 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
+    "type": "FUNCTION_CALL", "function": "LiquidCrystal", "message": "LiquidCrystal()", "timestamp": 0, "arguments": [
+      "12", "11", "5", "4", "3", "2"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: LiquidCrystal", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: LiquidCrystal"
+  }, {
     "type": "VAR_SET", "variable": "lcd", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "switchPin", "value": 6, "isConst": true, "timestamp": 0

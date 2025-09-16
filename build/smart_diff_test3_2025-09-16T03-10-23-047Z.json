@@ -1,0 +1,15 @@
+{
+  "testNum": 3,
+  "exactMatch": false,
+  "differences": [
+    {
+      "lineNum": 27,
+      "type": "functional",
+      "cppLine": "    \"type\": \"VAR_SET\", \"variable\": \"buttonState\", \"value\": 1, \"timestamp\": 0",
+      "jsLine": "    \"type\": \"VAR_SET\", \"variable\": \"buttonState\", \"value\": 0, \"timestamp\": 0"
+    }
+  ],
+  "executionIssues": [],
+  "harmlessVariations": [],
+  "severity": "NONE"
+}

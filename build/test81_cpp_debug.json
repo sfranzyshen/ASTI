@@ -36,6 +36,8 @@
   }, {
     "type": "DELAY", "duration": 50, "actualDelay": 50, "timestamp": 0
   }, {
+    "type": "VAR_SET", "variable": "i", "value": 1, "timestamp": 0
+  }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0

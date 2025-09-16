@@ -3,7 +3,7 @@ source=unknown
 astSize=2289
 codeSize=1441
 mode=AST_AND_COMMANDS
-commandCount=25
+commandCount=31
 content=// 02.Digital StateChangeDetection.ino
 
 // this constant won't change:

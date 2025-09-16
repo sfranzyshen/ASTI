@@ -8,9 +8,9 @@
   }, {
     "type": "VAR_SET", "variable": "mouseButton", "value": 3, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "xAxis", "value": 36, "isConst": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "xAxis", "value": 14, "isConst": true, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "yAxis", "value": 39, "isConst": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "yAxis", "value": 15, "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "ledPin", "value": 5, "isConst": true, "timestamp": 0
   }, {

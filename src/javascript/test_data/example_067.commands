@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1757686155443,
+    "timestamp": 1758030233017,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1757686155443,
+    "timestamp": 1758030233017,
     "message": "Program execution started"
   },
   {
@@ -16,7 +16,7 @@
     "library": "Servo",
     "variableName": "myServo",
     "constructorArgs": [],
-    "timestamp": 1757686155444,
+    "timestamp": 1758030233017,
     "message": "Servo()"
   },
   {
@@ -26,44 +26,44 @@
       "__type": "ArduinoObject",
       "className": "Servo",
       "constructorArgs": [],
-      "objectId": "Servo_1757686155444_up5h51vq2"
+      "objectId": "Servo_1758030233017_yi5r0rsjt"
     },
-    "timestamp": 1757686155444
+    "timestamp": 1758030233017
   },
   {
     "type": "VAR_SET",
     "variable": "potPin",
     "value": 14,
-    "timestamp": 1757686155444
+    "timestamp": 1758030233017
   },
   {
     "type": "VAR_SET",
     "variable": "potVal",
     "value": null,
-    "timestamp": 1757686155444
+    "timestamp": 1758030233017
   },
   {
     "type": "VAR_SET",
     "variable": "angle",
     "value": null,
-    "timestamp": 1757686155444
+    "timestamp": 1758030233017
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1757686155444,
+    "timestamp": 1758030233018,
     "message": "Executing setup() function"
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Servo",
-    "object": "Servo_1757686155444_up5h51vq2",
+    "object": "Servo_1758030233017_yi5r0rsjt",
     "variableName": "myServo",
     "method": "attach",
     "args": [
       9
     ],
     "message": "myServo.attach(9)",
-    "timestamp": 1757686155444
+    "timestamp": 1758030233018
   },
   {
     "type": "FUNCTION_CALL",
@@ -72,22 +72,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1757686155445,
+    "timestamp": 1758030233018,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1757686155445,
+    "timestamp": 1758030233018,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1757686155445,
+    "timestamp": 1758030233018,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1757686155445,
+    "timestamp": 1758030233018,
     "message": "Starting loop iteration 1"
   },
   {
@@ -95,19 +95,19 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1757686155445
+    "timestamp": 1758030233018
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
-    "requestId": "analogRead_1757686155445_0.44011844057437277",
-    "timestamp": 1757686155445
+    "requestId": "analogRead_1758030233018_0.872078613841277",
+    "timestamp": 1758030233018
   },
   {
     "type": "VAR_SET",
     "variable": "potVal",
-    "value": 117,
-    "timestamp": 1757686155453
+    "value": 919,
+    "timestamp": 1758030233019
   },
   {
     "type": "FUNCTION_CALL",
@@ -116,24 +116,24 @@
       "\"potVal: \""
     ],
     "data": "potVal: ",
-    "timestamp": 1757686155453,
+    "timestamp": 1758030233019,
     "message": "Serial.print(\"potVal: \")"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "117"
+      "919"
     ],
-    "data": "117",
-    "timestamp": 1757686155453,
-    "message": "Serial.print(117)"
+    "data": "919",
+    "timestamp": 1758030233019,
+    "message": "Serial.print(919)"
   },
   {
     "type": "VAR_SET",
     "variable": "angle",
-    "value": 20,
-    "timestamp": 1757686155453
+    "value": 161,
+    "timestamp": 1758030233019
   },
   {
     "type": "FUNCTION_CALL",
@@ -142,36 +142,36 @@
       "\", angle: \""
     ],
     "data": ", angle: ",
-    "timestamp": 1757686155453,
+    "timestamp": 1758030233019,
     "message": "Serial.print(\", angle: \")"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "20"
+      "161"
     ],
-    "data": "20",
-    "timestamp": 1757686155453,
-    "message": "Serial.println(20)"
+    "data": "161",
+    "timestamp": 1758030233019,
+    "message": "Serial.println(161)"
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Servo",
-    "object": "Servo_1757686155444_up5h51vq2",
+    "object": "Servo_1758030233017_yi5r0rsjt",
     "variableName": "myServo",
     "method": "write",
     "args": [
-      20
+      161
     ],
-    "message": "myServo.write(20)",
-    "timestamp": 1757686155453
+    "message": "myServo.write(161)",
+    "timestamp": 1758030233019
   },
   {
     "type": "DELAY",
     "duration": 15,
     "actualDelay": 15,
-    "timestamp": 1757686155453
+    "timestamp": 1758030233020
   },
   {
     "type": "FUNCTION_CALL",
@@ -179,23 +179,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1757686155453
+    "timestamp": 1758030233020
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1757686155459,
+    "timestamp": 1758030233024,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1757686155459,
+    "timestamp": 1758030233024,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1757686155459,
+    "timestamp": 1758030233024,
     "message": "Program execution stopped"
   }
 ]

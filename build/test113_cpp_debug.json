@@ -40,6 +40,8 @@
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
+    "type": "VAR_SET", "variable": "ptr", "value": null, "timestamp": 0
+  }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Next element: )", "timestamp": 0, "arguments": [
       "Next element: "
     ], "data": "Next element: ", "format": "STRING"

@@ -95,12 +95,12 @@
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "stringThree", "value": {
-      "value": "Sensor value: 223"
+      "value": "Sensor value: 800"
     }, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"Sensor value: 223\""
-    ], "data": "Sensor value: 223", "timestamp": 0, "message": "Serial.println(\"Sensor value: 223\")"
+      "\"Sensor value: 800\""
+    ], "data": "Sensor value: 800", "timestamp": 0, "message": "Serial.println(\"Sensor value: 800\")"
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": {
       "value": "millis() value: "
@@ -109,12 +109,12 @@
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "stringThree", "value": {
-      "value": "millis() value: 64207"
+      "value": "millis() value: 71628"
     }, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"millis() value: 64207\""
-    ], "data": "millis() value: 64207", "timestamp": 0, "message": "Serial.println(\"millis() value: 64207\")"
+      "\"millis() value: 71628\""
+    ], "data": "millis() value: 71628", "timestamp": 0, "message": "Serial.println(\"millis() value: 71628\")"
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {

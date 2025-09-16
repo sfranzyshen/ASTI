@@ -64,15 +64,15 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 5, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "DIGITAL_READ_REQUEST", "pin": 6, "requestId": "normalized", "timestamp": 0
-  }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Keyboard.write", "arguments": [
-      109
-    ], "timestamp": 0, "message": "Keyboard.write(109)"
+      114
+    ], "timestamp": 0, "message": "Keyboard.write(114)"
+  }, {
+    "type": "DIGITAL_READ_REQUEST", "pin": 6, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

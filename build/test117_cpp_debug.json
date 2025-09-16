@@ -22,6 +22,8 @@
   }, {
     "type": "VAR_SET", "variable": "count", "value": 0, "timestamp": 0
   }, {
+    "type": "VAR_SET", "variable": "count", "value": 1, "timestamp": 0
+  }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Count is: )", "timestamp": 0, "arguments": [
       "Count is: "
     ], "data": "Count is: ", "format": "STRING"

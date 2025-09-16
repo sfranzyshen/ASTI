@@ -1,0 +1,106 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1758031892328,
+    "component": "interpreter",
+    "version": "7.3.0",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1758031892328,
+    "message": "Program execution started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "ctrlKey",
+    "value": 131,
+    "timestamp": 1758031892328
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1758031892328,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "PIN_MODE",
+    "pin": 2,
+    "mode": 2,
+    "timestamp": 1758031892329
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.begin",
+    "arguments": [],
+    "timestamp": 1758031892329,
+    "message": "Keyboard.begin()"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1758031892329,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1758031892329,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1758031892329,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1758031892329
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "start",
+    "timestamp": 1758031892329,
+    "message": "while loop started"
+  },
+  {
+    "type": "DIGITAL_READ_REQUEST",
+    "pin": 2,
+    "requestId": "digitalRead_1758031892329_0.7185572484415907",
+    "timestamp": 1758031892329
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1758031892332,
+    "message": "while loop iteration 0"
+  },
+  {
+    "type": "DELAY",
+    "duration": 500,
+    "actualDelay": 500,
+    "timestamp": 1758031892332
+  },
+  {
+    "type": "DIGITAL_READ_REQUEST",
+    "pin": 2,
+    "requestId": "digitalRead_1758031892337_0.6631202716633653",
+    "timestamp": 1758031892337
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "phase": "end",
+    "iterations": 1,
+    "timestamp": 1758031892341,
+    "message": "While loop limit reached: completed 1 iterations (max: 1)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1758031892341
+  }
+]

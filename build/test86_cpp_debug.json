@@ -14,25 +14,13 @@
   }, {
     "type": "VAR_SET", "variable": "y", "value": null, "timestamp": 0
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Invalid array access: missing array or index", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Invalid array access: missing array or index"
-  }, {
     "type": "PIN_MODE", "pin": 0, "mode": 1, "timestamp": 0
-  }, {
-    "type": "ERROR", "timestamp": 0, "message": "Invalid array access: missing array or index", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Invalid array access: missing array or index"
   }, {
     "type": "FUNCTION_CALL", "function": "getIndex", "message": "getIndex()", "timestamp": 0
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: getIndex", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: getIndex"
-  }, {
-    "type": "ERROR", "timestamp": 0, "message": "Invalid array access: missing array or index", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Invalid array access: missing array or index"
   }, {
     "type": "VAR_SET", "variable": "z", "value": 0, "timestamp": 0
   }, {

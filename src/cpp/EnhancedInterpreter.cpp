@@ -64,9 +64,20 @@ EnhancedCommandValue MemberAccessHelper::getMemberValue(EnhancedScopeManager* sc
     // Special case: handle built-in objects like Serial
     if (objectName == "Serial") {
         if (memberName == "available") {
-            return int32_t(0);  // Default value
+            return int32_t(0);  // Mock value for available bytes
+        } else if (memberName == "read") {
+            return int32_t(65);  // Mock value for read byte (ASCII 'A')
+        } else if (memberName == "peek") {
+            return int32_t(65);  // Mock value for peek byte
+        } else if (memberName == "write") {
+            return int32_t(1);   // Mock value for bytes written
+        } else if (memberName == "print" || memberName == "println" || memberName == "begin") {
+            // These are function calls, not property access
+            // Return a callable placeholder
+            return std::string("SerialMethod");
         }
-        // Add more Serial methods as needed
+        // Default return for unknown Serial members
+        return std::monostate{};
     }
     
     // Fall back to composite variable name simulation for compatibility

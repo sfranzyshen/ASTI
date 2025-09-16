@@ -26,11 +26,11 @@
   }, {
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "currentMillis", "value": 61148, "timestamp": 0
+    "type": "VAR_SET", "variable": "currentMillis", "value": 70623, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "previousMillis", "value": 61148, "timestamp": 0
+    "type": "VAR_SET", "variable": "previousMillis", "value": 70623, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {

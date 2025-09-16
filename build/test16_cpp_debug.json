@@ -4,7 +4,7 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "sensorPin", "value": 36, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorPin", "value": 14, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "ledPin", "value": 13, "timestamp": 0
   }, {
@@ -28,11 +28,11 @@
   }, {
     "type": "DIGITAL_WRITE", "pin": 13, "value": 1, "timestamp": 0
   }, {
-    "type": "DELAY", "duration": 350, "actualDelay": 350, "timestamp": 0
+    "type": "DELAY", "duration": 560, "actualDelay": 560, "timestamp": 0
   }, {
     "type": "DIGITAL_WRITE", "pin": 13, "value": 0, "timestamp": 0
   }, {
-    "type": "DELAY", "duration": 350, "actualDelay": 350, "timestamp": 0
+    "type": "DELAY", "duration": 560, "actualDelay": 560, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

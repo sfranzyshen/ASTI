@@ -18,6 +18,8 @@
   }, {
     "type": "PIN_MODE", "pin": 2, "mode": 1, "timestamp": 0
   }, {
+    "type": "VAR_SET", "variable": "thisPin", "value": 3, "timestamp": 0
+  }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
@@ -44,6 +46,8 @@
   }, {
     "type": "DELAY", "duration": 2, "actualDelay": 2, "timestamp": 0
   }, {
+    "type": "VAR_SET", "variable": "brightness", "value": 1, "timestamp": 0
+  }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
@@ -56,9 +60,13 @@
   }, {
     "type": "DELAY", "duration": 2, "actualDelay": 2, "timestamp": 0
   }, {
+    "type": "VAR_SET", "variable": "brightness", "value": 254, "timestamp": 0
+  }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {
     "type": "DELAY", "duration": 100, "actualDelay": 100, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "thisPin", "value": 3, "timestamp": 0
   }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {

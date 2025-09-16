@@ -28,6 +28,8 @@
       "-2147483648"
     ], "data": "-2147483648", "timestamp": 0, "message": "Serial.println(-2147483648)"
   }, {
+    "type": "VAR_SET", "variable": "i", "value": -2147483647, "timestamp": 0
+  }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(After increment (rollover): )", "timestamp": 0, "arguments": [
       "After increment (rollover): "
     ], "data": "After increment (rollover): ", "format": "STRING"
@@ -37,6 +39,8 @@
     ], "data": "-2147483647", "timestamp": 0, "message": "Serial.println(-2147483647)"
   }, {
     "type": "VAR_SET", "variable": "i", "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "i", "value": -1, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(After decrement (rollover): )", "timestamp": 0, "arguments": [
       "After decrement (rollover): "

@@ -542,6 +542,9 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ASTInterpreter.cpp.o: ../src/cpp/
   /usr/include/c++/11/tr1/poly_hermite.tcc \
   /usr/include/c++/11/tr1/poly_laguerre.tcc \
   /usr/include/c++/11/tr1/riemann_zeta.tcc \
+  /usr/include/c++/11/set \
+  /usr/include/c++/11/bits/stl_set.h \
+  /usr/include/c++/11/bits/stl_multiset.h \
   /usr/include/c++/11/random \
   /usr/include/c++/11/bits/random.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/opt_random.h \
@@ -1981,6 +1984,12 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ExecutionTracer.cpp.o: ../src/cpp
 ../src/cpp/ExecutionTracer.cpp:
 
 /usr/include/c++/11/random:
+
+/usr/include/c++/11/bits/stl_multiset.h:
+
+/usr/include/c++/11/bits/stl_set.h:
+
+/usr/include/c++/11/set:
 
 /usr/include/c++/11/tr1/riemann_zeta.tcc:
 

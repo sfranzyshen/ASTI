@@ -1,0 +1,14 @@
+name=Test_Case_for_Function_Pointer_Declarations.ino
+source=unknown
+astSize=1223
+codeSize=155
+mode=AST_AND_COMMANDS
+commandCount=12
+content=// Test Case for Function Pointer Declarations
+void myInterruptService() {}
+
+void setup() {
+  void (*myFunction)() = &myInterruptService;
+}
+
+void loop() {}

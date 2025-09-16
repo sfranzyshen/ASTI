@@ -4,6 +4,14 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
+    "type": "FUNCTION_CALL", "function": "Adafruit_NeoPixel", "message": "Adafruit_NeoPixel()", "timestamp": 0, "arguments": [
+      "60", "6", "82"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Adafruit_NeoPixel", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: Adafruit_NeoPixel"
+  }, {
     "type": "VAR_SET", "variable": "strip", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "pixelPrevious", "value": 0, "timestamp": 0
@@ -67,6 +75,8 @@
     "type": "VAR_SET", "variable": "patternComplete", "value": false, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "patternPrevious", "value": 17807, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "patternCurrent", "value": 1, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

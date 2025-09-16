@@ -26,6 +26,8 @@
   }, {
     "type": "PIN_MODE", "pin": 2, "mode": 1, "timestamp": 0
   }, {
+    "type": "VAR_SET", "variable": "x", "value": 3, "timestamp": 0
+  }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {
     "type": "PIN_MODE", "pin": 8, "mode": 0, "timestamp": 0

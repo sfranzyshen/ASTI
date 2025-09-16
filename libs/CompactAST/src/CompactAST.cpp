@@ -655,7 +655,7 @@ void CompactASTReader::linkNodeChildren() {
                     } else if (childType == ASTNodeType::ARRAY_DECLARATOR) {
                         DEBUG_OUT << "linkNodeChildren(): Adding ArrayDeclaratorNode to declarations" << std::endl;
                         varDeclNode->addDeclaration(std::move(nodes_[childIndex]));
-                    } else if (childType == ASTNodeType::NUMBER_LITERAL || 
+                    } else if (childType == ASTNodeType::NUMBER_LITERAL ||
                                childType == ASTNodeType::STRING_LITERAL ||
                                childType == ASTNodeType::CHAR_LITERAL ||
                                childType == ASTNodeType::IDENTIFIER ||
@@ -663,6 +663,7 @@ void CompactASTReader::linkNodeChildren() {
                                childType == ASTNodeType::BINARY_OP ||
                                childType == ASTNodeType::UNARY_OP ||
                                childType == ASTNodeType::FUNC_CALL ||
+                               childType == ASTNodeType::CONSTRUCTOR_CALL ||
                                childType == ASTNodeType::ARRAY_INIT ||
                                childType == ASTNodeType::CONSTANT) {
                         // This is an initializer - add it as a child to the last DeclaratorNode
@@ -710,7 +711,7 @@ void CompactASTReader::linkNodeChildren() {
                 auto* funcCallNode = dynamic_cast<arduino_ast::FuncCallNode*>(parentNode.get());
                 if (funcCallNode) {
                     DEBUG_OUT << "linkNodeChildren(): Setting up FuncCallNode child " << childIndex << std::endl;
-                    
+
                     // FuncCallNode expects first child as callee, rest as arguments
                     if (!funcCallNode->getCallee()) {
                         DEBUG_OUT << "linkNodeChildren(): Setting callee" << std::endl;
@@ -718,6 +719,23 @@ void CompactASTReader::linkNodeChildren() {
                     } else {
                         DEBUG_OUT << "linkNodeChildren(): Adding argument" << std::endl;
                         funcCallNode->addArgument(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
+            } else if (parentNode->getType() == ASTNodeType::CONSTRUCTOR_CALL) {
+                DEBUG_OUT << "linkNodeChildren(): Found CONSTRUCTOR_CALL parent node!" << std::endl;
+                auto* constructorCallNode = dynamic_cast<arduino_ast::ConstructorCallNode*>(parentNode.get());
+                if (constructorCallNode) {
+                    DEBUG_OUT << "linkNodeChildren(): Setting up ConstructorCallNode child " << childIndex << std::endl;
+
+                    // ConstructorCallNode expects first child as callee, rest as arguments (same as FuncCallNode)
+                    if (!constructorCallNode->getCallee()) {
+                        DEBUG_OUT << "linkNodeChildren(): Setting callee" << std::endl;
+                        constructorCallNode->setCallee(std::move(nodes_[childIndex]));
+                    } else {
+                        DEBUG_OUT << "linkNodeChildren(): Adding argument" << std::endl;
+                        constructorCallNode->addArgument(std::move(nodes_[childIndex]));
                     }
                 } else {
                     parentNode->addChild(std::move(nodes_[childIndex]));

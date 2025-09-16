@@ -1,0 +1,23 @@
+name=Mixed-Type_Expressions_and_Casting.ino
+source=unknown
+astSize=1920
+codeSize=433
+mode=AST_AND_COMMANDS
+commandCount=23
+content=// Mixed-Type Expressions and Casting
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int a = 10;
+  float b = 3.0;
+
+  float result1 = (float)(a / 3);
+  float result2 = a / b;
+  float result3 = (float)a * b + 5.5;
+
+  Serial.print("Result 1 (int div, cast): "); Serial.println(result1, 4);
+  Serial.print("Result 2 (float div): "); Serial.println(result2, 4);
+  Serial.print("Result 3 (mixed): "); Serial.println(result3, 4);
+}

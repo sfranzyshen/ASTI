@@ -1,0 +1,315 @@
+{
+  "testNum": 17,
+  "exactMatch": false,
+  "differences": [
+    {
+      "lineNum": 21,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_LIMIT_REACHED\", \"timestamp\": 0, \"message\": \"For loop limit reached: completed 1 it",
+      "jsLine": "    \"type\": \"VAR_SET\", \"variable\": \"thisPin\", \"value\": 3, \"timestamp\": 0"
+    },
+    {
+      "lineNum": 23,
+      "type": "functional",
+      "cppLine": "    \"type\": \"SETUP_END\", \"timestamp\": 0, \"message\": \"Completed setup() function\"",
+      "jsLine": "    \"type\": \"LOOP_LIMIT_REACHED\", \"phase\": \"end\", \"iterations\": 1, \"timestamp\": 0, \"message\": \"For l"
+    },
+    {
+      "lineNum": 25,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_START\", \"timestamp\": 0, \"message\": \"Starting loop() execution\"",
+      "jsLine": "    \"type\": \"SETUP_END\", \"timestamp\": 0, \"message\": \"Completed setup() function\""
+    },
+    {
+      "lineNum": 26,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": "  }"
+    },
+    {
+      "lineNum": 27,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_START\", \"timestamp\": 0, \"message\": \"Starting loop iteration 1\"",
+      "jsLine": "]"
+    },
+    {
+      "lineNum": 28,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 29,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"loop\", \"message\": \"Executing loop() iteration 1\", \"iterati",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 30,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 31,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FOR_LOOP\", \"phase\": \"start\", \"timestamp\": 0, \"message\": \"for loop started\"",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 32,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 33,
+      "type": "functional",
+      "cppLine": "    \"type\": \"VAR_SET\", \"variable\": \"thisPin\", \"value\": 2, \"timestamp\": 0",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 34,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 35,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FOR_LOOP\", \"phase\": \"iteration\", \"iteration\": 0, \"timestamp\": 0, \"message\": \"for loop i",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 36,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 37,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FOR_LOOP\", \"phase\": \"start\", \"timestamp\": 0, \"message\": \"for loop started\"",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 38,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 39,
+      "type": "functional",
+      "cppLine": "    \"type\": \"VAR_SET\", \"variable\": \"brightness\", \"value\": 0, \"timestamp\": 0",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 40,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 41,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FOR_LOOP\", \"phase\": \"iteration\", \"iteration\": 0, \"timestamp\": 0, \"message\": \"for loop i",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 42,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 43,
+      "type": "functional",
+      "cppLine": "    \"type\": \"ANALOG_WRITE\", \"pin\": 2, \"value\": 0, \"timestamp\": 0",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 44,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 45,
+      "type": "functional",
+      "cppLine": "    \"type\": \"DELAY\", \"duration\": 2, \"actualDelay\": 2, \"timestamp\": 0",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 46,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 47,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_LIMIT_REACHED\", \"timestamp\": 0, \"message\": \"For loop limit reached: completed 1 it",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 48,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 49,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FOR_LOOP\", \"phase\": \"start\", \"timestamp\": 0, \"message\": \"for loop started\"",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 50,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 51,
+      "type": "functional",
+      "cppLine": "    \"type\": \"VAR_SET\", \"variable\": \"brightness\", \"value\": 255, \"timestamp\": 0",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 52,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 53,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FOR_LOOP\", \"phase\": \"iteration\", \"iteration\": 0, \"timestamp\": 0, \"message\": \"for loop i",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 54,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 55,
+      "type": "functional",
+      "cppLine": "    \"type\": \"ANALOG_WRITE\", \"pin\": 2, \"value\": 255, \"timestamp\": 0",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 56,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 57,
+      "type": "functional",
+      "cppLine": "    \"type\": \"DELAY\", \"duration\": 2, \"actualDelay\": 2, \"timestamp\": 0",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 58,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 59,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_LIMIT_REACHED\", \"timestamp\": 0, \"message\": \"For loop limit reached: completed 1 it",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 60,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 61,
+      "type": "functional",
+      "cppLine": "    \"type\": \"DELAY\", \"duration\": 100, \"actualDelay\": 100, \"timestamp\": 0",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 62,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 63,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_LIMIT_REACHED\", \"timestamp\": 0, \"message\": \"For loop limit reached: completed 1 it",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 64,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 65,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"loop\", \"message\": \"Completed loop() iteration 1\", \"iterati",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 66,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 67,
+      "type": "functional",
+      "cppLine": "    \"type\": \"LOOP_END\", \"timestamp\": 0, \"message\": \"Loop limit reached: completed 1 iterations (max:",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 68,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 69,
+      "type": "functional",
+      "cppLine": "    \"type\": \"PROGRAM_END\", \"timestamp\": 0, \"message\": \"Program completed after 1 loop iterations (li",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 70,
+      "type": "functional",
+      "cppLine": "  }, {",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 71,
+      "type": "functional",
+      "cppLine": "    \"type\": \"PROGRAM_END\", \"timestamp\": 0, \"message\": \"Program execution stopped\"",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 72,
+      "type": "functional",
+      "cppLine": "  }",
+      "jsLine": ""
+    },
+    {
+      "lineNum": 73,
+      "type": "functional",
+      "cppLine": "]",
+      "jsLine": ""
+    }
+  ],
+  "executionIssues": [],
+  "harmlessVariations": [],
+  "severity": "NONE"
+}

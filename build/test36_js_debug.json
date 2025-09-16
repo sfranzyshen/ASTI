@@ -38,28 +38,26 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "WHILE_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "while loop iteration 0"
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 0, "timestamp": 0, "message": "while loop completed (0 iterations)"
   }, {
-    "type": "FUNCTION_CALL", "function": "calibrate", "arguments": [], "timestamp": 0, "message": "calibrate()"
-  }, {
-    "type": "DIGITAL_WRITE", "pin": 13, "value": 1, "timestamp": 0
+    "type": "DIGITAL_WRITE", "pin": 13, "value": 0, "timestamp": 0
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorMax", "value": 592, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "sensorMin", "value": 592, "timestamp": 0
-  }, {
-    "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
-  }, {
-    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "While loop limit reached: completed 1 iterations (max: 1)"
+    "type": "ANALOG_WRITE", "pin": 9, "value": 42, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
   }
 ]

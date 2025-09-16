@@ -1,0 +1,31 @@
+name=AnalogInput.ino
+source=unknown
+astSize=1576
+codeSize=536
+mode=AST_AND_COMMANDS
+commandCount=21
+content=// 03.Analog AnalogInput.ino
+
+int sensorPin = A0;
+int ledPin = LED_BUILTIN;
+int sensorValue = 0;
+
+void setup() {
+  // declare the ledPin as an OUTPUT:
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // read the value from the sensor:
+  sensorValue = analogRead(sensorPin);
+
+  // turn the ledPin on
+  digitalWrite(ledPin, HIGH);
+  // stop the program for <sensorValue> milliseconds:
+  delay(sensorValue);
+
+  // turn the ledPin off:
+  digitalWrite(ledPin, LOW);
+  // stop the program for <sensorValue> milliseconds:
+  delay(sensorValue);
+}

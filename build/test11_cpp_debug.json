@@ -32,13 +32,11 @@
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Invalid array access: missing array or index", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Invalid array access: missing array or index"
-  }, {
     "type": "FUNCTION_CALL", "function": "tone", "arguments": [
       8, 0, 20
     ], "pin": 8, "frequency": 0, "duration": 20, "timestamp": 0, "message": "tone(8, 0, 20)"
+  }, {
+    "type": "VAR_SET", "variable": "thisSensor", "value": 1, "timestamp": 0
   }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {

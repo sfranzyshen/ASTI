@@ -69,10 +69,10 @@ Failed Tests with Real Problems:
 75 - C++ runtime errors for CapacitiveSensor library functions, different object instantiation
 76 - Mock data difference: Serial.write argument values (87 vs 150.25)
 78 - Completely different variable names and structures (notes vs buff/param arrays), major execution flow difference - C++ executes loop, JS executes do-while
-79
+79 - Completely different variable names (notes vs myPins), C++ runtime error "Invalid array access: missing array or index"
 81 - Major execution flow difference - C++ executes full loop with multiple operations, JS stops after setup
-85
-86
+85 - Different variable initialization (null vs 10)
+86 - Completely different variable names (notes vs myPins), C++ runtime errors for array access and "Unknown function: getIndex"
 91 - C++ runtime error "Address-of operator requires variable name" and different pointer representation
 92 - Different variable assignment format for function pointers
 93 - Major execution flow difference - C++ executes partial loop, JS executes full do-while with Serial output

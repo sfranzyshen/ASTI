@@ -1,0 +1,32 @@
+name=typedef_and_Structs_with_Pointers.ino
+source=unknown
+astSize=1829
+codeSize=360
+mode=AST_AND_COMMANDS
+commandCount=24
+content=// typedef and Structs with Pointers
+typedef struct {
+  int x;
+  int y;
+} MyPoint;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  MyPoint p1;
+  MyPoint *p2;
+
+  p1.x = 10;
+  p1.y = 20;
+
+  p2 = &p1;
+
+  Serial.print("Value of x using pointer: ");
+  Serial.println(p2->x);
+
+  p2->y = 30;
+  Serial.print("Modified value of y: ");
+  Serial.println(p1.y);
+}

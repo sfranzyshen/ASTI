@@ -1,0 +1,318 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1758031892116,
+    "component": "interpreter",
+    "version": "7.3.0",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1758031892116,
+    "message": "Program execution started"
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1758031892116,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.begin",
+    "arguments": [
+      9600
+    ],
+    "baudRate": 9600,
+    "timestamp": 1758031892116,
+    "message": "Serial.begin(9600)"
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "start",
+    "timestamp": 1758031892116,
+    "message": "while loop started"
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "end",
+    "iterations": 0,
+    "timestamp": 1758031892116,
+    "message": "while loop completed (0 iterations)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"\n\nString Constructors:\""
+    ],
+    "data": "\n\nString Constructors:",
+    "timestamp": 1758031892116,
+    "message": "Serial.println(\"\n\nString Constructors:\")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [],
+    "timestamp": 1758031892116,
+    "message": "Serial.println()"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1758031892116,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1758031892116,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1758031892116,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1758031892116
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "Hello String"
+    },
+    "timestamp": 1758031892116
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"Hello String\""
+    ],
+    "data": "Hello String",
+    "timestamp": 1758031892116,
+    "message": "Serial.println(\"Hello String\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "97"
+    },
+    "timestamp": 1758031892116
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"97\""
+    ],
+    "data": "97",
+    "timestamp": 1758031892116,
+    "message": "Serial.println(\"97\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringTwo",
+    "value": {
+      "value": "This is a string"
+    },
+    "timestamp": 1758031892116
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"This is a string\""
+    ],
+    "data": "This is a string",
+    "timestamp": 1758031892116,
+    "message": "Serial.println(\"This is a string\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "This is a string with more"
+    },
+    "timestamp": 1758031892117
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"This is a string with more\""
+    ],
+    "data": "This is a string with more",
+    "timestamp": 1758031892117,
+    "message": "Serial.println(\"This is a string with more\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "13"
+    },
+    "timestamp": 1758031892117
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"13\""
+    ],
+    "data": "13",
+    "timestamp": 1758031892117,
+    "message": "Serial.println(\"13\")"
+  },
+  {
+    "type": "ANALOG_READ_REQUEST",
+    "pin": 14,
+    "requestId": "analogRead_1758031892117_0.927348882857363",
+    "timestamp": 1758031892117
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "532"
+    },
+    "timestamp": 1758031892118
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"532\""
+    ],
+    "data": "532",
+    "timestamp": 1758031892118,
+    "message": "Serial.println(\"532\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "45"
+    },
+    "timestamp": 1758031892118
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"45\""
+    ],
+    "data": "45",
+    "timestamp": 1758031892119,
+    "message": "Serial.println(\"45\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "255"
+    },
+    "timestamp": 1758031892119
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"255\""
+    ],
+    "data": "255",
+    "timestamp": 1758031892119,
+    "message": "Serial.println(\"255\")"
+  },
+  {
+    "type": "MILLIS_REQUEST",
+    "requestId": "millis_1758031892119_0.7976593221122041",
+    "timestamp": 1758031892119
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "92119"
+    },
+    "timestamp": 1758031892126
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"92119\""
+    ],
+    "data": "92119",
+    "timestamp": 1758031892126,
+    "message": "Serial.println(\"92119\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "5.698"
+    },
+    "timestamp": 1758031892126
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"5.698\""
+    ],
+    "data": "5.698",
+    "timestamp": 1758031892126,
+    "message": "Serial.println(\"5.698\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "5.70"
+    },
+    "timestamp": 1758031892126
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"5.70\""
+    ],
+    "data": "5.70",
+    "timestamp": 1758031892126,
+    "message": "Serial.println(\"5.70\")"
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "start",
+    "timestamp": 1758031892126,
+    "message": "while loop started"
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1758031892126,
+    "message": "while loop iteration 0"
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "phase": "end",
+    "iterations": 1,
+    "timestamp": 1758031892132,
+    "message": "While loop limit reached: completed 1 iterations (max: 1)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1758031892132
+  }
+]

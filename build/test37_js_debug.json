@@ -24,11 +24,11 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorReading", "value": 622, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorReading", "value": 456, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "range", "value": 3, "timestamp": 0
+    "type": "VAR_SET", "variable": "range", "value": 2, "timestamp": 0
   }, {
-    "type": "SWITCH_STATEMENT", "discriminant": 3, "timestamp": 0, "message": "switch (3)"
+    "type": "SWITCH_STATEMENT", "discriminant": 2, "timestamp": 0, "message": "switch (2)"
   }, {
     "type": "SWITCH_CASE", "caseValue": 0, "matched": false, "timestamp": 0
   }, {

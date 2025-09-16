@@ -155,20 +155,20 @@
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": {
-      "value": "Sensor: 132"
+      "value": "Sensor: 605"
     }, "timestamp": 0
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 19, "requestId": "normalized", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "stringTwo", "value": {
-      "value": "Sensor: 826"
+      "value": "Sensor: 913"
     }, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"Sensor: 132 comes before Sensor: 826\""
-    ], "data": "Sensor: 132 comes before Sensor: 826", "timestamp": 0, "message": "Serial.println(\"Sensor: 132 comes before Sensor: 826\")"
+      "\"Sensor: 605 comes before Sensor: 913\""
+    ], "data": "Sensor: 605 comes before Sensor: 913", "timestamp": 0, "message": "Serial.println(\"Sensor: 605 comes before Sensor: 913\")"
   }, {
     "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "While loop limit reached: completed 1 iterations (max: 1)"
   }, {

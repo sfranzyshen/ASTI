@@ -11,7 +11,7 @@
     "type": "VAR_SET", "variable": "strip", "value": {
       "__type": "ArduinoObject", "className": "Adafruit_NeoPixel", "constructorArgs": [
         60, 6, 82
-      ], "objectId": "Adafruit_NeoPixel_1757900070287_4g2snjvhy"
+      ], "objectId": "Adafruit_NeoPixel_1758031973900_j51z4d8bn"
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "pixelPrevious", "value": 0, "timestamp": 0
@@ -38,11 +38,11 @@
       0
     ], "message": "clock_prescale_set(0)", "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1757900070287_4g2snjvhy", "variableName": "strip", "method": "begin", "args": [], "message": "strip.begin()", "timestamp": 0
+    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758031973900_j51z4d8bn", "variableName": "strip", "method": "begin", "args": [], "message": "strip.begin()", "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1757900070287_4g2snjvhy", "variableName": "strip", "method": "show", "args": [], "message": "strip.show()", "timestamp": 0
+    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758031973900_j51z4d8bn", "variableName": "strip", "method": "show", "args": [], "message": "strip.show()", "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1757900070287_4g2snjvhy", "variableName": "strip", "method": "setBrightness", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758031973900_j51z4d8bn", "variableName": "strip", "method": "setBrightness", "args": [
       50
     ], "message": "strip.setBrightness(50)", "timestamp": 0
   }, {
@@ -56,13 +56,13 @@
   }, {
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "currentMillis", "value": 70288, "timestamp": 0
+    "type": "VAR_SET", "variable": "currentMillis", "value": 73901, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "patternComplete", "value": false, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "patternPrevious", "value": 70288, "timestamp": 0
+    "type": "VAR_SET", "variable": "patternPrevious", "value": 73901, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "patternCurrent", "value": 1, "timestamp": 0
   }, {
@@ -70,7 +70,7 @@
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "pixelPrevious", "value": 70288, "timestamp": 0
+    "type": "VAR_SET", "variable": "pixelPrevious", "value": 73901, "timestamp": 0
   }, {
     "type": "SWITCH_STATEMENT", "discriminant": 1, "timestamp": 0, "message": "switch (1)"
   }, {
@@ -100,11 +100,11 @@
   }, {
     "type": "VAR_SET", "variable": "current_pixel", "value": 1, "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1757900070287_4g2snjvhy", "variableName": "strip", "method": "setPixelColor", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758031973900_j51z4d8bn", "variableName": "strip", "method": "setPixelColor", "args": [
       0, 255
     ], "message": "strip.setPixelColor(0, 255)", "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1757900070287_4g2snjvhy", "variableName": "strip", "method": "show", "args": [], "message": "strip.show()", "timestamp": 0
+    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758031973900_j51z4d8bn", "variableName": "strip", "method": "show", "args": [], "message": "strip.show()", "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

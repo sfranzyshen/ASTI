@@ -6,7 +6,7 @@
   }, {
     "type": "VAR_SET", "variable": "myServo", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "piezo", "value": 36, "isConst": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "piezo", "value": 14, "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "switchPin", "value": 2, "isConst": true, "timestamp": 0
   }, {

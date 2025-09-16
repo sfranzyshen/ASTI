@@ -20,8 +20,8 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write(87)", "timestamp": 0, "arguments": [
-      87
+    "type": "FUNCTION_CALL", "function": "Serial.write", "message": "Serial.write(140)", "timestamp": 0, "arguments": [
+      140
     ]
   }, {
     "type": "DELAY", "duration": 1, "actualDelay": 1, "timestamp": 0

@@ -24,6 +24,8 @@
   }, {
     "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
   }, {
+    "type": "VAR_SET", "variable": "i", "value": 1, "timestamp": 0
+  }, {
     "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
@@ -31,6 +33,8 @@
     "type": "VAR_SET", "variable": "j", "value": 0, "timestamp": 0
   }, {
     "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
+  }, {
+    "type": "VAR_SET", "variable": "j", "value": 1, "timestamp": 0
   }, {
     "type": "LOOP_LIMIT_REACHED", "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "phase": "end"
   }, {

@@ -1,0 +1,29 @@
+name=Initializer_Lists_and_Designated_Initializers.ino
+source=unknown
+astSize=1697
+codeSize=378
+mode=AST_AND_COMMANDS
+commandCount=20
+content=// Initializer Lists and Designated Initializers
+struct Point {
+  int x;
+  int y;
+};
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int numbers[] = {1, 2, 3};
+  struct Point p = {.x = 10, .y = 20};
+
+  Serial.print("Numbers[1]: ");
+  Serial.println(numbers[1]);
+
+  Serial.print("Point x: ");
+  Serial.println(p.x);
+
+  Serial.print("Point y: ");
+  Serial.println(p.y);
+}

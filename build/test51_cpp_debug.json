@@ -12,13 +12,7 @@
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: Serial", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Undefined variable: Serial"
-  }, {
-    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
-  }, {
-    "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 0, "timestamp": 0, "message": "while loop completed"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\n\nString Constructors: \""
@@ -79,14 +73,14 @@
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
-      "350", "\"DEC\""
+      "560", "\"DEC\""
     ]
   }, {
-    "type": "VAR_SET", "variable": "stringOne", "value": "350", "timestamp": 0
+    "type": "VAR_SET", "variable": "stringOne", "value": "560", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"350\""
-    ], "data": "\"350\"", "timestamp": 0, "message": "Serial.println(\"350\")"
+      "\"560\""
+    ], "data": "\"560\"", "timestamp": 0, "message": "Serial.println(\"560\")"
   }, {
     "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
       "45", "\"HEX\""

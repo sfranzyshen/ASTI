@@ -1,0 +1,84 @@
+{
+  "timestamp": "2025-09-16T03:10:09.668Z",
+  "summary": {
+    "totalTests": 21,
+    "analyzedTests": 18,
+    "categorized": 11,
+    "uncategorized": [
+      0,
+      3,
+      5,
+      9,
+      13,
+      14,
+      16
+    ]
+  },
+  "categories": {
+    "loop_structure": {
+      "priority": "HIGH",
+      "description": "Loop command structure differences",
+      "affected": [
+        11,
+        12,
+        17,
+        19,
+        20
+      ],
+      "impact": "LOW"
+    },
+    "variable_init": {
+      "priority": "MEDIUM",
+      "description": "Variable initialization pattern differences",
+      "affected": [
+        8
+      ],
+      "impact": "LOW"
+    },
+    "field_ordering": {
+      "priority": "LOW",
+      "description": "JSON field ordering differences",
+      "affected": [
+        6,
+        7,
+        10,
+        15,
+        18
+      ],
+      "impact": "LOW"
+    }
+  },
+  "uncategorized": [
+    0,
+    3,
+    5,
+    9,
+    13,
+    14,
+    16
+  ],
+  "recommendations": {
+    "phase1": [
+      [
+        "loop_structure",
+        {
+          "patterns": [
+            {},
+            {},
+            {}
+          ],
+          "description": "Loop command structure differences",
+          "priority": "HIGH",
+          "affected": [
+            11,
+            12,
+            17,
+            19,
+            20
+          ]
+        }
+      ]
+    ],
+    "expectedImpact": 11
+  }
+}

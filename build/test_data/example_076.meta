@@ -1,0 +1,19 @@
+name=p14_TweakTheArduinoLogo.ino
+source=unknown
+astSize=1369
+codeSize=285
+mode=AST_AND_COMMANDS
+commandCount=15
+content=// 10.StarterKit_BasicKit p14_TweakTheArduinoLogo
+
+void setup() {
+  // initialize serial communication
+  Serial.begin(9600);
+}
+
+void loop() {
+  // read the value of A0, divide by 4 and send it as a byte over the
+  // serial connection
+  Serial.write(analogRead(A0) / 4);
+  delay(1);
+}

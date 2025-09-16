@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-09-16T03:10:52.958Z",
+  "version": "baseline",
+  "totalTests": 4,
+  "passingTests": 3,
+  "failingTests": 1,
+  "successRate": 75,
+  "passingTestsList": [
+    0,
+    1,
+    2
+  ],
+  "failingTestsList": [
+    3
+  ],
+  "details": {
+    "rawOutput": "=== Cross-Platform Validation ===\nTesting range: 0 to 134\nNormalizing timestamps, whitespace, field order differences\nWill stop on first functional difference\n\nDEBUG: Setup body found, type=16, about to call accept...\nDEBUG: Setup body accept() completed\nDEBUG: About to execute loop function body...\nDEBUG: Loop body found, type=16, calling accept...\nDEBUG: Loop body accept() completed\nTest 0: EXACT MATCH ✅\nDEBUG: Setup body found, type=16, about to call accept...\nDEBUG: Setup body accept() completed\nDEBUG: About to execute loop function body...\nDEBUG: Loop body found, type=16, calling accept...\nDEBUG: Loop body accept() completed\nTest 1: EXACT MATCH ✅\nDEBUG: Setup body found, type=16, about to call accept...\nDEBUG: Setup body accept() completed\nDEBUG: About to execute loop function body...\nDEBUG: Loop body found, type=16, calling accept...\nDEBUG: Loop body accept() completed\nTest 2: EXACT MATCH ✅\nDEBUG: Setup body found, type=16, about to call accept...\nDEBUG: Setup body accept() compl"
+  }
+}

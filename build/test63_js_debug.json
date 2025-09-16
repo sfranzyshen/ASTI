@@ -58,15 +58,17 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "reading", "value": 142, "timestamp": 0
+    "type": "VAR_SET", "variable": "reading", "value": 395, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "reading", "value": 2, "timestamp": 0
+    "type": "VAR_SET", "variable": "reading", "value": 5, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "distance", "value": -4, "timestamp": 0
+    "type": "VAR_SET", "variable": "distance", "value": -1, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "xReading", "value": -4, "timestamp": 0
+    "type": "VAR_SET", "variable": "distance", "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "xReading", "value": 0, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "readAxis", "arguments": [
       15
@@ -74,29 +76,31 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 15, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "reading", "value": 527, "timestamp": 0
+    "type": "VAR_SET", "variable": "reading", "value": 809, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "reading", "value": 6, "timestamp": 0
+    "type": "VAR_SET", "variable": "reading", "value": 9, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "distance", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "distance", "value": 3, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "distance", "value": 0, "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "yReading", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "yReading", "value": 3, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 3, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Mouse.isPressed", "arguments": [
       null
     ], "timestamp": 0, "message": "Mouse.isPressed(undefined)"
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Mouse.press", "arguments": [
+      null
+    ], "timestamp": 0, "message": "Mouse.press(undefined)"
   }, {
     "type": "DELAY", "duration": 5, "actualDelay": 5, "timestamp": 0
   }, {

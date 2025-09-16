@@ -50,13 +50,47 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "SERIAL_REQUEST", "timestamp": 0, "message": "Serial.available()", "requestId": "normalized", "operation": "available"
+    "type": "FUNCTION_CALL", "function": "Serial.available", "message": "Serial.available()", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "DIGITAL_READ_REQUEST", "pin": 3, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Keyboard.write", "message": "Keyboard.write()", "timestamp": 0, "arguments": ["0"]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.write", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.write"
+  }, {
+    "type": "DIGITAL_READ_REQUEST", "pin": 4, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "DIGITAL_READ_REQUEST", "pin": 5, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Keyboard.write", "message": "Keyboard.write()", "timestamp": 0, "arguments": ["0"]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.write", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.write"
+  }, {
+    "type": "DIGITAL_READ_REQUEST", "pin": 6, "requestId": "normalized", "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {
     "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
   }, {
     "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
   }

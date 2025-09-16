@@ -32,7 +32,7 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorReading", "value": 436, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorReading", "value": 512, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
