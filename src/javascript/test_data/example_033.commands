@@ -1,21 +1,21 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758048571854,
+    "timestamp": 1758063850781,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758048571854,
+    "timestamp": 1758063850781,
     "message": "Program execution started"
   },
   {
     "type": "VAR_SET",
     "variable": "timer",
     "value": 100,
-    "timestamp": 1758048571854
+    "timestamp": 1758063850781
   },
   {
     "type": "VAR_SET",
@@ -28,60 +28,60 @@
       5,
       3
     ],
-    "timestamp": 1758048571854
+    "timestamp": 1758063850781
   },
   {
     "type": "VAR_SET",
     "variable": "pinCount",
     "value": 6,
-    "timestamp": 1758048571854
+    "timestamp": 1758063850782
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758048571854,
+    "timestamp": 1758063850782,
     "message": "Executing setup() function"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1758048571854,
+    "timestamp": 1758063850782,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "thisPin",
     "value": 0,
-    "timestamp": 1758048571854
+    "timestamp": 1758063850782
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1758048571854,
+    "timestamp": 1758063850782,
     "message": "for loop iteration 0"
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 1,
-    "timestamp": 1758048571854
+    "timestamp": 1758063850782
   },
   {
     "type": "VAR_SET",
     "variable": "thisPin",
     "value": 1,
-    "timestamp": 1758048571854
+    "timestamp": 1758063850782
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1758048571859,
+    "timestamp": 1758063850788,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758048571859,
+    "timestamp": 1758063850788,
     "message": "Completed setup() function"
   }
 ]

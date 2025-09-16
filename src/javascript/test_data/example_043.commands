@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758048572249,
+    "timestamp": 1758063851328,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758048572249,
+    "timestamp": 1758063851328,
     "message": "Program execution started"
   },
   {
@@ -25,7 +25,7 @@
       16
     ],
     "isConst": true,
-    "timestamp": 1758048572249
+    "timestamp": 1758063851328
   },
   {
     "type": "VAR_SET",
@@ -41,7 +41,7 @@
       9
     ],
     "isConst": true,
-    "timestamp": 1758048572249
+    "timestamp": 1758063851329
   },
   {
     "type": "VAR_SET",
@@ -128,78 +128,78 @@
         0
       ]
     ],
-    "timestamp": 1758048572250
+    "timestamp": 1758063851329
   },
   {
     "type": "VAR_SET",
     "variable": "x",
     "value": 5,
-    "timestamp": 1758048572250
+    "timestamp": 1758063851329
   },
   {
     "type": "VAR_SET",
     "variable": "y",
     "value": 5,
-    "timestamp": 1758048572250
+    "timestamp": 1758063851329
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758048572250,
+    "timestamp": 1758063851329,
     "message": "Executing setup() function"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1758048572250,
+    "timestamp": 1758063851329,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "thisPin",
     "value": 0,
-    "timestamp": 1758048572250
+    "timestamp": 1758063851329
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1758048572250,
+    "timestamp": 1758063851329,
     "message": "for loop iteration 0"
   },
   {
     "type": "PIN_MODE",
     "pin": 6,
     "mode": 1,
-    "timestamp": 1758048572250
+    "timestamp": 1758063851329
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 1,
-    "timestamp": 1758048572250
+    "timestamp": 1758063851329
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 6,
     "value": 1,
-    "timestamp": 1758048572250
+    "timestamp": 1758063851329
   },
   {
     "type": "VAR_SET",
     "variable": "thisPin",
     "value": 1,
-    "timestamp": 1758048572250
+    "timestamp": 1758063851329
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1758048572256,
+    "timestamp": 1758063851334,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758048572256,
+    "timestamp": 1758063851334,
     "message": "Completed setup() function"
   }
 ]

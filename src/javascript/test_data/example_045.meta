@@ -3,7 +3,7 @@ source=unknown
 astSize=3551
 codeSize=1845
 mode=AST_AND_COMMANDS
-commandCount=18
+commandCount=40
 content=// 08.Strings CharacterAnalysis
 
 void setup() {

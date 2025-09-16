@@ -5494,10 +5494,15 @@ class ASTInterpreter {
                     const rightStr = right instanceof ArduinoString ? right.value : String(right);
                     result = leftStr === rightStr;
                 } else {
-                    // Extract numeric values for comparison
-                    const leftValue = this.getNumericValue(left);
-                    const rightValue = this.getNumericValue(right);
-                    result = leftValue == rightValue;
+                    // Handle null comparisons correctly (C++ semantics: null != 0)
+                    if (left === null || right === null) {
+                        result = left === right;  // null == null is true, null == anything else is false
+                    } else {
+                        // Extract numeric values for comparison
+                        const leftValue = this.getNumericValue(left);
+                        const rightValue = this.getNumericValue(right);
+                        result = leftValue == rightValue;
+                    }
                 }
                 break;
             case '!=':
@@ -5507,10 +5512,15 @@ class ASTInterpreter {
                     const rightStr = right instanceof ArduinoString ? right.value : String(right);
                     result = leftStr !== rightStr;
                 } else {
-                    // Extract numeric values for comparison
-                    const leftValue = this.getNumericValue(left);
-                    const rightValue = this.getNumericValue(right);
-                    result = leftValue != rightValue;
+                    // Handle null comparisons correctly (C++ semantics: null != 0)
+                    if (left === null || right === null) {
+                        result = left !== right;  // null vs anything else is always true for !=
+                    } else {
+                        // Extract numeric values for comparison
+                        const leftValue = this.getNumericValue(left);
+                        const rightValue = this.getNumericValue(right);
+                        result = leftValue != rightValue;
+                    }
                 }
                 break;
             case '<': 
