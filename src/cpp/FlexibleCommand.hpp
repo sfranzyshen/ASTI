@@ -236,7 +236,11 @@ private:
             } else if constexpr (std::is_same_v<T, bool>) {
                 oss << (arg ? "true" : "false");
             } else if constexpr (std::is_same_v<T, int32_t>) {
-                oss << arg;
+                if (arg == -999) {
+                    oss << "null";  // Convert sentinel value to null for JavaScript compatibility
+                } else {
+                    oss << arg;
+                }
             } else if constexpr (std::is_same_v<T, int64_t>) {
                 oss << arg;
             } else if constexpr (std::is_same_v<T, double>) {
@@ -688,7 +692,7 @@ namespace FlexibleCommandFactory {
             .set("arguments", args)
             .set("pin", pin)
             .set("frequency", frequency)
-            .set("message", std::string("tone(") + std::to_string(pin) + ", " + std::to_string(frequency) + ")");
+            .set("message", std::string("tone(") + std::to_string(pin) + ", " + (frequency == -999 ? "undefined" : std::to_string(frequency)) + ")");
     }
 
     inline FlexibleCommand createToneWithDuration(int32_t pin, int32_t frequency, int32_t duration) {
@@ -699,7 +703,7 @@ namespace FlexibleCommandFactory {
             .set("pin", pin)
             .set("frequency", frequency)
             .set("duration", duration)
-            .set("message", std::string("tone(") + std::to_string(pin) + ", " + std::to_string(frequency) + ", " + std::to_string(duration) + ")");
+            .set("message", std::string("tone(") + std::to_string(pin) + ", " + (frequency == -999 ? "undefined" : std::to_string(frequency)) + ", " + std::to_string(duration) + ")");
     }
 
     inline FlexibleCommand createNoTone(int32_t pin) {

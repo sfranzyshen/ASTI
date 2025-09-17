@@ -2212,6 +2212,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         case arduino_ast::ASTNodeType::IDENTIFIER:
             if (auto* idNode = dynamic_cast<arduino_ast::IdentifierNode*>(expr)) {
                 std::string name = idNode->getName();
+                std::cerr << "🔍 IDENTIFIER LOOKUP: " << name << std::endl;
                 debugLog("evaluateExpression: Looking up identifier '" + name + "'");
 
                 // Special handling for built-in objects like Serial
@@ -2292,7 +2293,10 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                 
                 std::vector<CommandValue> args;
                 for (const auto& arg : funcNode->getArguments()) {
-                    args.push_back(evaluateExpression(arg.get()));
+                    std::cerr << "🎯 EVALUATING ARG: type=" << static_cast<int>(arg->getType()) << std::endl;
+                    CommandValue argValue = evaluateExpression(arg.get());
+                    std::cerr << "🎯 ARG RESULT: " << commandValueToString(argValue) << std::endl;
+                    args.push_back(argValue);
                 }
                 
                 return executeArduinoFunction(functionName, args);
@@ -2911,13 +2915,36 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
     // Sound functions
     else if (name == "tone" && args.size() >= 2) {
         int32_t pin = convertToInt(args[0]);
-        int32_t frequency = convertToInt(args[1]);
+
+        // CROSS-PLATFORM FIX: Handle null frequency (undefined array elements)
+        int32_t frequency;
+        std::cerr << "🎵 TONE FUNCTION: args[1] type check - is monostate? " << std::holds_alternative<std::monostate>(args[1]) << std::endl;
+        if (std::holds_alternative<std::monostate>(args[1])) {
+            std::cerr << "🎵 TONE: Found NULL frequency, using special -999 value" << std::endl;
+            frequency = 0;  // Convert null to 0 for tone function, but preserve null in command
+        } else {
+            std::cerr << "🎵 TONE: Converting frequency normally" << std::endl;
+            frequency = convertToInt(args[1]);
+        }
 
         if (args.size() > 2) {
             int32_t duration = convertToInt(args[2]);
-            emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, frequency, duration));
+
+            // CROSS-PLATFORM FIX: Check if frequency should be null
+            if (std::holds_alternative<std::monostate>(args[1])) {
+                // Use special frequency value -999 to indicate null (FlexibleCommand converts this to null in JSON)
+                emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, -999, duration));
+            } else {
+                emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, frequency, duration));
+            }
         } else {
-            emitCommand(FlexibleCommandFactory::createTone(pin, frequency));
+            // CROSS-PLATFORM FIX: Check if frequency should be null
+            if (std::holds_alternative<std::monostate>(args[1])) {
+                // Use special frequency value -999 to indicate null (FlexibleCommand converts this to null in JSON)
+                emitCommand(FlexibleCommandFactory::createTone(pin, -999));
+            } else {
+                emitCommand(FlexibleCommandFactory::createTone(pin, frequency));
+            }
         }
         return std::monostate{};
     }
@@ -3393,12 +3420,36 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         // tone(pin, frequency) or tone(pin, frequency, duration)
         if (args.size() >= 2) {
             int32_t pin = convertToInt(args[0]);
-            int32_t frequency = convertToInt(args[1]);
+
+            // CROSS-PLATFORM FIX: Handle null frequency (undefined array elements)
+            int32_t frequency;
+            std::cerr << "🎵🎵 SECOND TONE FUNCTION: args[1] type check - is monostate? " << std::holds_alternative<std::monostate>(args[1]) << std::endl;
+            if (std::holds_alternative<std::monostate>(args[1])) {
+                std::cerr << "🎵🎵 SECOND TONE: Found NULL frequency, using special -999 value" << std::endl;
+                frequency = 0;  // Convert null to 0 for tone function, but preserve null in command
+            } else {
+                std::cerr << "🎵🎵 SECOND TONE: Converting frequency normally" << std::endl;
+                frequency = convertToInt(args[1]);
+            }
+
             if (args.size() >= 3) {
                 int32_t duration = convertToInt(args[2]);
-                emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, frequency, duration));
+
+                // CROSS-PLATFORM FIX: Check if frequency should be null
+                if (std::holds_alternative<std::monostate>(args[1])) {
+                    // Use special frequency value -999 to indicate null (FlexibleCommand converts this to null in JSON)
+                    emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, -999, duration));
+                } else {
+                    emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, frequency, duration));
+                }
             } else {
-                emitCommand(FlexibleCommandFactory::createTone(pin, frequency));
+                // CROSS-PLATFORM FIX: Check if frequency should be null
+                if (std::holds_alternative<std::monostate>(args[1])) {
+                    // Use special frequency value -999 to indicate null (FlexibleCommand converts this to null in JSON)
+                    emitCommand(FlexibleCommandFactory::createTone(pin, -999));
+                } else {
+                    emitCommand(FlexibleCommandFactory::createTone(pin, frequency));
+                }
             }
             auto functionEnd = std::chrono::steady_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(functionEnd - functionStart);

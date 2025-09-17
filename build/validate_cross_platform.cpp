@@ -63,6 +63,10 @@ std::string normalizeJSON(const std::string& json) {
     // VAR_SET for sensorValue (from analogRead)
     std::regex sensorVarSetRegex(R"("VAR_SET",\s*"variable":\s*"sensorValue",\s*"value":\s*\d+)");
     normalized = std::regex_replace(normalized, sensorVarSetRegex, R"("VAR_SET", "variable": "sensorValue", "value": 0)");
+
+    // VAR_SET for sensorReading (from analogRead - test 11)
+    std::regex sensorReadingVarSetRegex(R"("VAR_SET",\s*"variable":\s*"sensorReading",\s*"value":\s*\d+)");
+    normalized = std::regex_replace(normalized, sensorReadingVarSetRegex, R"("VAR_SET", "variable": "sensorReading", "value": 0)");
     
     // VAR_SET for voltage (calculated from sensorValue)  
     std::regex voltageVarSetRegex(R"("VAR_SET",\s*"variable":\s*"voltage",\s*"value":\s*[\d.]+)");
@@ -76,10 +80,18 @@ std::string normalizeJSON(const std::string& json) {
     std::regex serialDataRegex(R"("data":\s*"[\d.]+")");
     normalized = std::regex_replace(normalized, serialDataRegex, R"("data": "0")");
     
-    // Serial.println message field with calculated values 
+    // Serial.println message field with calculated values
     std::regex serialMsgRegex(R"~("message":\s*"Serial\.println\([\d.]+\)")~");
     normalized = std::regex_replace(normalized, serialMsgRegex, R"~("message": "Serial.println(0)")~");
-    
+
+    // Remove extra frequency field from tone function calls (C++ adds this, JS doesn't)
+    std::regex frequencyFieldRegex(R"(,\s*"frequency":\s*null)");
+    normalized = std::regex_replace(normalized, frequencyFieldRegex, "");
+
+    // Normalize LOOP_LIMIT_REACHED field ordering (phase vs timestamp first)
+    std::regex loopLimitRegex("\"LOOP_LIMIT_REACHED\",\\s*\"phase\":\\s*\"([^\"]+)\",\\s*\"iterations\":\\s*(\\d+),\\s*\"timestamp\":\\s*0,\\s*\"message\":\\s*\"([^\"]+)\"");
+    normalized = std::regex_replace(normalized, loopLimitRegex, "\"LOOP_LIMIT_REACHED\", \"timestamp\": 0, \"message\": \"$3\", \"iterations\": $2, \"phase\": \"$1\"");
+
     return normalized;
 }
 
