@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758031972557,
+    "timestamp": 1758071889080,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758031972557,
+    "timestamp": 1758071889080,
     "message": "Program execution started"
   },
   {
@@ -16,139 +16,139 @@
     "variable": "controlPin1",
     "value": 2,
     "isConst": true,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "controlPin2",
     "value": 3,
     "isConst": true,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "enablePin",
     "value": 9,
     "isConst": true,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "directionSwitchPin",
     "value": 4,
     "isConst": true,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "onOffSwitchStateSwitchPin",
     "value": 5,
     "isConst": true,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "potPin",
     "value": 14,
     "isConst": true,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "onOffSwitchState",
     "value": 0,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "previousOnOffSwitchState",
     "value": 0,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "directionSwitchState",
     "value": 0,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "previousDirectionSwitchState",
     "value": 0,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "motorEnabled",
     "value": 0,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "motorSpeed",
     "value": 0,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "motorDirection",
     "value": 1,
-    "timestamp": 1758031972557
+    "timestamp": 1758071889080
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758031972558,
+    "timestamp": 1758071889080,
     "message": "Executing setup() function"
   },
   {
     "type": "PIN_MODE",
     "pin": 4,
     "mode": 0,
-    "timestamp": 1758031972558
+    "timestamp": 1758071889080
   },
   {
     "type": "PIN_MODE",
     "pin": 5,
     "mode": 0,
-    "timestamp": 1758031972558
+    "timestamp": 1758071889080
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 1,
-    "timestamp": 1758031972558
+    "timestamp": 1758071889080
   },
   {
     "type": "PIN_MODE",
     "pin": 3,
     "mode": 1,
-    "timestamp": 1758031972558
+    "timestamp": 1758071889080
   },
   {
     "type": "PIN_MODE",
     "pin": 9,
     "mode": 1,
-    "timestamp": 1758031972558
+    "timestamp": 1758071889080
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 9,
     "value": 0,
-    "timestamp": 1758031972558
+    "timestamp": 1758071889080
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758031972558,
+    "timestamp": 1758071889080,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758031972558,
+    "timestamp": 1758071889080,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758031972558,
+    "timestamp": 1758071889080,
     "message": "Starting loop iteration 1"
   },
   {
@@ -156,120 +156,120 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758031972558
+    "timestamp": 1758071889080
   },
   {
     "type": "DIGITAL_READ_REQUEST",
     "pin": 5,
-    "requestId": "digitalRead_1758031972558_0.059880843052855015",
-    "timestamp": 1758031972558
+    "requestId": "digitalRead_000001",
+    "timestamp": 1758071889080
   },
   {
     "type": "VAR_SET",
     "variable": "onOffSwitchState",
     "value": 1,
-    "timestamp": 1758031972565
+    "timestamp": 1758071889085
   },
   {
     "type": "DELAY",
     "duration": 1,
     "actualDelay": 1,
-    "timestamp": 1758031972565
+    "timestamp": 1758071889085
   },
   {
     "type": "DIGITAL_READ_REQUEST",
     "pin": 4,
-    "requestId": "digitalRead_1758031972565_0.39231660023721693",
-    "timestamp": 1758031972565
+    "requestId": "digitalRead_000002",
+    "timestamp": 1758071889085
   },
   {
     "type": "VAR_SET",
     "variable": "directionSwitchState",
     "value": 0,
-    "timestamp": 1758031972566
+    "timestamp": 1758071889090
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
-    "requestId": "analogRead_1758031972567_0.4169095111948775",
-    "timestamp": 1758031972567
+    "requestId": "analogRead_000003",
+    "timestamp": 1758071889090
   },
   {
     "type": "VAR_SET",
     "variable": "motorSpeed",
-    "value": 137.5,
-    "timestamp": 1758031972568
+    "value": 140,
+    "timestamp": 1758071889095
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "VAR_SET",
     "variable": "motorEnabled",
     "value": false,
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 2,
     "value": 1,
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 3,
     "value": 0,
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "ANALOG_WRITE",
     "pin": 9,
     "value": 0,
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "VAR_SET",
     "variable": "previousDirectionSwitchState",
     "value": 0,
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "VAR_SET",
     "variable": "previousOnOffSwitchState",
     "value": 1,
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "FUNCTION_CALL",
@@ -277,23 +277,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758031972568
+    "timestamp": 1758071889095
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758031972573,
+    "timestamp": 1758071889100,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758031972573,
+    "timestamp": 1758071889100,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758031972573,
+    "timestamp": 1758071889100,
     "message": "Program execution stopped"
   }
 ]

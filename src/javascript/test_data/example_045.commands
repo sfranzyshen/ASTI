@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "Executing setup() function"
   },
   {
@@ -23,20 +23,20 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "end",
     "iterations": 0,
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "while loop completed (0 iterations)"
   },
   {
@@ -46,29 +46,29 @@
       "\"send any byte and I'll tell you everything I can about it\""
     ],
     "data": "send any byte and I'll tell you everything I can about it",
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "Serial.println(\"send any byte and I'll tell you everything I can about it\")"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [],
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "Serial.println()"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "Starting loop iteration 1"
   },
   {
@@ -76,188 +76,21 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758063851413
+    "timestamp": 1758070591883
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.available",
     "arguments": [],
-    "timestamp": 1758063851413,
+    "timestamp": 1758070591883,
     "message": "Serial.available()"
   },
   {
     "type": "IF_STATEMENT",
-    "condition": true,
-    "result": true,
-    "branch": "then",
-    "timestamp": 1758063851413
-  },
-  {
-    "type": "FUNCTION_CALL",
-    "function": "Serial.read",
-    "arguments": [],
-    "timestamp": 1758063851413,
-    "message": "Serial.read()"
-  },
-  {
-    "type": "VAR_SET",
-    "variable": "thisChar",
-    "value": 65,
-    "timestamp": 1758063851413
-  },
-  {
-    "type": "FUNCTION_CALL",
-    "function": "Serial.print",
-    "arguments": [
-      "\"You sent me: '\""
-    ],
-    "data": "You sent me: '",
-    "timestamp": 1758063851413,
-    "message": "Serial.print(\"You sent me: '\")"
-  },
-  {
-    "type": "FUNCTION_CALL",
-    "function": "Serial.write",
-    "arguments": [
-      65
-    ],
-    "timestamp": 1758063851413,
-    "message": "Serial.write(65)"
-  },
-  {
-    "type": "FUNCTION_CALL",
-    "function": "Serial.print",
-    "arguments": [
-      "\"'  ASCII Value: \""
-    ],
-    "data": "'  ASCII Value: ",
-    "timestamp": 1758063851413,
-    "message": "Serial.print(\"'  ASCII Value: \")"
-  },
-  {
-    "type": "FUNCTION_CALL",
-    "function": "Serial.println",
-    "arguments": [
-      "65"
-    ],
-    "data": "65",
-    "timestamp": 1758063851413,
-    "message": "Serial.println(65)"
-  },
-  {
-    "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "IF_STATEMENT",
-    "condition": false,
-    "result": false,
-    "branch": "else",
-    "timestamp": 1758063851414
-  },
-  {
-    "type": "FUNCTION_CALL",
-    "function": "Serial.println",
-    "arguments": [],
-    "timestamp": 1758063851414,
-    "message": "Serial.println()"
-  },
-  {
-    "type": "FUNCTION_CALL",
-    "function": "Serial.println",
-    "arguments": [
-      "\"Give me another byte:\""
-    ],
-    "data": "Give me another byte:",
-    "timestamp": 1758063851414,
-    "message": "Serial.println(\"Give me another byte:\")"
-  },
-  {
-    "type": "FUNCTION_CALL",
-    "function": "Serial.println",
-    "arguments": [],
-    "timestamp": 1758063851414,
-    "message": "Serial.println()"
+    "timestamp": 1758070591883
   },
   {
     "type": "FUNCTION_CALL",
@@ -265,23 +98,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758063851415
+    "timestamp": 1758070591883
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758063851419,
+    "timestamp": 1758070591888,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758063851419,
+    "timestamp": 1758070591888,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758063851419,
+    "timestamp": 1758070591888,
     "message": "Program execution stopped"
   }
 ]

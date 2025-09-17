@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758031972509,
+    "timestamp": 1758071888980,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758031972509,
+    "timestamp": 1758071888980,
     "message": "Program execution started"
   },
   {
@@ -16,84 +16,84 @@
     "variable": "switchPin",
     "value": 8,
     "isConst": true,
-    "timestamp": 1758031972509
+    "timestamp": 1758071888981
   },
   {
     "type": "VAR_SET",
     "variable": "previousTime",
     "value": 0,
-    "timestamp": 1758031972509
+    "timestamp": 1758071888981
   },
   {
     "type": "VAR_SET",
     "variable": "switchState",
     "value": 0,
-    "timestamp": 1758031972509
+    "timestamp": 1758071888981
   },
   {
     "type": "VAR_SET",
     "variable": "prevSwitchState",
     "value": 0,
-    "timestamp": 1758031972509
+    "timestamp": 1758071888981
   },
   {
     "type": "VAR_SET",
     "variable": "led",
     "value": 2,
-    "timestamp": 1758031972509
+    "timestamp": 1758071888981
   },
   {
     "type": "VAR_SET",
     "variable": "interval",
     "value": 600000,
-    "timestamp": 1758031972509
+    "timestamp": 1758071888981
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758031972510,
+    "timestamp": 1758071888981,
     "message": "Executing setup() function"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1758031972510,
+    "timestamp": 1758071888981,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "x",
     "value": 2,
-    "timestamp": 1758031972510
+    "timestamp": 1758071888981
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1758031972510,
+    "timestamp": 1758071888981,
     "message": "for loop iteration 0"
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 1,
-    "timestamp": 1758031972510
+    "timestamp": 1758071888981
   },
   {
     "type": "VAR_SET",
     "variable": "x",
     "value": 3,
-    "timestamp": 1758031972510
+    "timestamp": 1758071888981
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1758031972515,
+    "timestamp": 1758071888987,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758031972515,
+    "timestamp": 1758071888987,
     "message": "Completed setup() function"
   }
 ]

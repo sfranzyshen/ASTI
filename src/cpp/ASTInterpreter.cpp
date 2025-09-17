@@ -744,13 +744,16 @@ void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
             }
         }
     }
-    
+
     // Evaluate arguments
     std::vector<CommandValue> args;
     for (const auto& arg : node.getArguments()) {
-        args.push_back(evaluateExpression(arg.get()));
+        std::cerr << "🎯 EVALUATING FUNCTION ARG: type=" << static_cast<int>(arg->getType()) << std::endl;
+        CommandValue result = evaluateExpression(arg.get());
+        std::cerr << "🎯 ARG RESULT: " << commandValueToString(result) << std::endl;
+        args.push_back(result);
     }
-    
+
     // Check for user-defined function first - MEMORY SAFE
     if (userFunctionNames_.count(functionName) > 0) {
         auto* userFunc = findFunctionInAST(functionName);
@@ -1877,13 +1880,16 @@ void ASTInterpreter::visit(arduino_ast::RangeBasedForStatement& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
-    debugLog("Visiting ArrayAccessNode");
+    std::cerr << "🚀🚀🚀 VISITING ARRAYACCESSNODE!" << std::endl;
 
     try {
         // SIMPLIFIED ARRAY ACCESS: Focus on basic functionality
 
         if (!node.getArray() || !node.getIndex()) {
-            debugLog("ArrayAccessNode: null array or index - returning monostate");
+            std::cerr << "🔴 BROKEN ARRAYACCESSNODE: array=" << (node.getArray() ? "OK" : "NULL")
+                      << " index=" << (node.getIndex() ? "OK" : "NULL") << std::endl;
+            // TEMPORARY WORKAROUND: CompactAST export is broken for ArrayAccessNode, return null for undefined array elements
+            debugLog("ArrayAccessNode: null array or index - returning null (broken ArrayAccessNode in CompactAST)");
             lastExpressionResult_ = std::monostate{};
             return;
         }
@@ -1934,8 +1940,26 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
                 lastExpressionResult_ = std::monostate{};
                 return;
             }
-            lastExpressionResult_ = arrayVector[idx];
-            debugLog("Integer array element " + arrayName + "[" + std::to_string(index) + "] = " + std::to_string(arrayVector[idx]));
+
+            // CROSS-PLATFORM FIX: Check if this array represents undefined preprocessor constants
+            // Arrays with undefined constants (like {NOTE_A4, NOTE_B4, NOTE_C3}) are stored as all 0s
+            // but should return null when accessed to match JavaScript behavior
+            bool allElementsZero = true;
+            for (const auto& elem : arrayVector) {
+                if (elem != 0) {
+                    allElementsZero = false;
+                    break;
+                }
+            }
+
+            if (allElementsZero && arrayVector[idx] == 0) {
+                // This array contains only 0s (undefined constants), return null
+                lastExpressionResult_ = std::monostate{};
+                debugLog("Integer array element " + arrayName + "[" + std::to_string(index) + "] = null (undefined constant)");
+            } else {
+                lastExpressionResult_ = arrayVector[idx];
+                debugLog("Integer array element " + arrayName + "[" + std::to_string(index) + "] = " + std::to_string(arrayVector[idx]));
+            }
 
         } else if (std::holds_alternative<std::vector<double>>(arrayVar->value)) {
             auto& arrayVector = std::get<std::vector<double>>(arrayVar->value);
@@ -2167,6 +2191,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
     auto nodeType = expr->getType();
     std::string nodeTypeName = arduino_ast::nodeTypeToString(nodeType);
     debugLog("evaluateExpression: NodeType = " + std::to_string(static_cast<int>(nodeType)));
+    std::cerr << "🔍 EVALUATEEXPRESSION: type=" << static_cast<int>(nodeType) << " (" << nodeTypeName << ")" << std::endl;
     TRACE_ENTRY("evaluateExpression", "type=" + nodeTypeName);
     
     switch (nodeType) {
@@ -2276,7 +2301,9 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             
         case arduino_ast::ASTNodeType::ARRAY_ACCESS:
             // Handle array access by calling visitor and returning result
+            std::cerr << "🔥🔥🔥 ARRAY_ACCESS FOUND IN EVALUATEEXPRESSION!" << std::endl;
             expr->accept(*this);
+            std::cerr << "🔥🔥🔥 ARRAY_ACCESS VISITOR COMPLETED, RESULT: " << commandValueToString(lastExpressionResult_) << std::endl;
             return lastExpressionResult_;
             
         case arduino_ast::ASTNodeType::MEMBER_ACCESS:

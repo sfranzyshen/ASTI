@@ -214,7 +214,7 @@ class CompactASTExporter {
             'ExpressionStatement': ['expression'],
             'MemberAccessNode': ['object', 'property'],
             'ParamNode': ['paramType', 'declarator', 'defaultValue'],
-            'ArrayAccessNode': ['object', 'index'],
+            'ArrayAccessNode': ['identifier', 'index'],
             'SwitchStatement': ['discriminant', 'cases'],
             'CaseStatement': ['test', 'consequent'],
             'RangeBasedForStatement': ['variable', 'iterable', 'body'],

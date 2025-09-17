@@ -770,6 +770,26 @@ void CompactASTReader::linkNodeChildren() {
                 } else {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
+            } else if (parentNode->getType() == ASTNodeType::ARRAY_ACCESS) {
+                DEBUG_OUT << "linkNodeChildren(): Found ARRAY_ACCESS parent node!" << std::endl;
+                auto* arrayAccessNode = dynamic_cast<arduino_ast::ArrayAccessNode*>(parentNode.get());
+                if (arrayAccessNode) {
+                    DEBUG_OUT << "linkNodeChildren(): Setting up ArrayAccessNode child " << childIndex << std::endl;
+
+                    // ArrayAccessNode expects 2 children in order: array (identifier), index
+                    if (!arrayAccessNode->getArray()) {
+                        DEBUG_OUT << "linkNodeChildren(): Setting array (identifier)" << std::endl;
+                        arrayAccessNode->setArray(std::move(nodes_[childIndex]));
+                    } else if (!arrayAccessNode->getIndex()) {
+                        DEBUG_OUT << "linkNodeChildren(): Setting index" << std::endl;
+                        arrayAccessNode->setIndex(std::move(nodes_[childIndex]));
+                    } else {
+                        DEBUG_OUT << "linkNodeChildren(): Too many children for array access, adding as generic child" << std::endl;
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
             } else if (parentNode->getType() == ASTNodeType::MEMBER_ACCESS) {
                 DEBUG_OUT << "linkNodeChildren(): Found MEMBER_ACCESS parent node!" << std::endl;
                 auto* memberAccessNode = dynamic_cast<arduino_ast::MemberAccessNode*>(parentNode.get());

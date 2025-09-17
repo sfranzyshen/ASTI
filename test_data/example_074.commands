@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758031972618,
+    "timestamp": 1758071889168,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758031972618,
+    "timestamp": 1758071889168,
     "message": "Program execution started"
   },
   {
@@ -16,7 +16,7 @@
     "library": "Servo",
     "variableName": "myServo",
     "constructorArgs": [],
-    "timestamp": 1758031972618,
+    "timestamp": 1758071889168,
     "message": "Servo()"
   },
   {
@@ -26,123 +26,123 @@
       "__type": "ArduinoObject",
       "className": "Servo",
       "constructorArgs": [],
-      "objectId": "Servo_1758031972618_6y1r0pc2v"
+      "objectId": "Servo_1758071889168_4z34icdva"
     },
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "piezo",
     "value": 14,
     "isConst": true,
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "switchPin",
     "value": 2,
     "isConst": true,
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "yellowLed",
     "value": 3,
     "isConst": true,
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "greenLed",
     "value": 4,
     "isConst": true,
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "redLed",
     "value": 5,
     "isConst": true,
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "knockVal",
     "value": null,
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "switchVal",
     "value": null,
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "quietKnock",
     "value": 10,
     "isConst": true,
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "loudKnock",
     "value": 100,
     "isConst": true,
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "locked",
     "value": false,
-    "timestamp": 1758031972618
+    "timestamp": 1758071889168
   },
   {
     "type": "VAR_SET",
     "variable": "numberOfKnocks",
     "value": 0,
-    "timestamp": 1758031972619
+    "timestamp": 1758071889168
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758031972619,
+    "timestamp": 1758071889168,
     "message": "Executing setup() function"
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Servo",
-    "object": "Servo_1758031972618_6y1r0pc2v",
+    "object": "Servo_1758071889168_4z34icdva",
     "variableName": "myServo",
     "method": "attach",
     "args": [
       9
     ],
     "message": "myServo.attach(9)",
-    "timestamp": 1758031972619
+    "timestamp": 1758071889169
   },
   {
     "type": "PIN_MODE",
     "pin": 3,
     "mode": 1,
-    "timestamp": 1758031972619
+    "timestamp": 1758071889169
   },
   {
     "type": "PIN_MODE",
     "pin": 5,
     "mode": 1,
-    "timestamp": 1758031972619
+    "timestamp": 1758071889169
   },
   {
     "type": "PIN_MODE",
     "pin": 4,
     "mode": 1,
-    "timestamp": 1758031972619
+    "timestamp": 1758071889169
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 0,
-    "timestamp": 1758031972619
+    "timestamp": 1758071889169
   },
   {
     "type": "FUNCTION_CALL",
@@ -151,26 +151,26 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758031972619,
+    "timestamp": 1758071889169,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 4,
     "value": 1,
-    "timestamp": 1758031972619
+    "timestamp": 1758071889169
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Servo",
-    "object": "Servo_1758031972618_6y1r0pc2v",
+    "object": "Servo_1758071889168_4z34icdva",
     "variableName": "myServo",
     "method": "write",
     "args": [
       0
     ],
     "message": "myServo.write(0)",
-    "timestamp": 1758031972619
+    "timestamp": 1758071889169
   },
   {
     "type": "FUNCTION_CALL",
@@ -179,22 +179,22 @@
       "\"the box is unlocked!\""
     ],
     "data": "the box is unlocked!",
-    "timestamp": 1758031972619,
+    "timestamp": 1758071889169,
     "message": "Serial.println(\"the box is unlocked!\")"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758031972619,
+    "timestamp": 1758071889169,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758031972619,
+    "timestamp": 1758071889169,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758031972619,
+    "timestamp": 1758071889169,
     "message": "Starting loop iteration 1"
   },
   {
@@ -202,40 +202,40 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758031972619
+    "timestamp": 1758071889169
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1758031972619
+    "timestamp": 1758071889169
   },
   {
     "type": "DIGITAL_READ_REQUEST",
     "pin": 2,
-    "requestId": "digitalRead_1758031972619_0.40805575595706056",
-    "timestamp": 1758031972619
+    "requestId": "digitalRead_000001",
+    "timestamp": 1758071889169
   },
   {
     "type": "VAR_SET",
     "variable": "switchVal",
     "value": 0,
-    "timestamp": 1758031972624
+    "timestamp": 1758071889175
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1758031972624
+    "timestamp": 1758071889175
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1758031972624
+    "timestamp": 1758071889175
   },
   {
     "type": "FUNCTION_CALL",
@@ -243,23 +243,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758031972624
+    "timestamp": 1758071889175
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758031972629,
+    "timestamp": 1758071889180,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758031972629,
+    "timestamp": 1758071889180,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758031972629,
+    "timestamp": 1758071889180,
     "message": "Program execution stopped"
   }
 ]

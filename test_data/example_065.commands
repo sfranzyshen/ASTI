@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758031972371,
+    "timestamp": 1758071888778,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758031972371,
+    "timestamp": 1758071888778,
     "message": "Program execution started"
   },
   {
@@ -16,18 +16,18 @@
     "variable": "sensorPin",
     "value": 14,
     "isConst": true,
-    "timestamp": 1758031972371
+    "timestamp": 1758071888778
   },
   {
     "type": "VAR_SET",
     "variable": "baselineTemp",
     "value": 20,
     "isConst": true,
-    "timestamp": 1758031972371
+    "timestamp": 1758071888778
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758031972371,
+    "timestamp": 1758071888779,
     "message": "Executing setup() function"
   },
   {
@@ -37,56 +37,56 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758031972371,
+    "timestamp": 1758071888779,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1758031972371,
+    "timestamp": 1758071888779,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "pinNumber",
     "value": 2,
-    "timestamp": 1758031972371
+    "timestamp": 1758071888779
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1758031972371,
+    "timestamp": 1758071888779,
     "message": "for loop iteration 0"
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 1,
-    "timestamp": 1758031972371
+    "timestamp": 1758071888779
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 2,
     "value": 0,
-    "timestamp": 1758031972371
+    "timestamp": 1758071888779
   },
   {
     "type": "VAR_SET",
     "variable": "pinNumber",
     "value": 3,
-    "timestamp": 1758031972371
+    "timestamp": 1758071888779
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1758031972376,
+    "timestamp": 1758071888784,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758031972376,
+    "timestamp": 1758071888784,
     "message": "Completed setup() function"
   }
 ]
