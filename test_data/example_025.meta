@@ -3,7 +3,7 @@ source=unknown
 astSize=1612
 codeSize=413
 mode=AST_AND_COMMANDS
-commandCount=20
+commandCount=17
 content=// 04.Communication MultiSerial.ino
 
 void setup() {

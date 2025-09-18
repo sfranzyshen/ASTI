@@ -30,59 +30,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
   }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
-  }, {
-    "type": "VAR_SET", "variable": "thisChar", "value": 65, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
-      "\"You sent me: '\""
-    ], "data": "You sent me: '", "timestamp": 0, "message": "Serial.print(\"You sent me: '\")"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "arguments": [
-      65
-    ], "timestamp": 0, "message": "Serial.write(65)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
-      "\"'  ASCII Value: \""
-    ], "data": "'  ASCII Value: ", "timestamp": 0, "message": "Serial.print(\"'  ASCII Value: \")"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
-  }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [], "timestamp": 0, "message": "Serial.println()"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"Give me another byte: \""
-    ], "data": "Give me another byte: ", "timestamp": 0, "message": "Serial.println(\"Give me another byte: \")"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [], "timestamp": 0, "message": "Serial.println()"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {
