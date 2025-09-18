@@ -229,6 +229,10 @@ void PointerDeclaratorNode::accept(ASTVisitor& visitor) {
     visitor.visit(*this);
 }
 
+void DesignatedInitializerNode::accept(ASTVisitor& visitor) {
+    visitor.visit(*this);
+}
+
 // =============================================================================
 // UTILITY FUNCTIONS
 // =============================================================================

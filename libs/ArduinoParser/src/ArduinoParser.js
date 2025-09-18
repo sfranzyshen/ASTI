@@ -2676,10 +2676,10 @@ class Parser {
             this.eat('IDENTIFIER');
             this.eat('ASSIGN');
             const value = this.parseAssignmentExpression();
-            return { 
-                type: 'DesignatedInitializerNode', 
-                field: fieldName, 
-                value: value 
+            return {
+                type: 'DesignatedInitializerNode',
+                field: { type: 'IdentifierNode', value: fieldName },
+                value: value
             };
         }
         

@@ -687,23 +687,35 @@ namespace FlexibleCommandFactory {
     // TONE OPERATIONS
     inline FlexibleCommand createTone(int32_t pin, int32_t frequency) {
         std::vector<std::variant<bool, int32_t, double, std::string>> args = {pin, frequency};
-        return FlexibleCommand("FUNCTION_CALL")
+        FlexibleCommand cmd = FlexibleCommand("FUNCTION_CALL")
             .set("function", std::string("tone"))
             .set("arguments", args)
             .set("pin", pin)
-            .set("frequency", frequency)
-            .set("message", std::string("tone(") + std::to_string(pin) + ", " + (frequency == -999 ? "undefined" : std::to_string(frequency)) + ")");
+            .set("message", std::string("tone(") + std::to_string(pin) + ", " + (frequency == -999 ? "null" : std::to_string(frequency)) + ")");
+
+        // Only set frequency field if it's not the null sentinel value (to match JavaScript)
+        if (frequency != -999) {
+            cmd.set("frequency", frequency);
+        }
+
+        return cmd;
     }
 
     inline FlexibleCommand createToneWithDuration(int32_t pin, int32_t frequency, int32_t duration) {
         std::vector<std::variant<bool, int32_t, double, std::string>> args = {pin, frequency, duration};
-        return FlexibleCommand("FUNCTION_CALL")
+        FlexibleCommand cmd = FlexibleCommand("FUNCTION_CALL")
             .set("function", std::string("tone"))
             .set("arguments", args)
             .set("pin", pin)
-            .set("frequency", frequency)
             .set("duration", duration)
-            .set("message", std::string("tone(") + std::to_string(pin) + ", " + (frequency == -999 ? "undefined" : std::to_string(frequency)) + ", " + std::to_string(duration) + ")");
+            .set("message", std::string("tone(") + std::to_string(pin) + ", " + (frequency == -999 ? "null" : std::to_string(frequency)) + ", " + std::to_string(duration) + ")");
+
+        // Only set frequency field if it's not the null sentinel value (to match JavaScript)
+        if (frequency != -999) {
+            cmd.set("frequency", frequency);
+        }
+
+        return cmd;
     }
 
     inline FlexibleCommand createNoTone(int32_t pin) {

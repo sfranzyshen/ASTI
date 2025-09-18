@@ -423,7 +423,11 @@ ASTNodePtr CompactASTReader::parseNode(size_t nodeIndex) {
             DEBUG_OUT << "parseNode(" << nodeIndex << "): Creating PointerDeclaratorNode" << std::endl;
             node = std::make_unique<PointerDeclaratorNode>();
             break;
-            
+        case ASTNodeType::DESIGNATED_INITIALIZER:
+            DEBUG_OUT << "parseNode(" << nodeIndex << "): Creating DesignatedInitializerNode" << std::endl;
+            node = std::make_unique<DesignatedInitializerNode>();
+            break;
+
         default:
             DEBUG_OUT << "parseNode(" << nodeIndex << "): Creating node via createNode for type " << static_cast<int>(nodeType) << std::endl;
             // Create generic node for unsupported types
@@ -785,6 +789,26 @@ void CompactASTReader::linkNodeChildren() {
                         arrayAccessNode->setIndex(std::move(nodes_[childIndex]));
                     } else {
                         DEBUG_OUT << "linkNodeChildren(): Too many children for array access, adding as generic child" << std::endl;
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
+            } else if (parentNode->getType() == ASTNodeType::ARRAY_DECLARATOR) {
+                DEBUG_OUT << "linkNodeChildren(): Found ARRAY_DECLARATOR parent node!" << std::endl;
+                auto* arrayDeclNode = dynamic_cast<arduino_ast::ArrayDeclaratorNode*>(parentNode.get());
+                if (arrayDeclNode) {
+                    DEBUG_OUT << "linkNodeChildren(): Setting up ArrayDeclaratorNode child " << childIndex << std::endl;
+
+                    // ArrayDeclaratorNode expects 2 children in order: identifier, size
+                    if (!arrayDeclNode->getIdentifier()) {
+                        DEBUG_OUT << "linkNodeChildren(): Setting identifier" << std::endl;
+                        arrayDeclNode->setIdentifier(std::move(nodes_[childIndex]));
+                    } else if (!arrayDeclNode->getSize()) {
+                        DEBUG_OUT << "linkNodeChildren(): Setting size" << std::endl;
+                        arrayDeclNode->setSize(std::move(nodes_[childIndex]));
+                    } else {
+                        DEBUG_OUT << "linkNodeChildren(): Too many children for array declarator, adding as generic child" << std::endl;
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }
                 } else {

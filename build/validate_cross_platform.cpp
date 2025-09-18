@@ -48,6 +48,12 @@ std::string normalizeJSON(const std::string& json) {
     // Normalize field ordering for DIGITAL_WRITE commands (common pattern)
     std::regex digitalWriteRegex(R"("type": "DIGITAL_WRITE",\s*"timestamp": 0,\s*"pin": (\d+),\s*"value": (\d+))");
     normalized = std::regex_replace(normalized, digitalWriteRegex, R"("type": "DIGITAL_WRITE", "pin": $1, "value": $2, "timestamp": 0)");
+
+    // LOOP_LIMIT_REACHED field reordering - C++ vs JS field order difference
+    std::string loopPattern = "\"type\": \"LOOP_LIMIT_REACHED\", \"timestamp\": 0, \"message\": \"([^\"]+)\", \"iterations\": ([0-9]+), \"phase\": \"([^\"]+)\"";
+    std::string loopReplacement = "\"type\": \"LOOP_LIMIT_REACHED\", \"phase\": \"$3\", \"iterations\": $2, \"timestamp\": 0, \"message\": \"$1\"";
+    std::regex loopPhaseRegex(loopPattern);
+    normalized = std::regex_replace(normalized, loopPhaseRegex, loopReplacement);
     
     // Normalize decimal number formatting - C++ outputs 5.0000000000, JS outputs 5
     std::regex decimalNormRegex(R"((\d+)\.0+(?!\d))");  // Match integers with trailing zeros
@@ -64,10 +70,6 @@ std::string normalizeJSON(const std::string& json) {
     std::regex sensorVarSetRegex(R"("VAR_SET",\s*"variable":\s*"sensorValue",\s*"value":\s*\d+)");
     normalized = std::regex_replace(normalized, sensorVarSetRegex, R"("VAR_SET", "variable": "sensorValue", "value": 0)");
 
-    // VAR_SET for sensorReading (from analogRead - test 11)
-    std::regex sensorReadingVarSetRegex(R"("VAR_SET",\s*"variable":\s*"sensorReading",\s*"value":\s*\d+)");
-    normalized = std::regex_replace(normalized, sensorReadingVarSetRegex, R"("VAR_SET", "variable": "sensorReading", "value": 0)");
-    
     // VAR_SET for voltage (calculated from sensorValue)  
     std::regex voltageVarSetRegex(R"("VAR_SET",\s*"variable":\s*"voltage",\s*"value":\s*[\d.]+)");
     normalized = std::regex_replace(normalized, voltageVarSetRegex, R"("VAR_SET", "variable": "voltage", "value": 0)");
@@ -84,13 +86,6 @@ std::string normalizeJSON(const std::string& json) {
     std::regex serialMsgRegex(R"~("message":\s*"Serial\.println\([\d.]+\)")~");
     normalized = std::regex_replace(normalized, serialMsgRegex, R"~("message": "Serial.println(0)")~");
 
-    // Remove extra frequency field from tone function calls (C++ adds this, JS doesn't)
-    std::regex frequencyFieldRegex(R"(,\s*"frequency":\s*null)");
-    normalized = std::regex_replace(normalized, frequencyFieldRegex, "");
-
-    // Normalize LOOP_LIMIT_REACHED field ordering (phase vs timestamp first)
-    std::regex loopLimitRegex("\"LOOP_LIMIT_REACHED\",\\s*\"phase\":\\s*\"([^\"]+)\",\\s*\"iterations\":\\s*(\\d+),\\s*\"timestamp\":\\s*0,\\s*\"message\":\\s*\"([^\"]+)\"");
-    normalized = std::regex_replace(normalized, loopLimitRegex, "\"LOOP_LIMIT_REACHED\", \"timestamp\": 0, \"message\": \"$3\", \"iterations\": $2, \"phase\": \"$1\"");
 
     return normalized;
 }

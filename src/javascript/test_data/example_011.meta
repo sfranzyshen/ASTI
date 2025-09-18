@@ -1,18 +1,16 @@
 name=toneKeyboard.ino
 source=unknown
-astSize=1554
-codeSize=533
+astSize=1599
+codeSize=499
 mode=AST_AND_COMMANDS
 commandCount=19
 content=// 02.Digital toneKeyboard.ino
-
-#include "pitches.h"
 
 const int threshold = 10;
 
 // notes to play, corresponding to the 3 sensors:
 int notes[] = {
-  NOTE_A4, NOTE_B4, NOTE_C3
+  440, 494, 131
 };
 
 void setup() {

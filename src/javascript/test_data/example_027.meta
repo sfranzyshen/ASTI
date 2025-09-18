@@ -3,7 +3,7 @@ source=unknown
 astSize=2527
 codeSize=1195
 mode=AST_AND_COMMANDS
-commandCount=21
+commandCount=28
 content=// 04.Communication ReadASCIIString.ino
 
 // pins for the LEDs:

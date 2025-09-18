@@ -992,6 +992,17 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
     std::cerr << "*** VARDECLNODE VISITOR CALLED! ***" << std::endl;
     debugLog("Declaring variable");
 
+    const auto& children = node.getChildren();
+    std::cerr << "🔍🔍🔍 VarDeclNode has " << children.size() << " children" << std::endl;
+    for (size_t i = 0; i < children.size(); ++i) {
+        if (children[i]) {
+            auto nodeType = children[i]->getType();
+            std::cerr << "🔍🔍🔍 Child " << i << " type: " << static_cast<int>(nodeType) << std::endl;
+        } else {
+            std::cerr << "🔍🔍🔍 Child " << i << " is null" << std::endl;
+        }
+    }
+
     // Get type information from TypeNode
     const auto* typeNode = node.getVarType();
     std::string typeName = "int"; // Default fallback
@@ -1024,32 +1035,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
         }
         debugLog("Declaration " + std::to_string(i) + " type: " + std::to_string(static_cast<int>(declarator->getType())));
         
-        if (auto* arrayDeclNode = dynamic_cast<arduino_ast::ArrayDeclaratorNode*>(declarator.get())) {
-            // Handle ArrayDeclaratorNode directly (like int notes[] = {...})
-            debugLog("*** FOUND DIRECT ARRAY_DECLARATOR NODE ***");
-            std::cerr << "*** DIRECT ARRAY FOUND IN DECLARATIONS ***" << std::endl;
-
-            std::string varName = "notes"; // For now, hardcode the name we're looking for
-            if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(arrayDeclNode->getIdentifier())) {
-                varName = identifier->getName();
-            }
-
-            // Create default array with null values to match JavaScript behavior
-            std::vector<int32_t> defaultArray = {0, 0, 0};  // Will be converted to null in FlexibleCommand
-            Variable arrayVar(defaultArray, "int[]", false, false, false, scopeManager_->isGlobalScope());
-            scopeManager_->setVariable(varName, arrayVar);
-
-            // Create FlexibleCommand array format manually - will be changed to null in JSON serialization
-            std::vector<std::variant<bool, int32_t, double, std::string>> flexArray;
-            for (size_t i = 0; i < defaultArray.size(); ++i) {
-                flexArray.push_back(-999);  // Special sentinel value to be converted to null in JSON
-            }
-
-            // Emit VAR_SET command
-            debugLog("Emitting VAR_SET for array: " + varName);
-            emitCommand(FlexibleCommandFactory::createVarSet(varName, flexArray));
-
-        } else if (auto* declNode = dynamic_cast<arduino_ast::DeclaratorNode*>(declarator.get())) {
+        if (auto* declNode = dynamic_cast<arduino_ast::DeclaratorNode*>(declarator.get())) {
             std::string varName = declNode->getName();
 
             debugLog("=== DEBUGGING DECLARATOR NODE ===");
@@ -1259,7 +1245,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
         } else if (auto* arrayDeclNode = dynamic_cast<arduino_ast::ArrayDeclaratorNode*>(declarator.get())) {
             // Handle ArrayDeclaratorNode (like int notes[] = {...})
             debugLog("=== DEBUGGING ARRAY DECLARATOR NODE ===");
-            std::string varName = "notes"; // For now, hardcode the name we're looking for
+            std::string varName = "unknown_array";
             if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(arrayDeclNode->getIdentifier())) {
                 varName = identifier->getName();
             }
@@ -1267,23 +1253,55 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             debugLog("Array variable name: " + varName);
             std::cerr << "*** PROCESSING ARRAY VARIABLE: " << varName << " ***" << std::endl;
 
-            // CROSS-PLATFORM FIX: Always emit VAR_SET for arrays to match JavaScript behavior
-            // JavaScript creates arrays even when initializers have undefined constants
-            std::vector<int32_t> defaultArray = {0, 0, 0}; // Will be converted to null in FlexibleCommand
+            // CROSS-PLATFORM FIX: Check for ArrayInitializerNode to get real values
+            std::vector<int32_t> arrayValues;
+            bool foundInitializer = false;
 
-            // Store array in scope manager
-            Variable arrayVar(defaultArray, "int[]", false, false, false, scopeManager_->isGlobalScope());
-            scopeManager_->setVariable(varName, arrayVar);
-
-            // Create FlexibleCommand array format for VAR_SET - will be changed to null in JSON serialization
-            std::vector<std::variant<bool, int32_t, double, std::string>> flexArray;
-            for (size_t i = 0; i < defaultArray.size(); ++i) {
-                flexArray.push_back(-999);  // Special sentinel value to be converted to null in JSON
+            // Look for ArrayInitializerNode in VarDeclNode children (not ArrayDeclaratorNode children)
+            const auto& allChildren = node.getChildren();
+            for (size_t i = 0; i < allChildren.size(); ++i) {
+                if (allChildren[i]) {
+                    auto childType = allChildren[i]->getType();
+                    if (childType == arduino_ast::ASTNodeType::ARRAY_INIT) {
+                        // Process ArrayInitializerNode to get real values
+                        if (auto* arrayInitNode = dynamic_cast<arduino_ast::ArrayInitializerNode*>(allChildren[i].get())) {
+                            const auto& initChildren = arrayInitNode->getChildren();
+                            for (size_t j = 0; j < initChildren.size(); ++j) {
+                                if (initChildren[j]) {
+                                    CommandValue elementValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(initChildren[j].get()));
+                                    if (std::holds_alternative<double>(elementValue)) {
+                                        arrayValues.push_back(static_cast<int32_t>(std::get<double>(elementValue)));
+                                    } else if (std::holds_alternative<int32_t>(elementValue)) {
+                                        arrayValues.push_back(std::get<int32_t>(elementValue));
+                                    } else {
+                                        arrayValues.push_back(0); // Default for non-numeric
+                                    }
+                                }
+                            }
+                            foundInitializer = true;
+                        }
+                        break;
+                    }
+                }
             }
 
-            // Emit VAR_SET command
-            debugLog("Emitting VAR_SET for array: " + varName);
-            emitCommand(FlexibleCommandFactory::createVarSet(varName, flexArray));
+            if (!foundInitializer) {
+                // Fallback to default array
+                arrayValues = {0, 0, 0};
+            }
+
+            // Store array in scope manager
+            Variable arrayVar(arrayValues, "int[]", false, false, false, scopeManager_->isGlobalScope());
+            scopeManager_->setVariable(varName, arrayVar);
+
+            // Emit VAR_SET command for array
+            std::cerr << "🚀🚀🚀 EMITTING ARRAY VARDECL: " << varName << " size=" << arrayValues.size() << " values [";
+            for (size_t k = 0; k < arrayValues.size(); ++k) {
+                if (k > 0) std::cerr << ", ";
+                std::cerr << arrayValues[k];
+            }
+            std::cerr << "]" << std::endl;
+            emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(CommandValue(arrayValues))));
 
         } else {
             debugLog("Declaration " + std::to_string(i) + " is not a DeclaratorNode or ArrayDeclaratorNode, skipping");
@@ -2212,7 +2230,6 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         case arduino_ast::ASTNodeType::IDENTIFIER:
             if (auto* idNode = dynamic_cast<arduino_ast::IdentifierNode*>(expr)) {
                 std::string name = idNode->getName();
-                std::cerr << "🔍 IDENTIFIER LOOKUP: " << name << std::endl;
                 debugLog("evaluateExpression: Looking up identifier '" + name + "'");
 
                 // Special handling for built-in objects like Serial
@@ -2293,10 +2310,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                 
                 std::vector<CommandValue> args;
                 for (const auto& arg : funcNode->getArguments()) {
-                    std::cerr << "🎯 EVALUATING ARG: type=" << static_cast<int>(arg->getType()) << std::endl;
-                    CommandValue argValue = evaluateExpression(arg.get());
-                    std::cerr << "🎯 ARG RESULT: " << commandValueToString(argValue) << std::endl;
-                    args.push_back(argValue);
+                    args.push_back(evaluateExpression(arg.get()));
                 }
                 
                 return executeArduinoFunction(functionName, args);
@@ -2915,36 +2929,13 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
     // Sound functions
     else if (name == "tone" && args.size() >= 2) {
         int32_t pin = convertToInt(args[0]);
-
-        // CROSS-PLATFORM FIX: Handle null frequency (undefined array elements)
-        int32_t frequency;
-        std::cerr << "🎵 TONE FUNCTION: args[1] type check - is monostate? " << std::holds_alternative<std::monostate>(args[1]) << std::endl;
-        if (std::holds_alternative<std::monostate>(args[1])) {
-            std::cerr << "🎵 TONE: Found NULL frequency, using special -999 value" << std::endl;
-            frequency = 0;  // Convert null to 0 for tone function, but preserve null in command
-        } else {
-            std::cerr << "🎵 TONE: Converting frequency normally" << std::endl;
-            frequency = convertToInt(args[1]);
-        }
+        int32_t frequency = convertToInt(args[1]);
 
         if (args.size() > 2) {
             int32_t duration = convertToInt(args[2]);
-
-            // CROSS-PLATFORM FIX: Check if frequency should be null
-            if (std::holds_alternative<std::monostate>(args[1])) {
-                // Use special frequency value -999 to indicate null (FlexibleCommand converts this to null in JSON)
-                emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, -999, duration));
-            } else {
-                emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, frequency, duration));
-            }
+            emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, frequency, duration));
         } else {
-            // CROSS-PLATFORM FIX: Check if frequency should be null
-            if (std::holds_alternative<std::monostate>(args[1])) {
-                // Use special frequency value -999 to indicate null (FlexibleCommand converts this to null in JSON)
-                emitCommand(FlexibleCommandFactory::createTone(pin, -999));
-            } else {
-                emitCommand(FlexibleCommandFactory::createTone(pin, frequency));
-            }
+            emitCommand(FlexibleCommandFactory::createTone(pin, frequency));
         }
         return std::monostate{};
     }
@@ -3420,36 +3411,12 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         // tone(pin, frequency) or tone(pin, frequency, duration)
         if (args.size() >= 2) {
             int32_t pin = convertToInt(args[0]);
-
-            // CROSS-PLATFORM FIX: Handle null frequency (undefined array elements)
-            int32_t frequency;
-            std::cerr << "🎵🎵 SECOND TONE FUNCTION: args[1] type check - is monostate? " << std::holds_alternative<std::monostate>(args[1]) << std::endl;
-            if (std::holds_alternative<std::monostate>(args[1])) {
-                std::cerr << "🎵🎵 SECOND TONE: Found NULL frequency, using special -999 value" << std::endl;
-                frequency = 0;  // Convert null to 0 for tone function, but preserve null in command
-            } else {
-                std::cerr << "🎵🎵 SECOND TONE: Converting frequency normally" << std::endl;
-                frequency = convertToInt(args[1]);
-            }
-
+            int32_t frequency = convertToInt(args[1]);
             if (args.size() >= 3) {
                 int32_t duration = convertToInt(args[2]);
-
-                // CROSS-PLATFORM FIX: Check if frequency should be null
-                if (std::holds_alternative<std::monostate>(args[1])) {
-                    // Use special frequency value -999 to indicate null (FlexibleCommand converts this to null in JSON)
-                    emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, -999, duration));
-                } else {
-                    emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, frequency, duration));
-                }
+                emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, frequency, duration));
             } else {
-                // CROSS-PLATFORM FIX: Check if frequency should be null
-                if (std::holds_alternative<std::monostate>(args[1])) {
-                    // Use special frequency value -999 to indicate null (FlexibleCommand converts this to null in JSON)
-                    emitCommand(FlexibleCommandFactory::createTone(pin, -999));
-                } else {
-                    emitCommand(FlexibleCommandFactory::createTone(pin, frequency));
-                }
+                emitCommand(FlexibleCommandFactory::createTone(pin, frequency));
             }
             auto functionEnd = std::chrono::steady_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(functionEnd - functionStart);

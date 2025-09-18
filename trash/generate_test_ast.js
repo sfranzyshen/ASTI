@@ -1,21 +1,38 @@
+#!/usr/bin/env node
+
+/**
+ * Generate a simple test AST file for C++ cross-platform testing
+ */
+
 const fs = require('fs');
-const { Parser, exportCompactAST } = require('./ArduinoParser.js');
+const { parse } = require('./libs/ArduinoParser/src/ArduinoParser.js');
+const { exportCompactAST } = require('./libs/CompactAST/src/CompactAST.js');
 
-// Simple test code  
-const code = 'int x = 5; void setup() { Serial.println(x); } void loop() { delay(1000); }';
+const simpleCode = `
+void setup() {
+    int x = 42;
+    Serial.begin(9600);
+}
 
-console.log('Parsing Arduino code...');
-const parser = new Parser(code);
-const ast = parser.parse();
+void loop() {
+    Serial.println(x);
+}`;
 
-if (ast && !ast.parseError) {
-    console.log('Parsing successful, generating binary AST...');
-    console.log('Root node type:', ast.type);
-    console.log('Root node structure:', JSON.stringify(ast, null, 2).substring(0, 200) + '...');
-    const binaryAST = exportCompactAST(ast);
-    fs.writeFileSync('test_continuation.ast', Buffer.from(binaryAST));
-    console.log('Binary AST written to test_continuation.ast');
-    console.log('Binary size:', binaryAST.length, 'bytes');
-} else {
-    console.log('Parse error:', ast?.parseError || 'Unknown error');
+console.log('Generating test AST file...');
+console.log('Code:', simpleCode.trim());
+
+try {
+    const ast = parse(simpleCode);
+    console.log('✓ Parsing successful');
+    
+    const binaryData = exportCompactAST(ast);
+    console.log(`✓ Serialization successful - ${binaryData.byteLength} bytes`);
+    
+    const buffer = Buffer.from(binaryData);
+    fs.writeFileSync('test_simple.ast', buffer);
+    console.log('✓ Written to test_simple.ast');
+    
+} catch (error) {
+    console.log('✗ Error:', error.message);
+    process.exit(1);
 }

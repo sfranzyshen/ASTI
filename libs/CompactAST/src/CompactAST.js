@@ -86,6 +86,7 @@ class CompactASTExporter {
             'IdentifierNode': 0x43,
             'ConstantNode': 0x44,
             'ArrayInitializerNode': 0x45,
+            'DesignatedInitializerNode': 0x47,
             'TypeNode': 0x50,
             'DeclaratorNode': 0x51,
             'ParamNode': 0x52,
@@ -215,12 +216,15 @@ class CompactASTExporter {
             'MemberAccessNode': ['object', 'property'],
             'ParamNode': ['paramType', 'declarator', 'defaultValue'],
             'ArrayAccessNode': ['identifier', 'index'],
+            'ArrayInitializerNode': ['elements'],
+            'DesignatedInitializerNode': ['value'],
             'SwitchStatement': ['discriminant', 'cases'],
             'CaseStatement': ['test', 'consequent'],
             'RangeBasedForStatement': ['variable', 'iterable', 'body'],
             'TernaryExpression': ['condition', 'consequent', 'alternate'],
             'PostfixExpressionNode': ['operand'],
-            'CommaExpression': ['left', 'right']
+            'CommaExpression': ['left', 'right'],
+            'ArrayDeclaratorNode': ['identifier', 'size']
         };
         
         return childrenMap[node.type] || [];
