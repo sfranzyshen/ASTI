@@ -3,7 +3,7 @@ source=unknown
 astSize=2196
 codeSize=1039
 mode=AST_AND_COMMANDS
-commandCount=16
+commandCount=31
 content=// 03.Analog Smoothing.ino
 
 // Define the number of samples to keep track of.

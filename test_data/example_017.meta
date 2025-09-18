@@ -3,7 +3,7 @@ source=unknown
 astSize=1933
 codeSize=843
 mode=AST_AND_COMMANDS
-commandCount=12
+commandCount=31
 content=// 03.Analog AnalogWriteMega.ino
 
 // These constants won't change. They're used to give names to the pins used:

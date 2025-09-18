@@ -44,23 +44,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
   }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
-  }, {
-    "type": "VAR_SET", "variable": "inChar", "value": 65, "timestamp": 0
-  }, {
-    "type": "SWITCH_STATEMENT", "discriminant": 65, "timestamp": 0, "message": "switch (65)"
-  }, {
-    "type": "SWITCH_CASE", "caseValue": 117, "matched": false, "timestamp": 0
-  }, {
-    "type": "SWITCH_CASE", "caseValue": 100, "matched": false, "timestamp": 0
-  }, {
-    "type": "SWITCH_CASE", "caseValue": 108, "matched": false, "timestamp": 0
-  }, {
-    "type": "SWITCH_CASE", "caseValue": 114, "matched": false, "timestamp": 0
-  }, {
-    "type": "SWITCH_CASE", "caseValue": 109, "matched": false, "timestamp": 0
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {

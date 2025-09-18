@@ -3,7 +3,7 @@ source=unknown
 astSize=2105
 codeSize=821
 mode=AST_AND_COMMANDS
-commandCount=11
+commandCount=20
 content=// 05.Control switchCase2.ino
 
 void setup() {

@@ -3,7 +3,7 @@ source=unknown
 astSize=2334
 codeSize=1530
 mode=AST_AND_COMMANDS
-commandCount=16
+commandCount=31
 content=// 10.StarterKit_BasicKit p08_DigitalHourglass
 
 // named constant for the switch pin

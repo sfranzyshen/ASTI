@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758202919555,
+    "timestamp": 1758203922749,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758202919555,
+    "timestamp": 1758203922749,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758202919555,
+    "timestamp": 1758203922749,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758202919555,
+    "timestamp": 1758203922749,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758202919555,
+    "timestamp": 1758203922749,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758202919555,
+    "timestamp": 1758203922749,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758202919555,
+    "timestamp": 1758203922749,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,37 +46,37 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758202919555
+    "timestamp": 1758203922749
   },
   {
     "type": "VAR_SET",
     "variable": "a",
     "value": 10,
-    "timestamp": 1758202919555
+    "timestamp": 1758203922749
   },
   {
     "type": "VAR_SET",
     "variable": "b",
     "value": 3,
-    "timestamp": 1758202919555
+    "timestamp": 1758203922749
   },
   {
     "type": "VAR_SET",
     "variable": "result1",
     "value": 3.3333333333333335,
-    "timestamp": 1758202919555
+    "timestamp": 1758203922749
   },
   {
     "type": "VAR_SET",
     "variable": "result2",
     "value": 3.3333333333333335,
-    "timestamp": 1758202919555
+    "timestamp": 1758203922749
   },
   {
     "type": "VAR_SET",
     "variable": "result3",
     "value": 35.5,
-    "timestamp": 1758202919555
+    "timestamp": 1758203922749
   },
   {
     "type": "FUNCTION_CALL",
@@ -85,7 +85,7 @@
       "\"Result 1 (int div, cast): \""
     ],
     "data": "Result 1 (int div, cast): ",
-    "timestamp": 1758202919556,
+    "timestamp": 1758203922749,
     "message": "Serial.print(\"Result 1 (int div, cast): \")"
   },
   {
@@ -95,7 +95,7 @@
       "3.3333333333333335"
     ],
     "data": "3.3333333333333335",
-    "timestamp": 1758202919556,
+    "timestamp": 1758203922749,
     "message": "Serial.println(3.3333333333333335)"
   },
   {
@@ -105,7 +105,7 @@
       "\"Result 2 (float div): \""
     ],
     "data": "Result 2 (float div): ",
-    "timestamp": 1758202919556,
+    "timestamp": 1758203922749,
     "message": "Serial.print(\"Result 2 (float div): \")"
   },
   {
@@ -115,7 +115,7 @@
       "3.3333333333333335"
     ],
     "data": "3.3333333333333335",
-    "timestamp": 1758202919556,
+    "timestamp": 1758203922749,
     "message": "Serial.println(3.3333333333333335)"
   },
   {
@@ -125,7 +125,7 @@
       "\"Result 3 (mixed): \""
     ],
     "data": "Result 3 (mixed): ",
-    "timestamp": 1758202919556,
+    "timestamp": 1758203922749,
     "message": "Serial.print(\"Result 3 (mixed): \")"
   },
   {
@@ -135,7 +135,7 @@
       "35.5"
     ],
     "data": "35.5",
-    "timestamp": 1758202919556,
+    "timestamp": 1758203922749,
     "message": "Serial.println(35.5)"
   },
   {
@@ -144,23 +144,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758202919556
+    "timestamp": 1758203922749
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758202919560,
+    "timestamp": 1758203922754,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758202919560,
+    "timestamp": 1758203922754,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758202919560,
+    "timestamp": 1758203922754,
     "message": "Program execution stopped"
   }
 ]

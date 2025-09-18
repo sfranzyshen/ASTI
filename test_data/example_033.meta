@@ -3,7 +3,7 @@ source=unknown
 astSize=2096
 codeSize=813
 mode=AST_AND_COMMANDS
-commandCount=13
+commandCount=28
 content=// 05.Control Arrays.ino
 
 int timer = 100;

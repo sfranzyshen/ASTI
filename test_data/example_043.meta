@@ -3,7 +3,7 @@ source=unknown
 astSize=3339
 codeSize=1976
 mode=AST_AND_COMMANDS
-commandCount=17
+commandCount=54
 content=// 07.Display RowColumnScanning.ino
 
 // 2-dimensional array of row pin numbers:

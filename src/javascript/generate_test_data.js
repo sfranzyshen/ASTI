@@ -214,7 +214,8 @@ function generateCommandsOptimized(ast, example) {
             
             const commands = [];
             let done = false;
-            
+            let inSetupContext = false; // Track if we're in setup() execution
+
             interpreter.onCommand = (cmd) => {
                 // Capture command exactly as JavaScript interpreter produces it
                 commands.push(cmd);
@@ -251,13 +252,12 @@ function generateCommandsOptimized(ast, example) {
                 if (cmd.type === 'PROGRAM_END' || cmd.type === 'ERROR') {
                     done = true;
                 } else if (cmd.type === 'LOOP_LIMIT_REACHED') {
-                    // For for-loops in loop() function, wait for additional termination commands
-                    // For for-loops in setup() function, this might be the final command
+                    // Wait for termination commands after LOOP_LIMIT_REACHED
                     setTimeout(() => {
                         if (!done) {
-                            done = true; // Timeout fallback for cases where LOOP_LIMIT_REACHED is actually final
+                            done = true; // Timeout fallback
                         }
-                    }, 100); // Give 100ms for any follow-up commands
+                    }, 100); // Give time for termination commands
                 }
             };
             

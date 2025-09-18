@@ -1,21 +1,21 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758202917106,
+    "timestamp": 1758203920896,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758202917106,
+    "timestamp": 1758203920896,
     "message": "Program execution started"
   },
   {
     "type": "VAR_SET",
     "variable": "timer",
     "value": 100,
-    "timestamp": 1758202917106
+    "timestamp": 1758203920896
   },
   {
     "type": "VAR_SET",
@@ -28,60 +28,152 @@
       5,
       3
     ],
-    "timestamp": 1758202917106
+    "timestamp": 1758203920896
   },
   {
     "type": "VAR_SET",
     "variable": "pinCount",
     "value": 6,
-    "timestamp": 1758202917106
+    "timestamp": 1758203920896
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758202917106,
+    "timestamp": 1758203920896,
     "message": "Executing setup() function"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1758202917106,
+    "timestamp": 1758203920896,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "thisPin",
     "value": 0,
-    "timestamp": 1758202917106
+    "timestamp": 1758203920896
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1758202917106,
+    "timestamp": 1758203920896,
     "message": "for loop iteration 0"
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 1,
-    "timestamp": 1758202917106
+    "timestamp": 1758203920896
   },
   {
     "type": "VAR_SET",
     "variable": "thisPin",
     "value": 1,
-    "timestamp": 1758202917106
+    "timestamp": 1758203920896
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1758202917111,
+    "timestamp": 1758203920901,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758202917111,
+    "timestamp": 1758203920901,
     "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1758203920901,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1758203920901,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1758203920901
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1758203920901,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisPin",
+    "value": 0,
+    "timestamp": 1758203920901
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1758203920901,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "DIGITAL_WRITE",
+    "pin": 2,
+    "value": 1,
+    "timestamp": 1758203920901
+  },
+  {
+    "type": "DELAY",
+    "duration": 100,
+    "actualDelay": 100,
+    "timestamp": 1758203920901
+  },
+  {
+    "type": "DIGITAL_WRITE",
+    "pin": 2,
+    "value": 0,
+    "timestamp": 1758203920901
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisPin",
+    "value": 1,
+    "timestamp": 1758203920901
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "phase": "end",
+    "iterations": 1,
+    "timestamp": 1758203920906,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1758203920906
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1758203920912,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1758203920912,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1758203920912,
+    "message": "Program execution stopped"
   }
 ]
