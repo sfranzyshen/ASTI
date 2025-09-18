@@ -34,7 +34,21 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
   }, {
-    "type": "WHILE_LOOP", "phase": "end", "iterations": 0, "timestamp": 0, "message": "while loop completed (0 iterations)"
+    "type": "WHILE_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "while loop iteration 0"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "inChar", "value": "6", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "inputString", "value": {
+      "value": "6"
+    }, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "While loop limit reached: completed 1 iterations (max: 1)"
   }, {
     "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
   }, {

@@ -3,7 +3,7 @@ source=unknown
 astSize=1809
 codeSize=783
 mode=AST_AND_COMMANDS
-commandCount=25
+commandCount=19
 content=// 04.Communication SerialEvent.ino
 
 String inputString = "";
