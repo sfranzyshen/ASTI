@@ -36,17 +36,17 @@
   }, {
     "type": "VAR_SET", "variable": "val2", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Val 1: )", "timestamp": 0, "arguments": [
-      "Val 1: "
-    ], "data": "Val 1: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Val 1: \""
+    ], "data": "Val 1: ", "timestamp": 0, "message": "Serial.print(\"Val 1: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Val 2: )", "timestamp": 0, "arguments": [
-      "Val 2: "
-    ], "data": "Val 2: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Val 2: \""
+    ], "data": "Val 2: ", "timestamp": 0, "message": "Serial.print(\"Val 2: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "undefined"

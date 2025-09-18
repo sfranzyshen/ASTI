@@ -46,9 +46,9 @@
   }, {
     "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(J is: )", "timestamp": 0, "arguments": [
-      "J is: "
-    ], "data": "J is: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"J is: \""
+    ], "data": "J is: ", "timestamp": 0, "message": "Serial.print(\"J is: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

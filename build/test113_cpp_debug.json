@@ -26,9 +26,9 @@
       10, 20, 30
     ], "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(First element: )", "timestamp": 0, "arguments": [
-      "First element: "
-    ], "data": "First element: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"First element: \""
+    ], "data": "First element: ", "timestamp": 0, "message": "Serial.print(\"First element: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Pointer dereference requires pointer variable", "errorType": "RuntimeError"
   }, {
@@ -42,9 +42,9 @@
       10, 20, 30
     ], "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Next element: )", "timestamp": 0, "arguments": [
-      "Next element: "
-    ], "data": "Next element: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Next element: \""
+    ], "data": "Next element: ", "timestamp": 0, "message": "Serial.print(\"Next element: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Pointer dereference requires pointer variable", "errorType": "RuntimeError"
   }, {
@@ -56,9 +56,9 @@
   }, {
     "type": "VAR_SET", "variable": "nextVal", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Next value with arithmetic: )", "timestamp": 0, "arguments": [
-      "Next value with arithmetic: "
-    ], "data": "Next value with arithmetic: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Next value with arithmetic: \""
+    ], "data": "Next value with arithmetic: ", "timestamp": 0, "message": "Serial.print(\"Next value with arithmetic: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "undefined"

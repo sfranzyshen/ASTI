@@ -40,29 +40,29 @@
   }, {
     "type": "VAR_SET", "variable": "z", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(a: )", "timestamp": 0, "arguments": [
-      "a: "
-    ], "data": "a: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"a: \""
+    ], "data": "a: ", "timestamp": 0, "message": "Serial.print(\"a: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(x: )", "timestamp": 0, "arguments": [
-      "x: "
-    ], "data": "x: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"x: \""
+    ], "data": "x: ", "timestamp": 0, "message": "Serial.print(\"x: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(y: )", "timestamp": 0, "arguments": [
-      "y: "
-    ], "data": "y: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"y: \""
+    ], "data": "y: ", "timestamp": 0, "message": "Serial.print(\"y: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(z: )", "timestamp": 0, "arguments": [
-      "z: "
-    ], "data": "z: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"z: \""
+    ], "data": "z: ", "timestamp": 0, "message": "Serial.print(\"z: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "undefined"
@@ -74,9 +74,9 @@
   }, {
     "type": "VAR_SET", "variable": "result", "value": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Final result: )", "timestamp": 0, "arguments": [
-      "Final result: "
-    ], "data": "Final result: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Final result: \""
+    ], "data": "Final result: ", "timestamp": 0, "message": "Serial.print(\"Final result: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

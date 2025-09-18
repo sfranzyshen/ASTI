@@ -26,9 +26,9 @@
   }, {
     "type": "VAR_SET", "variable": "area", "value": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Area of circle: )", "timestamp": 0, "arguments": [
-      "Area of circle: "
-    ], "data": "Area of circle: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Area of circle: \""
+    ], "data": "Area of circle: ", "timestamp": 0, "message": "Serial.print(\"Area of circle: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

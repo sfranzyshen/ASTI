@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758214846387,
+    "timestamp": 1758216797540,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758214846387,
+    "timestamp": 1758216797540,
     "message": "Program execution started"
   },
   {
@@ -16,49 +16,49 @@
     "variable": "buttonPin",
     "value": 2,
     "isConst": true,
-    "timestamp": 1758214846387
+    "timestamp": 1758216797540
   },
   {
     "type": "VAR_SET",
     "variable": "ledPin",
     "value": 13,
     "isConst": true,
-    "timestamp": 1758214846387
+    "timestamp": 1758216797540
   },
   {
     "type": "VAR_SET",
     "variable": "buttonPushCounter",
     "value": 0,
-    "timestamp": 1758214846388
+    "timestamp": 1758216797540
   },
   {
     "type": "VAR_SET",
     "variable": "buttonState",
     "value": 0,
-    "timestamp": 1758214846388
+    "timestamp": 1758216797540
   },
   {
     "type": "VAR_SET",
     "variable": "lastButtonState",
     "value": 0,
-    "timestamp": 1758214846388
+    "timestamp": 1758216797540
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758214846388,
+    "timestamp": 1758216797540,
     "message": "Executing setup() function"
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 0,
-    "timestamp": 1758214846388
+    "timestamp": 1758216797540
   },
   {
     "type": "PIN_MODE",
     "pin": 13,
     "mode": 1,
-    "timestamp": 1758214846388
+    "timestamp": 1758216797540
   },
   {
     "type": "FUNCTION_CALL",
@@ -67,22 +67,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758214846388,
+    "timestamp": 1758216797540,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758214846388,
+    "timestamp": 1758216797540,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758214846388,
+    "timestamp": 1758216797540,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758214846388,
+    "timestamp": 1758216797540,
     "message": "Starting loop iteration 1"
   },
   {
@@ -90,45 +90,45 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758214846388
+    "timestamp": 1758216797540
   },
   {
     "type": "DIGITAL_READ_REQUEST",
     "pin": 2,
     "requestId": "digitalRead_000001",
-    "timestamp": 1758214846388
+    "timestamp": 1758216797540
   },
   {
     "type": "VAR_SET",
     "variable": "buttonState",
     "value": 0,
-    "timestamp": 1758214846394
+    "timestamp": 1758216797545
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1758214846394
+    "timestamp": 1758216797545
   },
   {
     "type": "VAR_SET",
     "variable": "lastButtonState",
     "value": 0,
-    "timestamp": 1758214846394
+    "timestamp": 1758216797545
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1758214846394
+    "timestamp": 1758216797545
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 13,
     "value": 1,
-    "timestamp": 1758214846394
+    "timestamp": 1758216797545
   },
   {
     "type": "FUNCTION_CALL",
@@ -136,23 +136,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758214846394
+    "timestamp": 1758216797545
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758214846399,
+    "timestamp": 1758216797550,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758214846399,
+    "timestamp": 1758216797550,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758214846399,
+    "timestamp": 1758216797550,
     "message": "Program execution stopped"
   }
 ]

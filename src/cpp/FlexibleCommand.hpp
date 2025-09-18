@@ -137,6 +137,9 @@ public:
             if (functionName == "Serial.begin") {
                 // Serial.begin: type, function, arguments, baudRate, timestamp, message
                 jsOrder = {"type", "function", "arguments", "baudRate", "timestamp", "message"};
+            } else if (functionName == "Serial.print") {
+                // Serial.print: type, function, arguments, data, timestamp, message (same as JavaScript)
+                jsOrder = {"type", "function", "arguments", "data", "timestamp", "message"};
             } else if (functionName == "Serial.println") {
                 // Serial.println: type, function, arguments, data, timestamp, message
                 jsOrder = {"type", "function", "arguments", "data", "timestamp", "message"};
@@ -631,13 +634,22 @@ namespace FlexibleCommandFactory {
     }
 
     inline FlexibleCommand createSerialPrint(const std::string& data, const std::string& format = "AUTO") {
-        std::vector<std::variant<bool, int32_t, double, std::string>> args = {data};
+        // CROSS-PLATFORM FIX: Format string arguments with quotes like JavaScript
+        std::string displayArg = data;
+        // If data appears to be a string literal (contains spaces or special chars), add quotes
+        if (data.find(' ') != std::string::npos || data.find('\t') != std::string::npos ||
+            data.find('=') != std::string::npos || data.find(',') != std::string::npos ||
+            (!data.empty() && !std::isdigit(data[0]) && data != "true" && data != "false")) {
+            displayArg = "\"" + data + "\"";
+        }
+
+        std::vector<std::variant<bool, int32_t, double, std::string>> args = {displayArg};
         return FlexibleCommand("FUNCTION_CALL")
             .set("function", std::string("Serial.print"))
             .set("arguments", args)
             .set("data", data)
-            .set("format", format)
-            .set("message", std::string("Serial.print(") + data + ")");
+            // CROSS-PLATFORM FIX: Remove format field to match JavaScript output
+            .set("message", std::string("Serial.print(") + displayArg + ")");
     }
 
     inline FlexibleCommand createSerialPrintln(const std::string& data, const std::string& format = "AUTO") {

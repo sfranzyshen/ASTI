@@ -30,17 +30,17 @@
   }, {
     "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(i: )", "timestamp": 0, "arguments": [
-      "i: "
-    ], "data": "i: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"i: \""
+    ], "data": "i: ", "timestamp": 0, "message": "Serial.print(\"i: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(0)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "FLOAT"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(0)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(, j: )", "timestamp": 0, "arguments": [
-      ", j: "
-    ], "data": ", j: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\", j: \""
+    ], "data": ", j: ", "timestamp": 0, "message": "Serial.print(\", j: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(10)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "FLOAT"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(10)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

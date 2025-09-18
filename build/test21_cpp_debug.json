@@ -32,27 +32,27 @@
       33
     ]
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(, dec: )", "timestamp": 0, "arguments": [
-      ", dec: "
-    ], "data": ", dec: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\", dec: \""
+    ], "data": ", dec: ", "timestamp": 0, "message": "Serial.print(\", dec: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(33)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(33)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(, hex: )", "timestamp": 0, "arguments": [
-      ", hex: "
-    ], "data": ", hex: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\", hex: \""
+    ], "data": ", hex: ", "timestamp": 0, "message": "Serial.print(\", hex: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(33)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(33)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(, oct: )", "timestamp": 0, "arguments": [
-      ", oct: "
-    ], "data": ", oct: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\", oct: \""
+    ], "data": ", oct: ", "timestamp": 0, "message": "Serial.print(\", oct: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(33)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(33)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(, bin: )", "timestamp": 0, "arguments": [
-      ", bin: "
-    ], "data": ", bin: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\", bin: \""
+    ], "data": ", bin: ", "timestamp": 0, "message": "Serial.print(\", bin: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

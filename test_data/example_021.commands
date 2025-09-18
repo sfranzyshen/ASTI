@@ -1,25 +1,25 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758214846795,
+    "timestamp": 1758216797819,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758214846795,
+    "timestamp": 1758216797819,
     "message": "Program execution started"
   },
   {
     "type": "VAR_SET",
     "variable": "thisByte",
     "value": 33,
-    "timestamp": 1758214846796
+    "timestamp": 1758216797819
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758214846796,
+    "timestamp": 1758216797819,
     "message": "Executing setup() function"
   },
   {
@@ -29,20 +29,20 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758214846796,
+    "timestamp": 1758216797819,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1758214846796,
+    "timestamp": 1758216797819,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "end",
     "iterations": 0,
-    "timestamp": 1758214846796,
+    "timestamp": 1758216797820,
     "message": "while loop completed (0 iterations)"
   },
   {
@@ -52,22 +52,22 @@
       "\"ASCII Table ~ Character Map\""
     ],
     "data": "ASCII Table ~ Character Map",
-    "timestamp": 1758214846796,
+    "timestamp": 1758216797820,
     "message": "Serial.println(\"ASCII Table ~ Character Map\")"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758214846796,
+    "timestamp": 1758216797820,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758214846796,
+    "timestamp": 1758216797820,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758214846796,
+    "timestamp": 1758216797820,
     "message": "Starting loop iteration 1"
   },
   {
@@ -75,7 +75,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758214846796
+    "timestamp": 1758216797820
   },
   {
     "type": "FUNCTION_CALL",
@@ -83,7 +83,7 @@
     "arguments": [
       33
     ],
-    "timestamp": 1758214846796,
+    "timestamp": 1758216797820,
     "message": "Serial.write(33)"
   },
   {
@@ -93,7 +93,7 @@
       "\", dec: \""
     ],
     "data": ", dec: ",
-    "timestamp": 1758214846797,
+    "timestamp": 1758216797820,
     "message": "Serial.print(\", dec: \")"
   },
   {
@@ -103,7 +103,7 @@
       "33"
     ],
     "data": "33",
-    "timestamp": 1758214846797,
+    "timestamp": 1758216797820,
     "message": "Serial.print(33)"
   },
   {
@@ -113,7 +113,7 @@
       "\", hex: \""
     ],
     "data": ", hex: ",
-    "timestamp": 1758214846797,
+    "timestamp": 1758216797820,
     "message": "Serial.print(\", hex: \")"
   },
   {
@@ -123,7 +123,7 @@
       "33"
     ],
     "data": "33",
-    "timestamp": 1758214846797,
+    "timestamp": 1758216797820,
     "message": "Serial.print(33)"
   },
   {
@@ -133,7 +133,7 @@
       "\", oct: \""
     ],
     "data": ", oct: ",
-    "timestamp": 1758214846797,
+    "timestamp": 1758216797820,
     "message": "Serial.print(\", oct: \")"
   },
   {
@@ -143,7 +143,7 @@
       "33"
     ],
     "data": "33",
-    "timestamp": 1758214846797,
+    "timestamp": 1758216797820,
     "message": "Serial.print(33)"
   },
   {
@@ -153,7 +153,7 @@
       "\", bin: \""
     ],
     "data": ", bin: ",
-    "timestamp": 1758214846797,
+    "timestamp": 1758216797820,
     "message": "Serial.print(\", bin: \")"
   },
   {
@@ -163,7 +163,7 @@
       "33"
     ],
     "data": "33",
-    "timestamp": 1758214846797,
+    "timestamp": 1758216797820,
     "message": "Serial.println(33)"
   },
   {
@@ -171,13 +171,13 @@
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1758214846797
+    "timestamp": 1758216797820
   },
   {
     "type": "VAR_SET",
     "variable": "thisByte",
     "value": 34,
-    "timestamp": 1758214846797
+    "timestamp": 1758216797820
   },
   {
     "type": "FUNCTION_CALL",
@@ -185,23 +185,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758214846797
+    "timestamp": 1758216797820
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758214846802,
+    "timestamp": 1758216797826,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758214846802,
+    "timestamp": 1758216797826,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758214846802,
+    "timestamp": 1758216797826,
     "message": "Program execution stopped"
   }
 ]

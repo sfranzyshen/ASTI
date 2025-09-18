@@ -36,17 +36,17 @@
   }, {
     "type": "VAR_SET", "variable": "potVal", "value": 560, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(potVal: )", "timestamp": 0, "arguments": [
-      "potVal: "
-    ], "data": "potVal: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"potVal: \""
+    ], "data": "potVal: ", "timestamp": 0, "message": "Serial.print(\"potVal: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(560)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(560)"
   }, {
-    "type": "VAR_SET", "variable": "angle", "value": 97, "timestamp": 0
+    "type": "VAR_SET", "variable": "angle", "value": 98, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(, angle: )", "timestamp": 0, "arguments": [
-      ", angle: "
-    ], "data": ", angle: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\", angle: \""
+    ], "data": ", angle: ", "timestamp": 0, "message": "Serial.print(\", angle: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

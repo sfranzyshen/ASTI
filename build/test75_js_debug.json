@@ -6,12 +6,12 @@
   }, {
     "type": "ARDUINO_LIBRARY_INSTANTIATION", "library": "CapacitiveSensor", "constructorArgs": [
       4, 2
-    ], "objectId": "CapacitiveSensor_1758204666348_a9kt", "timestamp": 0, "message": "CapacitiveSensor(4, 2)"
+    ], "objectId": "CapacitiveSensor_1758216799346_4amw", "timestamp": 0, "message": "CapacitiveSensor(4, 2)"
   }, {
     "type": "VAR_SET", "variable": "capSensor", "value": {
       "libraryName": "CapacitiveSensor", "constructorArgs": [
         4, 2
-      ], "type": "library_object", "objectId": "CapacitiveSensor_1758204666348_a9kt", "initialized": true, "properties": {}
+      ], "type": "library_object", "objectId": "CapacitiveSensor_1758216799346_4amw", "initialized": true, "properties": {}
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "threshold", "value": 1000, "timestamp": 0
@@ -38,9 +38,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
-    "type": "DIGITAL_WRITE", "pin": 12, "value": 0, "timestamp": 0
+    "type": "DIGITAL_WRITE", "pin": 12, "value": 1, "timestamp": 0
   }, {
     "type": "DELAY", "duration": 10, "actualDelay": 10, "timestamp": 0
   }, {

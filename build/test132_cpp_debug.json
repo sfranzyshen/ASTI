@@ -30,9 +30,9 @@
   }, {
     "type": "VAR_SET", "variable": "result", "value": "undefinedundefined", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Final result: )", "timestamp": 0, "arguments": [
-      "Final result: "
-    ], "data": "Final result: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Final result: \""
+    ], "data": "Final result: ", "timestamp": 0, "message": "Serial.print(\"Final result: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"undefinedundefined\""

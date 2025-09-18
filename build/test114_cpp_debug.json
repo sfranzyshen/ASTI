@@ -24,9 +24,9 @@
   }, {
     "type": "VAR_SET", "variable": "p", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Numbers[1]: )", "timestamp": 0, "arguments": [
-      "Numbers[1]: "
-    ], "data": "Numbers[1]: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Numbers[1]: \""
+    ], "data": "Numbers[1]: ", "timestamp": 0, "message": "Serial.print(\"Numbers[1]: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Array index must be integer", "errorType": "RuntimeError"
   }, {
@@ -36,9 +36,9 @@
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Point x: )", "timestamp": 0, "arguments": [
-      "Point x: "
-    ], "data": "Point x: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Point x: \""
+    ], "data": "Point x: ", "timestamp": 0, "message": "Serial.print(\"Point x: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unsupported access operator: ", "errorType": "RuntimeError"
   }, {
@@ -48,9 +48,9 @@
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Point y: )", "timestamp": 0, "arguments": [
-      "Point y: "
-    ], "data": "Point y: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Point y: \""
+    ], "data": "Point y: ", "timestamp": 0, "message": "Serial.print(\"Point y: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unsupported access operator: ", "errorType": "RuntimeError"
   }, {

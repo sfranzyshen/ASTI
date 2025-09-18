@@ -50,17 +50,17 @@
   }, {
     "type": "VAR_SET", "variable": "accelerationY", "value": -2800, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(-2800)", "timestamp": 0, "arguments": [
-      "-2800"
-    ], "data": "-2800", "format": "FLOAT"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"-2800\""
+    ], "data": "-2800", "timestamp": 0, "message": "Serial.print(\"-2800\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t)", "timestamp": 0, "arguments": [
-      "\t"
-    ], "data": "\t", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"\t\""
+    ], "data": "\t", "timestamp": 0, "message": "Serial.print(\"\t\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(-2800)", "timestamp": 0, "arguments": [
-      "-2800"
-    ], "data": "-2800", "format": "FLOAT"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"-2800\""
+    ], "data": "-2800", "timestamp": 0, "message": "Serial.print(\"-2800\")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
   }, {

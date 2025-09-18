@@ -30,23 +30,23 @@
       "value": " world!"
     }, "isConst": true, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Hello)", "timestamp": 0, "arguments": [
-      "Hello"
-    ], "data": "Hello", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Hello\""
+    ], "data": "Hello", "timestamp": 0, "message": "Serial.print(\"Hello\")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\" world!\""
     ], "data": "\" world!\"", "timestamp": 0, "message": "Serial.println(\" world!\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(My character is: )", "timestamp": 0, "arguments": [
-      "My character is: "
-    ], "data": "My character is: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"My character is: \""
+    ], "data": "My character is: ", "timestamp": 0, "message": "Serial.print(\"My character is: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(65)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(65)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(10)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(10)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

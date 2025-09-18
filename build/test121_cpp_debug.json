@@ -26,7 +26,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(i: )", "timestamp": 0, "arguments": [
       "i: "
-    ], "data": "i: ", "format": "STRING"
+    ], "data": "i: "
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

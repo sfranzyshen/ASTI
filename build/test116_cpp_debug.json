@@ -28,9 +28,9 @@
   }, {
     "type": "VAR_SET", "variable": "p2", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Value of x using pointer: )", "timestamp": 0, "arguments": [
-      "Value of x using pointer: "
-    ], "data": "Value of x using pointer: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Value of x using pointer: \""
+    ], "data": "Value of x using pointer: ", "timestamp": 0, "message": "Serial.print(\"Value of x using pointer: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unsupported access operator: ", "errorType": "RuntimeError"
   }, {
@@ -40,9 +40,9 @@
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Modified value of y: )", "timestamp": 0, "arguments": [
-      "Modified value of y: "
-    ], "data": "Modified value of y: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Modified value of y: \""
+    ], "data": "Modified value of y: ", "timestamp": 0, "message": "Serial.print(\"Modified value of y: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unsupported access operator: ", "errorType": "RuntimeError"
   }, {

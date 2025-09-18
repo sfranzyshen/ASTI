@@ -2875,7 +2875,7 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
 
         // Arduino map() function implementation
         double result = (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
-        return static_cast<int32_t>(result);
+        return static_cast<int32_t>(std::round(result)); // CROSS-PLATFORM FIX: Use rounding like JavaScript Math.round()
     }
     else if (name == "constrain" && args.size() >= 3) {
         // constrain(x, a, b)

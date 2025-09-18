@@ -24,13 +24,13 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(My constant: )", "timestamp": 0, "arguments": [
       "My constant: "
-    ], "data": "My constant: ", "format": "STRING"
+    ], "data": "My constant: "
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(My volatile: )", "timestamp": 0, "arguments": [
       "My volatile: "
-    ], "data": "My volatile: ", "format": "STRING"
+    ], "data": "My volatile: "
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

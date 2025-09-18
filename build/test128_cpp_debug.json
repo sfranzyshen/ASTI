@@ -20,9 +20,9 @@
   }, {
     "type": "VAR_SET", "variable": "i", "value": -2147483648, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Initial value: )", "timestamp": 0, "arguments": [
-      "Initial value: "
-    ], "data": "Initial value: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Initial value: \""
+    ], "data": "Initial value: ", "timestamp": 0, "message": "Serial.print(\"Initial value: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "-2147483648"
@@ -30,9 +30,9 @@
   }, {
     "type": "VAR_SET", "variable": "i", "value": -2147483647, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(After increment (rollover): )", "timestamp": 0, "arguments": [
-      "After increment (rollover): "
-    ], "data": "After increment (rollover): ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"After increment (rollover): \""
+    ], "data": "After increment (rollover): ", "timestamp": 0, "message": "Serial.print(\"After increment (rollover): \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "-2147483647"
@@ -42,9 +42,9 @@
   }, {
     "type": "VAR_SET", "variable": "i", "value": -1, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(After decrement (rollover): )", "timestamp": 0, "arguments": [
-      "After decrement (rollover): "
-    ], "data": "After decrement (rollover): ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"After decrement (rollover): \""
+    ], "data": "After decrement (rollover): ", "timestamp": 0, "message": "Serial.print(\"After decrement (rollover): \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "-1"

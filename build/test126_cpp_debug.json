@@ -42,9 +42,9 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Object variable 'n2' not found"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Data from n1: )", "timestamp": 0, "arguments": [
-      "Data from n1: "
-    ], "data": "Data from n1: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Data from n1: \""
+    ], "data": "Data from n1: ", "timestamp": 0, "message": "Serial.print(\"Data from n1: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Object variable 'n1' not found", "errorType": "RuntimeError"
   }, {
@@ -54,9 +54,9 @@
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Data from n2 via n1: )", "timestamp": 0, "arguments": [
-      "Data from n2 via n1: "
-    ], "data": "Data from n2 via n1: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Data from n2 via n1: \""
+    ], "data": "Data from n2 via n1: ", "timestamp": 0, "message": "Serial.print(\"Data from n2 via n1: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Object variable 'n1' not found", "errorType": "RuntimeError"
   }, {

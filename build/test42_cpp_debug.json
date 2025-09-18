@@ -62,21 +62,21 @@
   }, {
     "type": "VAR_SET", "variable": "cm", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(undefined)", "timestamp": 0, "arguments": [
-      "undefined"
-    ], "data": "undefined", "format": "AUTO"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"undefined\""
+    ], "data": "undefined", "timestamp": 0, "message": "Serial.print(\"undefined\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(in, )", "timestamp": 0, "arguments": [
-      "in, "
-    ], "data": "in, ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"in, \""
+    ], "data": "in, ", "timestamp": 0, "message": "Serial.print(\"in, \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(undefined)", "timestamp": 0, "arguments": [
-      "undefined"
-    ], "data": "undefined", "format": "AUTO"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"undefined\""
+    ], "data": "undefined", "timestamp": 0, "message": "Serial.print(\"undefined\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(cm)", "timestamp": 0, "arguments": [
-      "cm"
-    ], "data": "cm", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"cm\""
+    ], "data": "cm", "timestamp": 0, "message": "Serial.print(\"cm\")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
   }, {

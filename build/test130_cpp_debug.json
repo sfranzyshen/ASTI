@@ -34,9 +34,9 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Object variable 'flags' not found"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Flag a: )", "timestamp": 0, "arguments": [
-      "Flag a: "
-    ], "data": "Flag a: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Flag a: \""
+    ], "data": "Flag a: ", "timestamp": 0, "message": "Serial.print(\"Flag a: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Object variable 'flags' not found", "errorType": "RuntimeError"
   }, {
@@ -46,9 +46,9 @@
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Flag c: )", "timestamp": 0, "arguments": [
-      "Flag c: "
-    ], "data": "Flag c: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Flag c: \""
+    ], "data": "Flag c: ", "timestamp": 0, "message": "Serial.print(\"Flag c: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Object variable 'flags' not found", "errorType": "RuntimeError"
   }, {

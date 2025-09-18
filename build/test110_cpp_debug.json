@@ -30,9 +30,9 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Object variable 'p1' not found"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Point x: )", "timestamp": 0, "arguments": [
-      "Point x: "
-    ], "data": "Point x: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Point x: \""
+    ], "data": "Point x: ", "timestamp": 0, "message": "Serial.print(\"Point x: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Object variable 'p1' not found", "errorType": "RuntimeError"
   }, {
@@ -42,9 +42,9 @@
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Point y: )", "timestamp": 0, "arguments": [
-      "Point y: "
-    ], "data": "Point y: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Point y: \""
+    ], "data": "Point y: ", "timestamp": 0, "message": "Serial.print(\"Point y: \")"
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Object variable 'p1' not found", "errorType": "RuntimeError"
   }, {

@@ -64,21 +64,21 @@
   }, {
     "type": "VAR_SET", "variable": "blueSensorValue", "value": 634, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(raw sensor Values \t red: )", "timestamp": 0, "arguments": [
-      "raw sensor Values \t red: "
-    ], "data": "raw sensor Values \t red: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"raw sensor Values \t red: \""
+    ], "data": "raw sensor Values \t red: ", "timestamp": 0, "message": "Serial.print(\"raw sensor Values \t red: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(560)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(560)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t green: )", "timestamp": 0, "arguments": [
-      "\t green: "
-    ], "data": "\t green: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"\t green: \""
+    ], "data": "\t green: ", "timestamp": 0, "message": "Serial.print(\"\t green: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(597)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(597)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t Blue: )", "timestamp": 0, "arguments": [
-      "\t Blue: "
-    ], "data": "\t Blue: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"\t Blue: \""
+    ], "data": "\t Blue: ", "timestamp": 0, "message": "Serial.print(\"\t Blue: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
@@ -88,21 +88,21 @@
   }, {
     "type": "VAR_SET", "variable": "blueValue", "value": 158.5, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Mapped sensor Values \t red: )", "timestamp": 0, "arguments": [
-      "Mapped sensor Values \t red: "
-    ], "data": "Mapped sensor Values \t red: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Mapped sensor Values \t red: \""
+    ], "data": "Mapped sensor Values \t red: ", "timestamp": 0, "message": "Serial.print(\"Mapped sensor Values \t red: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(140)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "FLOAT"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(140)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t green: )", "timestamp": 0, "arguments": [
-      "\t green: "
-    ], "data": "\t green: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"\t green: \""
+    ], "data": "\t green: ", "timestamp": 0, "message": "Serial.print(\"\t green: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(149.250000)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "FLOAT"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(149.250000)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(\t Blue: )", "timestamp": 0, "arguments": [
-      "\t Blue: "
-    ], "data": "\t Blue: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"\t Blue: \""
+    ], "data": "\t Blue: ", "timestamp": 0, "message": "Serial.print(\"\t Blue: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

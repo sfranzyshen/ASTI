@@ -34,15 +34,15 @@
       "\"Calculation is correct.\""
     ], "data": "\"Calculation is correct.\"", "timestamp": 0, "message": "Serial.println(\"Calculation is correct.\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Result 1: )", "timestamp": 0, "arguments": [
-      "Result 1: "
-    ], "data": "Result 1: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Result 1: \""
+    ], "data": "Result 1: ", "timestamp": 0, "message": "Serial.print(\"Result 1: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Result 2: )", "timestamp": 0, "arguments": [
-      "Result 2: "
-    ], "data": "Result 2: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Result 2: \""
+    ], "data": "Result 2: ", "timestamp": 0, "message": "Serial.print(\"Result 2: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

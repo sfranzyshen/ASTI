@@ -30,13 +30,13 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(For i=)", "timestamp": 0, "arguments": [
       "For i="
-    ], "data": "For i=", "format": "STRING"
+    ], "data": "For i="
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(0)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(0)", "timestamp": 0, "arguments": ["0"], "data": "0"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(, x is: )", "timestamp": 0, "arguments": [
       ", x is: "
-    ], "data": ", x is: ", "format": "STRING"
+    ], "data": ", x is: "
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

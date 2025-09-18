@@ -30,13 +30,13 @@
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": "Hello!       ", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Hello!       )", "timestamp": 0, "arguments": [
-      "Hello!       "
-    ], "data": "Hello!       ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Hello!       \""
+    ], "data": "Hello!       ", "timestamp": 0, "message": "Serial.print(\"Hello!       \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(<--- end of string. Length: )", "timestamp": 0, "arguments": [
-      "<--- end of string. Length: "
-    ], "data": "<--- end of string. Length: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"<--- end of string. Length: \""
+    ], "data": "<--- end of string. Length: ", "timestamp": 0, "message": "Serial.print(\"<--- end of string. Length: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
@@ -46,13 +46,13 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: stringOne.trim"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Hello!       )", "timestamp": 0, "arguments": [
-      "Hello!       "
-    ], "data": "Hello!       ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Hello!       \""
+    ], "data": "Hello!       ", "timestamp": 0, "message": "Serial.print(\"Hello!       \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(<--- end of trimmed string. Length: )", "timestamp": 0, "arguments": [
-      "<--- end of trimmed string. Length: "
-    ], "data": "<--- end of trimmed string. Length: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"<--- end of trimmed string. Length: \""
+    ], "data": "<--- end of trimmed string. Length: ", "timestamp": 0, "message": "Serial.print(\"<--- end of trimmed string. Length: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

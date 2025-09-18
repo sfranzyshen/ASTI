@@ -24,9 +24,9 @@
   }, {
     "type": "VAR_SET", "variable": "maxVal", "value": 20, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Max value: )", "timestamp": 0, "arguments": [
-      "Max value: "
-    ], "data": "Max value: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Max value: \""
+    ], "data": "Max value: ", "timestamp": 0, "message": "Serial.print(\"Max value: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
@@ -58,33 +58,33 @@
   }, {
     "type": "VAR_SET", "variable": "shiftResult", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(AND result: )", "timestamp": 0, "arguments": [
-      "AND result: "
-    ], "data": "AND result: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"AND result: \""
+    ], "data": "AND result: ", "timestamp": 0, "message": "Serial.print(\"AND result: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(OR result: )", "timestamp": 0, "arguments": [
-      "OR result: "
-    ], "data": "OR result: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"OR result: \""
+    ], "data": "OR result: ", "timestamp": 0, "message": "Serial.print(\"OR result: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(XOR result: )", "timestamp": 0, "arguments": [
-      "XOR result: "
-    ], "data": "XOR result: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"XOR result: \""
+    ], "data": "XOR result: ", "timestamp": 0, "message": "Serial.print(\"XOR result: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "undefined"
     ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(Shift result: )", "timestamp": 0, "arguments": [
-      "Shift result: "
-    ], "data": "Shift result: ", "format": "STRING"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Shift result: \""
+    ], "data": "Shift result: ", "timestamp": 0, "message": "Serial.print(\"Shift result: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "undefined"
