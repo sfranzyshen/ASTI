@@ -176,11 +176,11 @@ bool ASTInterpreter::start() {
             state_ = ExecutionState::COMPLETE;
             emitCommand(FlexibleCommandFactory::createProgramEnd("Program completed after " + std::to_string(currentLoopIteration_) + " loop iterations (limit reached)"));
         }
-        
+
         // Calculate total execution time
         auto now = std::chrono::steady_clock::now();
         totalExecutionTime_ += std::chrono::duration_cast<std::chrono::milliseconds>(now - totalExecutionStart_);
-        
+
         // Always emit final PROGRAM_END when stopped (matches JavaScript behavior)
         emitCommand(FlexibleCommandFactory::createProgramEnd("Program execution stopped"));
         
@@ -367,7 +367,7 @@ void ASTInterpreter::executeLoop() {
             } // End while loop
         }
         
-        // CROSS-PLATFORM FIX: Emit LOOP_END command to match JavaScript behavior  
+        // CROSS-PLATFORM FIX: Emit LOOP_END command to match JavaScript behavior
         emitCommand(FlexibleCommandFactory::createLoopEndComplete(currentLoopIteration_, true));
     } else {
         debugLog("No loop() function found");
@@ -4632,14 +4632,14 @@ void ASTInterpreter::tick() {
                 // Loop limit reached
                 debugLog("Tick: Loop limit reached, completing execution");
                 
-                // CROSS-PLATFORM FIX: Emit LOOP_END command with proper details
-                emitCommand(FlexibleCommandFactory::createLoopEndComplete(currentLoopIteration_, true));
-                
+                // CROSS-PLATFORM FIX: JavaScript doesn't emit termination commands at loop limit
+                // emitCommand(FlexibleCommandFactory::createLoopEndComplete(currentLoopIteration_, true));
+
                 state_ = ExecutionState::COMPLETE;
-                
-                // CROSS-PLATFORM FIX: Emit dual PROGRAM_END messages to match JavaScript
-                emitCommand(FlexibleCommandFactory::createProgramEnd("Program completed after " + std::to_string(currentLoopIteration_) + " loop iterations (limit reached)"));
-                emitCommand(FlexibleCommandFactory::createProgramEnd("Program execution stopped"));
+
+                // CROSS-PLATFORM FIX: JavaScript doesn't emit PROGRAM_END commands at loop limit
+                // emitCommand(FlexibleCommandFactory::createProgramEnd("Program completed after " + std::to_string(currentLoopIteration_) + " loop iterations (limit reached)"));
+                // emitCommand(FlexibleCommandFactory::createProgramEnd("Program execution stopped"));
             }
         }
     }

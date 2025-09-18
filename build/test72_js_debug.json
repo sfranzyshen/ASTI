@@ -1,0 +1,99 @@
+[
+  {
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+  }, {
+    "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
+  }, {
+    "type": "VAR_SET", "variable": "controlPin1", "value": 2, "isConst": true, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "controlPin2", "value": 3, "isConst": true, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "enablePin", "value": 9, "isConst": true, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "directionSwitchPin", "value": 4, "isConst": true, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "onOffSwitchStateSwitchPin", "value": 5, "isConst": true, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "potPin", "value": 14, "isConst": true, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "onOffSwitchState", "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "previousOnOffSwitchState", "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "directionSwitchState", "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "previousDirectionSwitchState", "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "motorEnabled", "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "motorSpeed", "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "motorDirection", "value": 1, "timestamp": 0
+  }, {
+    "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
+  }, {
+    "type": "PIN_MODE", "pin": 4, "mode": 0, "timestamp": 0
+  }, {
+    "type": "PIN_MODE", "pin": 5, "mode": 0, "timestamp": 0
+  }, {
+    "type": "PIN_MODE", "pin": 2, "mode": 1, "timestamp": 0
+  }, {
+    "type": "PIN_MODE", "pin": 3, "mode": 1, "timestamp": 0
+  }, {
+    "type": "PIN_MODE", "pin": 9, "mode": 1, "timestamp": 0
+  }, {
+    "type": "DIGITAL_WRITE", "pin": 9, "value": 0, "timestamp": 0
+  }, {
+    "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 1"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
+  }, {
+    "type": "DIGITAL_READ_REQUEST", "pin": 5, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "onOffSwitchState", "value": 1, "timestamp": 0
+  }, {
+    "type": "DELAY", "duration": 1, "actualDelay": 1, "timestamp": 0
+  }, {
+    "type": "DIGITAL_READ_REQUEST", "pin": 4, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "directionSwitchState", "value": 0, "timestamp": 0
+  }, {
+    "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "motorSpeed", "value": 140, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "motorEnabled", "value": false, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "DIGITAL_WRITE", "pin": 2, "value": 1, "timestamp": 0
+  }, {
+    "type": "DIGITAL_WRITE", "pin": 3, "value": 0, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "ANALOG_WRITE", "pin": 9, "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "previousDirectionSwitchState", "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "previousOnOffSwitchState", "value": 1, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
+  }
+]

@@ -1,0 +1,88 @@
+name=p10_Zoetrope.ino
+source=unknown
+astSize=3125
+codeSize=2380
+mode=AST_AND_COMMANDS
+commandCount=48
+content=// 10.StarterKit_BasicKit p10_Zoetrope
+
+const int controlPin1 = 2;
+const int controlPin2 = 3;
+const int enablePin = 9;
+const int directionSwitchPin = 4;
+const int onOffSwitchStateSwitchPin = 5;
+const int potPin = A0;
+
+// create some variables to hold values from your inputs
+int onOffSwitchState = 0;
+int previousOnOffSwitchState = 0;
+int directionSwitchState = 0;
+int previousDirectionSwitchState = 0;
+
+int motorEnabled = 0;
+int motorSpeed = 0;
+int motorDirection = 1;
+
+void setup() {
+  // initialize the inputs and outputs
+  pinMode(directionSwitchPin, INPUT);
+  pinMode(onOffSwitchStateSwitchPin, INPUT);
+  pinMode(controlPin1, OUTPUT);
+  pinMode(controlPin2, OUTPUT);
+  pinMode(enablePin, OUTPUT);
+
+  // pull the enable pin LOW to start
+  digitalWrite(enablePin, LOW);
+}
+
+void loop() {
+  // read the value of the on/off switch
+  onOffSwitchState = digitalRead(onOffSwitchStateSwitchPin);
+  delay(1);
+  // read the value of the direction switch
+  directionSwitchState = digitalRead(directionSwitchPin);
+
+  // read the value of the pot and divide by 4 to get a value that can be
+  // used for PWM
+  motorSpeed = analogRead(potPin) / 4;
+
+  // if the on/off button changed state since the last loop()
+  if (onOffSwitchState != previousOnOffSwitchState) {
+    // change the value of motorEnabled if pressed
+    if (onOffSwitchState == HIGH) {
+      motorEnabled = !motorEnabled;
+    }
+  }
+
+  // if the direction button changed state since the last loop()
+  if (directionSwitchState != previousDirectionSwitchState) {
+    // change the value of motorDirection if pressed
+    if (directionSwitchState == HIGH) {
+      motorDirection = !motorDirection;
+    }
+  }
+
+  // change the direction the motor spins by talking to the control pins
+  // on the H-Bridge
+  if (motorDirection == 1) {
+    digitalWrite(controlPin1, HIGH);
+    digitalWrite(controlPin2, LOW);
+  } else {
+    digitalWrite(controlPin1, LOW);
+    digitalWrite(controlPin2, HIGH);
+  }
+
+  // if the motor is supposed to be on
+  if (motorEnabled == 1) {
+    // PWM the enable pin to vary the speed
+    analogWrite(enablePin, motorSpeed);
+  } else {
+    //turn the motor off
+    analogWrite(enablePin, 0);
+  }
+
+  // save the current on/off switch state as the previous
+  previousDirectionSwitchState = directionSwitchState;
+  // save the current switch state as the previous
+  previousOnOffSwitchState = onOffSwitchState;
+}

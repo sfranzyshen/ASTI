@@ -1,0 +1,23 @@
+name=Complex_for_loop_with_multiple_expressions.ino
+source=unknown
+astSize=1751
+codeSize=291
+mode=AST_AND_COMMANDS
+commandCount=24
+content=// Complex for loop with multiple expressions
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int i = 0;
+  int j = 10;
+
+  for (i = 0, j = 10; i < j; i++, j--) {
+    Serial.print("i: ");
+    Serial.print(i);
+    Serial.print(", j: ");
+    Serial.print(j);
+    Serial.println(j);
+  }
+}

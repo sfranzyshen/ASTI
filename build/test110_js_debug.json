@@ -1,0 +1,53 @@
+[
+  {
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+  }, {
+    "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
+  }, {
+    "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.begin", "arguments": [
+      9600
+    ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
+  }, {
+    "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 1"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "p1", "value": {
+      "structName": "Point", "fields": {}, "type": "struct", "structId": "struct_1758202786784_6ks3t"
+    }, "structType": "Point", "timestamp": 0
+  }, {
+    "type": "STRUCT_FIELD_SET", "struct": "Point", "field": "x", "value": 10, "timestamp": 0, "message": "Point.x = 10"
+  }, {
+    "type": "STRUCT_FIELD_SET", "struct": "Point", "field": "y", "value": 20, "timestamp": 0, "message": "Point.y = 20"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Point x: \""
+    ], "data": "Point x: ", "timestamp": 0, "message": "Serial.print(\"Point x: \")"
+  }, {
+    "type": "STRUCT_FIELD_ACCESS", "struct": "Point", "field": "x", "value": 10, "timestamp": 0, "message": "Point.x = 10"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Point y: \""
+    ], "data": "Point y: ", "timestamp": 0, "message": "Serial.print(\"Point y: \")"
+  }, {
+    "type": "STRUCT_FIELD_ACCESS", "struct": "Point", "field": "y", "value": 20, "timestamp": 0, "message": "Point.y = 20"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
+  }
+]

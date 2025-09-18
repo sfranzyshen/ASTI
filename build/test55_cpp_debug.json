@@ -1,0 +1,95 @@
+[
+  {
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+  }, {
+    "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
+  }, {
+    "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.begin", "arguments": [
+      9600
+    ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
+  }, {
+    "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
+  }, {
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 0, "timestamp": 0, "message": "while loop completed"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"\n\nString startsWith() and endsWith(): \""
+    ], "data": "\"\n\nString startsWith() and endsWith(): \"", "timestamp": 0, "message": "Serial.println(\"\n\nString startsWith() and endsWith(): \")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
+  }, {
+    "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 1"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": "HTTP/1.1 200 OK", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"HTTP/1.1 200 OK\""
+    ], "data": "\"HTTP/1.1 200 OK\"", "timestamp": 0, "message": "Serial.println(\"HTTP/1.1 200 OK\")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "stringOne.startsWith", "message": "stringOne.startsWith()", "timestamp": 0, "arguments": [
+      "\"HTTP/1.1\""
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: stringOne.startsWith", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: stringOne.startsWith"
+  }, {
+    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "stringOne", "value": "HTTP/1.1 200 OK", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "stringOne.startsWith", "message": "stringOne.startsWith()", "timestamp": 0, "arguments": [
+      "\"200 OK\"", "9"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: stringOne.startsWith", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: stringOne.startsWith"
+  }, {
+    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "sensorReading", "value": "sensor = ", "timestamp": 0
+  }, {
+    "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "sensorReading", "value": 560, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "message": "Serial.print(560)", "timestamp": 0, "arguments": ["0"], "data": "0", "format": "DEC"
+  }, {
+    "type": "FUNCTION_CALL", "function": "sensorReading.endsWith", "message": "sensorReading.endsWith()", "timestamp": 0, "arguments": [
+      "\"0\""
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: sensorReading.endsWith", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: sensorReading.endsWith"
+  }, {
+    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\". This reading is not divisible by ten\""
+    ], "data": "\". This reading is not divisible by ten\"", "timestamp": 0, "message": "Serial.println(\". This reading is not divisible by ten\")"
+  }, {
+    "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
+  }, {
+    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
+  }, {
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
+  }
+]

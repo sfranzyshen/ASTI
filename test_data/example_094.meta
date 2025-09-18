@@ -1,0 +1,28 @@
+name=Complex_Conditional_Logic.ino
+source=unknown
+astSize=2034
+codeSize=443
+mode=AST_AND_COMMANDS
+commandCount=18
+content=// Complex Conditional Logic
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int x = 5;
+  int y = 10;
+  int z = 15;
+
+  if ((x < y && y != z) || (x == 5 && z > 10)) {
+    if (z / x > 2 && y % 2 == 0) {
+      Serial.println("Condition 1 met.");
+    } else {
+      Serial.println("Condition 2 met.");
+    }
+  } else if (x > y || y == 10) {
+    Serial.println("Condition 3 met.");
+  } else {
+    Serial.println("No conditions met.");
+  }
+}

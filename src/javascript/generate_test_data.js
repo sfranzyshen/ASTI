@@ -248,8 +248,16 @@ function generateCommandsOptimized(ast, example) {
                         break;
                 }
                 
-                if (cmd.type === 'PROGRAM_END' || cmd.type === 'ERROR' || cmd.type === 'LOOP_LIMIT_REACHED') {
+                if (cmd.type === 'PROGRAM_END' || cmd.type === 'ERROR') {
                     done = true;
+                } else if (cmd.type === 'LOOP_LIMIT_REACHED') {
+                    // For for-loops in loop() function, wait for additional termination commands
+                    // For for-loops in setup() function, this might be the final command
+                    setTimeout(() => {
+                        if (!done) {
+                            done = true; // Timeout fallback for cases where LOOP_LIMIT_REACHED is actually final
+                        }
+                    }, 100); // Give 100ms for any follow-up commands
                 }
             };
             

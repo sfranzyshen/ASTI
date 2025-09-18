@@ -1,0 +1,25 @@
+name=To_test_the_Lexer_and_Parser.ino
+source=unknown
+astSize=1467
+codeSize=433
+mode=AST_AND_COMMANDS
+commandCount=17
+content=// To test the Lexer and Parser
+void setup() {
+  /*
+    This is the setup function.
+    It runs once at the beginning.
+  */
+  Serial.begin(9600); // Initialize serial communication
+  pinMode(13, OUTPUT); // Configure pin 13 as output for LED
+}
+
+void loop() {
+  // Turn the LED on
+  digitalWrite(13, HIGH);
+  delay(1000); // Wait for a second
+
+  // Turn the LED off
+  digitalWrite(13, LOW);
+  delay(1000); // Wait for another second
+}
