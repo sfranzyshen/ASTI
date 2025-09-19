@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758255174983,
+    "timestamp": 1758257404699,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758255174983,
+    "timestamp": 1758257404699,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758255174983,
+    "timestamp": 1758257404699,
     "message": "Executing setup() function"
   },
   {
@@ -23,23 +23,23 @@
       "functionName": "myInterruptService",
       "interpreter": "[Circular Reference Removed]",
       "type": "function_pointer",
-      "pointerId": "fptr_1758255174984_2rqq1"
+      "pointerId": "fptr_1758257404699_qsoaw"
     },
-    "timestamp": 1758255174984
+    "timestamp": 1758257404699
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758255174984,
+    "timestamp": 1758257404699,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758255174984,
+    "timestamp": 1758257404699,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758255174984,
+    "timestamp": 1758257404699,
     "message": "Starting loop iteration 1"
   },
   {
@@ -47,7 +47,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758255174984
+    "timestamp": 1758257404699
   },
   {
     "type": "FUNCTION_CALL",
@@ -55,23 +55,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758255174984
+    "timestamp": 1758257404699
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758255174990,
+    "timestamp": 1758257404704,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758255174990,
+    "timestamp": 1758257404704,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758255174990,
+    "timestamp": 1758257404704,
     "message": "Program execution stopped"
   }
 ]

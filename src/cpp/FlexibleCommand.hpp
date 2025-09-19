@@ -402,7 +402,7 @@ namespace FlexibleCommandFactory {
         return FlexibleCommand("WHILE_LOOP")
             .set("phase", std::string("end"))
             .set("iterations", static_cast<int32_t>(iterations))
-            .set("message", std::string("while loop completed"));
+            .set("message", std::string("while loop completed (") + std::to_string(iterations) + std::string(" iterations)"));
     }
 
     // DO_WHILE_LOOP phase start: {type, phase, timestamp, message} - JavaScript compatible

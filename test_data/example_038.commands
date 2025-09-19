@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758255173399,
+    "timestamp": 1758257402250,
     "component": "interpreter",
     "version": "7.3.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758255173399,
+    "timestamp": 1758257402250,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758255173399,
+    "timestamp": 1758257402250,
     "message": "Executing setup() function"
   },
   {
@@ -23,60 +23,60 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758255173399,
+    "timestamp": 1758257402250,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1758255173399,
+    "timestamp": 1758257402250,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "thisPin",
     "value": 2,
-    "timestamp": 1758255173399
+    "timestamp": 1758257402250
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1758255173399,
+    "timestamp": 1758257402250,
     "message": "for loop iteration 0"
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 1,
-    "timestamp": 1758255173399
+    "timestamp": 1758257402250
   },
   {
     "type": "VAR_SET",
     "variable": "thisPin",
     "value": 3,
-    "timestamp": 1758255173399
+    "timestamp": 1758257402250
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1758255173403,
+    "timestamp": 1758257402256,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758255173404,
+    "timestamp": 1758257402256,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758255173404,
+    "timestamp": 1758257402256,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758255173404,
+    "timestamp": 1758257402256,
     "message": "Starting loop iteration 1"
   },
   {
@@ -84,114 +84,21 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758255173404
+    "timestamp": 1758257402256
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.available",
     "arguments": [],
-    "timestamp": 1758255173404,
+    "timestamp": 1758257402256,
     "message": "Serial.available()"
   },
   {
     "type": "IF_STATEMENT",
-    "condition": true,
-    "result": true,
-    "branch": "then",
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "FUNCTION_CALL",
-    "function": "Serial.read",
-    "arguments": [],
-    "timestamp": 1758255173404,
-    "message": "Serial.read()"
-  },
-  {
-    "type": "VAR_SET",
-    "variable": "inByte",
-    "value": 65,
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "SWITCH_STATEMENT",
-    "discriminant": 65,
-    "timestamp": 1758255173404,
-    "message": "switch (65)"
-  },
-  {
-    "type": "SWITCH_CASE",
-    "caseValue": 97,
-    "matched": false,
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "SWITCH_CASE",
-    "caseValue": 98,
-    "matched": false,
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "SWITCH_CASE",
-    "caseValue": 99,
-    "matched": false,
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "SWITCH_CASE",
-    "caseValue": 100,
-    "matched": false,
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "SWITCH_CASE",
-    "caseValue": 101,
-    "matched": false,
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "SWITCH_CASE",
-    "caseValue": "default",
-    "matched": true,
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "FOR_LOOP",
-    "phase": "start",
-    "timestamp": 1758255173404,
-    "message": "for loop started"
-  },
-  {
-    "type": "VAR_SET",
-    "variable": "thisPin",
-    "value": 2,
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "FOR_LOOP",
-    "phase": "iteration",
-    "iteration": 0,
-    "timestamp": 1758255173404,
-    "message": "for loop iteration 0"
-  },
-  {
-    "type": "DIGITAL_WRITE",
-    "pin": 2,
-    "value": 0,
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "VAR_SET",
-    "variable": "thisPin",
-    "value": 3,
-    "timestamp": 1758255173404
-  },
-  {
-    "type": "LOOP_LIMIT_REACHED",
-    "phase": "end",
-    "iterations": 1,
-    "timestamp": 1758255173409,
-    "message": "For loop limit reached: completed 1 iterations (max: 1)"
+    "condition": false,
+    "result": false,
+    "branch": "else",
+    "timestamp": 1758257402256
   },
   {
     "type": "FUNCTION_CALL",
@@ -199,23 +106,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758255173409
+    "timestamp": 1758257402256
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758255173415,
+    "timestamp": 1758257402261,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758255173415,
+    "timestamp": 1758257402261,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758255173415,
+    "timestamp": 1758257402261,
     "message": "Program execution stopped"
   }
 ]
