@@ -44,10 +44,12 @@ public:
     explicit CommandStreamCapture(bool verbose = false) : verbose_(verbose) {}
     
     void onCommand(const FlexibleCommand& command) override {
+        // Debug ALL command types to see what C++ actually generates
+        std::cerr << "DEBUG CAPTURE: " << command.getType() << " command received!" << std::endl;
+
         if (verbose_) {
             logStream_ << "[COMMAND] " << command.toJSON() << std::endl;
         }
-
 
         capturedCommands_.push_back(command);
     }

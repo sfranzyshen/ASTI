@@ -180,6 +180,9 @@ public:
         } else if (cmdType == "IF_STATEMENT") {
             // IF_STATEMENT: type, condition, result, branch, timestamp
             jsOrder = {"type", "condition", "result", "branch", "timestamp"};
+        } else if (cmdType == "LOOP_LIMIT_REACHED") {
+            // LOOP_LIMIT_REACHED: type, phase, iterations, timestamp, message (JavaScript field order)
+            jsOrder = {"type", "phase", "iterations", "timestamp", "message"};
         } else {
             // Other commands: type, timestamp, then other fields
             jsOrder = {"type", "timestamp", "component", "version", "status", "message", "requestId", 

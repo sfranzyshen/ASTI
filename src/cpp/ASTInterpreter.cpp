@@ -14,9 +14,18 @@
 #include <cmath>
 #include <algorithm>
 #include <set>
+#include <exception>
+#include <stdexcept>
 // Arduino-compatible headers only - no std::thread for embedded systems
 #include <chrono>
 #include <random>
+
+// Execution termination exception used to immediately unwind interpreter stack when loop limits are reached
+struct ExecutionTerminated : public std::exception {
+    const char* what() const noexcept override {
+        return "Execution terminated by loop limit";
+    }
+};
 
 using ::EnhancedCommandValue;
 using arduino_interpreter::EnhancedScopeManager;
@@ -43,7 +52,7 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
     : ast_(std::move(ast)), options_(options), state_(ExecutionState::IDLE),
       commandListener_(nullptr), responseHandler_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
-      maxLoopIterations_(options.maxLoopIterations), currentFunction_(nullptr),
+      maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
       currentSwitchValue_(std::monostate{}), inSwitchFallthrough_(false),
       suspendedNode_(nullptr), suspendedChildIndex_(-1), currentCompoundNode_(nullptr), currentChildIndex_(-1),
@@ -75,7 +84,7 @@ ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const Int
     : options_(options), state_(ExecutionState::IDLE),
       commandListener_(nullptr), responseHandler_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
-      maxLoopIterations_(options.maxLoopIterations), currentFunction_(nullptr),
+      maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
       currentSwitchValue_(std::monostate{}), inSwitchFallthrough_(false),
       suspendedNode_(nullptr), suspendedChildIndex_(-1), currentCompoundNode_(nullptr), currentChildIndex_(-1),
@@ -329,7 +338,11 @@ void ASTInterpreter::executeLoop() {
             while (state_ == ExecutionState::RUNNING && currentLoopIteration_ < maxLoopIterations_) {
                 // Increment iteration counter BEFORE processing (to match JS 1-based counting)
                 currentLoopIteration_++;
-                
+
+                // Reset execution flag for this loop() iteration - allows loop() to execute even if setup() hit limits
+                shouldContinueExecution_ = true;
+                std::cout << "DEBUG: Reset shouldContinueExecution_ = true for loop iteration " << currentLoopIteration_ << std::endl;
+
                 // Emit loop iteration start command
                 emitCommand(FlexibleCommandFactory::createLoopStart("loop", currentLoopIteration_));
                 
@@ -337,24 +350,39 @@ void ASTInterpreter::executeLoop() {
                 // Generate dual FUNCTION_CALL commands matching JavaScript
                 emitCommand(FlexibleCommandFactory::createFunctionCallLoop(currentLoopIteration_, false)); // Start
                 
-                if (loopFunc) {
-                    std::cout << "DEBUG: About to execute loop function body..." << std::endl;
-                    if (auto* funcDef = dynamic_cast<const arduino_ast::FuncDefNode*>(loopFunc)) {
-                        const auto* body = funcDef->getBody();
-                        if (body) {
-                            std::cout << "DEBUG: Loop body found, type=" << static_cast<int>(body->getType()) << ", calling accept..." << std::endl;
-                            const_cast<arduino_ast::ASTNode*>(body)->accept(*this);
-                            std::cout << "DEBUG: Loop body accept() completed" << std::endl;
+                try {
+                    if (loopFunc) {
+                        std::cout << "DEBUG: About to execute loop function body..." << std::endl;
+                        if (auto* funcDef = dynamic_cast<const arduino_ast::FuncDefNode*>(loopFunc)) {
+                            const auto* body = funcDef->getBody();
+                            if (body) {
+                                std::cout << "DEBUG: Loop body found, type=" << static_cast<int>(body->getType()) << ", calling accept..." << std::endl;
+                                const_cast<arduino_ast::ASTNode*>(body)->accept(*this);
+                                std::cout << "DEBUG: Loop body accept() completed" << std::endl;
+                            } else {
+                                std::cout << "DEBUG: Loop function has NO body!" << std::endl;
+                            }
                         } else {
-                            std::cout << "DEBUG: Loop function has NO body!" << std::endl;
+                            std::cout << "DEBUG: Loop function is not FuncDefNode, calling accept on full function..." << std::endl;
+                            loopFunc->accept(*this);
                         }
-                    } else {
-                        std::cout << "DEBUG: Loop function is not FuncDefNode, calling accept on full function..." << std::endl;
-                        loopFunc->accept(*this);
                     }
+                } catch (const ExecutionTerminated& e) {
+                    // This catch block is no longer used since we're using flag-based termination
+                    std::cout << "DEBUG: ExecutionTerminated caught in executeLoop - this should not happen with flag-based approach" << std::endl;
+                    shouldContinueExecution_ = false;
+                    state_ = ExecutionState::COMPLETE;
+                    break;
                 }
-                
+
+                // Emit function completion command
                 emitCommand(FlexibleCommandFactory::createFunctionCallLoop(currentLoopIteration_, true)); // Completion
+
+                // Check if loop limit reached and break if needed
+                if (!shouldContinueExecution_) {
+                    std::cout << "DEBUG: Loop iteration terminated due to nested loop limit, breaking main loop" << std::endl;
+                    break;
+                }
                 
                 // CROSS-PLATFORM FIX: Don't emit duplicate loop function call (JavaScript doesn't emit this)
                 
@@ -442,7 +470,14 @@ void ASTInterpreter::visit(arduino_ast::CompoundStmtNode& node) {
             TRACE("visit(CompoundStmtNode)", "Stopping execution due to control flow change");
             break;
         }
-        
+
+        // CRITICAL FIX: Check shouldContinueExecution flag (matches JavaScript behavior)
+        if (!shouldContinueExecution_) {
+            std::cout << "DEBUG CompoundStmtNode: Stopping execution due to shouldContinueExecution_ = false (statement index " << i << ")" << std::endl;
+            TRACE("visit(CompoundStmtNode)", "Stopping execution due to loop limit reached in loop() context");
+            break;
+        }
+
         // Check execution state, but allow WAITING_FOR_RESPONSE to continue after tick
         if (state_ != ExecutionState::RUNNING && state_ != ExecutionState::WAITING_FOR_RESPONSE) {
             TRACE("visit(CompoundStmtNode)", "Stopping execution due to non-running state");
@@ -461,8 +496,17 @@ void ASTInterpreter::visit(arduino_ast::CompoundStmtNode& node) {
             currentChildIndex_ = static_cast<int>(i);
             
             child->accept(*this);
-            
-            
+
+            // CROSS-PLATFORM FIX: Check shouldContinueExecution flag immediately after statement execution
+            // This ensures that if a nested statement (like a loop) hits its limit and sets
+            // shouldContinueExecution_ = false, we stop executing the rest of the sibling statements
+            if (!shouldContinueExecution_) {
+                std::cout << "DEBUG CompoundStmtNode: Stopping execution after child " << i
+                         << " due to shouldContinueExecution_ = false" << std::endl;
+                TRACE("visit(CompoundStmtNode)", "Stopping execution after child due to nested loop limit");
+                break;
+            }
+
             // CRITICAL FIX: Check if execution was suspended by this child
             if (state_ == ExecutionState::WAITING_FOR_RESPONSE) {
                 // Execution was suspended - store the context for resumption
@@ -536,7 +580,7 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
     // CROSS-PLATFORM FIX: Emit WHILE_LOOP phase start to match JavaScript
     emitCommand(FlexibleCommandFactory::createWhileLoopStart());
 
-    while (state_ == ExecutionState::RUNNING && iteration < maxLoopIterations_) {
+    while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING && iteration < maxLoopIterations_) {
         CommandValue conditionValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getCondition()));
         bool shouldContinueLoop = convertToBool(conditionValue);
 
@@ -569,6 +613,17 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
 
     // CROSS-PLATFORM FIX: Emit single WHILE_LOOP end event to match JavaScript
     emitCommand(FlexibleCommandFactory::createWhileLoopEnd(iteration));
+
+    // CRITICAL FIX: Always stop execution when loop limit reached (like JavaScript)
+    // Set flag to indicate loop limit reached - let execution unwind naturally
+    if (iteration >= maxLoopIterations_) {
+        shouldContinueExecution_ = false;
+        if (currentLoopIteration_ > 0) {
+            std::cout << "DEBUG: WhileStatement setting shouldContinueExecution_ false in loop() context - limit reached" << std::endl;
+        } else {
+            std::cout << "DEBUG: WhileStatement setting shouldContinueExecution_ false in setup() context - limit reached" << std::endl;
+        }
+    }
 }
 
 void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
@@ -609,13 +664,25 @@ void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
 
         iteration++;
 
-    } while (state_ == ExecutionState::RUNNING && iteration < maxLoopIterations_);
+    } while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING && iteration < maxLoopIterations_);
 
     // CROSS-PLATFORM FIX: Emit single DO_WHILE_LOOP end event to match JavaScript
     emitCommand(FlexibleCommandFactory::createDoWhileLoopEnd(iteration));
+
+    // CRITICAL FIX: Always stop execution when loop limit reached (like JavaScript)
+    // Set flag to indicate loop limit reached - let execution unwind naturally
+    if (iteration >= maxLoopIterations_) {
+        shouldContinueExecution_ = false;
+        if (currentLoopIteration_ > 0) {
+            std::cout << "DEBUG: DoWhileStatement setting shouldContinueExecution_ false in loop() context - limit reached" << std::endl;
+        } else {
+            std::cout << "DEBUG: DoWhileStatement setting shouldContinueExecution_ false in setup() context - limit reached" << std::endl;
+        }
+    }
 }
 
 void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
+    std::cout << "DEBUG ForStatement: ENTERING ForStatement visitor" << std::endl;
     uint32_t iteration = 0;
 
     scopeManager_->pushScope();
@@ -628,7 +695,7 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
         const_cast<arduino_ast::ASTNode*>(node.getInitializer())->accept(*this);
     }
 
-    while (state_ == ExecutionState::RUNNING) {
+    while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING) {
         // Check condition
         bool shouldContinueLoop = true;
         if (node.getCondition()) {
@@ -678,11 +745,18 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
     scopeManager_->popScope();
 
     // CROSS-PLATFORM FIX: Emit single FOR_LOOP end event to match JavaScript
-    if (iteration >= maxLoopIterations_) {
-        emitCommand(FlexibleCommandFactory::createForLoopEnd(iteration, maxLoopIterations_));
-    } else {
-        // Normal loop completion - emit LOOP_LIMIT_REACHED with proper phase
-        emitCommand(FlexibleCommandFactory::createForLoopEnd(iteration, maxLoopIterations_));
+    const bool limitReached = iteration >= maxLoopIterations_;
+    emitCommand(FlexibleCommandFactory::createForLoopEnd(iteration, maxLoopIterations_));
+
+    // CRITICAL FIX: Always stop execution when loop limit reached (like JavaScript)
+    // Set flag to indicate loop limit reached - let execution unwind naturally
+    if (limitReached) {
+        shouldContinueExecution_ = false;
+        if (currentLoopIteration_ > 0) {
+            std::cout << "DEBUG: ForStatement setting shouldContinueExecution_ false in loop() context - limit reached" << std::endl;
+        } else {
+            std::cout << "DEBUG: ForStatement setting shouldContinueExecution_ false in setup() context - limit reached" << std::endl;
+        }
     }
 }
 
@@ -3933,6 +4007,13 @@ bool ASTInterpreter::isNumeric(const CommandValue& value) {
 // =============================================================================
 
 void ASTInterpreter::emitCommand(FlexibleCommand command) {
+    // Debug command generation to verify C++ execution
+    if (command.getType() == "FOR_LOOP") {
+        std::cout << "DEBUG EMIT: FOR_LOOP command generated!" << std::endl;
+    }
+    if (command.getType() == "VAR_SET") {
+        std::cout << "DEBUG EMIT: VAR_SET command generated!" << std::endl;
+    }
     if (commandListener_) {
         commandListener_->onCommand(command);
     }

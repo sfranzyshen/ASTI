@@ -30,8 +30,6 @@
   }, {
     "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
   }, {
-    "type": "PIN_MODE", "pin": 8, "mode": 0, "timestamp": 0
-  }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {
     "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"

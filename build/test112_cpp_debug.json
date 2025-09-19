@@ -28,22 +28,6 @@
   }, {
     "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed"
   }, {
-    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
-  }, {
-    "type": "VAR_SET", "variable": "j", "value": 0, "timestamp": 0
-  }, {
-    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
-  }, {
-    "type": "VAR_SET", "variable": "j", "value": 1, "timestamp": 0
-  }, {
-    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
-  }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"Execution finished.\""
-    ], "data": "\"Execution finished.\"", "timestamp": 0, "message": "Serial.println(\"Execution finished.\")"
-  }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {
     "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true

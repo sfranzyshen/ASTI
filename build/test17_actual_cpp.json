@@ -1,0 +1,244 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1758233455721,
+    "component": "interpreter",
+    "version": "7.3.0",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1758233455721,
+    "message": "Program execution started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "lowestPin",
+    "value": 2,
+    "isConst": true,
+    "timestamp": 1758233455722
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "highestPin",
+    "value": 13,
+    "isConst": true,
+    "timestamp": 1758233455722
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1758233455722,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1758233455722,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisPin",
+    "value": 2,
+    "timestamp": 1758233455723
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1758233455723,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "PIN_MODE",
+    "pin": 2,
+    "mode": 1,
+    "timestamp": 1758233455724
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisPin",
+    "value": 3,
+    "timestamp": 1758233455724
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "timestamp": 1758233455724,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "phase": "end"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1758233455724,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1758233455724,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1758233455724,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1758233455724
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1758233455724,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisPin",
+    "value": 2,
+    "timestamp": 1758233455724
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1758233455724,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1758233455724,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "brightness",
+    "value": 0,
+    "timestamp": 1758233455724
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1758233455724,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "ANALOG_WRITE",
+    "pin": 2,
+    "value": 0,
+    "timestamp": 1758233455724
+  },
+  {
+    "type": "DELAY",
+    "duration": 2,
+    "actualDelay": 2,
+    "timestamp": 1758233455725
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "brightness",
+    "value": 1,
+    "timestamp": 1758233455725
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "timestamp": 1758233455725,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "phase": "end"
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1758233455725,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "brightness",
+    "value": 255,
+    "timestamp": 1758233455725
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1758233455725,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "ANALOG_WRITE",
+    "pin": 2,
+    "value": 255,
+    "timestamp": 1758233455725
+  },
+  {
+    "type": "DELAY",
+    "duration": 2,
+    "actualDelay": 2,
+    "timestamp": 1758233455725
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "brightness",
+    "value": 254,
+    "timestamp": 1758233455725
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "timestamp": 1758233455725,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "phase": "end"
+  },
+  {
+    "type": "DELAY",
+    "duration": 100,
+    "actualDelay": 100,
+    "timestamp": 1758233455725
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisPin",
+    "value": 3,
+    "timestamp": 1758233455725
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "timestamp": 1758233455725,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "phase": "end"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1758233455725
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1758233455725,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1758233455725,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1758233455725,
+    "message": "Program execution stopped"
+  }
+]

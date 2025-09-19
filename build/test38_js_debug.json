@@ -32,7 +32,37 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "inByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "SWITCH_STATEMENT", "discriminant": 65, "timestamp": 0, "message": "switch (65)"
+  }, {
+    "type": "SWITCH_CASE", "caseValue": 97, "matched": false, "timestamp": 0
+  }, {
+    "type": "SWITCH_CASE", "caseValue": 98, "matched": false, "timestamp": 0
+  }, {
+    "type": "SWITCH_CASE", "caseValue": 99, "matched": false, "timestamp": 0
+  }, {
+    "type": "SWITCH_CASE", "caseValue": 100, "matched": false, "timestamp": 0
+  }, {
+    "type": "SWITCH_CASE", "caseValue": 101, "matched": false, "timestamp": 0
+  }, {
+    "type": "SWITCH_CASE", "caseValue": "default", "matched": true, "timestamp": 0
+  }, {
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
+  }, {
+    "type": "VAR_SET", "variable": "thisPin", "value": 2, "timestamp": 0
+  }, {
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
+  }, {
+    "type": "DIGITAL_WRITE", "pin": 2, "value": 0, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "thisPin", "value": 3, "timestamp": 0
+  }, {
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

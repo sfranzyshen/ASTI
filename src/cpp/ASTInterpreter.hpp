@@ -318,6 +318,7 @@ private:
     bool inLoop_;
     uint32_t currentLoopIteration_;
     uint32_t maxLoopIterations_;
+    bool shouldContinueExecution_;  // Flag to stop execution after loop limits in loop() context
     std::chrono::steady_clock::time_point executionStart_;
     
     // Function tracking - MEMORY SAFE: Store function names and look up in AST tree

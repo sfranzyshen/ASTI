@@ -38,30 +38,6 @@
   }, {
     "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
   }, {
-    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
-  }, {
-    "type": "VAR_SET", "variable": "x", "value": 0, "timestamp": 0
-  }, {
-    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
-  }, {
-    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
-  }, {
-    "type": "VAR_SET", "variable": "y", "value": 0, "timestamp": 0
-  }, {
-    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
-  }, {
-    "type": "ERROR", "timestamp": 0, "message": "Complex array expressions not supported in assignment", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Complex array expressions not supported in assignment"
-  }, {
-    "type": "VAR_SET", "variable": "y", "value": 1, "timestamp": 0
-  }, {
-    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
-  }, {
-    "type": "VAR_SET", "variable": "x", "value": 1, "timestamp": 0
-  }, {
-    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
-  }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {
     "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
@@ -113,8 +89,6 @@
     "type": "VAR_SET", "variable": "thisCol", "value": 1, "timestamp": 0
   }, {
     "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
-  }, {
-    "type": "DIGITAL_WRITE", "pin": 2, "value": 0, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "thisRow", "value": 1, "timestamp": 0
   }, {

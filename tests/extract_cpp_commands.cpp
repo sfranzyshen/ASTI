@@ -31,9 +31,9 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    // Format test file name - use ../test_data/ from build directory
+    // Format test file name - use test_data/ from project root
     std::ostringstream astFileName;
-    astFileName << "../test_data/example_" << std::setfill('0') << std::setw(3) << testNumber << ".ast";
+    astFileName << "test_data/example_" << std::setfill('0') << std::setw(3) << testNumber << ".ast";
     std::string astFile = astFileName.str();
     
     std::cout << "=== C++ COMMAND STREAM EXTRACTION ===" << std::endl;
@@ -73,8 +73,10 @@ int main(int argc, char* argv[]) {
         interpreter->setCommandListener(&capture);
         interpreter->setResponseHandler(&responseHandler);
         
-        // Execute interpreter 
+        // Execute interpreter
+        std::cout << "DEBUG: About to start interpreter..." << std::endl;
         interpreter->start();
+        std::cout << "DEBUG: Interpreter start() completed" << std::endl;
         
         // Wait for completion with timeout
         auto startTime = std::chrono::steady_clock::now();
