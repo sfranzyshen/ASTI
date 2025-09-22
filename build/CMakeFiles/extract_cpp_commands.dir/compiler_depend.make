@@ -258,6 +258,7 @@ CMakeFiles/extract_cpp_commands.dir/tests/extract_cpp_commands.cpp.o: ../tests/e
   ../src/cpp/ArduinoLibraryRegistry.hpp \
   /usr/include/c++/11/unordered_set \
   /usr/include/c++/11/bits/unordered_set.h \
+  ../src/cpp/InterpreterConfig.hpp \
   /usr/include/c++/11/stack \
   /usr/include/c++/11/deque \
   /usr/include/c++/11/bits/stl_deque.h \
@@ -289,6 +290,8 @@ CMakeFiles/extract_cpp_commands.dir/tests/extract_cpp_commands.cpp.o: ../tests/e
 /usr/include/c++/11/deque:
 
 /usr/include/c++/11/stack:
+
+../src/cpp/InterpreterConfig.hpp:
 
 /usr/include/stdlib.h:
 

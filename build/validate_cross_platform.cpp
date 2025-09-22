@@ -49,6 +49,7 @@ std::string normalizeJSON(const std::string& json) {
     std::regex digitalWriteRegex(R"("type": "DIGITAL_WRITE",\s*"timestamp": 0,\s*"pin": (\d+),\s*"value": (\d+))");
     normalized = std::regex_replace(normalized, digitalWriteRegex, R"("type": "DIGITAL_WRITE", "pin": $1, "value": $2, "timestamp": 0)");
 
+
     // LOOP_LIMIT_REACHED field reordering - C++ vs JS field order difference
     std::string loopPattern = "\"type\": \"LOOP_LIMIT_REACHED\", \"timestamp\": 0, \"message\": \"([^\"]+)\", \"iterations\": ([0-9]+), \"phase\": \"([^\"]+)\"";
     std::string loopReplacement = "\"type\": \"LOOP_LIMIT_REACHED\", \"phase\": \"$3\", \"iterations\": $2, \"timestamp\": 0, \"message\": \"$1\"";
@@ -184,8 +185,8 @@ std::string loadJsCommands(int testNumber) {
 bool compareCommands(const std::string& cppJson, const std::string& jsJson, int testNumber) {
     if (cppJson.empty() || jsJson.empty()) {
         if (cppJson.empty() && jsJson.empty()) {
-            std::cout << "Test " << testNumber << ": Both streams empty - SKIP" << std::endl;
-            return true;
+            std::cout << "Test " << testNumber << ": Both streams empty - SKIP (no execution)" << std::endl;
+            return true;  // Both empty is considered a match
         }
         std::cout << "Test " << testNumber << ": One stream missing - ";
         std::cout << (cppJson.empty() ? "C++ missing" : "JS missing") << std::endl;

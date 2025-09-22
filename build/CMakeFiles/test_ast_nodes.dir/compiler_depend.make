@@ -258,6 +258,7 @@ CMakeFiles/test_ast_nodes.dir/tests/test_ast_nodes.cpp.o: ../tests/test_ast_node
   ../src/cpp/ArduinoLibraryRegistry.hpp \
   /usr/include/c++/11/unordered_set \
   /usr/include/c++/11/bits/unordered_set.h \
+  ../src/cpp/InterpreterConfig.hpp \
   /usr/include/c++/11/stack \
   /usr/include/c++/11/deque \
   /usr/include/c++/11/bits/stl_deque.h \
@@ -277,6 +278,8 @@ CMakeFiles/test_ast_nodes.dir/tests/test_ast_nodes.cpp.o: ../tests/test_ast_node
 /usr/include/c++/11/deque:
 
 /usr/include/c++/11/stack:
+
+../src/cpp/InterpreterConfig.hpp:
 
 /usr/include/stdlib.h:
 

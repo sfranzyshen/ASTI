@@ -36,10 +36,7 @@ int main(int argc, char* argv[]) {
     astFileName << "test_data/example_" << std::setfill('0') << std::setw(3) << testNumber << ".ast";
     std::string astFile = astFileName.str();
     
-    std::cout << "=== C++ COMMAND STREAM EXTRACTION ===" << std::endl;
-    std::cout << "Test Number: " << testNumber << std::endl;
-    std::cout << "AST File: " << astFile << std::endl;
-    std::cout << std::endl;
+    // Headers removed for validate_cross_platform compatibility
     
     // Load AST file
     std::ifstream file(astFile, std::ios::binary | std::ios::ate);
@@ -55,9 +52,6 @@ int main(int argc, char* argv[]) {
     std::vector<uint8_t> compactAST(size);
     file.read(reinterpret_cast<char*>(compactAST.data()), size);
     file.close();
-    
-    std::cout << "Loaded " << size << " bytes from AST file" << std::endl;
-    
     try {
         // Set up C++ interpreter with command capture - use constructor that loads compact AST directly
         CommandStreamCapture capture;
@@ -66,7 +60,7 @@ int main(int argc, char* argv[]) {
         InterpreterOptions options;
         options.verbose = false;
         options.debug = false;
-        options.maxLoopIterations = 1; // MATCH JAVASCRIPT: Use exactly 1 iteration like JS test data
+        options.maxLoopIterations = Config::TEST_MAX_LOOP_ITERATIONS; // MATCH JAVASCRIPT: Use exactly 1 iteration like JS test data
         options.syncMode = true; // TEST MODE: Enable synchronous responses for digitalRead/analogRead
         
         auto interpreter = std::make_unique<ASTInterpreter>(compactAST.data(), compactAST.size(), options);
@@ -74,9 +68,7 @@ int main(int argc, char* argv[]) {
         interpreter->setResponseHandler(&responseHandler);
         
         // Execute interpreter
-        std::cout << "DEBUG: About to start interpreter..." << std::endl;
         interpreter->start();
-        std::cout << "DEBUG: Interpreter start() completed" << std::endl;
         
         // Wait for completion with timeout
         auto startTime = std::chrono::steady_clock::now();
@@ -90,13 +82,8 @@ int main(int argc, char* argv[]) {
             interpreter->stop();
         }
         
-        std::cout << "Executed interpreter successfully" << std::endl;
-        std::cout << "Captured " << capture.getCommandCount() << " commands" << std::endl;
-        std::cout << std::endl;
-        
-        // Output the complete C++ command stream
-        std::cout << "C++ COMMAND STREAM:" << std::endl;
-        std::cout << "==================" << std::endl;
+
+        // Output ONLY JSON for validation compatibility
         std::cout << capture.getCommandsAsJson() << std::endl;
         
     } catch (const std::exception& e) {

@@ -7,7 +7,7 @@
     "type": "VAR_SET", "variable": "numReadings", "value": 10, "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "readings", "value": [
-      0, 0, 0
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     ], "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "readIndex", "value": 0, "timestamp": 0
@@ -46,13 +46,13 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "total", "value": "0undefined", "timestamp": 0
+    "type": "VAR_SET", "variable": "total", "value": 560, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "readIndex", "value": 1, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "average", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "average", "value": 56, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

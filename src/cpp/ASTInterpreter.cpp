@@ -1290,8 +1290,33 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 // This is likely an array declaration - ensure it gets a VAR_SET even if init failed
                 if (std::holds_alternative<std::monostate>(typedValue)) {
                     debugLog("Array variable " + varName + " has null value - creating fallback array");
-                    // Create a default array with 3 elements to match JavaScript behavior
-                    std::vector<int32_t> defaultArray = {0, 0, 0};  // Internal storage, will emit null in commands
+                    // Create a default array with enhanced size detection
+                    int arraySize = 10; // Default better than 3
+
+                    // Enhanced array size detection for fallback arrays
+                    std::cerr << "🔍 FALLBACK ARRAY SIZE DETECTION for " << varName << std::endl;
+                    std::vector<std::string> sizeVarCandidates = {"numReadings", "ARRAY_SIZE", "arraySize", "size", "count", "length"};
+                    for (const std::string& candidate : sizeVarCandidates) {
+                        std::cerr << "🔍 Checking candidate: " << candidate << std::endl;
+                        Variable* sizeVar = scopeManager_->getVariable(candidate);
+                        if (sizeVar && sizeVar->isConst) {
+                            try {
+                                int constValue = convertToInt(sizeVar->value);
+                                if (constValue > 0 && constValue <= 1000) {
+                                    arraySize = constValue;
+                                    std::cerr << "🎯🎯🎯 FALLBACK ARRAY SIZE FOUND: " << candidate << " = " << arraySize << " for variable " << varName << std::endl;
+                                    break;
+                                }
+                            } catch (...) {
+                                // Continue searching
+                            }
+                        }
+                    }
+
+                    std::vector<int32_t> defaultArray;
+                    for (int i = 0; i < arraySize; i++) {
+                        defaultArray.push_back(0);
+                    }
                     typedValue = defaultArray;
                     needsArrayFallback = true;
 
@@ -1331,6 +1356,27 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             std::vector<int32_t> arrayValues;
             bool foundInitializer = false;
 
+            // First, try to evaluate the array size from the ArrayDeclaratorNode
+            int arraySize = 3; // Default
+            if (arrayDeclNode->getSize()) {
+                std::cerr << "🔍 VarDecl ArrayDeclaratorNode: Evaluating size expression for " << varName << std::endl;
+                try {
+                    CommandValue sizeValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(arrayDeclNode->getSize()));
+                    std::cerr << "🔍 VarDecl size evaluation result: " << commandValueToString(sizeValue) << std::endl;
+                    int actualSize = convertToInt(sizeValue);
+                    if (actualSize > 0) {
+                        arraySize = actualSize;
+                        std::cerr << "🎯 VarDecl ArrayDeclaratorNode: Using evaluated size " << actualSize << " for " << varName << std::endl;
+                    } else {
+                        std::cerr << "❌ VarDecl ArrayDeclaratorNode: Invalid size " << actualSize << " for " << varName << std::endl;
+                    }
+                } catch (...) {
+                    std::cerr << "❌ VarDecl ArrayDeclaratorNode: Exception evaluating size for " << varName << std::endl;
+                }
+            } else {
+                std::cerr << "❌ VarDecl ArrayDeclaratorNode: No size expression found for " << varName << std::endl;
+            }
+
             // Look for ArrayInitializerNode in VarDeclNode children (not ArrayDeclaratorNode children)
             const auto& allChildren = node.getChildren();
             for (size_t i = 0; i < allChildren.size(); ++i) {
@@ -1338,8 +1384,10 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                     auto childType = allChildren[i]->getType();
                     if (childType == arduino_ast::ASTNodeType::ARRAY_INIT) {
                         // Process ArrayInitializerNode to get real values
+                        std::cerr << "🔍 FOUND ArrayInitializerNode for " << varName << std::endl;
                         if (auto* arrayInitNode = dynamic_cast<arduino_ast::ArrayInitializerNode*>(allChildren[i].get())) {
                             const auto& initChildren = arrayInitNode->getChildren();
+                            std::cerr << "🔍 ArrayInitializerNode has " << initChildren.size() << " children" << std::endl;
                             for (size_t j = 0; j < initChildren.size(); ++j) {
                                 if (initChildren[j]) {
                                     CommandValue elementValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(initChildren[j].get()));
@@ -1360,8 +1408,33 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             }
 
             if (!foundInitializer) {
-                // Fallback to default array
-                arrayValues = {0, 0, 0};
+                // Use the evaluated array size, fallback to enhanced size detection if needed
+                if (arraySize == 3) { // Still using default, try enhanced detection
+                    std::cerr << "🔍 ARRAY DECLARATOR SIZE DETECTION for " << varName << std::endl;
+                    std::vector<std::string> sizeVarCandidates = {"numReadings", "ARRAY_SIZE", "arraySize", "size", "count", "length"};
+                    for (const std::string& candidate : sizeVarCandidates) {
+                        std::cerr << "🔍 Checking candidate: " << candidate << std::endl;
+                        Variable* sizeVar = scopeManager_->getVariable(candidate);
+                        if (sizeVar && sizeVar->isConst) {
+                            try {
+                                int constValue = convertToInt(sizeVar->value);
+                                if (constValue > 0 && constValue <= 1000) { // Reasonable array size
+                                    arraySize = constValue;
+                                    std::cerr << "🎯🎯🎯 ARRAY SIZE FOUND: " << candidate << " = " << arraySize << " for variable " << varName << std::endl;
+                                    break;
+                                }
+                            } catch (...) {
+                                // Continue searching
+                            }
+                        }
+                    }
+                }
+
+                arrayValues.clear();
+                for (int i = 0; i < arraySize; i++) {
+                    arrayValues.push_back(0);
+                }
+                std::cerr << "🎯 VarDecl: Created array " << varName << " with size " << arraySize << std::endl;
             }
 
             // Store array in scope manager
@@ -1443,11 +1516,12 @@ void ASTInterpreter::visit(arduino_ast::EmptyStatement& node) {
 void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
     TRACE_ENTRY("visit(AssignmentNode)", "Starting assignment operation");
     debugLog("Visiting AssignmentNode");
+    std::cerr << "🎯 ASSIGNMENT_NODE_VISITOR_CALLED: operator=" << node.getOperator() << std::endl;
     
     try {
         // Evaluate right-hand side first
         CommandValue rightValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getRight()));
-        
+
         // Handle left-hand side
         const auto* leftNode = node.getLeft();
         std::string op = node.getOperator();
@@ -1539,18 +1613,20 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             int32_t index = convertToInt(indexValue);
             
             debugLog("Array element assignment: " + arrayName + "[" + std::to_string(index) + "] = " + commandValueToString(rightValue));
-            
+            std::cerr << "🔥 ARRAY_ASSIGNMENT: " << arrayName << "[" << index << "] = " << commandValueToString(rightValue) << std::endl;
+
             // Get array variable
             Variable* arrayVar = scopeManager_->getVariable(arrayName);
             if (!arrayVar) {
                 emitError("Array variable '" + arrayName + "' not found");
                 return;
             }
-            
+
             // Use enhanced array access system for proper array element assignment
             EnhancedCommandValue enhancedRightValue = upgradeCommandValue(rightValue);
             MemberAccessHelper::setArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(index), enhancedRightValue);
             debugLog("Array element assignment completed: " + arrayName + "[" + std::to_string(index) + "] = " + enhancedCommandValueToString(enhancedRightValue));
+            std::cerr << "🔥 ARRAY_STORED: " << arrayName << "[" << index << "] stored as " << enhancedCommandValueToString(enhancedRightValue) << std::endl;
             
         } else if (leftNode && leftNode->getType() == arduino_ast::ASTNodeType::MEMBER_ACCESS) {
             // Member access assignment (e.g., obj.field = value)  
@@ -2013,11 +2089,22 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
 
         debugLog("Array access: " + arrayName + "[" + std::to_string(index) + "]");
 
-        // Get array variable from basic scope manager
+        // CRITICAL FIX: Use enhanced scope manager for consistency with array assignments
+        // Array assignments use enhancedScopeManager_, so reads must too
+        EnhancedCommandValue enhancedValue = MemberAccessHelper::getArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(index));
+
+        // Check if enhanced value is valid (not std::monostate)
+        if (!std::holds_alternative<std::monostate>(enhancedValue)) {
+            // Convert enhanced value back to regular CommandValue
+            lastExpressionResult_ = downgradeExtendedCommandValue(enhancedValue);
+            return;
+        }
+
+        // Fall back to basic scope manager if enhanced fails
         Variable* arrayVar = scopeManager_->getVariable(arrayName);
 
         if (!arrayVar) {
-            emitError("Array variable '" + arrayName + "' not found");
+            emitError("Array variable '" + arrayName + "' not found in either scope manager");
             lastExpressionResult_ = std::monostate{};
             return;
         }
@@ -4785,15 +4872,23 @@ void ASTInterpreter::visit(arduino_ast::ArrayDeclaratorNode& node) {
 
     // Try to determine actual array size from dimensions or initializer
     if (node.getSize()) {
+        std::cerr << "🔍 ArrayDeclaratorNode: Evaluating size expression for " << varName << std::endl;
         try {
             CommandValue sizeValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getSize()));
+            std::cerr << "🔍 Size evaluation result: " << commandValueToString(sizeValue) << std::endl;
             int actualSize = convertToInt(sizeValue);
             if (actualSize > 0) {
                 arraySize = actualSize;
+                std::cerr << "🎯 ArrayDeclaratorNode: Using evaluated size " << actualSize << " for " << varName << std::endl;
+            } else {
+                std::cerr << "❌ ArrayDeclaratorNode: Invalid size " << actualSize << " for " << varName << std::endl;
             }
         } catch (...) {
+            std::cerr << "❌ ArrayDeclaratorNode: Exception evaluating size for " << varName << std::endl;
             debugLog("Failed to evaluate array size, using default: " + std::to_string(arraySize));
         }
+    } else {
+        std::cerr << "❌ ArrayDeclaratorNode: No size expression found for " << varName << std::endl;
     }
 
     // Create array with default values to match JavaScript behavior

@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -O0 -Wall -Wextra -Wpedantic CMakeFiles/extract_cpp_commands.dir/tests/extract_cpp_commands.cpp.o -o extract_cpp_commands  libarduino_ast_interpreter.a -ldl 

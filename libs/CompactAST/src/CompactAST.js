@@ -226,8 +226,16 @@ class CompactASTExporter {
             'CommaExpression': ['left', 'right'],
             'ArrayDeclaratorNode': ['identifier', 'size']
         };
-        
-        return childrenMap[node.type] || [];
+
+        const childNames = childrenMap[node.type] || [];
+
+        // 🔒 Guarantee BOTH children exist for BinaryOpNode / AssignmentNode
+        if (node.type === 'BinaryOpNode' || node.type === 'AssignmentNode') {
+            if (!('left' in node)) node.left = null;
+            if (!('right' in node)) node.right = null;
+        }
+
+        return childNames;
     }
     
     /**

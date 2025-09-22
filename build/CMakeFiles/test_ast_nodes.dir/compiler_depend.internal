@@ -259,6 +259,7 @@ CMakeFiles/test_ast_nodes.dir/tests/test_ast_nodes.cpp.o
  /mnt/d/Devel/ASTInterpreter/src/cpp/ArduinoLibraryRegistry.hpp
  /usr/include/c++/11/unordered_set
  /usr/include/c++/11/bits/unordered_set.h
+ /mnt/d/Devel/ASTInterpreter/src/cpp/InterpreterConfig.hpp
  /usr/include/c++/11/stack
  /usr/include/c++/11/deque
  /usr/include/c++/11/bits/stl_deque.h

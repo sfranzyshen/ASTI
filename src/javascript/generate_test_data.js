@@ -568,7 +568,6 @@ async function main() {
     const args = process.argv.slice(2);
     
     conditionalLog(true, 'Arduino Test Data Generation - OPTIMIZED');
-    conditionalLog(true, 'Solving timeout issues with 198 hardcoded debug statements');
     conditionalLog(true, '');
     
     let result;

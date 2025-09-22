@@ -29,45 +29,18 @@
       "Bash(valgrind:*)",
       "Bash(g++:*)",
       "Bash(./test_extract_only)",
-      "Bash(./test_compare_only)"
+      "Bash(./test_compare_only)",
+      "Bash(./run_baseline_validation.sh:*)",
+      "Bash(sed:*)",
+      "Bash(/dev/null)",
+      "Bash(./build/validate_cross_platform 0 19)",
+      "Bash(cat:*)",
+      "Bash(xargs cat:*)",
+      "Bash(git restore:*)",
+      "Bash(./scripts/run_baseline_validation.sh:*)"
     ],
     "deny": [],
     "ask": [],
     "defaultMode": "acceptEdits"
-  },
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "aplay chime.wav"
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "aplay chime.wav"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "aplay boing_x.wav"
-          }
-        ]
-      }
-    ]
   }
 }

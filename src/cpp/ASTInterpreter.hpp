@@ -18,6 +18,7 @@
 #include "CompactAST.hpp"
 #include "EnhancedInterpreter.hpp"
 #include "ArduinoLibraryRegistry.hpp"
+#include "InterpreterConfig.hpp"
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
@@ -47,11 +48,11 @@ class EnhancedScopeManager;
  * Interpreter configuration options matching JavaScript implementation
  */
 struct InterpreterOptions {
-    bool verbose = false;           // Debug output
-    bool debug = false;             // Detailed debug output
+    bool verbose = Config::DEFAULT_VERBOSE;           // Debug output
+    bool debug = Config::DEFAULT_DEBUG;             // Detailed debug output
     uint32_t stepDelay = 0;         // Delay between steps (ms)
-    uint32_t maxLoopIterations = 1000;  // Prevent infinite loops
-    uint32_t requestTimeout = 5000; // Request timeout (ms)
+    uint32_t maxLoopIterations = Config::DEFAULT_MAX_LOOP_ITERATIONS;  // Prevent infinite loops
+    uint32_t requestTimeout = Config::DEFAULT_TIMEOUT_MS; // Request timeout (ms)
     bool enableSerial = true;       // Enable Serial commands
     bool enablePins = true;         // Enable pin operations
     bool syncMode = false;          // Test mode: immediate sync responses for digitalRead/analogRead

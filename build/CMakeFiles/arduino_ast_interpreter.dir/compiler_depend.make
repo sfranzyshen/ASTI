@@ -506,6 +506,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ASTInterpreter.cpp.o: ../src/cpp/
   ../src/cpp/ArduinoLibraryRegistry.hpp \
   /usr/include/c++/11/unordered_set \
   /usr/include/c++/11/bits/unordered_set.h \
+  ../src/cpp/InterpreterConfig.hpp \
   /usr/include/c++/11/stack \
   /usr/include/c++/11/deque \
   /usr/include/c++/11/bits/stl_deque.h \
@@ -1263,6 +1264,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.o: ../
   /usr/include/c++/11/pstl/glue_algorithm_defs.h \
   ../libs/CompactAST/src/CompactAST.hpp \
   ../src/cpp/EnhancedInterpreter.hpp \
+  ../src/cpp/InterpreterConfig.hpp \
   /usr/include/c++/11/stack \
   /usr/include/c++/11/deque \
   /usr/include/c++/11/bits/stl_deque.h \
@@ -2038,6 +2040,8 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ExecutionTracer.cpp.o: ../src/cpp
 /usr/include/c++/11/deque:
 
 /usr/include/c++/11/stack:
+
+../src/cpp/InterpreterConfig.hpp:
 
 /usr/include/c++/11/bits/unordered_set.h:
 

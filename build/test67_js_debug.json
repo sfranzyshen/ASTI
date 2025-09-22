@@ -7,7 +7,7 @@
     "type": "LIBRARY_OBJECT_INSTANTIATION", "library": "Servo", "variableName": "myServo", "constructorArgs": [], "timestamp": 0, "message": "Servo()"
   }, {
     "type": "VAR_SET", "variable": "myServo", "value": {
-      "__type": "ArduinoObject", "className": "Servo", "constructorArgs": [], "objectId": "Servo_1758257403966_a9v6cpwnu"
+      "__type": "ArduinoObject", "className": "Servo", "constructorArgs": [], "objectId": "Servo_1758518338691_gseiyulmw"
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "potPin", "value": 14, "timestamp": 0
@@ -18,7 +18,7 @@
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1758257403966_a9v6cpwnu", "variableName": "myServo", "method": "attach", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1758518338691_gseiyulmw", "variableName": "myServo", "method": "attach", "args": [
       9
     ], "message": "myServo.attach(9)", "timestamp": 0
   }, {
@@ -52,7 +52,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1758257403966_a9v6cpwnu", "variableName": "myServo", "method": "write", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "Servo", "object": "Servo_1758518338691_gseiyulmw", "variableName": "myServo", "method": "write", "args": [
       98
     ], "message": "myServo.write(98)", "timestamp": 0
   }, {

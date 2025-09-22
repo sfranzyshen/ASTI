@@ -205,6 +205,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.o: \
  /usr/include/c++/11/pstl/glue_algorithm_defs.h \
  /mnt/d/Devel/ASTInterpreter/libs/CompactAST/src/CompactAST.hpp \
  /mnt/d/Devel/ASTInterpreter/src/cpp/EnhancedInterpreter.hpp \
+ /mnt/d/Devel/ASTInterpreter/src/cpp/InterpreterConfig.hpp \
  /usr/include/c++/11/stack /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_stack.h /usr/include/c++/11/queue \

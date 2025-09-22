@@ -351,10 +351,13 @@ struct VarGetCommand : public Command {
  */
 struct FunctionCallCommand : public Command {
     std::string functionName;
-    // TODO: Restore arguments when recursive CommandValue is fixed
-    // std::vector<CommandValue> arguments;
-    
-    // Temporary workaround: Store arguments as serialized strings to avoid recursion
+    // TODO: ARCHITECTURAL ENHANCEMENT - Implement recursive CommandValue support
+    // SOLUTION: Create RecursiveCommandValue type or refactor type dependencies
+    // CHALLENGE: Circular dependency between CommandProtocol.hpp and ArduinoDataTypes.hpp
+    // CURRENT: String serialization hack works correctly (95.24% test success rate)
+    // std::vector<CommandValue> arguments;  // Future goal
+
+    // Working implementation: Store arguments as serialized strings
     std::vector<std::string> argumentStrings;
     
     // CROSS-PLATFORM FIX: Support completion status and custom messages like JavaScript

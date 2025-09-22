@@ -1,0 +1,27 @@
+{
+  "testNum": 21,
+  "exactMatch": false,
+  "differences": [
+    {
+      "lineNum": 21,
+      "type": "functional",
+      "cppLine": "    ], \"data\": \"\\\"ASCII Table ~ Character Map\\\"\", \"timestamp\": 0, \"message\": \"Serial.println(\\\"ASCII",
+      "jsLine": "    ], \"data\": \"ASCII Table ~ Character Map\", \"timestamp\": 0, \"message\": \"Serial.println(\\\"ASCII Tab"
+    },
+    {
+      "lineNum": 31,
+      "type": "functional",
+      "cppLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.write\", \"message\": \"Serial.write(33)\", \"timestamp\":",
+      "jsLine": "    \"type\": \"FUNCTION_CALL\", \"function\": \"Serial.write\", \"arguments\": ["
+    },
+    {
+      "lineNum": 33,
+      "type": "functional",
+      "cppLine": "    ]",
+      "jsLine": "    ], \"timestamp\": 0, \"message\": \"Serial.write(33)\""
+    }
+  ],
+  "executionIssues": [],
+  "harmlessVariations": [],
+  "severity": "NONE"
+}
