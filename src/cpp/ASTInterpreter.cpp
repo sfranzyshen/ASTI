@@ -561,9 +561,9 @@ void ASTInterpreter::visit(arduino_ast::IfStatement& node) {
     
     CommandValue conditionValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getCondition()));
     bool result = convertToBool(conditionValue);
-    
+
     std::string branch = result ? "then" : "else";
-    emitCommand(FlexibleCommandFactory::createIfStatement(convertCommandValue(conditionValue), result, branch));
+    emitCommand(FlexibleCommandFactory::createIfStatement(convertCommandValue(conditionValue), convertCommandValue(conditionValue), branch));
     
     if (result && node.getConsequent()) {
         const_cast<arduino_ast::ASTNode*>(node.getConsequent())->accept(*this);

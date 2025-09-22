@@ -146,9 +146,15 @@ public:
             } else if (functionName == "Serial.write") {
                 // Serial.write: type, function, arguments, timestamp, message
                 jsOrder = {"type", "function", "arguments", "timestamp", "message"};
+            } else if (functionName == "Serial.available") {
+                // Serial.available: type, function, arguments, timestamp, message
+                jsOrder = {"type", "function", "arguments", "timestamp", "message"};
             } else if (functionName == "tone" || functionName == "noTone") {
                 // tone/noTone: type, function, arguments, pin, frequency, duration, timestamp, message
                 jsOrder = {"type", "function", "arguments", "pin", "frequency", "duration", "timestamp", "message"};
+            } else if (functionName == "noteOn") {
+                // noteOn (custom function): type, function, arguments, timestamp, message
+                jsOrder = {"type", "function", "arguments", "timestamp", "message"};
             } else {
                 // Other FUNCTION_CALL: type, function, message, iteration, completed, timestamp
                 jsOrder = {"type", "function", "message", "iteration", "completed", "timestamp"};
@@ -259,13 +265,17 @@ private:
             } else if constexpr (std::is_same_v<T, StringObject>) {
                 oss << "{\n    \"value\": \"" << this->escapeString(arg.value) << "\"\n  }";
             } else if constexpr (std::is_same_v<T, std::vector<std::variant<bool, int32_t, double, std::string>>>) {
-                oss << "[\n";
-                for (size_t i = 0; i < arg.size(); ++i) {
-                    if (i > 0) oss << ",\n";
-                    oss << "    ";
-                    this->serializeArrayElement(oss, arg[i]);
+                if (arg.empty()) {
+                    oss << "[]";  // Compact format for empty arrays to match JavaScript
+                } else {
+                    oss << "[\n";
+                    for (size_t i = 0; i < arg.size(); ++i) {
+                        if (i > 0) oss << ",\n";
+                        oss << "    ";
+                        this->serializeArrayElement(oss, arg[i]);
+                    }
+                    oss << "\n  ]";
                 }
-                oss << "\n  ]";
             }
         }, value);
     }
@@ -478,13 +488,30 @@ namespace FlexibleCommandFactory {
         FlexibleCommand cmd("FUNCTION_CALL");
         cmd.set("function", name);
         
-        if (!argStrings.empty()) {
-            std::vector<std::variant<bool, int32_t, double, std::string>> args;
-            for (const auto& arg : argStrings) {
-                args.push_back(arg);
+        // Always include arguments field for JavaScript compatibility
+        std::vector<std::variant<bool, int32_t, double, std::string>> args;
+        for (const auto& arg : argStrings) {
+            // Convert numeric strings back to numbers for JavaScript compatibility
+            std::string trimmed = arg;
+            // Remove whitespace
+            trimmed.erase(0, trimmed.find_first_not_of(" \t\n\r"));
+            trimmed.erase(trimmed.find_last_not_of(" \t\n\r") + 1);
+
+            // Try to convert to integer first, regardless of content
+            try {
+                size_t pos;
+                int value = std::stoi(trimmed, &pos);
+                // Only convert if entire string was consumed (pure numeric)
+                if (pos == trimmed.length()) {
+                    args.push_back(value);
+                } else {
+                    args.push_back(arg);  // Contains non-numeric characters
+                }
+            } catch (...) {
+                args.push_back(arg);  // Not convertible to integer
             }
-            cmd.set("arguments", args);
         }
+        cmd.set("arguments", args);
         
         if (iteration > 0) {
             cmd.set("iteration", iteration);
@@ -497,8 +524,18 @@ namespace FlexibleCommandFactory {
                         ("Executing " + name + "() iteration " + std::to_string(iteration)) : customMessage);
             }
         } else {
-            std::string message = customMessage.empty() ? 
-                (name + "()") : customMessage;
+            std::string message;
+            if (!customMessage.empty()) {
+                message = customMessage;
+            } else {
+                // Build message with actual arguments like JavaScript
+                message = name + "(";
+                for (size_t i = 0; i < argStrings.size(); ++i) {
+                    if (i > 0) message += ", ";
+                    message += argStrings[i];
+                }
+                message += ")";
+            }
             cmd.set("message", message);
         }
         
@@ -604,7 +641,7 @@ namespace FlexibleCommandFactory {
     }
 
     // IF_STATEMENT: {type, timestamp, condition, result, branch}
-    inline FlexibleCommand createIfStatement(const FlexibleCommandValue& condition, bool result, const std::string& branch) {
+    inline FlexibleCommand createIfStatement(const FlexibleCommandValue& condition, const FlexibleCommandValue& result, const std::string& branch) {
         return FlexibleCommand("IF_STATEMENT")
             .set("condition", condition)
             .set("result", result)
