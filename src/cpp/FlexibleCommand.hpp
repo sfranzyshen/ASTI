@@ -143,6 +143,9 @@ public:
             } else if (functionName == "Serial.println") {
                 // Serial.println: type, function, arguments, data, timestamp, message
                 jsOrder = {"type", "function", "arguments", "data", "timestamp", "message"};
+            } else if (functionName == "Serial.write") {
+                // Serial.write: type, function, arguments, timestamp, message
+                jsOrder = {"type", "function", "arguments", "timestamp", "message"};
             } else if (functionName == "tone" || functionName == "noTone") {
                 // tone/noTone: type, function, arguments, pin, frequency, duration, timestamp, message
                 jsOrder = {"type", "function", "arguments", "pin", "frequency", "duration", "timestamp", "message"};
@@ -457,10 +460,15 @@ namespace FlexibleCommandFactory {
     // FUNCTION_CALL variant 3: {type, timestamp, function, arguments, data, message}
     inline FlexibleCommand createFunctionCallSerialPrintln(const std::string& data) {
         std::vector<std::variant<bool, int32_t, double, std::string>> args = {data};
+        // Extract raw string for data field - remove surrounding quotes if present
+        std::string rawData = data;
+        if (rawData.length() >= 2 && rawData.front() == '"' && rawData.back() == '"') {
+            rawData = rawData.substr(1, rawData.length() - 2);
+        }
         return FlexibleCommand("FUNCTION_CALL")
             .set("function", std::string("Serial.println"))
             .set("arguments", args)
-            .set("data", data)
+            .set("data", rawData)
             .set("message", std::string("Serial.println(") + data + ")");
     }
 
