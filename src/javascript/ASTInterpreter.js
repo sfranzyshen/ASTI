@@ -27,7 +27,7 @@ if (typeof conditionalLog === 'undefined') {
  *   ✅ setup() and loop() execution flow
  */
 
-const INTERPRETER_VERSION = "7.3.0";
+const INTERPRETER_VERSION = "8.0.0";
 
 // Global debugLog function for contexts where 'this' is not available
 function debugLog(...args) {
@@ -2964,10 +2964,15 @@ class ASTInterpreter {
     
     async executeVariableDeclaration(node) {
         if (!node.declarations) return;
-        
+
         for (const decl of node.declarations) {
             // Handle both regular declarator and array declarator
             const varName = decl.declarator?.value || decl.declarator?.identifier?.value;
+
+            // Debug variable declarations for critical variables (can be removed in production)
+            if (this.options.verbose && varName === 'readings') {
+                debugLog(`Executing variable declaration for ${varName}, type: ${decl.declarator?.type}`);
+            }
             let arrayInitializerValues = null; // Declare at loop scope
             if (varName) {
                 // SPECIAL CASE: Detect static function definitions that were misparsed as variable declarations
@@ -3383,7 +3388,15 @@ class ASTInterpreter {
                     } else {
                         // Explicit size declaration: int arr[10] or int arr[8][8];
                         if (decl.declarator?.size) {
+                            // Debug array size evaluation for critical variables
+                            if (this.options.verbose && varName === 'readings') {
+                                debugLog(`Evaluating array size for ${varName}`);
+                            }
                             arraySize = await this.evaluateExpression(decl.declarator.size);
+                            // Debug evaluated size result for critical variables
+                            if (this.options.verbose && varName === 'readings') {
+                                debugLog(`Array size result for ${varName}: ${arraySize}`);
+                            }
                         } else if (decl.declarator?.dimensions && decl.declarator.dimensions.length > 0) {
                             // Handle multidimensional arrays
                             const dimensions = [];
@@ -3408,6 +3421,12 @@ class ASTInterpreter {
                         if (arraySize && arraySize > 0 && !value) {
                             this.validateArraySize(arraySize, 'variable declaration array');
                             value = new Array(arraySize).fill(0); // Initialize with zeros
+
+                            // Debug array initialization for critical variables
+                            if (this.options.verbose && varName === 'readings') {
+                                debugLog(`Array initialization for ${varName}:`, JSON.stringify(value));
+                            }
+
                             if (this.options.verbose) {
                                 debugLog(`Array ${varName} initialized with size ${arraySize}`);
                             }
@@ -3420,7 +3439,12 @@ class ASTInterpreter {
                 
                 // Phase 4.2: Track initialization status
                 const hasInitializer = !!decl.initializer || isArray || arrayInitializerValues;
-                
+
+                // Debug variable setting for critical variables
+                if (this.options.verbose && varName === 'readings') {
+                    debugLog(`Variable set ${varName}:`, JSON.stringify(value), 'isArray:', isArray, 'arraySize:', arraySize);
+                }
+
                 const result = this.variables.set(varName, value, { 
                     isDeclaration: true,
                     declaredType: declType,
@@ -3435,6 +3459,11 @@ class ASTInterpreter {
                     continue; // Skip this declaration and continue with next one
                 }
                 
+                // Debug emission for critical variables (can be removed in production)
+                if (this.options.verbose && varName === 'readings') {
+                    debugLog(`VAR_SET emission for ${varName}:`, JSON.stringify(value));
+                }
+
                 this.emitCommand({
                     type: COMMAND_TYPES.VAR_SET,
                     variable: varName,
@@ -5116,17 +5145,38 @@ class ASTInterpreter {
                 return null;
         }
         
-        // Update the array element directly
-        targetArray[finalIndex] = newValue;
-        
-        // Update the variable in the variable store to maintain consistency
-        this.variables.set(arrayName, arrayValue);
-        
+        // 🔧 FIX: Create deep copy to prevent retroactive modification of emitted commands
+        const newArrayValue = this.deepCopyArray(arrayValue);
+
+        // Navigate to the target in the new array copy
+        let newTargetArray = newArrayValue;
+        for (let i = 0; i < indices.length - 1; i++) {
+            newTargetArray = newTargetArray[indices[i]];
+        }
+
+        // Update the array element in the copy
+        newTargetArray[finalIndex] = newValue;
+
+        // Update the variable store with the new array
+        this.variables.set(arrayName, newArrayValue);
+
+        // Debug array assignments for critical variables (can be removed in production)
+        if (this.options.verbose && arrayName === 'readings') {
+            debugLog(`Array assignment VAR_SET for ${arrayName}:`, JSON.stringify(newArrayValue));
+        }
+
+        this.emitCommand({
+            type: COMMAND_TYPES.VAR_SET,
+            variable: arrayName,
+            value: this.sanitizeForCommand(newArrayValue),
+            timestamp: Date.now()
+        });
+
         if (this.options.verbose) {
             const indexStr = indices.map(i => `[${i}]`).join('');
             debugLog(`Array element assignment: ${arrayName}${indexStr} = ${newValue}`);
         }
-        
+
         return newValue;
     }
     
@@ -9060,18 +9110,32 @@ class ASTInterpreter {
         return 8; // Default struct size
     }
     
+    deepCopyArray(arr) {
+        // 🔧 FIX: Deep copy array to prevent retroactive modification of emitted commands
+        if (!Array.isArray(arr)) {
+            return arr;
+        }
+
+        return arr.map(item => {
+            if (Array.isArray(item)) {
+                return this.deepCopyArray(item); // Recursive for multidimensional arrays
+            }
+            return item;
+        });
+    }
+
     getArrayBaseName(arrayAccess) {
         // Extract the base array name from nested ArrayAccessNode structures
         // For pixels[x][y], traverses: pixels[x][y] -> pixels[x] -> pixels
         if (!arrayAccess || arrayAccess.type !== 'ArrayAccessNode') {
             return null;
         }
-        
+
         let current = arrayAccess;
         while (current.identifier && current.identifier.type === 'ArrayAccessNode') {
             current = current.identifier;
         }
-        
+
         return current.identifier?.value || null;
     }
     

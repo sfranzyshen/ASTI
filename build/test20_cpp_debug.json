@@ -30,6 +30,10 @@
   }, {
     "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
+    "type": "VAR_SET", "variable": "readings", "value": [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    ], "timestamp": 0
+  }, {
     "type": "VAR_SET", "variable": "thisReading", "value": 1, "timestamp": 0
   }, {
     "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
@@ -45,6 +49,10 @@
     "type": "VAR_SET", "variable": "total", "value": 0, "timestamp": 0
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "readings", "value": [
+      560, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    ], "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "total", "value": 560, "timestamp": 0
   }, {

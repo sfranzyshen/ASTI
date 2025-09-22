@@ -787,6 +787,12 @@ void ASTInterpreter::visit(arduino_ast::ContinueStatement& node) {
 void ASTInterpreter::visit(arduino_ast::BinaryOpNode& node) {
     // Binary operations are handled by evaluateExpression
     // This visitor method is called when binary ops are statements
+    std::cerr << "🎯 BINARY_OP_VISITOR_CALLED: operator=" << node.getOperator() << std::endl;
+
+    // Check if this is an assignment operation
+    if (node.getOperator() == "=" || node.getOperator() == "==") {
+        std::cerr << "🎯 BINARY_OP_ASSIGNMENT_DETECTED: " << node.getOperator() << std::endl;
+    }
 }
 
 void ASTInterpreter::visit(arduino_ast::UnaryOpNode& node) {
@@ -1627,6 +1633,38 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             MemberAccessHelper::setArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(index), enhancedRightValue);
             debugLog("Array element assignment completed: " + arrayName + "[" + std::to_string(index) + "] = " + enhancedCommandValueToString(enhancedRightValue));
             std::cerr << "🔥 ARRAY_STORED: " << arrayName << "[" << index << "] stored as " << enhancedCommandValueToString(enhancedRightValue) << std::endl;
+
+            // CRITICAL FIX: Emit VAR_SET command after array assignment to match JavaScript behavior
+            // Use the EXISTING array from basic scope and just emit it
+            std::cerr << "🎯 EMITTING_VAR_SET: After array assignment for " << arrayName << std::endl;
+
+            // Get the EXISTING array from basic scope manager (this should have 10 elements)
+            Variable* existingArrayVar = scopeManager_->getVariable(arrayName);
+            if (existingArrayVar) {
+                std::cerr << "🎯 EXISTING_ARRAY_FOUND: " << commandValueToString(existingArrayVar->value) << std::endl;
+
+                // Check if it's an array and what size
+                if (std::holds_alternative<std::vector<int32_t>>(existingArrayVar->value)) {
+                    auto& arrayVec = std::get<std::vector<int32_t>>(existingArrayVar->value);
+                    std::cerr << "🎯 EXISTING_ARRAY_SIZE: " << arrayVec.size() << " elements" << std::endl;
+
+                    // Update the specific element in the basic scope array
+                    if (index >= 0 && static_cast<size_t>(index) < arrayVec.size()) {
+                        arrayVec[static_cast<size_t>(index)] = convertToInt(rightValue);
+                        std::cerr << "🎯 UPDATED_ELEMENT: " << arrayName << "[" << index << "] = " << convertToInt(rightValue) << std::endl;
+
+                        // Now emit VAR_SET with the FULL existing array
+                        emitCommand(FlexibleCommandFactory::createVarSet(arrayName, convertCommandValue(existingArrayVar->value)));
+                        std::cerr << "🎯 VAR_SET_EMITTED: " << arrayName << " with " << arrayVec.size() << " elements" << std::endl;
+                    } else {
+                        std::cerr << "❌ ERROR: Array index " << index << " out of bounds for " << arrayName << std::endl;
+                    }
+                } else {
+                    std::cerr << "❌ ERROR: " << arrayName << " is not a vector<int32_t>" << std::endl;
+                }
+            } else {
+                std::cerr << "❌ ERROR: Could not find existing array " << arrayName << " in basic scope" << std::endl;
+            }
             
         } else if (leftNode && leftNode->getType() == arduino_ast::ASTNodeType::MEMBER_ACCESS) {
             // Member access assignment (e.g., obj.field = value)  
