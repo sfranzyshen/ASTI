@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -30,7 +30,7 @@
   }, {
     "type": "PIN_MODE", "pin": 6, "mode": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Mouse.begin", "message": "Mouse.begin()", "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "Mouse.begin", "message": "Mouse.begin()", "timestamp": 0, "arguments": []
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Mouse.begin", "errorType": "RuntimeError"
   }, {
@@ -70,8 +70,8 @@
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Mouse.move", "message": "Mouse.move()", "timestamp": 0, "arguments": [
-      "-5", "-5", "0"
+    "type": "FUNCTION_CALL", "function": "Mouse.move", "message": "Mouse.move(-5, -5, 0)", "timestamp": 0, "arguments": [
+      -5, -5, "0"
     ]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Mouse.move", "errorType": "RuntimeError"
@@ -84,7 +84,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Undefined variable: MOUSE_LEFT"
   }, {
-    "type": "FUNCTION_CALL", "function": "Mouse.isPressed", "message": "Mouse.isPressed()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Mouse.isPressed", "message": "Mouse.isPressed(undefined)", "timestamp": 0, "arguments": [
       "undefined"
     ]
   }, {
@@ -92,7 +92,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Mouse.isPressed"
   }, {
-    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": null, "result": null, "branch": "else", "timestamp": 0
   }, {
     "type": "DELAY", "duration": 10, "actualDelay": 10, "timestamp": 0
   }, {

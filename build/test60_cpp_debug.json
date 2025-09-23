@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -14,7 +14,7 @@
   }, {
     "type": "PIN_MODE", "pin": 2, "mode": 2, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.begin", "message": "Keyboard.begin()", "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "Keyboard.begin", "message": "Keyboard.begin()", "timestamp": 0, "arguments": []
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.begin", "errorType": "RuntimeError"
   }, {
@@ -36,7 +36,7 @@
   }, {
     "type": "DELAY", "duration": 1000, "actualDelay": 1000, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press(undefined)", "timestamp": 0, "arguments": [
       "undefined"
     ]
   }, {
@@ -44,7 +44,9 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.press"
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press()", "timestamp": 0, "arguments": ["0"]
+    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press(110)", "timestamp": 0, "arguments": [
+      110
+    ]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.press", "errorType": "RuntimeError"
   }, {
@@ -52,7 +54,7 @@
   }, {
     "type": "DELAY", "duration": 100, "actualDelay": 100, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.releaseAll", "message": "Keyboard.releaseAll()", "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "Keyboard.releaseAll", "message": "Keyboard.releaseAll()", "timestamp": 0, "arguments": []
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.releaseAll", "errorType": "RuntimeError"
   }, {
@@ -60,7 +62,7 @@
   }, {
     "type": "DELAY", "duration": 1000, "actualDelay": 1000, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press(undefined)", "timestamp": 0, "arguments": [
       "undefined"
     ]
   }, {
@@ -68,7 +70,9 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.press"
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press()", "timestamp": 0, "arguments": ["0"]
+    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press(97)", "timestamp": 0, "arguments": [
+      97
+    ]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.press", "errorType": "RuntimeError"
   }, {
@@ -76,7 +80,7 @@
   }, {
     "type": "DELAY", "duration": 500, "actualDelay": 500, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.releaseAll", "message": "Keyboard.releaseAll()", "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "Keyboard.releaseAll", "message": "Keyboard.releaseAll()", "timestamp": 0, "arguments": []
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.releaseAll", "errorType": "RuntimeError"
   }, {
@@ -86,7 +90,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Undefined variable: KEY_BACKSPACE"
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.write", "message": "Keyboard.write()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Keyboard.write", "message": "Keyboard.write(undefined)", "timestamp": 0, "arguments": [
       "undefined"
     ]
   }, {
@@ -96,7 +100,7 @@
   }, {
     "type": "DELAY", "duration": 500, "actualDelay": 500, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println(\"void setup() {\")", "timestamp": 0, "arguments": [
       "\"void setup() {\""
     ]
   }, {
@@ -104,7 +108,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.println"
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println(\"pinMode(13, 1);\")", "timestamp": 0, "arguments": [
       "\"pinMode(13, 1);\""
     ]
   }, {
@@ -112,7 +116,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.println"
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println(\"}\")", "timestamp": 0, "arguments": [
       "\"}\""
     ]
   }, {
@@ -120,13 +124,13 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.println"
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println()", "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println()", "timestamp": 0, "arguments": []
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.println", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.println"
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println(\"void loop() {\")", "timestamp": 0, "arguments": [
       "\"void loop() {\""
     ]
   }, {
@@ -134,7 +138,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.println"
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Keyboard.println", "message": "Keyboard.println(\"digitalWrite(13, 1);\")", "timestamp": 0, "arguments": [
       "\"digitalWrite(13, 1);\""
     ]
   }, {
@@ -142,7 +146,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.println"
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.print", "message": "Keyboard.print()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Keyboard.print", "message": "Keyboard.print(\"delay(3000);\")", "timestamp": 0, "arguments": [
       "\"delay(3000);\""
     ]
   }, {
@@ -162,7 +166,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Undefined variable: KEY_BACKSPACE"
   }, {
-    "type": "FUNCTION_CALL", "function": "Keyboard.write", "message": "Keyboard.write()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "Keyboard.write", "message": "Keyboard.write(undefined)", "timestamp": 0, "arguments": [
       "undefined"
     ]
   }, {

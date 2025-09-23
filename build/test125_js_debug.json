@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -46,7 +46,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "POINTER_ASSIGNMENT", "pointer": "ptr_1758566501483_6oblw", "targetVariable": "x", "value": 200, "timestamp": 0, "message": "*x = 200"
+    "type": "POINTER_ASSIGNMENT", "pointer": "ptr_1758661206938_ods8n", "targetVariable": "x", "value": 200, "timestamp": 0, "message": "*x = 200"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"New value of x: \""

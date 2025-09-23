@@ -3,7 +3,7 @@ source=unknown
 astSize=2223
 codeSize=975
 mode=AST_AND_COMMANDS
-commandCount=22
+commandCount=26
 content=// 08.Strings StringLength
 
 String txtMsg = "";

@@ -625,7 +625,7 @@ std::string serializeCommand(const Command& command) {
     switch (command.type) {
         case CommandType::VERSION_INFO:
             oss << "\"component\":\"interpreter\",";
-            oss << "\"version\":\"7.3.0\",";
+            oss << "\"version\":\"8.0.0\",";
             oss << "\"status\":\"started\"";
             break;
             

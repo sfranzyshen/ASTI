@@ -1,10 +1,10 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "FUNCTION_CALL", "function": "CapacitiveSensor", "message": "CapacitiveSensor()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "CapacitiveSensor", "message": "CapacitiveSensor(4, 2)", "timestamp": 0, "arguments": [
       "4", "2"
     ]
   }, {
@@ -34,7 +34,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "capSensor.capacitiveSensor", "message": "capSensor.capacitiveSensor()", "timestamp": 0, "arguments": ["0"]
+    "type": "FUNCTION_CALL", "function": "capSensor.capacitiveSensor", "message": "capSensor.capacitiveSensor(30)", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: capSensor.capacitiveSensor", "errorType": "RuntimeError"
   }, {

@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -26,7 +26,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"X is less than Y.\""
-    ], "data": "\"X is less than Y.\"", "timestamp": 0, "message": "Serial.println(\"X is less than Y.\")"
+    ], "data": "X is less than Y.", "timestamp": 0, "message": "Serial.println(\"X is less than Y.\")"
   }, {
     "type": "VAR_SET", "variable": "i", "value": 0, "timestamp": 0
   }, {

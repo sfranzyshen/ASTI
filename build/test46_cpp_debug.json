@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -20,25 +20,25 @@
   }, {
     "type": "WHILE_LOOP", "phase": "end", "iterations": 0, "timestamp": 0, "message": "while loop completed (0 iterations)"
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(\"You added \")", "timestamp": 0, "arguments": [
       "\"You added \""
     ]
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": "You added ", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(\"this string\")", "timestamp": 0, "arguments": [
       "\"this string\""
     ]
   }, {
     "type": "VAR_SET", "variable": "stringTwo", "value": "this string", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": []
   }, {
     "type": "VAR_SET", "variable": "stringThree", "value": "", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\n\nAdding Strings together (concatenation): \""
-    ], "data": "\"\n\nAdding Strings together (concatenation): \"", "timestamp": 0, "message": "Serial.println(\"\n\nAdding Strings together (concatenation): \")"
+    ], "data": "\n\nAdding Strings together (concatenation): ", "timestamp": 0, "message": "Serial.println(\"\n\nAdding Strings together (concatenation): \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
   }, {
@@ -54,31 +54,31 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"undefined123\""
-    ], "data": "\"undefined123\"", "timestamp": 0, "message": "Serial.println(\"undefined123\")"
+    ], "data": "undefined123", "timestamp": 0, "message": "Serial.println(\"undefined123\")"
   }, {
     "type": "VAR_SET", "variable": "stringThree", "value": "undefined123456789", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"undefined123456789\""
-    ], "data": "\"undefined123456789\"", "timestamp": 0, "message": "Serial.println(\"undefined123456789\")"
+    ], "data": "undefined123456789", "timestamp": 0, "message": "Serial.println(\"undefined123456789\")"
   }, {
     "type": "VAR_SET", "variable": "stringThree", "value": "undefined65", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"undefined65\""
-    ], "data": "\"undefined65\"", "timestamp": 0, "message": "Serial.println(\"undefined65\")"
+    ], "data": "undefined65", "timestamp": 0, "message": "Serial.println(\"undefined65\")"
   }, {
     "type": "VAR_SET", "variable": "stringThree", "value": "undefined\"abc\"", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"undefined\"abc\"\""
-    ], "data": "\"undefined\"abc\"\"", "timestamp": 0, "message": "Serial.println(\"undefined\"abc\"\")"
+    ], "data": "undefined\"abc\"", "timestamp": 0, "message": "Serial.println(\"undefined\"abc\"\")"
   }, {
     "type": "VAR_SET", "variable": "stringThree", "value": "undefinedundefined", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"undefinedundefined\""
-    ], "data": "\"undefinedundefined\"", "timestamp": 0, "message": "Serial.println(\"undefinedundefined\")"
+    ], "data": "undefinedundefined", "timestamp": 0, "message": "Serial.println(\"undefinedundefined\")"
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
@@ -90,7 +90,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\"Sensor value: \"560\""
-    ], "data": "\"\"Sensor value: \"560\"", "timestamp": 0, "message": "Serial.println(\"\"Sensor value: \"560\")"
+    ], "data": "\"Sensor value: \"560", "timestamp": 0, "message": "Serial.println(\"\"Sensor value: \"560\")"
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": "millis() value: ", "timestamp": 0
   }, {
@@ -100,7 +100,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\"millis() value: \"17807\""
-    ], "data": "\"\"millis() value: \"17807\"", "timestamp": 0, "message": "Serial.println(\"\"millis() value: \"17807\")"
+    ], "data": "\"millis() value: \"17807", "timestamp": 0, "message": "Serial.println(\"\"millis() value: \"17807\")"
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {

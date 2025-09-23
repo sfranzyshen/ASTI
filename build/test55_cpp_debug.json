@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -16,7 +16,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\n\nString startsWith() and endsWith(): \""
-    ], "data": "\"\n\nString startsWith() and endsWith(): \"", "timestamp": 0, "message": "Serial.println(\"\n\nString startsWith() and endsWith(): \")"
+    ], "data": "\n\nString startsWith() and endsWith(): ", "timestamp": 0, "message": "Serial.println(\"\n\nString startsWith() and endsWith(): \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
   }, {
@@ -32,9 +32,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"HTTP/1.1 200 OK\""
-    ], "data": "\"HTTP/1.1 200 OK\"", "timestamp": 0, "message": "Serial.println(\"HTTP/1.1 200 OK\")"
+    ], "data": "HTTP/1.1 200 OK", "timestamp": 0, "message": "Serial.println(\"HTTP/1.1 200 OK\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "stringOne.startsWith", "message": "stringOne.startsWith()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "stringOne.startsWith", "message": "stringOne.startsWith(\"HTTP/1.1\")", "timestamp": 0, "arguments": [
       "\"HTTP/1.1\""
     ]
   }, {
@@ -42,11 +42,11 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: stringOne.startsWith"
   }, {
-    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": null, "result": null, "branch": "else", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": "HTTP/1.1 200 OK", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "stringOne.startsWith", "message": "stringOne.startsWith()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "stringOne.startsWith", "message": "stringOne.startsWith(\"200 OK\", 9)", "timestamp": 0, "arguments": [
       "\"200 OK\"", "9"
     ]
   }, {
@@ -54,7 +54,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: stringOne.startsWith"
   }, {
-    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": null, "result": null, "branch": "else", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "sensorReading", "value": "sensor = ", "timestamp": 0
   }, {
@@ -64,7 +64,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(560)"
   }, {
-    "type": "FUNCTION_CALL", "function": "sensorReading.endsWith", "message": "sensorReading.endsWith()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "sensorReading.endsWith", "message": "sensorReading.endsWith(\"0\")", "timestamp": 0, "arguments": [
       "\"0\""
     ]
   }, {
@@ -72,11 +72,11 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: sensorReading.endsWith"
   }, {
-    "type": "IF_STATEMENT", "condition": null, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": null, "result": null, "branch": "else", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\". This reading is not divisible by ten\""
-    ], "data": "\". This reading is not divisible by ten\"", "timestamp": 0, "message": "Serial.println(\". This reading is not divisible by ten\")"
+    ], "data": ". This reading is not divisible by ten", "timestamp": 0, "message": "Serial.println(\". This reading is not divisible by ten\")"
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {

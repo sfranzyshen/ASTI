@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -22,7 +22,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Undefined variable: add"
   }, {
-    "type": "FUNCTION_CALL", "function": "applyOperation", "message": "applyOperation()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "applyOperation", "message": "applyOperation(undefined, 5, 10)", "timestamp": 0, "arguments": [
       "undefined", "5", "10"
     ]
   }, {

@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -14,7 +14,7 @@
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
-    "type": "FUNCTION_CALL", "function": "myServo.attach", "message": "myServo.attach()", "timestamp": 0, "arguments": ["0"]
+    "type": "FUNCTION_CALL", "function": "myServo.attach", "message": "myServo.attach(9)", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: myServo.attach", "errorType": "RuntimeError"
   }, {
@@ -50,7 +50,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "FUNCTION_CALL", "function": "myServo.write", "message": "myServo.write()", "timestamp": 0, "arguments": ["0"]
+    "type": "FUNCTION_CALL", "function": "myServo.write", "message": "myServo.write(98)", "timestamp": 0, "arguments": [
+      98
+    ]
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: myServo.write", "errorType": "RuntimeError"
   }, {

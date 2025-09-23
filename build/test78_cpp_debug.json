@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -22,7 +22,7 @@
   }, {
     "type": "VAR_SET", "variable": "rst_active_high", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "unsigned int", "message": "unsigned int()", "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "unsigned int", "message": "unsigned int()", "timestamp": 0, "arguments": []
   }, {
     "type": "ERROR", "timestamp": 0, "message": "Unknown function: unsigned int", "errorType": "RuntimeError"
   }, {
@@ -38,19 +38,19 @@
   }, {
     "type": "PIN_MODE", "pin": 5, "mode": 1, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "pulse", "message": "pulse()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "pulse", "message": "pulse(5, 2)", "timestamp": 0, "arguments": [
       "5", "2"
     ]
   }, {
     "type": "PIN_MODE", "pin": 6, "mode": 1, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "pulse", "message": "pulse()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "pulse", "message": "pulse(6, 2)", "timestamp": 0, "arguments": [
       "6", "2"
     ]
   }, {
     "type": "PIN_MODE", "pin": 7, "mode": 1, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "pulse", "message": "pulse()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "pulse", "message": "pulse(7, 2)", "timestamp": 0, "arguments": [
       "7", "2"
     ]
   }, {
@@ -62,15 +62,15 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": 0, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": 0, "result": 0, "branch": "else", "timestamp": 0
   }, {
     "type": "DIGITAL_WRITE", "pin": 5, "value": 0, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": 0, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": 0, "result": 0, "branch": "else", "timestamp": 0
   }, {
     "type": "DIGITAL_WRITE", "pin": 6, "value": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "heartbeat", "message": "heartbeat()", "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "heartbeat", "message": "heartbeat()", "timestamp": 0, "arguments": []
   }, {
     "type": "VAR_SET", "variable": "last_time", "value": 0, "timestamp": 0
   }, {
@@ -90,9 +90,9 @@
   }, {
     "type": "ANALOG_WRITE", "pin": 7, "value": 8, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.available", "message": "Serial.available()", "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
   }, {
-    "type": "IF_STATEMENT", "condition": 0, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": 0, "result": 0, "branch": "else", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -16,7 +16,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\n\nString Constructors: \""
-    ], "data": "\"\n\nString Constructors: \"", "timestamp": 0, "message": "Serial.println(\"\n\nString Constructors: \")"
+    ], "data": "\n\nString Constructors: ", "timestamp": 0, "message": "Serial.println(\"\n\nString Constructors: \")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
   }, {
@@ -32,17 +32,19 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"Hello String\""
-    ], "data": "\"Hello String\"", "timestamp": 0, "message": "Serial.println(\"Hello String\")"
+    ], "data": "Hello String", "timestamp": 0, "message": "Serial.println(\"Hello String\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": ["0"]
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(97)", "timestamp": 0, "arguments": [
+      97
+    ]
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": "97", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"97\""
-    ], "data": "\"97\"", "timestamp": 0, "message": "Serial.println(\"97\")"
+    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"97\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(\"This is a string\")", "timestamp": 0, "arguments": [
       "\"This is a string\""
     ]
   }, {
@@ -50,9 +52,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"This is a string\""
-    ], "data": "\"This is a string\"", "timestamp": 0, "message": "Serial.println(\"This is a string\")"
+    ], "data": "This is a string", "timestamp": 0, "message": "Serial.println(\"This is a string\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(\"\"This is a string\"\" with more\"\")", "timestamp": 0, "arguments": [
       "\"\"This is a string\"\" with more\"\""
     ]
   }, {
@@ -60,29 +62,29 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\"This is a string\"\" with more\"\""
-    ], "data": "\"\"This is a string\"\" with more\"\"", "timestamp": 0, "message": "Serial.println(\"\"This is a string\"\" with more\"\")"
+    ], "data": "\"This is a string\"\" with more\"", "timestamp": 0, "message": "Serial.println(\"\"This is a string\"\" with more\"\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": ["0"]
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(13)", "timestamp": 0, "arguments": ["0"]
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": "13", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"13\""
-    ], "data": "\"13\"", "timestamp": 0, "message": "Serial.println(\"13\")"
+    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"13\")"
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
-      "560", "\"DEC\""
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(560, \"DEC\")", "timestamp": 0, "arguments": [
+      560, "\"DEC\""
     ]
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": "560", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"560\""
-    ], "data": "\"560\"", "timestamp": 0, "message": "Serial.println(\"560\")"
+    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"560\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(45, \"HEX\")", "timestamp": 0, "arguments": [
       "45", "\"HEX\""
     ]
   }, {
@@ -90,9 +92,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"45\""
-    ], "data": "\"45\"", "timestamp": 0, "message": "Serial.println(\"45\")"
+    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"45\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(255, \"BIN\")", "timestamp": 0, "arguments": [
       "255", "\"BIN\""
     ]
   }, {
@@ -100,21 +102,21 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"255\""
-    ], "data": "\"255\"", "timestamp": 0, "message": "Serial.println(\"255\")"
+    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"255\")"
   }, {
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
-      "17807", "\"DEC\""
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(17807, \"DEC\")", "timestamp": 0, "arguments": [
+      17807, "\"DEC\""
     ]
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": "17807", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"17807\""
-    ], "data": "\"17807\"", "timestamp": 0, "message": "Serial.println(\"17807\")"
+    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"17807\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(5.698000, 3)", "timestamp": 0, "arguments": [
       "5.698000", "3"
     ]
   }, {
@@ -122,9 +124,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"5.698000\""
-    ], "data": "\"5.698000\"", "timestamp": 0, "message": "Serial.println(\"5.698000\")"
+    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"5.698000\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "String", "message": "String()", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "String", "message": "String(5.698000, 2)", "timestamp": 0, "arguments": [
       "5.698000", "2"
     ]
   }, {
@@ -132,7 +134,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"5.698000\""
-    ], "data": "\"5.698000\"", "timestamp": 0, "message": "Serial.println(\"5.698000\")"
+    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"5.698000\")"
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {

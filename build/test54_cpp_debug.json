@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "7.3", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -16,7 +16,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\n\nString replace: \n\""
-    ], "data": "\"\n\nString replace: \n\"", "timestamp": 0, "message": "Serial.println(\"\n\nString replace: \n\")"
+    ], "data": "\n\nString replace: \n", "timestamp": 0, "message": "Serial.println(\"\n\nString replace: \n\")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
   }, {
@@ -32,7 +32,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"<html><head><body>\""
-    ], "data": "\"<html><head><body>\"", "timestamp": 0, "message": "Serial.println(\"<html><head><body>\")"
+    ], "data": "<html><head><body>", "timestamp": 0, "message": "Serial.println(\"<html><head><body>\")"
   }, {
     "type": "VAR_SET", "variable": "stringTwo", "value": "<html><head><body>", "timestamp": 0
   }, {
@@ -42,17 +42,17 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\"Original string: \"\"<html><head><body>\"\""
-    ], "data": "\"\"Original string: \"\"<html><head><body>\"\"", "timestamp": 0, "message": "Serial.println(\"\"Original string: \"\"<html><head><body>\"\")"
+    ], "data": "\"Original string: \"\"<html><head><body>\"", "timestamp": 0, "message": "Serial.println(\"\"Original string: \"\"<html><head><body>\"\")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\"Modified string: \"\"<html><head><body>\"\""
-    ], "data": "\"\"Modified string: \"\"<html><head><body>\"\"", "timestamp": 0, "message": "Serial.println(\"\"Modified string: \"\"<html><head><body>\"\")"
+    ], "data": "\"Modified string: \"\"<html><head><body>\"", "timestamp": 0, "message": "Serial.println(\"\"Modified string: \"\"<html><head><body>\"\")"
   }, {
     "type": "VAR_SET", "variable": "normalString", "value": "bookkeeper", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\"normal: \"\"bookkeeper\"\""
-    ], "data": "\"\"normal: \"\"bookkeeper\"\"", "timestamp": 0, "message": "Serial.println(\"\"normal: \"\"bookkeeper\"\")"
+    ], "data": "\"normal: \"\"bookkeeper\"", "timestamp": 0, "message": "Serial.println(\"\"normal: \"\"bookkeeper\"\")"
   }, {
     "type": "VAR_SET", "variable": "leetString", "value": "bookkeeper", "timestamp": 0
   }, {
@@ -66,7 +66,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\"l33tspeak: \"\"bookkeeper\"\""
-    ], "data": "\"\"l33tspeak: \"\"bookkeeper\"\"", "timestamp": 0, "message": "Serial.println(\"\"l33tspeak: \"\"bookkeeper\"\")"
+    ], "data": "\"l33tspeak: \"\"bookkeeper\"", "timestamp": 0, "message": "Serial.println(\"\"l33tspeak: \"\"bookkeeper\"\")"
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
