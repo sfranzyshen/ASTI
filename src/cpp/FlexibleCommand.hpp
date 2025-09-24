@@ -146,8 +146,9 @@ public:
             } else if (functionName == "Serial.write") {
                 // Serial.write: type, function, arguments, timestamp, message
                 jsOrder = {"type", "function", "arguments", "timestamp", "message"};
-            } else if (functionName == "Serial.available") {
-                // Serial.available: type, function, arguments, timestamp, message
+            } else if (functionName == "Serial.available" || functionName == "Serial1.available" ||
+                       functionName == "Serial2.available" || functionName == "Serial3.available") {
+                // Serial.available (all ports): type, function, arguments, timestamp, message
                 jsOrder = {"type", "function", "arguments", "timestamp", "message"};
             } else if (functionName == "tone" || functionName == "noTone") {
                 // tone/noTone: type, function, arguments, pin, frequency, duration, timestamp, message
@@ -737,9 +738,11 @@ namespace FlexibleCommandFactory {
         // CROSS-PLATFORM FIX: Format string arguments with quotes like JavaScript
         std::string displayArg = data;
         // If data appears to be a string literal (contains spaces or special chars), add quotes
-        if (data.find(' ') != std::string::npos || data.find('\t') != std::string::npos ||
+        // CROSS-PLATFORM FIX: Don't add quotes around character literals (e.g., '65')
+        bool isCharLiteral = (data.length() >= 3 && data[0] == '\'' && data[data.length()-1] == '\'');
+        if (!isCharLiteral && (data.find(' ') != std::string::npos || data.find('\t') != std::string::npos ||
             data.find('=') != std::string::npos || data.find(',') != std::string::npos ||
-            (!data.empty() && !std::isdigit(data[0]) && data != "true" && data != "false")) {
+            (!data.empty() && !std::isdigit(data[0]) && data != "true" && data != "false"))) {
             displayArg = "\"" + data + "\"";
         }
 

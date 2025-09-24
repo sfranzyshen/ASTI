@@ -3,7 +3,7 @@ source=unknown
 astSize=1534
 codeSize=256
 mode=AST_AND_COMMANDS
-commandCount=19
+commandCount=17
 content=// 04.Communication SerialPassthrough.ino
 
 void setup() {

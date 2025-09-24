@@ -5893,8 +5893,8 @@ class ASTInterpreter {
                 hasArguments: node.arguments !== undefined,
                 argumentsLength: node.arguments?.length
             });
-            
-            return await this.executeSerialMethod(property, node.arguments);
+
+            return await this.executeSerialMethod(property, node.arguments, 'Serial');
         }
         
         // Check if this is a static method call on a class (like Adafruit_NeoPixel.Color)
@@ -6123,7 +6123,7 @@ class ASTInterpreter {
             const objectName = node.object?.value;
             if (objectName && objectName.match(/^Serial\d*$/)) {
                 // Handle Serial1, Serial2, etc. like Serial
-                return await this.executeSerialMethod(property, node.arguments);
+                return await this.executeSerialMethod(property, node.arguments, objectName);
             }
             if (object === 'Serial' || objectName === 'SERIAL') {
                 // Handle SERIAL macro that expands to 'Serial' string
@@ -7697,7 +7697,7 @@ class ASTInterpreter {
     }
     
     // Arduino Serial functions
-    async executeSerialMethod(method, args) {
+    async executeSerialMethod(method, args, serialPort = 'Serial') {
         // Evaluate arguments if provided
         const evaluatedArgs = [];
         const originalArgs = args; // Keep reference to original AST nodes
@@ -7785,18 +7785,21 @@ class ASTInterpreter {
                 
             case 'available':
                 // Serial.available() returns number of bytes available to read
-                // In simulation, occasionally return data to test serial handling
-                // Return 1 occasionally to simulate data availability for testing
-                const availableBytes = (Math.random() < 0.1) ? 1 : 0; // 10% chance of data
+                // CROSS-PLATFORM FIX: Use per-port static deterministic values for consistent testing
+                // First call returns 0 (allow loop iteration), second call returns 1 (terminate loop)
+                if (!this.serialPortCounters) this.serialPortCounters = {};
+                if (!this.serialPortCounters[serialPort]) this.serialPortCounters[serialPort] = 0;
+                const availableBytes = (this.serialPortCounters[serialPort] === 0) ? 0 : 1;
+                this.serialPortCounters[serialPort]++;
                 this.emitCommand({
                     type: COMMAND_TYPES.FUNCTION_CALL,
-                    function: 'Serial.available',
+                    function: `${serialPort}.available`,
                     arguments: [],
                     timestamp: Date.now(),
-                    message: `Serial.available()`
+                    message: `${serialPort}.available()`
                 });
                 if (this.options.verbose) {
-                    debugLog(`Serial.available() -> ${availableBytes}`);
+                    debugLog(`${serialPort}.available() -> ${availableBytes}`);
                 }
                 return availableBytes;
                 

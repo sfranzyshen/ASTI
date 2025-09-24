@@ -13,6 +13,7 @@
 #include <sstream>
 #include <cmath>
 #include <algorithm>
+#include <unordered_map>
 #include <set>
 #include <exception>
 #include <stdexcept>
@@ -3905,12 +3906,18 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
     // External methods that require hardware/parent app response
     else if (methodName == "available") {
         // Serial.available() - Check bytes in receive buffer
-        // CROSS-PLATFORM FIX: Use synchronous mock simulation like JavaScript
-        // Return 1 occasionally to simulate data availability for testing (10% chance)
-        int availableBytes = (rand() % 10 == 0) ? 1 : 0;
+        // CROSS-PLATFORM FIX: Use per-port static deterministic values for consistent testing
+        // First call returns 0 (allow loop iteration), second call returns 1 (terminate loop)
+        static std::unordered_map<std::string, int> serialPortCounters;
+
+        // Extract Serial port name (Serial, Serial1, Serial2, etc.)
+        std::string portName = function.substr(0, function.find('.'));
+        int& callCount = serialPortCounters[portName];
+        int availableBytes = (callCount == 0) ? 0 : 1;
+        callCount++;
 
         // Emit FUNCTION_CALL command to match JavaScript format
-        emitCommand(FlexibleCommandFactory::createFunctionCall("Serial.available", std::vector<std::string>{}));
+        emitCommand(FlexibleCommandFactory::createFunctionCall(function, std::vector<std::string>{}));
 
         return availableBytes;
     }
