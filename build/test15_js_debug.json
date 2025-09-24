@@ -38,13 +38,13 @@
       "\"sensor = \""
     ], "data": "sensor = ", "timestamp": 0, "message": "Serial.print(\"sensor = \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(560)"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "560", "timestamp": 0, "message": "Serial.print(560)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"\t output = \""
     ], "data": "\t output = ", "timestamp": 0, "message": "Serial.print(\"\t output = \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "140", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "DELAY", "duration": 2, "actualDelay": 2, "timestamp": 0
   }, {

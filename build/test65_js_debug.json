@@ -44,7 +44,7 @@
       "\"sensor Value: \""
     ], "data": "sensor Value: ", "timestamp": 0, "message": "Serial.print(\"sensor Value: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(560)"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "560", "timestamp": 0, "message": "Serial.print(560)"
   }, {
     "type": "VAR_SET", "variable": "voltage", "value": 0, "timestamp": 0
   }, {

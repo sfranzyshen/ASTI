@@ -26,13 +26,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
   }, {
-    "type": "IF_STATEMENT", "condition": 1, "result": 1, "branch": "then", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
-  }, {
-    "type": "VAR_SET", "variable": "brightness", "value": 65, "timestamp": 0
-  }, {
-    "type": "ANALOG_WRITE", "pin": 9, "value": 65, "timestamp": 0
+    "type": "IF_STATEMENT", "condition": 0, "result": 0, "branch": "else", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

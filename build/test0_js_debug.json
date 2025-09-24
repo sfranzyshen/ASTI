@@ -22,7 +22,7 @@
   }, {
     "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "560", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "DELAY", "duration": 1, "actualDelay": 1, "timestamp": 0
   }, {

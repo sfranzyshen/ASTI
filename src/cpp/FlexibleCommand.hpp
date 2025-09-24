@@ -153,8 +153,8 @@ public:
             } else if (functionName == "tone" || functionName == "noTone") {
                 // tone/noTone: type, function, arguments, pin, frequency, duration, timestamp, message
                 jsOrder = {"type", "function", "arguments", "pin", "frequency", "duration", "timestamp", "message"};
-            } else if (functionName == "noteOn") {
-                // noteOn (custom function): type, function, arguments, timestamp, message
+            } else if (functionName == "noteOn" || functionName == "establishContact") {
+                // noteOn/establishContact (custom functions): type, function, arguments, timestamp, message
                 jsOrder = {"type", "function", "arguments", "timestamp", "message"};
             } else {
                 // Other FUNCTION_CALL: type, function, message, iteration, completed, timestamp

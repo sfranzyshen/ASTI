@@ -24,7 +24,7 @@
   }, {
     "type": "PIN_MODE", "pin": 2, "mode": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "establishContact", "message": "establishContact()", "timestamp": 0, "arguments": []
+    "type": "FUNCTION_CALL", "function": "establishContact", "arguments": [], "timestamp": 0, "message": "establishContact()"
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
