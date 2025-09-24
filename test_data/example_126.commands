@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758676745391,
+    "timestamp": 1758694293161,
     "component": "interpreter",
     "version": "8.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758676745391,
+    "timestamp": 1758694293161,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758676745391,
+    "timestamp": 1758694293162,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758676745391,
+    "timestamp": 1758694293162,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758676745391,
+    "timestamp": 1758694293162,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758676745391,
+    "timestamp": 1758694293162,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758676745391,
+    "timestamp": 1758694293162,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,7 +46,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758676745391
+    "timestamp": 1758694293162
   },
   {
     "type": "VAR_SET",
@@ -55,10 +55,10 @@
       "structName": "Node",
       "fields": {},
       "type": "struct",
-      "structId": "struct_1758676745391_mt786"
+      "structId": "struct_1758694293162_wosjp"
     },
     "structType": "Node",
-    "timestamp": 1758676745391
+    "timestamp": 1758694293162
   },
   {
     "type": "VAR_SET",
@@ -67,17 +67,17 @@
       "structName": "Node",
       "fields": {},
       "type": "struct",
-      "structId": "struct_1758676745391_9bf5o"
+      "structId": "struct_1758694293162_2ppdy"
     },
     "structType": "Node",
-    "timestamp": 1758676745392
+    "timestamp": 1758694293162
   },
   {
     "type": "STRUCT_FIELD_SET",
     "struct": "Node",
     "field": "data",
     "value": 10,
-    "timestamp": 1758676745392,
+    "timestamp": 1758694293162,
     "message": "Node.data = 10"
   },
   {
@@ -89,22 +89,22 @@
       "address": 0,
       "pointsTo": "undefined"
     },
-    "timestamp": 1758676745392,
-    "message": "Node.next = ArduinoPointer(ptr_1758676745392_dmmbu -> n2)"
+    "timestamp": 1758694293162,
+    "message": "Node.next = ArduinoPointer(ptr_1758694293162_w43ap -> n2)"
   },
   {
     "type": "STRUCT_FIELD_SET",
     "struct": "Node",
     "field": "data",
     "value": 20,
-    "timestamp": 1758676745392,
+    "timestamp": 1758694293162,
     "message": "Node.data = 20"
   },
   {
     "type": "STRUCT_FIELD_SET",
     "struct": "Node",
     "field": "next",
-    "timestamp": 1758676745392,
+    "timestamp": 1758694293162,
     "message": "Node.next = undefined"
   },
   {
@@ -114,7 +114,7 @@
       "\"Data from n1: \""
     ],
     "data": "Data from n1: ",
-    "timestamp": 1758676745392,
+    "timestamp": 1758694293162,
     "message": "Serial.print(\"Data from n1: \")"
   },
   {
@@ -122,7 +122,7 @@
     "struct": "Node",
     "field": "data",
     "value": 10,
-    "timestamp": 1758676745392,
+    "timestamp": 1758694293162,
     "message": "Node.data = 10"
   },
   {
@@ -132,7 +132,7 @@
       "10"
     ],
     "data": "10",
-    "timestamp": 1758676745392,
+    "timestamp": 1758694293162,
     "message": "Serial.println(10)"
   },
   {
@@ -142,7 +142,7 @@
       "\"Data from n2 via n1: \""
     ],
     "data": "Data from n2 via n1: ",
-    "timestamp": 1758676745392,
+    "timestamp": 1758694293162,
     "message": "Serial.print(\"Data from n2 via n1: \")"
   },
   {
@@ -154,15 +154,15 @@
       "address": 0,
       "pointsTo": "undefined"
     },
-    "timestamp": 1758676745392,
-    "message": "Node.next = ArduinoPointer(ptr_1758676745392_dmmbu -> n2)"
+    "timestamp": 1758694293163,
+    "message": "Node.next = ArduinoPointer(ptr_1758694293162_w43ap -> n2)"
   },
   {
     "type": "STRUCT_FIELD_ACCESS",
     "struct": "Node",
     "field": "data",
     "value": 20,
-    "timestamp": 1758676745392,
+    "timestamp": 1758694293163,
     "message": "Node.data = 20"
   },
   {
@@ -172,7 +172,7 @@
       "20"
     ],
     "data": "20",
-    "timestamp": 1758676745392,
+    "timestamp": 1758694293163,
     "message": "Serial.println(20)"
   },
   {
@@ -181,23 +181,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758676745392
+    "timestamp": 1758694293163
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758676745396,
+    "timestamp": 1758694293167,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758676745396,
+    "timestamp": 1758694293167,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758676745396,
+    "timestamp": 1758694293167,
     "message": "Program execution stopped"
   }
 ]

@@ -6,12 +6,12 @@
   }, {
     "type": "ARDUINO_LIBRARY_INSTANTIATION", "library": "CapacitiveSensor", "constructorArgs": [
       4, 2
-    ], "objectId": "CapacitiveSensor_1758676744301_dh2v", "timestamp": 0, "message": "CapacitiveSensor(4, 2)"
+    ], "objectId": "CapacitiveSensor_1758694292101_41ya", "timestamp": 0, "message": "CapacitiveSensor(4, 2)"
   }, {
     "type": "VAR_SET", "variable": "capSensor", "value": {
       "libraryName": "CapacitiveSensor", "constructorArgs": [
         4, 2
-      ], "type": "library_object", "objectId": "CapacitiveSensor_1758676744301_dh2v", "initialized": true, "properties": {}
+      ], "type": "library_object", "objectId": "CapacitiveSensor_1758694292101_41ya", "initialized": true, "properties": {}
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "threshold", "value": 1000, "timestamp": 0

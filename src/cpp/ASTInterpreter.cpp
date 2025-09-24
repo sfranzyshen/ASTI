@@ -830,6 +830,19 @@ void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
     std::vector<CommandValue> args;
     for (const auto& arg : node.getArguments()) {
         std::cerr << "🎯 EVALUATING FUNCTION ARG: type=" << static_cast<int>(arg->getType()) << std::endl;
+
+        // CROSS-PLATFORM FIX: Special handling for character literals in Serial.print
+        if (functionName == "Serial.print" && arg->getType() == arduino_ast::ASTNodeType::CHAR_LITERAL) {
+            if (auto* charNode = dynamic_cast<arduino_ast::CharLiteralNode*>(arg.get())) {
+                std::string charStr = charNode->getCharValue();
+                char value = charStr.empty() ? '\0' : charStr[0];
+                int32_t intValue = static_cast<int32_t>(value);
+                std::string charLiteralArg = "'" + std::to_string(intValue) + "'";
+                args.push_back(CommandValue(charLiteralArg));
+                continue;
+            }
+        }
+
         CommandValue result = evaluateExpression(arg.get());
         std::cerr << "🎯 ARG RESULT: " << commandValueToString(result) << std::endl;
         args.push_back(result);
@@ -1818,8 +1831,12 @@ void ASTInterpreter::visit(arduino_ast::CharLiteralNode& node) {
     // Character literals are typically handled as string values in JavaScript compatibility
     // Store the character value for later use
     std::string charValue = node.getCharValue();
-    // Note: In the context of an interpreter, this would typically return the value
-    // but since we're using the visitor pattern, the result is stored in context
+    char value = charValue.empty() ? '\0' : charValue[0];
+    int32_t intValue = static_cast<int32_t>(value);
+    std::cerr << "🔥 CHARLITERAL VISITOR: charValue='" << charValue << "' value='" << value << "' intValue=" << intValue << std::endl;
+
+    // CROSS-PLATFORM FIX: Set lastExpressionResult_ to the integer value of the character
+    lastExpressionResult_ = intValue; // Convert char to int for Arduino compatibility
 }
 
 void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
@@ -2567,8 +2584,10 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             if (auto* charNode = dynamic_cast<arduino_ast::CharLiteralNode*>(expr)) {
                 std::string charStr = charNode->getCharValue();
                 char value = charStr.empty() ? '\0' : charStr[0];
+                int32_t intValue = static_cast<int32_t>(value);
+                std::cerr << "🔥 EVALUATEEXPRESSION CHAR_LITERAL: charStr='" << charStr << "' value='" << value << "' intValue=" << intValue << std::endl;
                 debugLog("evaluateExpression: CharLiteralNode value = '" + std::string(1, value) + "'");
-                return static_cast<int32_t>(value); // Convert char to int for Arduino compatibility
+                return intValue; // Convert char to int for Arduino compatibility
             }
             break;
 
