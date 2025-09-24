@@ -219,12 +219,6 @@ Use `gemini -p` when:
 - Use `mv filename trash/` for safe file cleanup
 - The trash/ folder exists for safe file storage
 
-#### NO GIT AVAILABLE
-**IMPORTANT**: This project has NO WORKING GIT repository.
-- NEVER use git commands (git status, git diff, git log, git commit, etc.)
-- All git commands will fail and waste tokens
-- Use file timestamps and content analysis for version tracking
-
 ### EFFICIENCY REQUIREMENTS
 **MANDATORY**: Follow these rules to prevent token waste:
 
