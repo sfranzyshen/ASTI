@@ -26,6 +26,14 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
   }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0

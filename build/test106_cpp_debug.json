@@ -28,8 +28,8 @@
   }, {
     "type": "VAR_SET", "variable": "ptr", "value": null, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "callFunc", "message": "callFunc(undefined)", "timestamp": 0, "arguments": [
-      "undefined"
+    "type": "FUNCTION_CALL", "function": "callFunc", "message": "callFunc(0)", "timestamp": 0, "arguments": [
+      0
     ]
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [

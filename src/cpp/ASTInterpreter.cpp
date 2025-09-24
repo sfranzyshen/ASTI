@@ -2663,12 +2663,8 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
 CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const arduino_ast::FuncDefNode* funcDef, const std::vector<CommandValue>& args) {
     debugLog("Executing user-defined function: " + name);
     
-    // CROSS-PLATFORM FIX: Emit function call command with arguments for user functions too
-    std::vector<std::string> argStrings;
-    for (const auto& arg : args) {
-        argStrings.push_back(commandValueToString(arg));
-    }
-    emitCommand(FlexibleCommandFactory::createFunctionCall(name, argStrings));
+    // CROSS-PLATFORM FIX: Emit function call command with arguments for user functions too (preserve types)
+    emitCommand(FlexibleCommandFactory::createFunctionCall(name, args));
     
     // Track user function call statistics
     auto userFunctionStart = std::chrono::steady_clock::now();
@@ -3995,7 +3991,7 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
     }
     
     // Default: emit as generic serial command
-    emitCommand(FlexibleCommandFactory::createFunctionCall(function));
+    emitCommand(FlexibleCommandFactory::createFunctionCall(function, std::vector<std::string>{}));
     return std::monostate{};
 }
 

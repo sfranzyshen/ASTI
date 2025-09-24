@@ -52,37 +52,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
   }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
-  }, {
-    "type": "VAR_SET", "variable": "inByte", "value": 65, "timestamp": 0
-  }, {
-    "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "firstSensor", "value": 140, "timestamp": 0
-  }, {
-    "type": "DELAY", "duration": 10, "actualDelay": 10, "timestamp": 0
-  }, {
-    "type": "ANALOG_READ_REQUEST", "pin": 1, "requestId": "normalized", "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "secondSensor", "value": 19.75, "timestamp": 0
-  }, {
-    "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "thirdSensor", "value": 0, "timestamp": 0
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "arguments": [
-      140
-    ], "timestamp": 0, "message": "Serial.write(140)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "arguments": [
-      19.75
-    ], "timestamp": 0, "message": "Serial.write(19.75)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "Serial.write", "arguments": [
-      0
-    ], "timestamp": 0, "message": "Serial.write(0)"
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

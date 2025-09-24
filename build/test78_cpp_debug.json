@@ -39,19 +39,19 @@
     "type": "PIN_MODE", "pin": 5, "mode": 1, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "pulse", "message": "pulse(5, 2)", "timestamp": 0, "arguments": [
-      "5", "2"
+      5, 2
     ]
   }, {
     "type": "PIN_MODE", "pin": 6, "mode": 1, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "pulse", "message": "pulse(6, 2)", "timestamp": 0, "arguments": [
-      "6", "2"
+      6, 2
     ]
   }, {
     "type": "PIN_MODE", "pin": 7, "mode": 1, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "pulse", "message": "pulse(7, 2)", "timestamp": 0, "arguments": [
-      "7", "2"
+      7, 2
     ]
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"

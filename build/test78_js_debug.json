@@ -15,7 +15,7 @@
     ], "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "param", "value": {
-      "structName": "parameter", "fields": {}, "type": "struct", "structId": "struct_1758661205955_y50yj"
+      "structName": "parameter", "fields": {}, "type": "struct", "structId": "struct_1758672802324_wjf5x"
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "hbval", "value": 128, "timestamp": 0

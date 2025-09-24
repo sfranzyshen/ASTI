@@ -542,6 +542,58 @@ namespace FlexibleCommandFactory {
         return cmd;
     }
 
+    // FUNCTION_CALL overload that takes CommandValue arguments directly (fixes hex constant serialization)
+    inline FlexibleCommand createFunctionCall(const std::string& name, const std::vector<CommandValue>& cmdArgs = {},
+                                            bool isCompleted = false, int32_t iteration = 0, const std::string& customMessage = "") {
+        FlexibleCommand cmd("FUNCTION_CALL");
+        cmd.set("function", name);
+
+        // Convert CommandValue to FlexibleCommandValue directly - no string conversion
+        std::vector<std::variant<bool, int32_t, double, std::string>> args;
+        for (const auto& cmdArg : cmdArgs) {
+            std::visit([&args](const auto& value) {
+                using T = std::decay_t<decltype(value)>;
+                if constexpr (std::is_same_v<T, std::monostate>) {
+                    args.push_back(0);  // Default for null values
+                } else if constexpr (std::is_same_v<T, int32_t>) {
+                    args.push_back(value);  // Keep integers as integers
+                } else if constexpr (std::is_same_v<T, uint32_t>) {
+                    args.push_back(static_cast<int32_t>(value));
+                } else if constexpr (std::is_same_v<T, double>) {
+                    args.push_back(static_cast<int32_t>(value));  // Hex constants come as doubles
+                } else if constexpr (std::is_same_v<T, std::string>) {
+                    args.push_back(value);
+                } else {
+                    args.push_back(0);
+                }
+            }, cmdArg);
+        }
+        cmd.set("arguments", args);
+
+        // Build message with actual arguments like JavaScript
+        std::string message;
+        if (!customMessage.empty()) {
+            message = customMessage;
+        } else {
+            message = name + "(";
+            for (size_t i = 0; i < args.size(); ++i) {
+                if (i > 0) message += ", ";
+                std::visit([&message](const auto& arg) {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        message += arg;
+                    } else {
+                        message += std::to_string(arg);
+                    }
+                }, args[i]);
+            }
+            message += ")";
+        }
+        cmd.set("message", message);
+
+        return cmd;
+    }
+
     // VAR_SET variant 1: {type, timestamp, variable, value}
     inline FlexibleCommand createVarSet(const std::string& variable, const FlexibleCommandValue& value) {
         return FlexibleCommand("VAR_SET")

@@ -56,8 +56,8 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: strip.Color"
   }, {
-    "type": "FUNCTION_CALL", "function": "colorWipe", "message": "colorWipe(undefined, 50)", "timestamp": 0, "arguments": [
-      "undefined", "50"
+    "type": "FUNCTION_CALL", "function": "colorWipe", "message": "colorWipe(0, 50)", "timestamp": 0, "arguments": [
+      0, 50
     ]
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
@@ -80,8 +80,8 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: strip.Color"
   }, {
-    "type": "FUNCTION_CALL", "function": "colorWipe", "message": "colorWipe(undefined, 50)", "timestamp": 0, "arguments": [
-      "undefined", "50"
+    "type": "FUNCTION_CALL", "function": "colorWipe", "message": "colorWipe(0, 50)", "timestamp": 0, "arguments": [
+      0, 50
     ]
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
@@ -104,8 +104,8 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: strip.Color"
   }, {
-    "type": "FUNCTION_CALL", "function": "colorWipe", "message": "colorWipe(undefined, 50)", "timestamp": 0, "arguments": [
-      "undefined", "50"
+    "type": "FUNCTION_CALL", "function": "colorWipe", "message": "colorWipe(0, 50)", "timestamp": 0, "arguments": [
+      0, 50
     ]
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
@@ -128,8 +128,8 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: strip.Color"
   }, {
-    "type": "FUNCTION_CALL", "function": "theaterChase", "message": "theaterChase(undefined, 50)", "timestamp": 0, "arguments": [
-      "undefined", "50"
+    "type": "FUNCTION_CALL", "function": "theaterChase", "message": "theaterChase(0, 50)", "timestamp": 0, "arguments": [
+      0, 50
     ]
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"

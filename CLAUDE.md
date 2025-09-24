@@ -16,6 +16,8 @@ I was building the **static library** (`libarduino_ast_interpreter.a`) with my c
 - ❌ **ALL MY DEBUG OUTPUT AND FIXES WERE INVISIBLE** because the tools weren't updated
 
 ### **CORRECT WORKFLOW:**
+READ THE COMMANDS.md to learn the directories and command structure for the tools used to debug c++ code changes
+
 ```bash
 # WRONG (what I was doing):
 make arduino_ast_interpreter              # Only updates library
@@ -139,9 +141,6 @@ const { ASTInterpreter } = require('../../src/javascript/ASTInterpreter.js');
 cd tests/parser && node test_parser_examples.js    # 79 Arduino examples
 cd tests/parser && node test_parser_old_test.js    # 54 comprehensive tests
 cd tests/parser && node test_parser_neopixel.js    # 2 NeoPixel tests
-
-# Test data generation
-cd src/javascript && node generate_test_data.js --selective
 
 # Interactive development
 open playgrounds/parser_playground.html
@@ -339,13 +338,13 @@ node agents/regression_detector.js  # Check overall impact
 
 ### **Critical Data Sources and Test Files**
 
-#### **Test Data Location**
+#### **Test Data Location** Test Data Is ALWAYS in the root project folder 
 - **Main Test Suite**: `/test_data/example_000.{ast,commands,meta}` to `example_134.{ast,commands,meta}`
 - **JavaScript Reference**: `/test_data/example_XXX.commands` (correct output)
 - **AST Binary Data**: `/test_data/example_XXX.ast` (CompactAST format)
 - **Test Metadata**: `/test_data/example_XXX.meta` (source code + info)
 
-#### **Debug Output Location**
+#### **Debug Output Location** build folder is ALWAYS in the root project folder
 - **C++ Debug Files**: `/build/testXXX_cpp_debug.json` (actual C++ interpreter output)
 - **JS Debug Files**: `/build/testXXX_js_debug.json` (normalized JavaScript reference)
 - **Diff Analysis**: `/build/smart_diff_testXXX_*.json` (detailed difference analysis)
@@ -894,3 +893,4 @@ node generate_test_data.js --selective --example 20
 The issue is in the **AST representation**, not the **AST execution**.
 
 The three-project architecture provides a solid foundation for independent development while maintaining seamless integration across the Arduino AST interpreter ecosystem.
+
