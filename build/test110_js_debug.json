@@ -19,7 +19,7 @@
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "p1", "value": {
-      "structName": "Point", "fields": {}, "type": "struct", "structId": "struct_1758676302267_2ljv8"
+      "structName": "Point", "fields": {}, "type": "struct", "structId": "struct_1758676745074_uvp9v"
     }, "structType": "Point", "timestamp": 0
   }, {
     "type": "STRUCT_FIELD_SET", "struct": "Point", "field": "x", "value": 10, "timestamp": 0, "message": "Point.x = 10"
