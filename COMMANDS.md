@@ -13,13 +13,15 @@ cd /mnt/d/Devel/ASTInterpreter && node src/javascript/generate_test_data.js
 build complete json data and test each test:
 cd /mnt/d/Devel/ASTInterpreter && ./run_baseline_validation.sh
 
-after any C++ changes you MUST rebuild all tools and all test data and test for regressions:
+after any C++ changes you MUST rebuild all tools and all test data and test for regressions NO EXCEPTIONS!!:
 
-  PROCEDURE:
+PROCEDURE:
   1. Make code changes to fix issue
-  2. Re-build ALL tools
-  3. Re-generate ALL test data
-  4. Run FULL baseline validation (Check for regressions)
+  2. Re-build ALL tools NO EXCEPTIONS!!
+  3. Re-generate ALL test data NO EXCEPTIONS!!
+BEFORE ANY THING ELSE!!!
+  4. Run FULL baseline validation (Check for regressions) NO EXCEPTIONS!!
+NOW YOU CAN CHECK FOR YOUR SUCCESS
 
 cd build
 make arduino_ast_interpreter extract_cpp_commands validate_cross_platform
