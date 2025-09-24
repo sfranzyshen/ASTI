@@ -19,7 +19,7 @@
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "flags", "value": {
-      "structName": "MyFlags", "fields": {}, "type": "struct", "structId": "struct_1758694293246_i8j6j"
+      "structName": "MyFlags", "fields": {}, "type": "struct", "structId": "struct_1758724491582_xas41"
     }, "structType": "MyFlags", "timestamp": 0
   }, {
     "type": "STRUCT_FIELD_SET", "struct": "MyFlags", "field": "a", "value": 1, "timestamp": 0, "message": "MyFlags.a = 1"
@@ -34,7 +34,7 @@
   }, {
     "type": "STRUCT_FIELD_ACCESS", "struct": "MyFlags", "field": "a", "value": 1, "timestamp": 0, "message": "MyFlags.a = 1"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "1", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"Flag c: \""
@@ -42,7 +42,7 @@
   }, {
     "type": "STRUCT_FIELD_ACCESS", "struct": "MyFlags", "field": "c", "value": 50, "timestamp": 0, "message": "MyFlags.c = 50"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "50", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

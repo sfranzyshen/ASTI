@@ -79,8 +79,8 @@ std::string normalizeJSON(const std::string& json) {
     std::regex serialArgsRegex(R"("arguments":\s*\[\s*"[\d.]+"?\s*\])");
     normalized = std::regex_replace(normalized, serialArgsRegex, R"("arguments": ["0"])");
     
-    // Serial.println data field with calculated values
-    std::regex serialDataRegex(R"("data":\s*"[\d.]+")");
+    // Serial.println data field with calculated values (but preserve ASCII character values 0-127)
+    std::regex serialDataRegex(R"~("data":\s*"(?:[1-9]\d{3,}|\d*\.\d+)")~"); // Match large numbers (1000+) or decimals, but not 0-999 integers
     normalized = std::regex_replace(normalized, serialDataRegex, R"("data": "0")");
     
     // Serial.println message field with calculated values

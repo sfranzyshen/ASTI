@@ -62,7 +62,7 @@
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": 65, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "65", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": 0, "timestamp": 0
   }, {
@@ -78,7 +78,7 @@
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": 560, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "560", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"\n\nchanging the Strings' values\""

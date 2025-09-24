@@ -26,7 +26,7 @@
       "\"Counter: \""
     ], "data": "Counter: ", "timestamp": 0, "message": "Serial.print(\"Counter: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "1", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "DELAY", "duration": 1000, "actualDelay": 1000, "timestamp": 0
   }, {

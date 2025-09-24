@@ -38,7 +38,7 @@
       "\"<--- end of string. Length: \""
     ], "data": "<--- end of string. Length: ", "timestamp": 0, "message": "Serial.print(\"<--- end of string. Length: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "13", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "stringOne.trim", "message": "stringOne.trim()", "timestamp": 0, "arguments": []
   }, {
@@ -54,7 +54,7 @@
       "\"<--- end of trimmed string. Length: \""
     ], "data": "<--- end of trimmed string. Length: ", "timestamp": 0, "message": "Serial.print(\"<--- end of trimmed string. Length: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "13", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {

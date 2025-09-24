@@ -30,17 +30,17 @@
       "\"First element: \""
     ], "data": "First element: ", "timestamp": 0, "message": "Serial.print(\"First element: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "10", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "VAR_SET", "variable": "ptr", "value": {
-      "targetVariable": "arr", "interpreter": "[Circular Reference Removed]", "type": "offset_pointer", "pointerId": "ptr_1758694292889_py1i1", "offset": 1
+      "targetVariable": "arr", "interpreter": "[Circular Reference Removed]", "type": "offset_pointer", "pointerId": "ptr_1758724491238_wri5k", "offset": 1
     }, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"Next element: \""
     ], "data": "Next element: ", "timestamp": 0, "message": "Serial.print(\"Next element: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "20", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "VAR_SET", "variable": "nextVal", "value": 30, "timestamp": 0
   }, {
@@ -48,7 +48,7 @@
       "\"Next value with arithmetic: \""
     ], "data": "Next value with arithmetic: ", "timestamp": 0, "message": "Serial.print(\"Next value with arithmetic: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "30", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

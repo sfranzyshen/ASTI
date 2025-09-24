@@ -21,14 +21,14 @@
     "type": "VAR_SET", "variable": "ptr", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "ptr", "value": {
-      "functionName": "myFunc", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758694292749_zb98g"
+      "functionName": "myFunc", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758724491094_8ugbl"
     }, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "callFunc", "arguments": [
       {
-        "functionName": "myFunc", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758694292749_zb98g"
+        "functionName": "myFunc", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758724491094_8ugbl"
       }
-    ], "timestamp": 0, "message": "callFunc(ArduinoFunctionPointer(fptr_1758694292749_zb98g -> myFunc))"
+    ], "timestamp": 0, "message": "callFunc(ArduinoFunctionPointer(fptr_1758724491094_8ugbl -> myFunc))"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"Result: \""
@@ -38,7 +38,7 @@
       10, 20
     ], "timestamp": 0, "message": "myFunc(10, 20)"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "30", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

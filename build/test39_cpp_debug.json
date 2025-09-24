@@ -38,7 +38,7 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 17, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(671)"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "671", "timestamp": 0, "message": "Serial.print(671)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"\t\""
@@ -46,7 +46,7 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 16, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(634)"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "634", "timestamp": 0, "message": "Serial.print(634)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"\t\""
@@ -54,7 +54,7 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 15, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(597)"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "597", "timestamp": 0, "message": "Serial.print(597)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
   }, {

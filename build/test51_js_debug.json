@@ -42,7 +42,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"97\""
-    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"97\")"
+    ], "data": "97", "timestamp": 0, "message": "Serial.println(\"97\")"
   }, {
     "type": "VAR_SET", "variable": "stringTwo", "value": {
       "value": "This is a string"
@@ -66,7 +66,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"13\""
-    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"13\")"
+    ], "data": "13", "timestamp": 0, "message": "Serial.println(\"13\")"
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
@@ -76,7 +76,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"560\""
-    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"560\")"
+    ], "data": "560", "timestamp": 0, "message": "Serial.println(\"560\")"
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": {
       "value": "45"
@@ -84,7 +84,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"45\""
-    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"45\")"
+    ], "data": "45", "timestamp": 0, "message": "Serial.println(\"45\")"
   }, {
     "type": "VAR_SET", "variable": "stringOne", "value": {
       "value": "255"
@@ -92,7 +92,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"255\""
-    ], "data": "0", "timestamp": 0, "message": "Serial.println(\"255\")"
+    ], "data": "255", "timestamp": 0, "message": "Serial.println(\"255\")"
   }, {
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {

@@ -8,6 +8,16 @@
  */
 
 #include "ASTInterpreter.hpp"
+
+// 🚨🚨🚨 FILE VERIFICATION DEBUG - THIS PROVES WE'RE USING THE RIGHT FILE 🚨🚨🚨
+#include <iostream>
+static bool fileVerificationPrinted = false;
+static void printFileVerification() {
+    if (!fileVerificationPrinted) {
+        std::cerr << "🚨🚨🚨 ASTINTERPRETER.CPP FILE LOADED!!! USING CORRECT FILE!!! 🚨🚨🚨" << std::endl;
+        fileVerificationPrinted = true;
+    }
+}
 #include "ExecutionTracer.hpp"
 #include <iostream>
 #include <sstream>
@@ -77,7 +87,8 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
       safeMode_(false), safeModeReason_(""), typeErrors_(0), boundsErrors_(0),
       nullPointerErrors_(0), stackOverflowErrors_(0), memoryExhaustionErrors_(0),
       memoryLimit_(8 * 1024 * 1024 + 512 * 1024) {  // 8MB PSRAM + 512KB RAM
-    
+
+    printFileVerification(); // PROVE WE'RE USING THE RIGHT FILE
     initializeInterpreter();
 }
 
@@ -110,8 +121,9 @@ ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const Int
       nullPointerErrors_(0), stackOverflowErrors_(0), memoryExhaustionErrors_(0),
       memoryLimit_(8 * 1024 * 1024 + 512 * 1024) {  // 8MB PSRAM + 512KB RAM
     
+    printFileVerification(); // PROVE WE'RE USING THE RIGHT FILE
     DEBUG_OUT << "ASTInterpreter constructor: Creating CompactASTReader..." << std::endl;
-    
+
     // Parse compact AST
     arduino_ast::CompactASTReader reader(compactAST, size);
     DEBUG_OUT << "ASTInterpreter constructor: Parsing AST..." << std::endl;
@@ -801,6 +813,7 @@ void ASTInterpreter::visit(arduino_ast::UnaryOpNode& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
+    std::cerr << "🚨🚨🚨 FUNCCALLNODE VISITOR CALLED!!! 🚨🚨🚨" << std::endl;
     TRACE_ENTRY("visit(FuncCallNode)", "Starting function call");
     if (!node.getCallee()) {
         TRACE_EXIT("visit(FuncCallNode)", "No callee found");
@@ -995,6 +1008,7 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
         }
         
         std::string accessOp = node.getAccessOperator();
+        std::cerr << "🔥 MEMBER ACCESS DEBUG: " << objectName << accessOp << propertyName << std::endl;
         debugLog("Member access: " + objectName + accessOp + propertyName);
         
         // Handle different types of member access operations
@@ -3862,6 +3876,7 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
         
         // Handle different data types and formatting
         const CommandValue& data = args[0];
+        std::cerr << "🔥 SERIAL.PRINT DEBUG: args[0] type=" << data.index() << " value=" << commandValueToString(data) << std::endl;
         if (std::holds_alternative<int32_t>(data)) {
             int32_t value = std::get<int32_t>(data);
             switch (format) {

@@ -20,9 +20,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "applyOperation", "arguments": [
       {
-        "functionName": "add", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758694293230_4d0zt"
+        "functionName": "add", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758724491566_47uk4"
       }, 5, 10
-    ], "timestamp": 0, "message": "applyOperation(ArduinoFunctionPointer(fptr_1758694293230_4d0zt -> add), 5, 10)"
+    ], "timestamp": 0, "message": "applyOperation(ArduinoFunctionPointer(fptr_1758724491566_47uk4 -> add), 5, 10)"
   }, {
     "type": "FUNCTION_CALL", "function": "add", "arguments": [
       5, 10
@@ -34,7 +34,7 @@
       "\"Result of applyOperation: \""
     ], "data": "Result of applyOperation: ", "timestamp": 0, "message": "Serial.print(\"Result of applyOperation: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "15", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

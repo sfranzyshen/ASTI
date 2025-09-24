@@ -19,7 +19,7 @@
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "p1", "value": {
-      "structName": "Point", "fields": {}, "type": "struct", "structId": "struct_1758694292837_fhd95"
+      "structName": "Point", "fields": {}, "type": "struct", "structId": "struct_1758724491181_7atr1"
     }, "structType": "Point", "timestamp": 0
   }, {
     "type": "STRUCT_FIELD_SET", "struct": "Point", "field": "x", "value": 10, "timestamp": 0, "message": "Point.x = 10"
@@ -32,7 +32,7 @@
   }, {
     "type": "STRUCT_FIELD_ACCESS", "struct": "Point", "field": "x", "value": 10, "timestamp": 0, "message": "Point.x = 10"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "10", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"Point y: \""
@@ -40,7 +40,7 @@
   }, {
     "type": "STRUCT_FIELD_ACCESS", "struct": "Point", "field": "y", "value": 20, "timestamp": 0, "message": "Point.y = 20"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "20", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

@@ -28,7 +28,7 @@
       "\"Max value: \""
     ], "data": "Max value: ", "timestamp": 0, "message": "Serial.print(\"Max value: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "20", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "VAR_SET", "variable": "c", "value": 10, "timestamp": 0
   }, {

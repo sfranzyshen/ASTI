@@ -11,7 +11,7 @@
     "type": "VAR_SET", "variable": "strip", "value": {
       "__type": "ArduinoObject", "className": "Adafruit_NeoPixel", "constructorArgs": [
         60, 6, 82
-      ], "objectId": "Adafruit_NeoPixel_1758694293325_57iw03z2r"
+      ], "objectId": "Adafruit_NeoPixel_1758724491677_2to4l5mv4"
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "pixelPrevious", "value": 0, "timestamp": 0
@@ -38,11 +38,11 @@
       0
     ], "message": "clock_prescale_set(0)", "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758694293325_57iw03z2r", "variableName": "strip", "method": "begin", "args": [], "message": "strip.begin()", "timestamp": 0
+    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758724491677_2to4l5mv4", "variableName": "strip", "method": "begin", "args": [], "message": "strip.begin()", "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758694293325_57iw03z2r", "variableName": "strip", "method": "show", "args": [], "message": "strip.show()", "timestamp": 0
+    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758724491677_2to4l5mv4", "variableName": "strip", "method": "show", "args": [], "message": "strip.show()", "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758694293325_57iw03z2r", "variableName": "strip", "method": "setBrightness", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758724491677_2to4l5mv4", "variableName": "strip", "method": "setBrightness", "args": [
       50
     ], "message": "strip.setBrightness(50)", "timestamp": 0
   }, {
@@ -100,11 +100,11 @@
   }, {
     "type": "VAR_SET", "variable": "current_pixel", "value": 1, "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758694293325_57iw03z2r", "variableName": "strip", "method": "setPixelColor", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758724491677_2to4l5mv4", "variableName": "strip", "method": "setPixelColor", "args": [
       0, 255
     ], "message": "strip.setPixelColor(0, 255)", "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758694293325_57iw03z2r", "variableName": "strip", "method": "show", "args": [], "message": "strip.show()", "timestamp": 0
+    "type": "LIBRARY_METHOD_CALL", "library": "Adafruit_NeoPixel", "object": "Adafruit_NeoPixel_1758724491677_2to4l5mv4", "variableName": "strip", "method": "show", "args": [], "message": "strip.show()", "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {
