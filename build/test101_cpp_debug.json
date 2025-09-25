@@ -32,7 +32,7 @@
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
-    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
+    "type": "WHILE_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "while loop iteration 0"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {

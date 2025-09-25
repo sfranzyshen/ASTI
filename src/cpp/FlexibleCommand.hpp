@@ -150,6 +150,10 @@ public:
                        functionName == "Serial2.available" || functionName == "Serial3.available") {
                 // Serial.available (all ports): type, function, arguments, timestamp, message
                 jsOrder = {"type", "function", "arguments", "timestamp", "message"};
+            } else if (functionName == "Serial.read" || functionName == "Serial1.read" ||
+                       functionName == "Serial2.read" || functionName == "Serial3.read") {
+                // Serial.read (all ports): type, function, arguments, timestamp, message (JavaScript field order)
+                jsOrder = {"type", "function", "arguments", "timestamp", "message"};
             } else if (functionName == "tone" || functionName == "noTone") {
                 // tone/noTone: type, function, arguments, pin, frequency, duration, timestamp, message
                 jsOrder = {"type", "function", "arguments", "pin", "frequency", "duration", "timestamp", "message"};
@@ -185,8 +189,17 @@ public:
             // FOR_LOOP: type, phase, iteration, timestamp, message (JavaScript field order)
             jsOrder = {"type", "phase", "iteration", "timestamp", "message"};
         } else if (cmdType == "WHILE_LOOP") {
-            // WHILE_LOOP: type, phase, iterations, timestamp, message (JavaScript field order)
-            jsOrder = {"type", "phase", "iterations", "timestamp", "message"};
+            // WHILE_LOOP: Check phase to determine field ordering (matches JavaScript exactly)
+            auto phaseIt = fields_.find("phase");
+            std::string phase = (phaseIt != fields_.end()) ? std::get<std::string>(phaseIt->second) : "";
+
+            if (phase == "iteration") {
+                // WHILE_LOOP iteration: type, phase, iteration, timestamp, message (JavaScript field order)
+                jsOrder = {"type", "phase", "iteration", "timestamp", "message"};
+            } else {
+                // WHILE_LOOP start/end: type, phase, iterations, timestamp, message (JavaScript field order)
+                jsOrder = {"type", "phase", "iterations", "timestamp", "message"};
+            }
         } else if (cmdType == "IF_STATEMENT") {
             // IF_STATEMENT: type, condition, result, branch, timestamp
             jsOrder = {"type", "condition", "result", "branch", "timestamp"};
@@ -781,6 +794,39 @@ namespace FlexibleCommandFactory {
             .set("function", std::string("Serial.write"))
             .set("arguments", args)
             .set("message", std::string("Serial.write(") + std::to_string(byte) + ")");
+    }
+
+    // CROSS-PLATFORM FIX: Serial.write overload that preserves CommandValue type (fixes 19 vs 19.75 precision)
+    inline FlexibleCommand createSerialWrite(const CommandValue& value) {
+        std::vector<std::variant<bool, int32_t, double, std::string>> args;
+        std::string messageValue;
+
+        if (std::holds_alternative<int32_t>(value)) {
+            int32_t intVal = std::get<int32_t>(value);
+            args.push_back(intVal);
+            messageValue = std::to_string(intVal);
+        } else if (std::holds_alternative<double>(value)) {
+            double doubleVal = std::get<double>(value);
+            args.push_back(doubleVal);
+            // CROSS-PLATFORM FIX: Format double without trailing zeros (match JavaScript "19.75")
+            std::ostringstream oss;
+            oss << doubleVal;
+            messageValue = oss.str();
+        } else if (std::holds_alternative<std::string>(value)) {
+            std::string stringVal = std::get<std::string>(value);
+            args.push_back(stringVal);
+            messageValue = stringVal;
+        } else {
+            // Fallback: convert to int for other types
+            int32_t intVal = 0; // Safe default
+            args.push_back(intVal);
+            messageValue = std::to_string(intVal);
+        }
+
+        return FlexibleCommand("FUNCTION_CALL")
+            .set("function", std::string("Serial.write"))
+            .set("arguments", args)
+            .set("message", std::string("Serial.write(") + messageValue + ")");
     }
 
     inline FlexibleCommand createSerialRequest(const std::string& operation, const std::string& requestId) {

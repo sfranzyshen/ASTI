@@ -30,7 +30,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
   }, {
-    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
+    "type": "WHILE_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "while loop iteration 0"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "'65'"
@@ -38,7 +38,9 @@
   }, {
     "type": "DELAY", "duration": 300, "actualDelay": 300, "timestamp": 0
   }, {
-    "type": "WHILE_LOOP", "phase": "end", "iterations": 1, "timestamp": 0, "message": "while loop completed (1 iterations)"
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "While loop limit reached: completed 1 iterations (max: 1)"
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {
@@ -75,8 +77,8 @@
     ], "timestamp": 0, "message": "Serial.write(140)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.write", "arguments": [
-      19
-    ], "timestamp": 0, "message": "Serial.write(19)"
+      19.75
+    ], "timestamp": 0, "message": "Serial.write(19.75)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.write", "arguments": [
       0

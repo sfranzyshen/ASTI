@@ -22,7 +22,7 @@
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
-    "type": "WHILE_LOOP", "phase": "iteration", "timestamp": 0, "message": "while loop iteration 0", "iteration": 0
+    "type": "WHILE_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "while loop iteration 0"
   }, {
     "type": "VAR_SET", "variable": "i", "value": 1, "timestamp": 0
   }, {

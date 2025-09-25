@@ -21,14 +21,14 @@
     "type": "VAR_SET", "variable": "ptr", "value": null, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "ptr", "value": {
-      "functionName": "myFunc", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758744558269_rxxxz"
+      "functionName": "myFunc", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758768190342_lzkkt"
     }, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "callFunc", "arguments": [
       {
-        "functionName": "myFunc", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758744558269_rxxxz"
+        "functionName": "myFunc", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758768190342_lzkkt"
       }
-    ], "timestamp": 0, "message": "callFunc(ArduinoFunctionPointer(fptr_1758744558269_rxxxz -> myFunc))"
+    ], "timestamp": 0, "message": "callFunc(ArduinoFunctionPointer(fptr_1758768190342_lzkkt -> myFunc))"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"Result: \""

@@ -624,18 +624,30 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
         iteration++;
     }
 
-    // CROSS-PLATFORM FIX: Emit single WHILE_LOOP end event to match JavaScript
-    emitCommand(FlexibleCommandFactory::createWhileLoopEnd(iteration));
-
-    // CRITICAL FIX: Always stop execution when loop limit reached (like JavaScript)
-    // Set flag to indicate loop limit reached - let execution unwind naturally
+    // ULTRATHINK FIX: Match JavaScript behavior exactly
     if (iteration >= maxLoopIterations_) {
+        // JavaScript behavior: evaluate condition one more time when limit reached (emits Serial.available())
+        CommandValue conditionValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getCondition()));
+
+        // Emit LOOP_LIMIT_REACHED instead of WHILE_LOOP end (matches JavaScript exactly)
+        std::string message = "While loop limit reached: completed " + std::to_string(iteration) +
+                             " iterations (max: " + std::to_string(maxLoopIterations_) + ")";
+        FlexibleCommand cmd("LOOP_LIMIT_REACHED");
+        cmd.set("phase", std::string("end"))
+           .set("iterations", static_cast<int32_t>(iteration))
+           .set("message", message);
+        emitCommand(cmd);
+
+        // Set flag to indicate loop limit reached - let execution unwind naturally
         shouldContinueExecution_ = false;
         if (currentLoopIteration_ > 0) {
             std::cout << "DEBUG: WhileStatement setting shouldContinueExecution_ false in loop() context - limit reached" << std::endl;
         } else {
             std::cout << "DEBUG: WhileStatement setting shouldContinueExecution_ false in setup() context - limit reached" << std::endl;
         }
+    } else {
+        // Normal termination: emit regular WHILE_LOOP end event
+        emitCommand(FlexibleCommandFactory::createWhileLoopEnd(iteration));
     }
 }
 
@@ -3929,10 +3941,10 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
     }
     
     else if (methodName == "write") {
-        // Serial.write(data) - Write binary data
+        // Serial.write(data) - Write binary data (CROSS-PLATFORM FIX: preserve precision)
         if (args.size() > 0) {
-            int32_t byte = convertToInt(args[0]);
-            emitCommand(FlexibleCommandFactory::createSerialWrite(byte));
+            // Use CommandValue overload to preserve double precision (fixes 19 vs 19.75)
+            emitCommand(FlexibleCommandFactory::createSerialWrite(args[0]));
         }
         return std::monostate{};
     }
