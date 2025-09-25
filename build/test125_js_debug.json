@@ -46,7 +46,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "100", "timestamp": 0, "message": "Serial.println(0)"
   }, {
-    "type": "POINTER_ASSIGNMENT", "pointer": "ptr_1758777593465_86efe", "targetVariable": "x", "value": 200, "timestamp": 0, "message": "*x = 200"
+    "type": "POINTER_ASSIGNMENT", "pointer": "ptr_1758803237071_2q4l0", "targetVariable": "x", "value": 200, "timestamp": 0, "message": "*x = 200"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"New value of x: \""
