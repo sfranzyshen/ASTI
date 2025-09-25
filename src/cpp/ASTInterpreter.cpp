@@ -189,7 +189,7 @@ bool ASTInterpreter::start() {
     totalExecutionStart_ = std::chrono::steady_clock::now();
     
     // Emit VERSION_INFO first, then PROGRAM_START (matches JavaScript order)
-    emitCommand(FlexibleCommandFactory::createVersionInfo("interpreter", "8.0.0", "started"));
+    emitCommand(FlexibleCommandFactory::createVersionInfo("interpreter", "9.0.0", "started"));
     emitCommand(FlexibleCommandFactory::createProgramStart());
     
     try {
@@ -1916,40 +1916,10 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::SwitchStatement& node) {
-    std::cerr << "🎯 SWITCH DEBUG: Visiting SwitchStatement" << std::endl;
-
     try {
-        // Debug: Check the switch condition node before evaluation
-        auto* conditionNode = node.getCondition();
-        if (conditionNode) {
-            auto conditionType = conditionNode->getType();
-            std::cerr << "🎯 SWITCH DEBUG: Switch condition node type = " << static_cast<int>(conditionType) << " (" << arduino_ast::nodeTypeToString(conditionType) << ")" << std::endl;
-        } else {
-            std::cerr << "🎯 SWITCH DEBUG: Switch condition node is NULL!" << std::endl;
-        }
-
         // Evaluate switch condition
         CommandValue condition = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getCondition()));
 
-        // Debug: Check what condition we got
-        std::string conditionDebug = std::visit([](auto&& arg) -> std::string {
-            using T = std::decay_t<decltype(arg)>;
-            if constexpr (std::is_same_v<T, int32_t>) {
-                return std::to_string(arg);
-            } else if constexpr (std::is_same_v<T, double>) {
-                return std::to_string(arg);
-            } else if constexpr (std::is_same_v<T, std::string>) {
-                return "\"" + arg + "\"";
-            } else if constexpr (std::is_same_v<T, bool>) {
-                return arg ? "true" : "false";
-            } else {
-                return "null/monostate";
-            }
-        }, condition);
-        std::cerr << "🎯 SWITCH DEBUG: Switch condition evaluated to: " << conditionDebug << std::endl;
-
-        // Check if switch body is properly linked
-        std::cerr << "🎯 SWITCH DEBUG: Switch body: " << (node.getBody() ? "EXISTS" : "NULL") << std::endl;
 
         // Emit SWITCH_STATEMENT command to match JavaScript format
         FlexibleCommandValue discriminant = convertCommandValue(condition);
@@ -1960,13 +1930,19 @@ void ASTInterpreter::visit(arduino_ast::SwitchStatement& node) {
         bool foundMatch = false;
         bool fallThrough = false;
         
-        // Process switch body
+        // Process switch body and all case statements
+        // Reset break flag for this switch
+        shouldBreak_ = false;
+
+        // First check if there's a single body node (old structure)
         if (node.getBody()) {
-            // Reset break flag for this switch
-            shouldBreak_ = false;
-            
-            // Execute switch body - cases will check currentSwitchValue_
             const_cast<arduino_ast::ASTNode*>(node.getBody())->accept(*this);
+        }
+
+        // Then process all generic children (case statements from new CompactAST fix)
+        for (const auto& child : node.getChildren()) {
+            if (shouldBreak_) break; // Respect break statements
+            const_cast<arduino_ast::ASTNode*>(child.get())->accept(*this);
         }
         
         // Clear switch context
@@ -1978,7 +1954,7 @@ void ASTInterpreter::visit(arduino_ast::SwitchStatement& node) {
 
 void ASTInterpreter::visit(arduino_ast::CaseStatement& node) {
     debugLog("Visiting CaseStatement");
-    
+
     try {
         // Check if this case matches the current switch value or if we're in fall-through mode
         bool shouldExecute = inSwitchFallthrough_;

@@ -1,6 +1,6 @@
 {
   "name": "@arduino-ast-interpreter/arduino-parser",
-  "version": "5.2.0",
+  "version": "6.0.0",
   "description": "Complete Arduino C++ parser with preprocessor and platform emulation support",
   "main": "src/ArduinoParser.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "author": "Arduino AST Interpreter Project",
   "license": "MIT",
   "dependencies": {
-    "@arduino-ast-interpreter/compact-ast": "^1.0.0"
+    "@arduino-ast-interpreter/compact-ast": "^2.0.0"
   },
   "devDependencies": {},
   "files": [

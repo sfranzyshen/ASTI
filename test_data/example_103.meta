@@ -3,7 +3,7 @@ source=unknown
 astSize=1754
 codeSize=432
 mode=AST_AND_COMMANDS
-commandCount=20
+commandCount=22
 content=// switch statement with fall-through and nested blocks
 void setup() {
   Serial.begin(9600);

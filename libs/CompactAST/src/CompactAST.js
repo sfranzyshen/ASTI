@@ -13,7 +13,7 @@
  * - Visitor pattern compatibility
  * - Complete Arduino AST node type support (0x01-0x59)
  * 
- * @version 1.1.1
+ * @version 2.0.0
  * @license MIT
  * @author Arduino AST Interpreter Project
  */

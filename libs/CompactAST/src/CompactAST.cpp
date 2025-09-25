@@ -743,12 +743,11 @@ void CompactASTReader::linkNodeChildren() {
             } else if (parentNode->getType() == ASTNodeType::SWITCH_STMT) {
                 auto* switchStmtNode = dynamic_cast<arduino_ast::SwitchStatement*>(parentNode.get());
                 if (switchStmtNode) {
-                    // Switch statements expect: discriminant (condition), cases (body)
+                    // Switch statements expect: discriminant (condition), then all case statements as children
                     if (!switchStmtNode->getCondition()) {
                         switchStmtNode->setCondition(std::move(nodes_[childIndex]));
-                    } else if (!switchStmtNode->getBody()) {
-                        switchStmtNode->setBody(std::move(nodes_[childIndex]));
                     } else {
+                        // All subsequent children should be case statements - add them as generic children
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }
                 } else {
@@ -822,6 +821,20 @@ void CompactASTReader::linkNodeChildren() {
                     // PostfixExpressionNode expects: operand
                     if (!postfixNode->getOperand()) {
                         postfixNode->setOperand(std::move(nodes_[childIndex]));
+                    } else {
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
+            } else if (parentNode->getType() == ASTNodeType::CASE_STMT) {
+                auto* caseStmtNode = dynamic_cast<arduino_ast::CaseStatement*>(parentNode.get());
+                if (caseStmtNode) {
+                    // Case statements expect: label (case value), body (statements)
+                    if (!caseStmtNode->getLabel()) {
+                        caseStmtNode->setLabel(std::move(nodes_[childIndex]));
+                    } else if (!caseStmtNode->getBody()) {
+                        caseStmtNode->setBody(std::move(nodes_[childIndex]));
                     } else {
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }

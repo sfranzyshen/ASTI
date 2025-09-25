@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758808102249,
+    "timestamp": 1758840801492,
     "component": "interpreter",
-    "version": "8.0.0",
+    "version": "9.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758808102249,
+    "timestamp": 1758840801492,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758808102249,
+    "timestamp": 1758840801492,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758808102249,
+    "timestamp": 1758840801493,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758808102249,
+    "timestamp": 1758840801493,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758808102249,
+    "timestamp": 1758840801493,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758808102249,
+    "timestamp": 1758840801493,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,44 +46,44 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758808102249
+    "timestamp": 1758840801493
   },
   {
     "type": "VAR_SET",
     "variable": "f1",
     "value": 3.14,
-    "timestamp": 1758808102249
+    "timestamp": 1758840801493
   },
   {
     "type": "VAR_SET",
     "variable": "f2",
     "value": 2,
-    "timestamp": 1758808102249
+    "timestamp": 1758840801493
   },
   {
     "type": "VAR_SET",
     "variable": "i1",
     "value": 5,
-    "timestamp": 1758808102249
+    "timestamp": 1758840801493
   },
   {
     "type": "VAR_SET",
     "variable": "result1",
     "value": 6.28,
-    "timestamp": 1758808102249
+    "timestamp": 1758840801493
   },
   {
     "type": "VAR_SET",
     "variable": "result2",
     "value": 4.07,
-    "timestamp": 1758808102250
+    "timestamp": 1758840801493
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1758808102250
+    "timestamp": 1758840801493
   },
   {
     "type": "FUNCTION_CALL",
@@ -92,7 +92,7 @@
       "\"Calculation is correct.\""
     ],
     "data": "Calculation is correct.",
-    "timestamp": 1758808102250,
+    "timestamp": 1758840801493,
     "message": "Serial.println(\"Calculation is correct.\")"
   },
   {
@@ -102,7 +102,7 @@
       "\"Result 1: \""
     ],
     "data": "Result 1: ",
-    "timestamp": 1758808102250,
+    "timestamp": 1758840801493,
     "message": "Serial.print(\"Result 1: \")"
   },
   {
@@ -112,7 +112,7 @@
       "6.28"
     ],
     "data": "6.28",
-    "timestamp": 1758808102250,
+    "timestamp": 1758840801493,
     "message": "Serial.println(6.28)"
   },
   {
@@ -122,7 +122,7 @@
       "\"Result 2: \""
     ],
     "data": "Result 2: ",
-    "timestamp": 1758808102250,
+    "timestamp": 1758840801493,
     "message": "Serial.print(\"Result 2: \")"
   },
   {
@@ -132,7 +132,7 @@
       "4.07"
     ],
     "data": "4.07",
-    "timestamp": 1758808102250,
+    "timestamp": 1758840801493,
     "message": "Serial.println(4.07)"
   },
   {
@@ -141,23 +141,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758808102250
+    "timestamp": 1758840801493
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758808102255,
+    "timestamp": 1758840801498,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758808102255,
+    "timestamp": 1758840801498,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758808102255,
+    "timestamp": 1758840801498,
     "message": "Program execution stopped"
   }
 ]

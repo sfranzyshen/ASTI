@@ -203,6 +203,12 @@ public:
         } else if (cmdType == "IF_STATEMENT") {
             // IF_STATEMENT: type, condition, result, branch, timestamp
             jsOrder = {"type", "condition", "result", "branch", "timestamp"};
+        } else if (cmdType == "SWITCH_STATEMENT") {
+            // SWITCH_STATEMENT: type, discriminant, timestamp, message (JavaScript field order)
+            jsOrder = {"type", "discriminant", "timestamp", "message"};
+        } else if (cmdType == "SWITCH_CASE") {
+            // SWITCH_CASE: type, caseValue, matched, timestamp (JavaScript field order)
+            jsOrder = {"type", "caseValue", "matched", "timestamp"};
         } else if (cmdType == "LOOP_LIMIT_REACHED") {
             // LOOP_LIMIT_REACHED: type, phase, iterations, timestamp, message (JavaScript field order)
             jsOrder = {"type", "phase", "iterations", "timestamp", "message"};

@@ -28,7 +28,19 @@
   }, {
     "type": "VAR_SET", "variable": "range", "value": 3, "timestamp": 0
   }, {
-    "type": "SWITCH_STATEMENT", "timestamp": 0, "message": "switch (3)", "discriminant": 3
+    "type": "SWITCH_STATEMENT", "discriminant": 3, "timestamp": 0, "message": "switch (3)"
+  }, {
+    "type": "SWITCH_CASE", "caseValue": 0, "matched": false, "timestamp": 0
+  }, {
+    "type": "SWITCH_CASE", "caseValue": 1, "matched": false, "timestamp": 0
+  }, {
+    "type": "SWITCH_CASE", "caseValue": 2, "matched": false, "timestamp": 0
+  }, {
+    "type": "SWITCH_CASE", "caseValue": 3, "matched": true, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"bright\""
+    ], "data": "bright", "timestamp": 0, "message": "Serial.println(\"bright\")"
   }, {
     "type": "DELAY", "duration": 1, "actualDelay": 1, "timestamp": 0
   }, {

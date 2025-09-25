@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "9.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -30,11 +30,27 @@
   }, {
     "type": "SWITCH_STATEMENT", "discriminant": 0, "timestamp": 0, "message": "switch (0)"
   }, {
-    "type": "SWITCH_CASE", "caseValue": 0, "matched": false, "timestamp": 0
+    "type": "SWITCH_CASE", "caseValue": 0, "matched": true, "timestamp": 0
   }, {
-    "type": "SWITCH_CASE", "caseValue": 1, "matched": false, "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "Keyboard.press", "arguments": [
+      131
+    ], "timestamp": 0, "message": "Keyboard.press(131)"
   }, {
-    "type": "SWITCH_CASE", "caseValue": 2, "matched": false, "timestamp": 0
+    "type": "FUNCTION_CALL", "function": "Keyboard.press", "arguments": [
+      129
+    ], "timestamp": 0, "message": "Keyboard.press(129)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Keyboard.press", "arguments": [
+      81
+    ], "timestamp": 0, "message": "Keyboard.press(81)"
+  }, {
+    "type": "DELAY", "duration": 100, "actualDelay": 100, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Keyboard.releaseAll", "arguments": [], "timestamp": 0, "message": "Keyboard.releaseAll()"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Keyboard.write", "arguments": [
+      176
+    ], "timestamp": 0, "message": "Keyboard.write(176)"
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {

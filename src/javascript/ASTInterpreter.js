@@ -27,7 +27,7 @@ if (typeof conditionalLog === 'undefined') {
  *   ✅ setup() and loop() execution flow
  */
 
-const INTERPRETER_VERSION = "8.0.0";
+const INTERPRETER_VERSION = "9.0.0";
 
 // Global debugLog function for contexts where 'this' is not available
 function debugLog(...args) {
@@ -6593,10 +6593,10 @@ class ASTInterpreter {
         });
         
         debugLog(`DEBUG Switch statement: ${discriminantValue}`);
-        
+
         let matchFound = false;
         let fallThrough = false;
-        
+
         // Execute cases
         for (const caseNode of node.cases || []) {
             if (caseNode.type === 'CaseStatement') {
@@ -6606,15 +6606,15 @@ class ASTInterpreter {
                 if (!fallThrough && !isDefault) {
                     // Regular case - check if discriminant matches test value
                     const testValue = await this.evaluateExpression(caseNode.test);
-                    shouldExecute = discriminantValue === testValue;
-                    
+                    shouldExecute = discriminantValue == testValue;  // Use loose equality for type coercion
+
                     this.emitCommand({
                         type: COMMAND_TYPES.SWITCH_CASE,
                         caseValue: testValue,
                         matched: shouldExecute,
                         timestamp: Date.now()
                     });
-                    
+
                     debugLog(`DEBUG Case ${testValue}: ${shouldExecute ? 'match' : 'no match'}`);
                 } else if (!fallThrough && isDefault) {
                     // Default case - execute only if no previous match

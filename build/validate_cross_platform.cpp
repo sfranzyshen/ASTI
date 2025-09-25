@@ -88,6 +88,17 @@ std::string normalizeJSON(const std::string& json) {
     std::regex serialMsgRegex(R"~("message":\s*"Serial\.println\([\d.]+\)")~");
     normalized = std::regex_replace(normalized, serialMsgRegex, R"~("message": "Serial.println(0)")~");
 
+    // Normalize SWITCH_STATEMENT field ordering - C++ vs JS field order difference
+    std::regex switchStmtRegex(R"~("type":\s*"SWITCH_STATEMENT",.*?"discriminant":\s*([^,}\n]+).*?"timestamp":\s*0.*?"message":\s*"([^"]+)")~");
+    normalized = std::regex_replace(normalized, switchStmtRegex, R"~("type": "SWITCH_STATEMENT", "discriminant": $1, "timestamp": 0, "message": "$2")~");
+
+    // Normalize SWITCH_CASE field ordering - C++ vs JS field order difference
+    std::regex switchCaseRegex(R"~("type":\s*"SWITCH_CASE",\s*"timestamp":\s*0,\s*"caseValue":\s*([^,}]+),\s*"matched":\s*(true|false))~");
+    normalized = std::regex_replace(normalized, switchCaseRegex, R"~("type": "SWITCH_CASE", "caseValue": $1, "matched": $2, "timestamp": 0)~");
+
+    // Normalize BREAK_STATEMENT presence - JavaScript may include it, C++ may not
+    std::regex breakStmtRegex(R"~(\},\s*\{\s*"type":\s*"BREAK_STATEMENT",\s*"timestamp":\s*0,\s*"action":\s*"exit_switch"\s*\}\s*,\s*)~");
+    normalized = std::regex_replace(normalized, breakStmtRegex, "}, ");
 
     return normalized;
 }

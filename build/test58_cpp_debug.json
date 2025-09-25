@@ -1,6 +1,6 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "8.0", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "9.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
@@ -32,7 +32,45 @@
   }, {
     "type": "DELAY", "duration": 1000, "actualDelay": 1000, "timestamp": 0
   }, {
-    "type": "SWITCH_STATEMENT", "timestamp": 0, "message": "switch (0)", "discriminant": 0
+    "type": "SWITCH_STATEMENT", "discriminant": 0, "timestamp": 0, "message": "switch (0)"
+  }, {
+    "type": "SWITCH_CASE", "caseValue": 0, "matched": true, "timestamp": 0
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: KEY_LEFT_GUI", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Undefined variable: KEY_LEFT_GUI"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press(undefined)", "timestamp": 0, "arguments": [
+      "undefined"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.press", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.press"
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: KEY_LEFT_CTRL", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Undefined variable: KEY_LEFT_CTRL"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press(undefined)", "timestamp": 0, "arguments": [
+      "undefined"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.press", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.press"
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Undefined variable: KEY_LEFT_CTRL", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Undefined variable: KEY_LEFT_CTRL"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Keyboard.press", "message": "Keyboard.press(undefined)", "timestamp": 0, "arguments": [
+      "undefined"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Keyboard.press", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: Keyboard.press"
   }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
