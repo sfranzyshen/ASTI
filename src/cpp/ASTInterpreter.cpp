@@ -9,15 +9,7 @@
 
 #include "ASTInterpreter.hpp"
 
-// 🚨🚨🚨 FILE VERIFICATION DEBUG - THIS PROVES WE'RE USING THE RIGHT FILE 🚨🚨🚨
-#include <iostream>
-static bool fileVerificationPrinted = false;
-static void printFileVerification() {
-    if (!fileVerificationPrinted) {
-        std::cerr << "🚨🚨🚨 ASTINTERPRETER.CPP FILE LOADED!!! USING CORRECT FILE!!! 🚨🚨🚨" << std::endl;
-        fileVerificationPrinted = true;
-    }
-}
+// Includes
 #include "ExecutionTracer.hpp"
 #include <iostream>
 #include <sstream>
@@ -88,7 +80,6 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
       nullPointerErrors_(0), stackOverflowErrors_(0), memoryExhaustionErrors_(0),
       memoryLimit_(8 * 1024 * 1024 + 512 * 1024) {  // 8MB PSRAM + 512KB RAM
 
-    printFileVerification(); // PROVE WE'RE USING THE RIGHT FILE
     initializeInterpreter();
 }
 
@@ -121,7 +112,6 @@ ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const Int
       nullPointerErrors_(0), stackOverflowErrors_(0), memoryExhaustionErrors_(0),
       memoryLimit_(8 * 1024 * 1024 + 512 * 1024) {  // 8MB PSRAM + 512KB RAM
     
-    printFileVerification(); // PROVE WE'RE USING THE RIGHT FILE
     DEBUG_OUT << "ASTInterpreter constructor: Creating CompactASTReader..." << std::endl;
 
     // Parse compact AST
@@ -313,11 +303,7 @@ void ASTInterpreter::executeSetup() {
             if (auto* funcDef = dynamic_cast<const arduino_ast::FuncDefNode*>(setupFunc)) {
                 const auto* body = funcDef->getBody();
                 if (body) {
-                    std::cout << "DEBUG: Setup body found, type=" << static_cast<int>(body->getType()) << ", about to call accept..." << std::endl;
                     const_cast<arduino_ast::ASTNode*>(body)->accept(*this);
-                    std::cout << "DEBUG: Setup body accept() completed" << std::endl;
-                } else {
-                    std::cout << "DEBUG: Setup function has NO body!" << std::endl;
                 }
             } else {
                 debugLog("Setup function is not a FuncDefNode");
@@ -354,7 +340,6 @@ void ASTInterpreter::executeLoop() {
 
                 // Reset execution flag for this loop() iteration - allows loop() to execute even if setup() hit limits
                 shouldContinueExecution_ = true;
-                std::cout << "DEBUG: Reset shouldContinueExecution_ = true for loop iteration " << currentLoopIteration_ << std::endl;
 
                 // Emit loop iteration start command
                 emitCommand(FlexibleCommandFactory::createLoopStart("loop", currentLoopIteration_));
@@ -365,24 +350,18 @@ void ASTInterpreter::executeLoop() {
                 
                 try {
                     if (loopFunc) {
-                        std::cout << "DEBUG: About to execute loop function body..." << std::endl;
                         if (auto* funcDef = dynamic_cast<const arduino_ast::FuncDefNode*>(loopFunc)) {
                             const auto* body = funcDef->getBody();
                             if (body) {
-                                std::cout << "DEBUG: Loop body found, type=" << static_cast<int>(body->getType()) << ", calling accept..." << std::endl;
                                 const_cast<arduino_ast::ASTNode*>(body)->accept(*this);
-                                std::cout << "DEBUG: Loop body accept() completed" << std::endl;
                             } else {
-                                std::cout << "DEBUG: Loop function has NO body!" << std::endl;
                             }
                         } else {
-                            std::cout << "DEBUG: Loop function is not FuncDefNode, calling accept on full function..." << std::endl;
                             loopFunc->accept(*this);
                         }
                     }
                 } catch (const ExecutionTerminated& e) {
                     // This catch block is no longer used since we're using flag-based termination
-                    std::cout << "DEBUG: ExecutionTerminated caught in executeLoop - this should not happen with flag-based approach" << std::endl;
                     shouldContinueExecution_ = false;
                     state_ = ExecutionState::COMPLETE;
                     break;
@@ -393,7 +372,6 @@ void ASTInterpreter::executeLoop() {
 
                 // Check if loop limit reached and break if needed
                 if (!shouldContinueExecution_) {
-                    std::cout << "DEBUG: Loop iteration terminated due to nested loop limit, breaking main loop" << std::endl;
                     break;
                 }
                 
@@ -407,7 +385,19 @@ void ASTInterpreter::executeLoop() {
                 processResponseQueue();
             } // End while loop
         }
-        
+
+        // TEST 30 FIX: Call serialEvent() automatically after loop completion (Arduino behavior)
+        auto* serialEventFunc = findFunctionInAST("serialEvent");
+        if (serialEventFunc) {
+            debugLog("Calling serialEvent() automatically after loop completion");
+            std::cerr << "🎯 TEST30 FIX: Automatically calling serialEvent() after loop" << std::endl;
+
+            // Execute serialEvent function (this will emit the FUNCTION_CALL command internally)
+            if (auto* funcDefNode = dynamic_cast<const arduino_ast::FuncDefNode*>(serialEventFunc)) {
+                executeUserFunction("serialEvent", funcDefNode, std::vector<CommandValue>{});
+            }
+        }
+
         // CROSS-PLATFORM FIX: Emit LOOP_END command to match JavaScript behavior
         emitCommand(FlexibleCommandFactory::createLoopEndComplete(currentLoopIteration_, true));
     } else {
@@ -486,7 +476,6 @@ void ASTInterpreter::visit(arduino_ast::CompoundStmtNode& node) {
 
         // CRITICAL FIX: Check shouldContinueExecution flag (matches JavaScript behavior)
         if (!shouldContinueExecution_) {
-            std::cout << "DEBUG CompoundStmtNode: Stopping execution due to shouldContinueExecution_ = false (statement index " << i << ")" << std::endl;
             TRACE("visit(CompoundStmtNode)", "Stopping execution due to loop limit reached in loop() context");
             break;
         }
@@ -514,8 +503,6 @@ void ASTInterpreter::visit(arduino_ast::CompoundStmtNode& node) {
             // This ensures that if a nested statement (like a loop) hits its limit and sets
             // shouldContinueExecution_ = false, we stop executing the rest of the sibling statements
             if (!shouldContinueExecution_) {
-                std::cout << "DEBUG CompoundStmtNode: Stopping execution after child " << i
-                         << " due to shouldContinueExecution_ = false" << std::endl;
                 TRACE("visit(CompoundStmtNode)", "Stopping execution after child due to nested loop limit");
                 break;
             }
@@ -641,9 +628,7 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
         // Set flag to indicate loop limit reached - let execution unwind naturally
         shouldContinueExecution_ = false;
         if (currentLoopIteration_ > 0) {
-            std::cout << "DEBUG: WhileStatement setting shouldContinueExecution_ false in loop() context - limit reached" << std::endl;
         } else {
-            std::cout << "DEBUG: WhileStatement setting shouldContinueExecution_ false in setup() context - limit reached" << std::endl;
         }
     } else {
         // Normal termination: emit regular WHILE_LOOP end event
@@ -699,15 +684,12 @@ void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
     if (iteration >= maxLoopIterations_) {
         shouldContinueExecution_ = false;
         if (currentLoopIteration_ > 0) {
-            std::cout << "DEBUG: DoWhileStatement setting shouldContinueExecution_ false in loop() context - limit reached" << std::endl;
         } else {
-            std::cout << "DEBUG: DoWhileStatement setting shouldContinueExecution_ false in setup() context - limit reached" << std::endl;
         }
     }
 }
 
 void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
-    std::cout << "DEBUG ForStatement: ENTERING ForStatement visitor" << std::endl;
     uint32_t iteration = 0;
 
     scopeManager_->pushScope();
@@ -778,9 +760,7 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
     if (limitReached) {
         shouldContinueExecution_ = false;
         if (currentLoopIteration_ > 0) {
-            std::cout << "DEBUG: ForStatement setting shouldContinueExecution_ false in loop() context - limit reached" << std::endl;
         } else {
-            std::cout << "DEBUG: ForStatement setting shouldContinueExecution_ false in setup() context - limit reached" << std::endl;
         }
     }
 }
@@ -1372,7 +1352,10 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 }
             }
 
-            // CROSS-PLATFORM FIX: Use createVarSetConst for const variables to match JavaScript
+            // CROSS-PLATFORM FIX: Use StringObject wrapper for all Arduino String objects
+            // Arduino String objects should use object wrapper format regardless of const status
+            bool isArduinoStringObject = (cleanTypeName == "String" || typeName == "String");
+
             if (isConst) {
                 debugLog("Emitting VAR_SET with isConst=true for: " + varName);
                 // Special handling for const strings to match JavaScript object wrapper format
@@ -1383,6 +1366,12 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 } else {
                     emitCommand(FlexibleCommandFactory::createVarSetConst(varName, convertCommandValue(typedValue)));
                 }
+            } else if (isArduinoStringObject && std::holds_alternative<std::string>(typedValue)) {
+                // TEST 30 FIX: Arduino String objects should use StringObject wrapper format even when non-const
+                std::string stringVal = std::get<std::string>(typedValue);
+                debugLog("Using StringObject wrapper for Arduino String object: " + varName + " = " + stringVal);
+                std::cerr << "🎯 TEST30 FIX: Using StringObject wrapper for non-const Arduino String: " << varName << " = " << stringVal << std::endl;
+                emitCommand(FlexibleCommandFactory::createVarSetArduinoString(varName, stringVal));
             } else {
                 debugLog("Emitting VAR_SET for non-const variable: " + varName);
                 emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(typedValue)));
@@ -2710,7 +2699,12 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
     debugLog("Executing user-defined function: " + name);
     
     // CROSS-PLATFORM FIX: Emit function call command with arguments for user functions too (preserve types)
-    emitCommand(FlexibleCommandFactory::createFunctionCall(name, args));
+    // TEST 30 FIX: Use specialized serialEvent function that omits empty arguments
+    if (name == "serialEvent") {
+        emitCommand(FlexibleCommandFactory::createFunctionCallSerialEvent("Calling serialEvent()"));
+    } else {
+        emitCommand(FlexibleCommandFactory::createFunctionCall(name, args));
+    }
     
     // Track user function call statistics
     auto userFunctionStart = std::chrono::steady_clock::now();
@@ -4181,13 +4175,7 @@ bool ASTInterpreter::isNumeric(const CommandValue& value) {
 // =============================================================================
 
 void ASTInterpreter::emitCommand(FlexibleCommand command) {
-    // Debug command generation to verify C++ execution
-    if (command.getType() == "FOR_LOOP") {
-        std::cout << "DEBUG EMIT: FOR_LOOP command generated!" << std::endl;
-    }
-    if (command.getType() == "VAR_SET") {
-        std::cout << "DEBUG EMIT: VAR_SET command generated!" << std::endl;
-    }
+    // Command emission - debug pollution removed
     if (commandListener_) {
         commandListener_->onCommand(command);
     }
@@ -4803,11 +4791,8 @@ void ASTInterpreter::tick() {
                         if (auto* funcDef = dynamic_cast<const arduino_ast::FuncDefNode*>(setupFunc)) {
                             const auto* body = funcDef->getBody();
                             if (body) {
-                                std::cout << "DEBUG: [TICK] Setup body found, calling accept..." << std::endl;
                                 const_cast<arduino_ast::ASTNode*>(body)->accept(*this);
-                                std::cout << "DEBUG: [TICK] Setup body accept completed" << std::endl;
                             } else {
-                                std::cout << "DEBUG: [TICK] Setup function has NO body!" << std::endl;
                             }
                         } else {
                             debugLog("Tick: Setup function is not a FuncDefNode");

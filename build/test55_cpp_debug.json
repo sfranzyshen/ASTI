@@ -28,7 +28,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "stringOne", "value": "HTTP/1.1 200 OK", "timestamp": 0
+    "type": "VAR_SET", "variable": "stringOne", "value": {
+      "value": "HTTP/1.1 200 OK"
+    }, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"HTTP/1.1 200 OK\""
@@ -56,7 +58,9 @@
   }, {
     "type": "IF_STATEMENT", "condition": null, "result": null, "branch": "else", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorReading", "value": "sensor = ", "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorReading", "value": {
+      "value": "sensor = "
+    }, "timestamp": 0
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {

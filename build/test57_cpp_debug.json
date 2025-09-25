@@ -4,7 +4,9 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "inString", "value": "", "timestamp": 0
+    "type": "VAR_SET", "variable": "inString", "value": {
+      "value": ""
+    }, "timestamp": 0
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {

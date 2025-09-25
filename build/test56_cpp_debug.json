@@ -28,7 +28,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "stringOne", "value": "Content-Type: text/html", "timestamp": 0
+    "type": "VAR_SET", "variable": "stringOne", "value": {
+      "value": "Content-Type: text/html"
+    }, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
       "\"Content-Type: text/html\""

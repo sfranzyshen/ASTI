@@ -4,7 +4,9 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "txtMsg", "value": "", "timestamp": 0
+    "type": "VAR_SET", "variable": "txtMsg", "value": {
+      "value": ""
+    }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "lastStringLength", "value": 0, "timestamp": 0
   }, {

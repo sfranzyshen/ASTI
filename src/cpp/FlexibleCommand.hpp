@@ -157,8 +157,8 @@ public:
             } else if (functionName == "tone" || functionName == "noTone") {
                 // tone/noTone: type, function, arguments, pin, frequency, duration, timestamp, message
                 jsOrder = {"type", "function", "arguments", "pin", "frequency", "duration", "timestamp", "message"};
-            } else if (functionName == "noteOn" || functionName == "establishContact") {
-                // noteOn/establishContact (custom functions): type, function, arguments, timestamp, message
+            } else if (functionName == "noteOn" || functionName == "establishContact" || functionName == "serialEvent") {
+                // noteOn/establishContact/serialEvent (custom functions): type, function, arguments, timestamp, message
                 jsOrder = {"type", "function", "arguments", "timestamp", "message"};
             } else {
                 // Other FUNCTION_CALL: type, function, message, iteration, completed, timestamp
@@ -629,6 +629,29 @@ namespace FlexibleCommandFactory {
             .set("variable", variable)
             .set("value", StringObject(stringValue))
             .set("isConst", true);
+    }
+
+    // VAR_SET variant for Arduino String objects with object wrapper (non-const)
+    inline FlexibleCommand createVarSetArduinoString(const std::string& variable, const std::string& stringValue) {
+        return FlexibleCommand("VAR_SET")
+            .set("variable", variable)
+            .set("value", StringObject(stringValue));
+    }
+
+    // TEST 30 FIX: Special FUNCTION_CALL for serialEvent that omits empty arguments (JavaScript compatibility)
+    inline FlexibleCommand createFunctionCallSerialEvent(const std::string& customMessage = "") {
+        FlexibleCommand cmd("FUNCTION_CALL");
+        cmd.set("function", "serialEvent");
+        // Omit arguments field entirely when empty (match JavaScript behavior for serialEvent)
+
+        // Use custom message
+        if (!customMessage.empty()) {
+            cmd.set("message", customMessage);
+        } else {
+            cmd.set("message", "serialEvent()");
+        }
+
+        return cmd;
     }
 
     // ANALOG_READ_REQUEST: {type, timestamp, pin, requestId}

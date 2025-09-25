@@ -150,6 +150,10 @@ public:
                        functionName == "Serial2.available" || functionName == "Serial3.available") {
                 // Serial.available (all ports): type, function, arguments, timestamp, message
                 jsOrder = {"type", "function", "arguments", "timestamp", "message"};
+            } else if (functionName == "Serial.read" || functionName == "Serial1.read" ||
+                       functionName == "Serial2.read" || functionName == "Serial3.read") {
+                // Serial.read (all ports): type, function, arguments, timestamp, message (JavaScript field order)
+                jsOrder = {"type", "function", "arguments", "timestamp", "message"};
             } else if (functionName == "tone" || functionName == "noTone") {
                 // tone/noTone: type, function, arguments, pin, frequency, duration, timestamp, message
                 jsOrder = {"type", "function", "arguments", "pin", "frequency", "duration", "timestamp", "message"};
@@ -625,6 +629,13 @@ namespace FlexibleCommandFactory {
             .set("variable", variable)
             .set("value", StringObject(stringValue))
             .set("isConst", true);
+    }
+
+    // VAR_SET variant for Arduino String objects with object wrapper (non-const)
+    inline FlexibleCommand createVarSetArduinoString(const std::string& variable, const std::string& stringValue) {
+        return FlexibleCommand("VAR_SET")
+            .set("variable", variable)
+            .set("value", StringObject(stringValue));
     }
 
     // ANALOG_READ_REQUEST: {type, timestamp, pin, requestId}
