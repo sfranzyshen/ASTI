@@ -40,7 +40,7 @@
       "\"\n\nAdding Strings together (concatenation): \""
     ], "data": "\n\nAdding Strings together (concatenation): ", "timestamp": 0, "message": "Serial.println(\"\n\nAdding Strings together (concatenation): \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [], "timestamp": 0, "message": "Serial.println()"
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {

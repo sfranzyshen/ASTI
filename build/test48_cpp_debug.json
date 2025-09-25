@@ -18,7 +18,7 @@
       "\"\n\nString case changes: \""
     ], "data": "\n\nString case changes: ", "timestamp": 0, "message": "Serial.println(\"\n\nString case changes: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [], "timestamp": 0, "message": "Serial.println()"
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {

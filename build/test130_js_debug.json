@@ -19,7 +19,7 @@
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "flags", "value": {
-      "structName": "MyFlags", "fields": {}, "type": "struct", "structId": "struct_1758840802128_nnrjc"
+      "structName": "MyFlags", "fields": {}, "type": "struct", "structId": "struct_1758841667191_luodv"
     }, "structType": "MyFlags", "timestamp": 0
   }, {
     "type": "STRUCT_FIELD_SET", "struct": "MyFlags", "field": "a", "value": 1, "timestamp": 0, "message": "MyFlags.a = 1"

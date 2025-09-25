@@ -34,7 +34,7 @@
       "\"\n\nAppending to a String: \""
     ], "data": "\n\nAppending to a String: ", "timestamp": 0, "message": "Serial.println(\"\n\nAppending to a String: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [], "timestamp": 0, "message": "Serial.println()"
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {

@@ -62,7 +62,7 @@
       "\"-2800\""
     ], "data": "-2800", "timestamp": 0, "message": "Serial.print(\"-2800\")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [], "timestamp": 0, "message": "Serial.println()"
   }, {
     "type": "DELAY", "duration": 100, "actualDelay": 100, "timestamp": 0
   }, {

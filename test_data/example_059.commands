@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758840800374,
+    "timestamp": 1758841665499,
     "component": "interpreter",
     "version": "9.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758840800374,
+    "timestamp": 1758841665499,
     "message": "Program execution started"
   },
   {
@@ -16,51 +16,51 @@
     "variable": "buttonPin",
     "value": 4,
     "isConst": true,
-    "timestamp": 1758840800374
+    "timestamp": 1758841665500
   },
   {
     "type": "VAR_SET",
     "variable": "previousButtonState",
     "value": 1,
-    "timestamp": 1758840800374
+    "timestamp": 1758841665500
   },
   {
     "type": "VAR_SET",
     "variable": "counter",
     "value": 0,
-    "timestamp": 1758840800374
+    "timestamp": 1758841665500
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758840800374,
+    "timestamp": 1758841665500,
     "message": "Executing setup() function"
   },
   {
     "type": "PIN_MODE",
     "pin": 4,
     "mode": 0,
-    "timestamp": 1758840800375
+    "timestamp": 1758841665500
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Keyboard.begin",
     "arguments": [],
-    "timestamp": 1758840800375,
+    "timestamp": 1758841665500,
     "message": "Keyboard.begin()"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758840800375,
+    "timestamp": 1758841665500,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758840800375,
+    "timestamp": 1758841665500,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758840800375,
+    "timestamp": 1758841665500,
     "message": "Starting loop iteration 1"
   },
   {
@@ -68,32 +68,32 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758840800375
+    "timestamp": 1758841665500
   },
   {
     "type": "DIGITAL_READ_REQUEST",
     "pin": 4,
     "requestId": "digitalRead_000001",
-    "timestamp": 1758840800375
+    "timestamp": 1758841665500
   },
   {
     "type": "VAR_SET",
     "variable": "buttonState",
     "value": 0,
-    "timestamp": 1758840800380
+    "timestamp": 1758841665505
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1758840800380
+    "timestamp": 1758841665505
   },
   {
     "type": "VAR_SET",
     "variable": "previousButtonState",
     "value": 0,
-    "timestamp": 1758840800380
+    "timestamp": 1758841665505
   },
   {
     "type": "FUNCTION_CALL",
@@ -101,23 +101,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758840800380
+    "timestamp": 1758841665505
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758840800385,
+    "timestamp": 1758841665510,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758840800385,
+    "timestamp": 1758841665510,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758840800385,
+    "timestamp": 1758841665510,
     "message": "Program execution stopped"
   }
 ]

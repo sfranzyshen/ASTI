@@ -839,8 +839,10 @@ namespace FlexibleCommandFactory {
 
     inline FlexibleCommand createSerialPrintln(const std::string& data, const std::string& format = "AUTO") {
         if (data.empty() && format == "NEWLINE") {
+            std::vector<std::variant<bool, int32_t, double, std::string>> emptyArgs;
             return FlexibleCommand("FUNCTION_CALL")
                 .set("function", std::string("Serial.println"))
+                .set("arguments", emptyArgs)
                 .set("message", std::string("Serial.println()"));
         }
         return createFunctionCallSerialPrintln(data);

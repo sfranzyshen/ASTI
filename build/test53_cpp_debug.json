@@ -18,7 +18,7 @@
       "\"\n\nString length() and trim(): \""
     ], "data": "\n\nString length() and trim(): ", "timestamp": 0, "message": "Serial.println(\"\n\nString length() and trim(): \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [], "timestamp": 0, "message": "Serial.println()"
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {

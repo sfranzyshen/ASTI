@@ -11,7 +11,7 @@
     "type": "VAR_SET", "variable": "lcd", "value": {
       "__type": "ArduinoObject", "className": "LiquidCrystal", "constructorArgs": [
         12, 11, 5, 4, 3, 2
-      ], "objectId": "LiquidCrystal_1758840800861_acphshoro"
+      ], "objectId": "LiquidCrystal_1758841665973_77dsisuys"
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "switchPin", "value": 6, "isConst": true, "timestamp": 0
@@ -24,23 +24,23 @@
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "LiquidCrystal", "object": "LiquidCrystal_1758840800861_acphshoro", "variableName": "lcd", "method": "begin", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "LiquidCrystal", "object": "LiquidCrystal_1758841665973_77dsisuys", "variableName": "lcd", "method": "begin", "args": [
       16, 2
     ], "message": "lcd.begin(16, 2)", "timestamp": 0
   }, {
     "type": "PIN_MODE", "pin": 6, "mode": 0, "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "LiquidCrystal", "object": "LiquidCrystal_1758840800861_acphshoro", "variableName": "lcd", "method": "print", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "LiquidCrystal", "object": "LiquidCrystal_1758841665973_77dsisuys", "variableName": "lcd", "method": "print", "args": [
       {
         "value": "Ask the"
       }
     ], "message": "lcd.print(Ask the)", "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "LiquidCrystal", "object": "LiquidCrystal_1758840800861_acphshoro", "variableName": "lcd", "method": "setCursor", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "LiquidCrystal", "object": "LiquidCrystal_1758841665973_77dsisuys", "variableName": "lcd", "method": "setCursor", "args": [
       0, 1
     ], "message": "lcd.setCursor(0, 1)", "timestamp": 0
   }, {
-    "type": "LIBRARY_METHOD_CALL", "library": "LiquidCrystal", "object": "LiquidCrystal_1758840800861_acphshoro", "variableName": "lcd", "method": "print", "args": [
+    "type": "LIBRARY_METHOD_CALL", "library": "LiquidCrystal", "object": "LiquidCrystal_1758841665973_77dsisuys", "variableName": "lcd", "method": "print", "args": [
       {
         "value": "Crystal Ball!"
       }

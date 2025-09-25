@@ -34,7 +34,7 @@
       "\"\n\nComparing Strings: \""
     ], "data": "\n\nComparing Strings: ", "timestamp": 0, "message": "Serial.println(\"\n\nComparing Strings: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "timestamp": 0, "message": "Serial.println()"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [], "timestamp": 0, "message": "Serial.println()"
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {
