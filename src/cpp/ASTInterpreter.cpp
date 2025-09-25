@@ -1916,12 +1916,45 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::SwitchStatement& node) {
-    debugLog("Visiting SwitchStatement");
-    
+    std::cerr << "🎯 SWITCH DEBUG: Visiting SwitchStatement" << std::endl;
+
     try {
+        // Debug: Check the switch condition node before evaluation
+        auto* conditionNode = node.getCondition();
+        if (conditionNode) {
+            auto conditionType = conditionNode->getType();
+            std::cerr << "🎯 SWITCH DEBUG: Switch condition node type = " << static_cast<int>(conditionType) << " (" << arduino_ast::nodeTypeToString(conditionType) << ")" << std::endl;
+        } else {
+            std::cerr << "🎯 SWITCH DEBUG: Switch condition node is NULL!" << std::endl;
+        }
+
         // Evaluate switch condition
         CommandValue condition = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getCondition()));
-        
+
+        // Debug: Check what condition we got
+        std::string conditionDebug = std::visit([](auto&& arg) -> std::string {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, int32_t>) {
+                return std::to_string(arg);
+            } else if constexpr (std::is_same_v<T, double>) {
+                return std::to_string(arg);
+            } else if constexpr (std::is_same_v<T, std::string>) {
+                return "\"" + arg + "\"";
+            } else if constexpr (std::is_same_v<T, bool>) {
+                return arg ? "true" : "false";
+            } else {
+                return "null/monostate";
+            }
+        }, condition);
+        std::cerr << "🎯 SWITCH DEBUG: Switch condition evaluated to: " << conditionDebug << std::endl;
+
+        // Check if switch body is properly linked
+        std::cerr << "🎯 SWITCH DEBUG: Switch body: " << (node.getBody() ? "EXISTS" : "NULL") << std::endl;
+
+        // Emit SWITCH_STATEMENT command to match JavaScript format
+        FlexibleCommandValue discriminant = convertCommandValue(condition);
+        emitCommand(FlexibleCommandFactory::createSwitchStatement(discriminant));
+
         // Set switch condition for case matching
         currentSwitchValue_ = condition;
         bool foundMatch = false;
@@ -1965,7 +1998,11 @@ void ASTInterpreter::visit(arduino_ast::CaseStatement& node) {
                     }
                     return false;
                 }, currentSwitchValue_, caseValue));
-                
+
+                // Emit SWITCH_CASE command to match JavaScript format
+                FlexibleCommandValue caseValueFlex = convertCommandValue(caseValue);
+                emitCommand(FlexibleCommandFactory::createSwitchCase(caseValueFlex, shouldExecute));
+
                 if (shouldExecute) {
                     debugLog("Case matched switch value");
                     inSwitchFallthrough_ = true; // Enable fall-through for subsequent cases
@@ -2473,21 +2510,23 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         case arduino_ast::ASTNodeType::IDENTIFIER:
             if (auto* idNode = dynamic_cast<arduino_ast::IdentifierNode*>(expr)) {
                 std::string name = idNode->getName();
-                debugLog("evaluateExpression: Looking up identifier '" + name + "'");
+                std::cerr << "🔍 IDENTIFIER DEBUG: Looking up identifier '" << name << "'" << std::endl;
 
                 // Special handling for built-in objects like Serial
                 if (name == "Serial") {
                     // Serial object evaluates to a truthy value (for while (!Serial) checks)
-                    debugLog("evaluateExpression: Serial object evaluated as true");
+                    std::cerr << "🔍 IDENTIFIER DEBUG: Serial object evaluated as true" << std::endl;
                     return static_cast<int32_t>(1);
                 }
 
                 Variable* var = scopeManager_->getVariable(name);
                 if (var) {
-                    debugLog("evaluateExpression: Found variable '" + name + "' with value: " + commandValueToString(var->value));
+                    std::cerr << "🔍 IDENTIFIER DEBUG: Found variable '" << name << "' with value: " << commandValueToString(var->value) << std::endl;
                     return var->value;
                 } else {
-                    debugLog("evaluateExpression: Variable '" + name + "' not found in scope");
+                    std::cerr << "🔍 IDENTIFIER DEBUG: Variable '" << name << "' not found in scope" << std::endl;
+                    std::cerr << "🔍 IDENTIFIER DEBUG: Current scope variables:" << std::endl;
+                    // Add scope debug info
                     emitError("Undefined variable: " + name);
                     return std::monostate{};
                 }

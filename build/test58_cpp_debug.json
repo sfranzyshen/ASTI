@@ -32,6 +32,8 @@
   }, {
     "type": "DELAY", "duration": 1000, "actualDelay": 1000, "timestamp": 0
   }, {
+    "type": "SWITCH_STATEMENT", "timestamp": 0, "message": "switch (0)", "discriminant": 0
+  }, {
     "type": "WHILE_LOOP", "phase": "start", "timestamp": 0, "message": "while loop started"
   }, {
     "type": "WHILE_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "while loop iteration 0"

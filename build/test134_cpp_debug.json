@@ -84,6 +84,8 @@
   }, {
     "type": "VAR_SET", "variable": "pixelPrevious", "value": 17807, "timestamp": 0
   }, {
+    "type": "SWITCH_STATEMENT", "timestamp": 0, "message": "switch (1)", "discriminant": 1
+  }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {
     "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true

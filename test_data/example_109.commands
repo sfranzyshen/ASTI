@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758803236015,
+    "timestamp": 1758808102438,
     "component": "interpreter",
     "version": "8.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758803236015,
+    "timestamp": 1758808102438,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758803236015,
+    "timestamp": 1758808102438,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758803236015,
+    "timestamp": 1758808102438,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758803236015,
+    "timestamp": 1758808102438,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758803236015,
+    "timestamp": 1758808102438,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758803236015,
+    "timestamp": 1758808102438,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,44 +46,44 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758803236015
+    "timestamp": 1758808102438
   },
   {
     "type": "VAR_SET",
     "variable": "count",
     "value": 0,
-    "timestamp": 1758803236015
+    "timestamp": 1758808102438
   },
   {
     "type": "VAR_SET",
     "variable": "val",
     "value": 10,
-    "timestamp": 1758803236015
+    "timestamp": 1758808102438
   },
   {
     "type": "DO_WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1758803236015,
+    "timestamp": 1758808102438,
     "message": "do-while loop started"
   },
   {
     "type": "DO_WHILE_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1758803236015,
+    "timestamp": 1758808102438,
     "message": "do-while loop iteration 0"
   },
   {
     "type": "VAR_SET",
     "variable": "count",
     "value": 1,
-    "timestamp": 1758803236015
+    "timestamp": 1758808102438
   },
   {
     "type": "VAR_SET",
     "variable": "val",
     "value": 9,
-    "timestamp": 1758803236015
+    "timestamp": 1758808102438
   },
   {
     "type": "FUNCTION_CALL",
@@ -92,7 +92,7 @@
       "\"Count: \""
     ],
     "data": "Count: ",
-    "timestamp": 1758803236015,
+    "timestamp": 1758808102438,
     "message": "Serial.print(\"Count: \")"
   },
   {
@@ -102,7 +102,7 @@
       "1"
     ],
     "data": "1",
-    "timestamp": 1758803236016,
+    "timestamp": 1758808102439,
     "message": "Serial.println(1)"
   },
   {
@@ -111,14 +111,14 @@
     "arguments": [
       9
     ],
-    "timestamp": 1758803236022,
+    "timestamp": 1758808102444,
     "message": "checkCondition(9)"
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1758803236022,
+    "timestamp": 1758808102444,
     "message": "Do-while loop limit reached: completed 1 iterations (max: 1)"
   },
   {
@@ -127,23 +127,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758803236022
+    "timestamp": 1758808102444
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758803236027,
+    "timestamp": 1758808102450,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758803236027,
+    "timestamp": 1758808102450,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758803236027,
+    "timestamp": 1758808102450,
     "message": "Program execution stopped"
   }
 ]

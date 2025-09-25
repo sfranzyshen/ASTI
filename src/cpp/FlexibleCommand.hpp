@@ -342,6 +342,20 @@ private:
  */
 namespace FlexibleCommandFactory {
 
+    // Helper function to convert FlexibleCommandValue to string for messages
+    inline std::string discriminantToString(const FlexibleCommandValue& value) {
+        if (std::holds_alternative<int>(value)) {
+            return std::to_string(std::get<int>(value));
+        } else if (std::holds_alternative<double>(value)) {
+            return std::to_string(std::get<double>(value));
+        } else if (std::holds_alternative<std::string>(value)) {
+            return std::get<std::string>(value);
+        } else if (std::holds_alternative<bool>(value)) {
+            return std::get<bool>(value) ? "true" : "false";
+        }
+        return "unknown";
+    }
+
     // VERSION_INFO: {type, timestamp, component, version, status}
     inline FlexibleCommand createVersionInfo(const std::string& component, const std::string& version, const std::string& status) {
         return FlexibleCommand("VERSION_INFO")
@@ -735,6 +749,21 @@ namespace FlexibleCommandFactory {
             .set("condition", condition)
             .set("result", result)
             .set("branch", branch);
+    }
+
+    // SWITCH_STATEMENT: {type, discriminant, timestamp, message}
+    inline FlexibleCommand createSwitchStatement(const FlexibleCommandValue& discriminant) {
+        std::string message = "switch (" + discriminantToString(discriminant) + ")";
+        return FlexibleCommand("SWITCH_STATEMENT")
+            .set("discriminant", discriminant)
+            .set("message", message);
+    }
+
+    // SWITCH_CASE: {type, caseValue, matched, timestamp}
+    inline FlexibleCommand createSwitchCase(const FlexibleCommandValue& caseValue, bool matched) {
+        return FlexibleCommand("SWITCH_CASE")
+            .set("caseValue", caseValue)
+            .set("matched", matched);
     }
 
     // PROGRAM_END: {type, timestamp, message}

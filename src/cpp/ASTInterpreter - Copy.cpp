@@ -9,6 +9,11 @@
 
 #include "ASTInterpreter.hpp"
 
+// Global reset flags for static state variables (must be at global scope)
+static bool g_resetTimingCounters = false;
+static bool g_resetSerialPortCounters = false;
+static bool g_resetEnumCounter = false;
+
 // Includes
 #include "ExecutionTracer.hpp"
 #include <iostream>
@@ -80,6 +85,9 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
       nullPointerErrors_(0), stackOverflowErrors_(0), memoryExhaustionErrors_(0),
       memoryLimit_(8 * 1024 * 1024 + 512 * 1024) {  // 8MB PSRAM + 512KB RAM
 
+    // Reset static timing counters for fresh state in each interpreter instance
+    resetStaticTimingCounters();
+
     initializeInterpreter();
 }
 
@@ -111,7 +119,10 @@ ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const Int
       safeMode_(false), safeModeReason_(""), typeErrors_(0), boundsErrors_(0),
       nullPointerErrors_(0), stackOverflowErrors_(0), memoryExhaustionErrors_(0),
       memoryLimit_(8 * 1024 * 1024 + 512 * 1024) {  // 8MB PSRAM + 512KB RAM
-    
+
+    // Reset static timing counters for fresh state in each interpreter instance
+    resetStaticTimingCounters();
+
     DEBUG_OUT << "ASTInterpreter constructor: Creating CompactASTReader..." << std::endl;
 
     // Parse compact AST
@@ -1910,7 +1921,11 @@ void ASTInterpreter::visit(arduino_ast::SwitchStatement& node) {
     try {
         // Evaluate switch condition
         CommandValue condition = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getCondition()));
-        
+
+        // Emit SWITCH_STATEMENT command to match JavaScript format
+        FlexibleCommandValue discriminant = convertCommandValue(condition);
+        emitCommand(FlexibleCommandFactory::createSwitchStatement(discriminant));
+
         // Set switch condition for case matching
         currentSwitchValue_ = condition;
         bool foundMatch = false;
@@ -1954,7 +1969,11 @@ void ASTInterpreter::visit(arduino_ast::CaseStatement& node) {
                     }
                     return false;
                 }, currentSwitchValue_, caseValue));
-                
+
+                // Emit SWITCH_CASE command to match JavaScript format
+                FlexibleCommandValue caseValueFlex = convertCommandValue(caseValue);
+                emitCommand(FlexibleCommandFactory::createSwitchCase(caseValueFlex, shouldExecute));
+
                 if (shouldExecute) {
                     debugLog("Case matched switch value");
                     inSwitchFallthrough_ = true; // Enable fall-through for subsequent cases
@@ -3950,6 +3969,12 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
         // First call returns 0 (allow loop iteration), second call returns 1 (terminate loop)
         static std::unordered_map<std::string, int> serialPortCounters;
 
+        // Check for reset request
+        if (g_resetSerialPortCounters) {
+            serialPortCounters.clear();
+            g_resetSerialPortCounters = false; // Clear flag after reset
+        }
+
         // Extract Serial port name (Serial, Serial1, Serial2, etc.)
         std::string portName = function.substr(0, function.find('.'));
         int& callCount = serialPortCounters[portName];
@@ -5311,6 +5336,13 @@ void ASTInterpreter::visit(arduino_ast::EnumMemberNode& node) {
     } else {
         // Default enum values start from 0
         static int enumCounter = 0;
+
+        // Check for reset request
+        if (g_resetEnumCounter) {
+            enumCounter = 0;
+            g_resetEnumCounter = false; // Clear flag after reset
+        }
+
         memberValue = enumCounter++;
     }
     
@@ -6029,11 +6061,25 @@ int32_t ASTInterpreter::getDeterministicAnalogReadValue(int32_t pin) {
     return (pin * 37 + 42) % 1024;  // Simple deterministic formula
 }
 
+// Static reset function for all static state variables
+void ASTInterpreter::resetStaticTimingCounters() {
+    // Set global reset flags - the functions will reset on next call
+    g_resetTimingCounters = true;
+    g_resetSerialPortCounters = true;
+    g_resetEnumCounter = true;
+}
+
 uint32_t ASTInterpreter::getDeterministicMillisValue() {
     // Incremental millis value matching JavaScript MockDataManager behavior
     // Start at 17807, increment by 100ms per call for time progression
     static uint32_t millisCounter = 17807;
     static uint32_t callCount = 0;
+
+    // Check for reset request
+    if (g_resetTimingCounters) {
+        millisCounter = 17807;
+        callCount = 0;
+    }
 
     uint32_t currentValue = millisCounter;
     callCount++;
@@ -6047,6 +6093,13 @@ uint32_t ASTInterpreter::getDeterministicMicrosValue() {
     // Start at 17807000, increment by 100000µs (100ms) per call, synchronized with millis
     static uint32_t microsCounter = 17807000;
     static uint32_t callCount = 0;
+
+    // Check for reset request
+    if (g_resetTimingCounters) {
+        microsCounter = 17807000;
+        callCount = 0;
+        g_resetTimingCounters = false; // Clear flag after both functions have been reset
+    }
 
     uint32_t currentValue = microsCounter;
     callCount++;

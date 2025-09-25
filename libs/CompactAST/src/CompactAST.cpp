@@ -740,6 +740,20 @@ void CompactASTReader::linkNodeChildren() {
                 } else {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
+            } else if (parentNode->getType() == ASTNodeType::SWITCH_STMT) {
+                auto* switchStmtNode = dynamic_cast<arduino_ast::SwitchStatement*>(parentNode.get());
+                if (switchStmtNode) {
+                    // Switch statements expect: discriminant (condition), cases (body)
+                    if (!switchStmtNode->getCondition()) {
+                        switchStmtNode->setCondition(std::move(nodes_[childIndex]));
+                    } else if (!switchStmtNode->getBody()) {
+                        switchStmtNode->setBody(std::move(nodes_[childIndex]));
+                    } else {
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
             } else if (parentNode->getType() == ASTNodeType::BINARY_OP) {
                 auto* binaryOpNode = dynamic_cast<arduino_ast::BinaryOpNode*>(parentNode.get());
                 if (binaryOpNode) {
