@@ -3211,9 +3211,18 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         int32_t value = convertToInt(args[1]);
         int32_t timeout = args.size() > 2 ? convertToInt(args[2]) : 1000000;
 
-        // Generate request ID for async operation
-        std::string requestId = generateRequestId("pulseIn");
-        emitCommand(FlexibleCommandFactory::createPulseInRequest(pin, value, timeout, requestId));
+        // Create FUNCTION_CALL command to match JavaScript implementation
+        std::vector<std::variant<bool, int32_t, double, std::string>> commandArgs = {pin, value, timeout};
+
+        FlexibleCommand cmd("FUNCTION_CALL");
+        cmd.set("function", std::string("pulseIn"));
+        cmd.set("arguments", commandArgs);
+        cmd.set("pin", pin);
+        cmd.set("value", value);
+        cmd.set("timeout", timeout);
+        cmd.set("timestamp", 0);
+        cmd.set("message", std::string("pulseIn(" + std::to_string(pin) + ", " + std::to_string(value) + ")"));
+        emitCommand(cmd);
 
         // Return mock value for testing (typical pulse width in microseconds)
         return static_cast<int32_t>(1500);

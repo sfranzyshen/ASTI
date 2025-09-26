@@ -157,9 +157,9 @@ public:
             } else if (functionName == "tone" || functionName == "noTone") {
                 // tone/noTone: type, function, arguments, pin, frequency, duration, timestamp, message
                 jsOrder = {"type", "function", "arguments", "pin", "frequency", "duration", "timestamp", "message"};
-            } else if (functionName == "noteOn" || functionName == "establishContact" || functionName == "serialEvent") {
-                // noteOn/establishContact/serialEvent (custom functions): type, function, arguments, timestamp, message
-                jsOrder = {"type", "function", "arguments", "timestamp", "message"};
+            } else if (functionName == "noteOn" || functionName == "establishContact" || functionName == "serialEvent" || functionName == "pulseIn") {
+                // noteOn/establishContact/serialEvent/pulseIn (custom functions): type, function, arguments, pin, value, timeout, timestamp, message
+                jsOrder = {"type", "function", "arguments", "pin", "value", "timeout", "timestamp", "message"};
             } else {
                 // Other FUNCTION_CALL: type, function, message, iteration, completed, timestamp
                 jsOrder = {"type", "function", "message", "iteration", "completed", "timestamp"};
@@ -806,12 +806,24 @@ namespace FlexibleCommandFactory {
     }
 
     inline FlexibleCommand createSerialPrint(const std::string& data, const std::string& format = "AUTO") {
-        // CROSS-PLATFORM FIX: Format string arguments with quotes like JavaScript
+        // CROSS-PLATFORM FIX: Only add quotes around actual string literals, not numeric values
         std::string displayArg = data;
-        // If data appears to be a string literal (contains spaces or special chars), add quotes
-        // CROSS-PLATFORM FIX: Don't add quotes around character literals (e.g., '65')
+        // Check if this is a numeric value (positive, negative, or decimal)
+        bool isNumeric = false;
+        if (!data.empty()) {
+            try {
+                // Try to parse as number - if successful, it's numeric
+                size_t pos;
+                std::stod(data, &pos);
+                isNumeric = (pos == data.length()); // Entire string was consumed
+            } catch (...) {
+                isNumeric = false;
+            }
+        }
+
+        // Don't add quotes around character literals (e.g., '65') or numeric values
         bool isCharLiteral = (data.length() >= 3 && data[0] == '\'' && data[data.length()-1] == '\'');
-        if (!isCharLiteral && (data.find(' ') != std::string::npos || data.find('\t') != std::string::npos ||
+        if (!isCharLiteral && !isNumeric && (data.find(' ') != std::string::npos || data.find('\t') != std::string::npos ||
             data.find('=') != std::string::npos || data.find(',') != std::string::npos ||
             (!data.empty() && !std::isdigit(data[0]) && data != "true" && data != "false"))) {
             displayArg = "\"" + data + "\"";
