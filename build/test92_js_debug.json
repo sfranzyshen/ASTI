@@ -1,13 +1,13 @@
 [
   {
-    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "9.0", "status": "started"
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "10.0", "status": "started"
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {
     "type": "VAR_SET", "variable": "myFunction", "value": {
-      "functionName": "myInterruptService", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758841666439_kfd7o"
+      "functionName": "myInterruptService", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1758898989278_4z0az"
     }, "timestamp": 0
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"

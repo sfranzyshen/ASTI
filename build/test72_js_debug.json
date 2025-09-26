@@ -70,7 +70,7 @@
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "motorEnabled", "value": false, "timestamp": 0
+    "type": "VAR_SET", "variable": "motorEnabled", "value": 0, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

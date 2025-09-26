@@ -27,7 +27,7 @@ if (typeof conditionalLog === 'undefined') {
  *   ✅ setup() and loop() execution flow
  */
 
-const INTERPRETER_VERSION = "9.0.0";
+const INTERPRETER_VERSION = "10.0.0";
 
 // Global debugLog function for contexts where 'this' is not available
 function debugLog(...args) {
@@ -5185,23 +5185,23 @@ class ASTInterpreter {
         if (node.left?.type === 'UnaryOpNode' && (node.left.op?.value === '*' || node.left.op === '*')) {
             return await this.executePointerAssignment(node);
         }
-        
+
         // Check if this is a struct field assignment (struct.field = value)
         if (node.left?.type === 'MemberAccessNode' || node.left?.type === 'PropertyAccessNode') {
             return await this.executeStructFieldAssignment(node);
         }
-        
+
         // Check if this is an array element assignment (array[index] = value)
         if (node.left?.type === 'ArrayAccessNode') {
             return await this.executeArrayElementAssignment(node);
         }
-        
+
         const varName = node.left?.value;
         if (!varName) {
             this.emitError("Invalid assignment: no variable name");
             return null;
         }
-        
+
         const rightValue = await this.evaluateExpression(node.right);
         const operator = node.operator;
         let newValue;
@@ -5648,7 +5648,21 @@ class ASTInterpreter {
         switch (operator) {
             case '-': return -operand;
             case '+': return +operand;
-            case '!': return !operand;
+            case '!':
+                // ULTRATHINK DEBUG: Comprehensive boolean negation analysis
+                // Extract primitive value if operand is a complex object
+                let primitiveValue = operand;
+                if (typeof operand === 'object' && operand !== null) {
+                    if (operand.hasOwnProperty('value')) {
+                        primitiveValue = operand.value;
+                    } else if (operand.hasOwnProperty('valueOf')) {
+                        primitiveValue = operand.valueOf();
+                    } else {
+                        primitiveValue = Number(operand);
+                    }
+                }
+                const result = primitiveValue ? 0 : 1;  // Arduino-style: !0=1, !non-zero=0
+                return result;
             case '~': return ~operand;
             case '++': 
                 // Prefix increment: ++i

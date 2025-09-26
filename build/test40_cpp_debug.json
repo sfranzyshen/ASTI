@@ -36,7 +36,7 @@
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "ledState", "value": true, "timestamp": 0
+    "type": "VAR_SET", "variable": "ledState", "value": 1, "timestamp": 0
   }, {
     "type": "DIGITAL_WRITE", "pin": 13, "value": 1, "timestamp": 0
   }, {

@@ -189,7 +189,7 @@ bool ASTInterpreter::start() {
     totalExecutionStart_ = std::chrono::steady_clock::now();
     
     // Emit VERSION_INFO first, then PROGRAM_START (matches JavaScript order)
-    emitCommand(FlexibleCommandFactory::createVersionInfo("interpreter", "9.0.0", "started"));
+    emitCommand(FlexibleCommandFactory::createVersionInfo("interpreter", "10.0.0", "started"));
     emitCommand(FlexibleCommandFactory::createProgramStart());
     
     try {
@@ -4711,8 +4711,8 @@ CommandValue ASTInterpreter::evaluateUnaryOperation(const std::string& op, const
         // Unary plus 
         return convertToInt(operand);
     } else if (op == "!") {
-        // Logical NOT
-        return !convertToBool(operand);
+        // Logical NOT - Arduino-style: return 1 for !0, 0 for !non-zero
+        return convertToBool(operand) ? 0 : 1;
     } else if (op == "~") {
         // Bitwise NOT
         return ~convertToInt(operand);
