@@ -234,7 +234,12 @@ public:
     }
     
     size_t getScopeDepth() const { return scopes_.size(); }
-    
+
+    // Get current scope for parameter preservation (TEST 96 FIX)
+    std::unordered_map<std::string, Variable>* getCurrentScope() {
+        return scopes_.empty() ? nullptr : &scopes_.back();
+    }
+
     // Get total variable count across all scopes
     uint32_t getVariableCount() const {
         uint32_t count = static_cast<uint32_t>(staticVariables_.size());

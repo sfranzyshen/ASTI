@@ -44,9 +44,7 @@
       "value": "Most significant digit of the sensor reading is: "
     }, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "\"\"Most significant digit of the sensor reading is: \"undefined\""
-    ], "data": "\"Most significant digit of the sensor reading is: \"undefined", "timestamp": 0, "message": "Serial.println(\"\"Most significant digit of the sensor reading is: \"undefined\")"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [], "timestamp": 0, "message": "Serial.println()"
   }, {

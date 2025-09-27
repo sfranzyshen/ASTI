@@ -842,15 +842,12 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::RETURN_STMT) {
-                // ULTRATHINK: Safe ReturnStatement linking - avoid double-move for Test 96
                 auto* returnStmtNode = dynamic_cast<arduino_ast::ReturnStatement*>(parentNode.get());
                 if (returnStmtNode && !returnStmtNode->getReturnValue()) {
-                    // ReturnStatement expects: value (the expression to return)
                     if (childIndex < nodes_.size() && nodes_[childIndex]) {
                         returnStmtNode->setReturnValue(std::move(nodes_[childIndex]));
                     }
                 } else {
-                    // Standard child addition if cast fails or return value already set
                     if (childIndex < nodes_.size() && nodes_[childIndex]) {
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }

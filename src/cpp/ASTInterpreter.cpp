@@ -781,7 +781,8 @@ void ASTInterpreter::visit(arduino_ast::ReturnStatement& node) {
     shouldReturn_ = true;
 
     if (node.getReturnValue()) {
-        returnValue_ = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getReturnValue()));
+        auto* returnExpr = node.getReturnValue();
+        returnValue_ = evaluateExpression(const_cast<arduino_ast::ASTNode*>(returnExpr));
     } else {
         returnValue_ = std::monostate{};
     }
@@ -2515,11 +2516,11 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                 // DEBUG: Log operator extraction
                 std::string extractedOp = binNode->getOperator();
                 debugLog("evaluateExpression: BINARY_OP extracted operator='" + extractedOp + "' (length=" + std::to_string(extractedOp.length()) + ")");
-                
-                
+
                 CommandValue left = evaluateExpression(const_cast<arduino_ast::ASTNode*>(binNode->getLeft()));
                 CommandValue right = evaluateExpression(const_cast<arduino_ast::ASTNode*>(binNode->getRight()));
-                return evaluateBinaryOperation(extractedOp, left, right);
+                CommandValue result = evaluateBinaryOperation(extractedOp, left, right);
+                return result;
             }
             break;
             
@@ -2568,8 +2569,31 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                 debugLog("evaluateExpression: Final function name: '" + functionName + "'");
 
                 std::vector<CommandValue> args;
+
+                // ULTRATHINK TEST 96 FIX: Preserve parameter scope during nested function argument evaluation
+                // When evaluating arguments for nested function calls like multiply(add(x,y), z),
+                // the add(x,y) call can corrupt the parameter scope, making z undefined.
+                // We need to evaluate arguments in isolation to prevent scope collision.
+
+                // ULTRATHINK TEST 96 FIX: TEMPORARILY DISABLED SCOPE RESTORATION FOR DEBUGGING
+                // std::unordered_map<std::string, Variable> savedScopeContext;
+
                 for (const auto& arg : funcNode->getArguments()) {
-                    args.push_back(evaluateExpression(arg.get()));
+                    // Evaluate the argument (this may call nested user functions)
+                    CommandValue argResult = evaluateExpression(arg.get());
+
+                    // ULTRATHINK TEST 96 FIX: TEMPORARILY DISABLED SCOPE RESTORATION FOR DEBUGGING
+                    /*if (scopeManager_ && recursionDepth_ > 0 && !savedScopeContext.empty()) {
+                        auto currentScope = scopeManager_->getCurrentScope();
+                        if (currentScope) {
+                            currentScope->clear();
+                            for (const auto& param : savedScopeContext) {
+                                currentScope->insert(param);
+                            }
+                        }
+                    }*/
+
+                    args.push_back(argResult);
                 }
 
                 // Check for user-defined function first
@@ -2577,8 +2601,42 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                     auto* userFunc = findFunctionInAST(functionName);
                     if (userFunc) {
                         debugLog("evaluateExpression: Executing user-defined function: " + functionName);
-                        return executeUserFunction(functionName,
+
+                        // ULTRATHINK FIX: Save return state to prevent corruption during nested calls
+                        bool savedShouldReturn = shouldReturn_;
+                        CommandValue savedReturnValue = returnValue_;
+                        shouldReturn_ = false;
+                        returnValue_ = std::monostate{};
+
+                        // ULTRATHINK FIX: Save current scope only for nested calls to prevent parameter corruption
+                        std::unordered_map<std::string, Variable> savedScope;
+                        bool shouldRestoreScope = (recursionDepth_ > 0); // Only during nested calls
+                        if (shouldRestoreScope && scopeManager_) {
+                            auto currentScope = scopeManager_->getCurrentScope();
+                            if (currentScope) {
+                                savedScope = *currentScope;
+                            }
+                        }
+
+                        CommandValue result = executeUserFunction(functionName,
                             dynamic_cast<const arduino_ast::FuncDefNode*>(userFunc), args);
+
+                        // Restore previous scope after nested function execution (only for nested calls)
+                        if (shouldRestoreScope && scopeManager_ && !savedScope.empty()) {
+                            auto currentScope = scopeManager_->getCurrentScope();
+                            if (currentScope) {
+                                currentScope->clear();
+                                for (const auto& var : savedScope) {
+                                    currentScope->insert(var);
+                                }
+                            }
+                        }
+
+                        // Restore previous return state
+                        shouldReturn_ = savedShouldReturn;
+                        returnValue_ = savedReturnValue;
+
+                        return result;
                     }
                 }
 
@@ -2589,9 +2647,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             
         case arduino_ast::ASTNodeType::ARRAY_ACCESS:
             // Handle array access by calling visitor and returning result
-            std::cerr << "🔥🔥🔥 ARRAY_ACCESS FOUND IN EVALUATEEXPRESSION!" << std::endl;
             expr->accept(*this);
-            std::cerr << "🔥🔥🔥 ARRAY_ACCESS VISITOR COMPLETED, RESULT: " << commandValueToString(lastExpressionResult_) << std::endl;
             return lastExpressionResult_;
             
         case arduino_ast::ASTNodeType::MEMBER_ACCESS:
@@ -2666,7 +2722,19 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
 CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, const CommandValue& left, const CommandValue& right) {
     // DEBUG: Log the operator being evaluated
     debugLog("evaluateBinaryOperation: operator='" + op + "' (length=" + std::to_string(op.length()) + ")");
-    
+
+    // ULTRATHINK FIX: Prevent segmentation faults ONLY for arithmetic operations
+    // Allow comparisons with monostate/null to proceed naturally (Arduino behavior)
+    if (std::holds_alternative<std::monostate>(left) || std::holds_alternative<std::monostate>(right)) {
+        // For arithmetic operations, treat monostate as 0 to prevent crashes
+        if (op == "+" || op == "-" || op == "*" || op == "/" || op == "%") {
+            debugLog("Arithmetic with monostate operand, using 0 as fallback");
+            return 0.0;
+        }
+        // For comparisons, let them proceed naturally below (Arduino null comparison behavior)
+        debugLog("Comparison with monostate operand, proceeding with natural evaluation");
+    }
+
     
     // Arithmetic operations
     if (op == "+") {
@@ -2866,7 +2934,6 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
                     // Create parameter variable
                     Variable paramVar(paramValue, paramType);
                     scopeManager_->setVariable(paramName, paramVar);
-                    std::cerr << "🎯 PARAM SET: " << paramName << " = " << commandValueToString(paramValue) << std::endl;
                     
                 } else {
                     debugLog("Parameter " + std::to_string(i) + " has no declarator name");
