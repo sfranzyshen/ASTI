@@ -5,8 +5,8 @@
  * identical to the JavaScript ASTInterpreter.js implementation. Designed for
  * ESP32-S3 memory constraints and cross-platform compatibility.
  * 
- * Version: 1.0
- * Compatible with: ASTInterpreter.js v6.3.0
+ * Version: 11.0.0
+ * Compatible with: ASTInterpreter.js v11.0.0
  * Command Protocol: CommandProtocol.hpp v1.0
  */
 
@@ -56,7 +56,7 @@ struct InterpreterOptions {
     bool enableSerial = true;       // Enable Serial commands
     bool enablePins = true;         // Enable pin operations
     bool syncMode = false;          // Test mode: immediate sync responses for digitalRead/analogRead
-    std::string version = "8.0.0";  // Interpreter version
+    std::string version = "11.0.0";  // Interpreter version
 };
 
 /**
@@ -294,6 +294,34 @@ public:
 
 
 // =============================================================================
+// RAII STATE GUARD FOR NESTED FUNCTION CALLS
+// =============================================================================
+
+/**
+ * RAII-based state guard for managing return values and scope during nested function calls.
+ * This class ensures proper cleanup order during stack unwinding and prevents the segmentation
+ * fault that occurs when manual state management happens at wrong levels.
+ */
+class StateGuard {
+private:
+    class ASTInterpreter* interpreter_;
+    bool savedShouldReturn_;
+    CommandValue savedReturnValue_;
+    std::unordered_map<std::string, Variable> savedScope_;
+    bool hasScope_;
+
+public:
+    StateGuard(class ASTInterpreter* interp);
+    ~StateGuard();
+
+    // Non-copyable, non-movable to ensure proper RAII semantics
+    StateGuard(const StateGuard&) = delete;
+    StateGuard& operator=(const StateGuard&) = delete;
+    StateGuard(StateGuard&&) = delete;
+    StateGuard& operator=(StateGuard&&) = delete;
+};
+
+// =============================================================================
 // MAIN AST INTERPRETER CLASS
 // =============================================================================
 
@@ -302,6 +330,8 @@ public:
  * Executes AST nodes and generates command streams
  */
 class ASTInterpreter : public arduino_ast::ASTVisitor {
+    friend class StateGuard;  // Allow StateGuard to access private members for RAII state management
+
 private:
     // Core state
     arduino_ast::ASTNodePtr ast_;

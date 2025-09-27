@@ -4,7 +4,7 @@
  * Core interpreter implementation that executes AST nodes and generates
  * command streams matching JavaScript ASTInterpreter.js exactly.
  * 
- * Version: 1.0
+ * Version: 11.0.0
  */
 
 #include "ASTInterpreter.hpp"
@@ -143,6 +143,50 @@ ASTInterpreter::~ASTInterpreter() {
     std::cerr << "DESTRUCTOR: About to exit destructor" << std::endl;
 }
 
+// =============================================================================
+// STATEGUARD RAII IMPLEMENTATION
+// =============================================================================
+
+StateGuard::StateGuard(ASTInterpreter* interp)
+    : interpreter_(interp), hasScope_(false) {
+    if (!interpreter_) return;
+
+    // Save return state
+    savedShouldReturn_ = interpreter_->shouldReturn_;
+    savedReturnValue_ = interpreter_->returnValue_;
+
+    // Reset return state for function execution
+    interpreter_->shouldReturn_ = false;
+    interpreter_->returnValue_ = std::monostate{};
+
+    // Save scope state only for nested calls (recursionDepth_ > 0)
+    // This prevents the segfault by ensuring proper scope isolation
+    if (interpreter_->recursionDepth_ > 0 && interpreter_->scopeManager_) {
+        auto currentScope = interpreter_->scopeManager_->getCurrentScope();
+        if (currentScope) {
+            savedScope_ = *currentScope;
+            hasScope_ = true;
+        }
+    }
+}
+
+StateGuard::~StateGuard() {
+    if (!interpreter_) return;
+
+    // Restore scope state first (before return state restoration)
+    // This ensures proper cleanup order during stack unwinding
+    if (hasScope_ && interpreter_->scopeManager_) {
+        auto currentScope = interpreter_->scopeManager_->getCurrentScope();
+        if (currentScope && !interpreter_->scopeManager_->isGlobalScope()) {
+            *currentScope = savedScope_;
+        }
+    }
+
+    // Restore return state last
+    interpreter_->shouldReturn_ = savedShouldReturn_;
+    interpreter_->returnValue_ = savedReturnValue_;
+}
+
 void ASTInterpreter::initializeInterpreter() {
     scopeManager_ = std::make_unique<ScopeManager>();
     enhancedScopeManager_ = std::make_unique<EnhancedScopeManager>();
@@ -193,7 +237,7 @@ bool ASTInterpreter::start() {
     totalExecutionStart_ = std::chrono::steady_clock::now();
     
     // Emit VERSION_INFO first, then PROGRAM_START (matches JavaScript order)
-    emitCommand(FlexibleCommandFactory::createVersionInfo("interpreter", "10.0.0", "started"));
+    emitCommand(FlexibleCommandFactory::createVersionInfo("interpreter", "11.0.0", "started"));
     emitCommand(FlexibleCommandFactory::createProgramStart());
     
     try {
@@ -2610,50 +2654,10 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                     if (userFunc) {
                         debugLog("evaluateExpression: Executing user-defined function: " + functionName);
 
-                        // ULTRATHINK FIX: Save return state to prevent corruption during nested calls
-                        // SEGFAULT FIX: Use copy instead of move to avoid move semantics issues
-                        bool savedShouldReturn = shouldReturn_;
-                        shouldReturn_ = false;
-                        CommandValue originalReturnValue = returnValue_;  // Copy instead of move
-                        returnValue_ = std::monostate{};
-
-                        // ULTRATHINK FIX: Save current scope only for nested calls to prevent parameter corruption
-                        // SEGFAULT FIX: Changed condition - save scope for ALL user function calls that might nest
-                        std::unordered_map<std::string, Variable> savedScope;
-                        bool shouldRestoreScope = true; // Always save/restore for user functions
-                        if (shouldRestoreScope && scopeManager_) {
-                            auto currentScope = scopeManager_->getCurrentScope();
-                            if (currentScope) {
-                                savedScope = *currentScope;
-                            }
-                        }
-
-                        CommandValue result = executeUserFunction(functionName,
+                        // CLEAN FUNCTION CALL: StateGuard in executeUserFunction handles all state management
+                        // This eliminates the segfault-causing dual-level state management
+                        return executeUserFunction(functionName,
                             dynamic_cast<const arduino_ast::FuncDefNode*>(userFunc), args);
-
-                        // ULTRATHINK FIX: Restore previous scope after nested function execution
-                        // SEGFAULT FIX: Only restore if we actually saved a scope and it's still valid
-                        if (shouldRestoreScope && scopeManager_ && !savedScope.empty()) {
-                            // Only restore if we're not at global scope (which should never be modified)
-                            if (!scopeManager_->isGlobalScope()) {
-                                auto currentScope = scopeManager_->getCurrentScope();
-                                if (currentScope) {
-                                    // Create a new scope with the saved content instead of clearing/inserting
-                                    *currentScope = savedScope;
-                                }
-                            }
-                        }
-
-                        // ULTRATHINK FIX: Restore previous return state
-                        // SEGFAULT FIX: Use copy instead of move to avoid potential double-move issues
-                        shouldReturn_ = savedShouldReturn;
-                        returnValue_ = originalReturnValue;  // Copy instead of move
-
-                        std::cerr << "FUNCTION RETURN DEBUG: About to return result from " << functionName << std::endl;
-                        std::cerr << "FUNCTION RETURN DEBUG: Result variant index = " << result.index() << std::endl;
-                        std::cerr << "FUNCTION RETURN DEBUG: RecursionDepth = " << recursionDepth_ << std::endl;
-
-                        return result;
                     }
                 }
 
@@ -2829,7 +2833,11 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
 
 CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const arduino_ast::FuncDefNode* funcDef, const std::vector<CommandValue>& args) {
     debugLog("Executing user-defined function: " + name);
-    
+
+    // RAII STATE MANAGEMENT: StateGuard automatically handles return value and scope state
+    // This prevents the segmentation fault by ensuring proper cleanup order during stack unwinding
+    StateGuard stateGuard(this);
+
     // CROSS-PLATFORM FIX: Emit function call command with arguments for user functions too (preserve types)
     // TEST 30 FIX: Use specialized serialEvent function that omits empty arguments
     if (name == "serialEvent") {
@@ -2837,31 +2845,30 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
     } else {
         emitCommand(FlexibleCommandFactory::createFunctionCall(name, args));
     }
-    
+
     // Track user function call statistics
     auto userFunctionStart = std::chrono::steady_clock::now();
     functionsExecuted_++;
     userFunctionsExecuted_++;
     functionCallCounters_[name]++;
-    
+
     // Track recursion depth
     recursionDepth_++;
     if (recursionDepth_ > maxRecursionDepth_) {
         maxRecursionDepth_ = recursionDepth_;
     }
-    
+
     // Enhanced Error Handling: Stack overflow detection
     // Use instance variable instead of static
-    callStack_.clear();
     const size_t MAX_RECURSION_DEPTH = 100; // Prevent infinite recursion
-    
+
     callStack_.push_back(name);
     if (callStack_.size() > MAX_RECURSION_DEPTH) {
         // Use enhanced error handling instead of simple error
         emitStackOverflowError(name, callStack_.size());
         callStack_.pop_back();
         recursionDepth_--;
-        
+
         // Try to recover from stack overflow
         if (tryRecoverFromError("StackOverflowError")) {
             return getDefaultValueForType("int"); // Return safe default
@@ -2869,14 +2876,14 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
             return std::monostate{}; // Critical error, stop execution
         }
     }
-    
+
     // Count recursive calls of the same function
     size_t recursiveCallCount = 0;
     for (const auto& funcName : callStack_) {
         if (funcName == name) recursiveCallCount++;
     }
-    
-    debugLog("Function " + name + " call depth: " + std::to_string(callStack_.size()) + 
+
+    debugLog("Function " + name + " call depth: " + std::to_string(callStack_.size()) +
              ", recursive calls: " + std::to_string(recursiveCallCount));
     
     // Create new scope for function execution
@@ -2979,31 +2986,26 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
         const_cast<arduino_ast::ASTNode*>(funcDef->getBody())->accept(*this);
     }
 
-    // Handle return value
+    // Handle return value - capture result before StateGuard destructor runs
     if (shouldReturn_) {
-        result = returnValue_;
-        shouldReturn_ = false;
-        returnValue_ = std::monostate{};
+        result = returnValue_;  // Capture the return value while it's still valid
     }
-    
+
     // Clean up scope and call stack
     scopeManager_->popScope();
     callStack_.pop_back();
-    
+
     // Complete user function timing tracking
     auto userFunctionEnd = std::chrono::steady_clock::now();
     auto userDuration = std::chrono::duration_cast<std::chrono::microseconds>(userFunctionEnd - userFunctionStart);
     functionExecutionTimes_[name] += userDuration;
-    
+
     // Update recursion depth tracking
     recursionDepth_--;
-    
+
     debugLog("User function " + name + " completed with result: " + commandValueToString(result));
 
-    std::cerr << "EXECUTE_USER_FUNCTION DEBUG: About to return from " << name << std::endl;
-    std::cerr << "EXECUTE_USER_FUNCTION DEBUG: Result variant index = " << result.index() << std::endl;
-    std::cerr << "EXECUTE_USER_FUNCTION DEBUG: RecursionDepth after decrement = " << recursionDepth_ << std::endl;
-
+    // StateGuard destructor will automatically restore previous state here
     return result;
 }
 
