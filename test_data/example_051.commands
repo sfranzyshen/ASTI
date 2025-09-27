@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759007987097,
+    "timestamp": 1759011917839,
     "component": "interpreter",
     "version": "10.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759007987097,
+    "timestamp": 1759011917839,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Executing setup() function"
   },
   {
@@ -23,20 +23,20 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "end",
     "iterations": 0,
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "while loop completed (0 iterations)"
   },
   {
@@ -46,29 +46,29 @@
       "\"\n\nString Constructors:\""
     ],
     "data": "\n\nString Constructors:",
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Serial.println(\"\n\nString Constructors:\")"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [],
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Serial.println()"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Starting loop iteration 1"
   },
   {
@@ -76,7 +76,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759007987098
+    "timestamp": 1759011917839
   },
   {
     "type": "VAR_SET",
@@ -84,7 +84,7 @@
     "value": {
       "value": "Hello String"
     },
-    "timestamp": 1759007987098
+    "timestamp": 1759011917839
   },
   {
     "type": "FUNCTION_CALL",
@@ -93,7 +93,7 @@
       "\"Hello String\""
     ],
     "data": "Hello String",
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Serial.println(\"Hello String\")"
   },
   {
@@ -102,7 +102,7 @@
     "value": {
       "value": "97"
     },
-    "timestamp": 1759007987098
+    "timestamp": 1759011917839
   },
   {
     "type": "FUNCTION_CALL",
@@ -111,7 +111,7 @@
       "\"97\""
     ],
     "data": "97",
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Serial.println(\"97\")"
   },
   {
@@ -120,7 +120,7 @@
     "value": {
       "value": "This is a string"
     },
-    "timestamp": 1759007987098
+    "timestamp": 1759011917839
   },
   {
     "type": "FUNCTION_CALL",
@@ -129,7 +129,7 @@
       "\"This is a string\""
     ],
     "data": "This is a string",
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Serial.println(\"This is a string\")"
   },
   {
@@ -138,7 +138,7 @@
     "value": {
       "value": "This is a string with more"
     },
-    "timestamp": 1759007987098
+    "timestamp": 1759011917839
   },
   {
     "type": "FUNCTION_CALL",
@@ -147,7 +147,7 @@
       "\"This is a string with more\""
     ],
     "data": "This is a string with more",
-    "timestamp": 1759007987098,
+    "timestamp": 1759011917839,
     "message": "Serial.println(\"This is a string with more\")"
   },
   {
@@ -156,7 +156,7 @@
     "value": {
       "value": "13"
     },
-    "timestamp": 1759007987098
+    "timestamp": 1759011917839
   },
   {
     "type": "FUNCTION_CALL",
@@ -165,14 +165,14 @@
       "\"13\""
     ],
     "data": "13",
-    "timestamp": 1759007987099,
+    "timestamp": 1759011917839,
     "message": "Serial.println(\"13\")"
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
     "requestId": "analogRead_000001",
-    "timestamp": 1759007987099
+    "timestamp": 1759011917839
   },
   {
     "type": "VAR_SET",
@@ -180,7 +180,7 @@
     "value": {
       "value": "560"
     },
-    "timestamp": 1759007987105
+    "timestamp": 1759011917844
   },
   {
     "type": "FUNCTION_CALL",
@@ -189,7 +189,7 @@
       "\"560\""
     ],
     "data": "560",
-    "timestamp": 1759007987105,
+    "timestamp": 1759011917844,
     "message": "Serial.println(\"560\")"
   },
   {
@@ -198,7 +198,7 @@
     "value": {
       "value": "45"
     },
-    "timestamp": 1759007987105
+    "timestamp": 1759011917844
   },
   {
     "type": "FUNCTION_CALL",
@@ -207,7 +207,7 @@
       "\"45\""
     ],
     "data": "45",
-    "timestamp": 1759007987105,
+    "timestamp": 1759011917844,
     "message": "Serial.println(\"45\")"
   },
   {
@@ -216,7 +216,7 @@
     "value": {
       "value": "255"
     },
-    "timestamp": 1759007987105
+    "timestamp": 1759011917844
   },
   {
     "type": "FUNCTION_CALL",
@@ -225,13 +225,13 @@
       "\"255\""
     ],
     "data": "255",
-    "timestamp": 1759007987105,
+    "timestamp": 1759011917844,
     "message": "Serial.println(\"255\")"
   },
   {
     "type": "MILLIS_REQUEST",
     "requestId": "millis_000002",
-    "timestamp": 1759007987105
+    "timestamp": 1759011917844
   },
   {
     "type": "VAR_SET",
@@ -239,7 +239,7 @@
     "value": {
       "value": "17807"
     },
-    "timestamp": 1759007987110
+    "timestamp": 1759011917849
   },
   {
     "type": "FUNCTION_CALL",
@@ -248,7 +248,7 @@
       "\"17807\""
     ],
     "data": "17807",
-    "timestamp": 1759007987110,
+    "timestamp": 1759011917849,
     "message": "Serial.println(\"17807\")"
   },
   {
@@ -257,7 +257,7 @@
     "value": {
       "value": "5.698"
     },
-    "timestamp": 1759007987110
+    "timestamp": 1759011917849
   },
   {
     "type": "FUNCTION_CALL",
@@ -266,7 +266,7 @@
       "\"5.698\""
     ],
     "data": "5.698",
-    "timestamp": 1759007987110,
+    "timestamp": 1759011917849,
     "message": "Serial.println(\"5.698\")"
   },
   {
@@ -275,7 +275,7 @@
     "value": {
       "value": "5.70"
     },
-    "timestamp": 1759007987110
+    "timestamp": 1759011917849
   },
   {
     "type": "FUNCTION_CALL",
@@ -284,27 +284,27 @@
       "\"5.70\""
     ],
     "data": "5.70",
-    "timestamp": 1759007987110,
+    "timestamp": 1759011917849,
     "message": "Serial.println(\"5.70\")"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1759007987110,
+    "timestamp": 1759011917849,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1759007987110,
+    "timestamp": 1759011917849,
     "message": "while loop iteration 0"
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1759007987115,
+    "timestamp": 1759011917854,
     "message": "While loop limit reached: completed 1 iterations (max: 1)"
   },
   {
@@ -313,23 +313,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759007987115
+    "timestamp": 1759011917854
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759007987119,
+    "timestamp": 1759011917859,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759007987119,
+    "timestamp": 1759011917859,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759007987119,
+    "timestamp": 1759011917859,
     "message": "Program execution stopped"
   }
 ]

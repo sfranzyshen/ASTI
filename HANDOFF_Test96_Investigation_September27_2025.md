@@ -463,3 +463,100 @@ timeout: the monitored command dumped core
 **Technical Readiness:** ✅ **CORE LOGIC PRODUCTION READY** - Only function return cleanup requires targeted fix
 
 **Documentation Status:** ✅ **ANTI-CYCLE DOCUMENTATION COMPLETE** - Next session must NOT re-investigate working components, must target specific CommandValue return issue only
+
+## **🤖 AI AGENT CONSULTATION PROMPT (For External Help)**
+
+Use this prompt with Gemini, ChatGPT, or other AI agents to get expert insights on the segmentation fault:
+
+```
+**CRITICAL C++ SEGMENTATION FAULT DIAGNOSIS REQUEST**
+
+**CONTEXT:** Arduino AST Interpreter with nested user-defined function calls causing segmentation fault during function return/cleanup phase.
+- Segmentation fault occurs immediately after successful arithmetic operation
+- Crash happens during stack unwinding when multiply() returns CommandValue to calculate()
+- All core logic works flawlessly - only cleanup/return phase fails
+
+**EXACT CRASH LOCATION:**
+```cpp
+// Last successful debug output before crash:
+🔍 IDENTIFIER DEBUG: Found variable 'x' with value: 15
+🔍 IDENTIFIER DEBUG: Found variable 'y' with value: 2
+MULTIPLY DEBUG: About to convert left operand
+MULTIPLY DEBUG: Left value = 15
+MULTIPLY DEBUG: About to convert right operand
+MULTIPLY DEBUG: Right value = 2
+MULTIPLY DEBUG: About to perform multiplication
+MULTIPLY DEBUG: Result = 30
+timeout: the monitored command dumped core  // <- CRASH HAPPENS HERE
+```
+
+**KEY TECHNICAL DETAILS:**
+
+**CommandValue Type Definition:**
+```cpp
+using CommandValue = std::variant<
+    std::monostate, bool, int32_t, uint32_t, double, std::string,
+    std::vector<int32_t>, std::vector<double>, std::vector<std::string>
+>;
+```
+
+**Function Return Mechanism:**
+```cpp
+CommandValue executeUserFunction(const std::string& functionName,
+                                const arduino_ast::FuncDefNode* funcDef,
+                                const std::vector<CommandValue>& args) {
+    // Return state isolation
+    bool savedShouldReturn = shouldReturn_;
+    shouldReturn_ = false;
+    CommandValue originalReturnValue = std::move(returnValue_);
+    returnValue_ = std::monostate{};
+
+    // Scope isolation for nested calls
+    std::unordered_map<std::string, Variable> savedScope;
+    bool shouldRestoreScope = (recursionDepth_ > 0);
+
+    // Execute function body...
+    CommandValue result = /* function execution logic */;
+
+    // Restore state
+    shouldReturn_ = savedShouldReturn;
+    returnValue_ = std::move(originalReturnValue);
+
+    return result;  // <- SUSPECTED CRASH POINT
+}
+```
+
+**Call Stack Context:**
+1. `calculate(5,10,2)` calls `multiply(add(5,10), 2)`
+2. `add(5,10)` executes successfully, returns 15
+3. `multiply(15,2)` executes successfully, calculates 30
+4. **CRASH during return from multiply() back to calculate()**
+
+**SPECIFIC QUESTIONS:**
+
+1. **CommandValue std::variant Destruction:** Could the issue be in std::variant destructor when returning complex CommandValue objects?
+
+2. **Move Semantics Issues:** Are there problems with `std::move(returnValue_)` and `std::move(originalReturnValue)` causing double-destruction?
+
+3. **Stack Unwinding Problems:** Could nested function calls with CommandValue returns cause stack corruption during unwinding?
+
+4. **Variable/Scope Cleanup:** Could the scope restoration logic interfere with CommandValue lifecycle management?
+
+5. **Memory Management:** Are there hidden memory issues in CommandValue construction/destruction that only manifest during nested returns?
+
+**WHAT WE'VE TRIED:**
+- ✅ Move semantics instead of copy operations
+- ✅ Scope isolation to prevent parameter corruption
+- ✅ Return state isolation to prevent nested call interference
+- ❌ All attempts still result in identical segmentation fault
+
+**CRITICAL CONSTRAINT:**
+- Core function logic is 100% working
+- 78/135 other tests pass perfectly
+- Only this specific nested function return pattern crashes
+
+**WHAT WE NEED:**
+Specific technical insights into what could cause a segmentation fault during CommandValue return from nested user-defined functions, particularly focusing on std::variant destruction, move semantics, or stack unwinding issues.
+
+**TARGET:** Fix segmentation fault to advance from 78/135 to 79/135 passing tests (57.77% → 58.52% success rate).
+```

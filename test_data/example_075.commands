@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759007987822,
+    "timestamp": 1759011918561,
     "component": "interpreter",
     "version": "10.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759007987822,
+    "timestamp": 1759011918561,
     "message": "Program execution started"
   },
   {
@@ -18,8 +18,8 @@
       4,
       2
     ],
-    "objectId": "CapacitiveSensor_1759007987822_ez98",
-    "timestamp": 1759007987822,
+    "objectId": "CapacitiveSensor_1759011918562_nm34",
+    "timestamp": 1759011918562,
     "message": "CapacitiveSensor(4, 2)"
   },
   {
@@ -32,28 +32,28 @@
         2
       ],
       "type": "library_object",
-      "objectId": "CapacitiveSensor_1759007987822_ez98",
+      "objectId": "CapacitiveSensor_1759011918562_nm34",
       "initialized": true,
       "properties": {}
     },
-    "timestamp": 1759007987822
+    "timestamp": 1759011918562
   },
   {
     "type": "VAR_SET",
     "variable": "threshold",
     "value": 1000,
-    "timestamp": 1759007987822
+    "timestamp": 1759011918562
   },
   {
     "type": "VAR_SET",
     "variable": "ledPin",
     "value": 12,
     "isConst": true,
-    "timestamp": 1759007987822
+    "timestamp": 1759011918562
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759007987822,
+    "timestamp": 1759011918562,
     "message": "Executing setup() function"
   },
   {
@@ -63,28 +63,28 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759007987823,
+    "timestamp": 1759011918562,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "PIN_MODE",
     "pin": 12,
     "mode": 1,
-    "timestamp": 1759007987823
+    "timestamp": 1759011918562
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759007987823,
+    "timestamp": 1759011918562,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759007987823,
+    "timestamp": 1759011918562,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759007987823,
+    "timestamp": 1759011918562,
     "message": "Starting loop iteration 1"
   },
   {
@@ -92,42 +92,42 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759007987823
+    "timestamp": 1759011918562
   },
   {
     "type": "VAR_SET",
     "variable": "sensorValue",
-    "value": 1899,
-    "timestamp": 1759007987823
+    "value": 1491,
+    "timestamp": 1759011918562
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "1899"
+      "1491"
     ],
-    "data": "1899",
-    "timestamp": 1759007987823,
-    "message": "Serial.println(1899)"
+    "data": "1491",
+    "timestamp": 1759011918562,
+    "message": "Serial.println(1491)"
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759007987823
+    "timestamp": 1759011918562
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 12,
     "value": 1,
-    "timestamp": 1759007987823
+    "timestamp": 1759011918562
   },
   {
     "type": "DELAY",
     "duration": 10,
     "actualDelay": 10,
-    "timestamp": 1759007987823
+    "timestamp": 1759011918562
   },
   {
     "type": "FUNCTION_CALL",
@@ -135,23 +135,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759007987823
+    "timestamp": 1759011918562
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759007987827,
+    "timestamp": 1759011918567,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759007987827,
+    "timestamp": 1759011918567,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759007987827,
+    "timestamp": 1759011918567,
     "message": "Program execution stopped"
   }
 ]
