@@ -24,7 +24,7 @@
   }, {
     "type": "VAR_SET", "variable": "result1", "value": null, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "result2", "value": 3.3333333333, "timestamp": 0
+    "type": "VAR_SET", "variable": "result2", "value": 3.333333333333333, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "result3", "value": 5.5, "timestamp": 0
   }, {

@@ -6,12 +6,12 @@
   }, {
     "type": "ARDUINO_LIBRARY_INSTANTIATION", "library": "CapacitiveSensor", "constructorArgs": [
       4, 2
-    ], "objectId": "CapacitiveSensor_1758936148827_30sy", "timestamp": 0, "message": "CapacitiveSensor(4, 2)"
+    ], "objectId": "CapacitiveSensor_1758946937026_5hje", "timestamp": 0, "message": "CapacitiveSensor(4, 2)"
   }, {
     "type": "VAR_SET", "variable": "capSensor", "value": {
       "libraryName": "CapacitiveSensor", "constructorArgs": [
         4, 2
-      ], "type": "library_object", "objectId": "CapacitiveSensor_1758936148827_30sy", "initialized": true, "properties": {}
+      ], "type": "library_object", "objectId": "CapacitiveSensor_1758946937026_5hje", "initialized": true, "properties": {}
     }, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "threshold", "value": 1000, "timestamp": 0
@@ -36,7 +36,7 @@
   }, {
     "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "249", "timestamp": 0, "message": "Serial.println(0)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "481", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

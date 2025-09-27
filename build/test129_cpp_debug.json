@@ -26,6 +26,14 @@
       0, 5, 10
     ]
   }, {
+    "type": "FUNCTION_CALL", "function": "op", "message": "op(5, 10)", "timestamp": 0, "arguments": [
+      5, 10
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: op", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: op"
+  }, {
     "type": "VAR_SET", "variable": "result", "value": null, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [

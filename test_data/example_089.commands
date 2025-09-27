@@ -1,40 +1,40 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758936149203,
+    "timestamp": 1758946937397,
     "component": "interpreter",
     "version": "10.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758936149203,
+    "timestamp": 1758946937397,
     "message": "Program execution started"
   },
   {
     "type": "VAR_SET",
     "variable": "myChar",
     "value": 67,
-    "timestamp": 1758936149203
+    "timestamp": 1758946937397
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758936149203,
+    "timestamp": 1758946937397,
     "message": "Executing setup() function"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758936149203,
+    "timestamp": 1758946937397,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758936149203,
+    "timestamp": 1758946937397,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758936149203,
+    "timestamp": 1758946937397,
     "message": "Starting loop iteration 1"
   },
   {
@@ -42,7 +42,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758936149204
+    "timestamp": 1758946937397
   },
   {
     "type": "FUNCTION_CALL",
@@ -50,23 +50,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758936149204
+    "timestamp": 1758946937397
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758936149209,
+    "timestamp": 1758946937402,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758936149209,
+    "timestamp": 1758946937402,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758936149209,
+    "timestamp": 1758946937402,
     "message": "Program execution stopped"
   }
 ]

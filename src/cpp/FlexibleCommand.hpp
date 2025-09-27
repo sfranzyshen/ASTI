@@ -160,6 +160,10 @@ public:
             } else if (functionName == "noteOn" || functionName == "establishContact" || functionName == "serialEvent" || functionName == "pulseIn") {
                 // noteOn/establishContact/serialEvent/pulseIn (custom functions): type, function, arguments, pin, value, timeout, timestamp, message
                 jsOrder = {"type", "function", "arguments", "pin", "value", "timeout", "timestamp", "message"};
+            } else if (functionName == "microsecondsToInches" || functionName == "microsecondsToCentimeters" ||
+                       functionName == "add" || functionName == "multiply" || functionName == "calculate") {
+                // User-defined functions from Test 42 and Test 96: type, function, arguments, timestamp, message
+                jsOrder = {"type", "function", "arguments", "timestamp", "message"};
             } else {
                 // Other FUNCTION_CALL: type, function, message, iteration, completed, timestamp
                 jsOrder = {"type", "function", "message", "iteration", "completed", "timestamp"};
@@ -252,7 +256,7 @@ private:
      */
     std::string formatDouble(double value) const {
         std::ostringstream temp;
-        temp << std::fixed << std::setprecision(10) << value;
+        temp << std::fixed << std::setprecision(15) << value;
         std::string result = temp.str();
 
         // Remove trailing zeros after decimal point

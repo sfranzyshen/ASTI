@@ -18,6 +18,7 @@ static bool g_resetEnumCounter = false;
 #include "ExecutionTracer.hpp"
 #include <iostream>
 #include <sstream>
+#include <iomanip>
 #include <cmath>
 #include <algorithm>
 #include <unordered_map>
@@ -780,12 +781,9 @@ void ASTInterpreter::visit(arduino_ast::ReturnStatement& node) {
     shouldReturn_ = true;
 
     if (node.getReturnValue()) {
-        std::cerr << "🎯 RETURN STATEMENT: About to evaluate return expression" << std::endl;
         returnValue_ = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getReturnValue()));
-        std::cerr << "🎯 RETURN RESULT: " << commandValueToString(returnValue_) << std::endl;
     } else {
         returnValue_ = std::monostate{};
-        std::cerr << "🎯 RETURN VOID: No return value" << std::endl;
     }
 }
 
@@ -3955,7 +3953,15 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
         } else if (std::holds_alternative<double>(data)) {
             double value = std::get<double>(data);
             int32_t places = args.size() > 2 ? convertToInt(args[2]) : 2; // Default 2 decimal places
-            output = std::to_string(value);
+            // Use high precision formatting to match JavaScript
+            std::ostringstream oss;
+            oss << std::fixed << std::setprecision(15) << value;
+            output = oss.str();
+            // Remove trailing zeros after decimal point
+            if (output.find('.') != std::string::npos) {
+                output.erase(output.find_last_not_of('0') + 1, std::string::npos);
+                output.erase(output.find_last_not_of('.') + 1, std::string::npos);
+            }
             emitCommand(FlexibleCommandFactory::createSerialPrint(output, "FLOAT"));
         } else if (std::holds_alternative<std::string>(data)) {
             output = std::get<std::string>(data);

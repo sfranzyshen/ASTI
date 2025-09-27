@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1758936149982,
+    "timestamp": 1758946938176,
     "component": "interpreter",
     "version": "10.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1758936149982,
+    "timestamp": 1758946938176,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1758936149982,
+    "timestamp": 1758946938176,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938176,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938176,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938176,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938176,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,7 +46,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1758936149983
+    "timestamp": 1758946938176
   },
   {
     "type": "VAR_SET",
@@ -55,17 +55,17 @@
       "structName": "MyFlags",
       "fields": {},
       "type": "struct",
-      "structId": "struct_1758936149983_3syjq"
+      "structId": "struct_1758946938176_om88y"
     },
     "structType": "MyFlags",
-    "timestamp": 1758936149983
+    "timestamp": 1758946938176
   },
   {
     "type": "STRUCT_FIELD_SET",
     "struct": "MyFlags",
     "field": "a",
     "value": 1,
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938177,
     "message": "MyFlags.a = 1"
   },
   {
@@ -73,7 +73,7 @@
     "struct": "MyFlags",
     "field": "b",
     "value": 0,
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938177,
     "message": "MyFlags.b = 0"
   },
   {
@@ -81,7 +81,7 @@
     "struct": "MyFlags",
     "field": "c",
     "value": 50,
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938177,
     "message": "MyFlags.c = 50"
   },
   {
@@ -91,7 +91,7 @@
       "\"Flag a: \""
     ],
     "data": "Flag a: ",
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938177,
     "message": "Serial.print(\"Flag a: \")"
   },
   {
@@ -99,7 +99,7 @@
     "struct": "MyFlags",
     "field": "a",
     "value": 1,
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938177,
     "message": "MyFlags.a = 1"
   },
   {
@@ -109,7 +109,7 @@
       "1"
     ],
     "data": "1",
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938177,
     "message": "Serial.println(1)"
   },
   {
@@ -119,7 +119,7 @@
       "\"Flag c: \""
     ],
     "data": "Flag c: ",
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938177,
     "message": "Serial.print(\"Flag c: \")"
   },
   {
@@ -127,7 +127,7 @@
     "struct": "MyFlags",
     "field": "c",
     "value": 50,
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938177,
     "message": "MyFlags.c = 50"
   },
   {
@@ -137,7 +137,7 @@
       "50"
     ],
     "data": "50",
-    "timestamp": 1758936149983,
+    "timestamp": 1758946938177,
     "message": "Serial.println(50)"
   },
   {
@@ -146,23 +146,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1758936149983
+    "timestamp": 1758946938177
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1758936149987,
+    "timestamp": 1758946938182,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758936149987,
+    "timestamp": 1758946938182,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1758936149987,
+    "timestamp": 1758946938182,
     "message": "Program execution stopped"
   }
 ]

@@ -72,7 +72,7 @@
   }, {
     "type": "VAR_SET", "variable": "distance", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "xReading", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "xReading", "value": 0, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "readAxis", "message": "readAxis(15)", "timestamp": 0, "arguments": [
       15
@@ -90,7 +90,7 @@
   }, {
     "type": "VAR_SET", "variable": "distance", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "yReading", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "yReading", "value": 0, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

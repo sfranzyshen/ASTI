@@ -46,29 +46,25 @@
   }, {
     "type": "VAR_SET", "variable": "duration", "value": 1500, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "microsecondsToInches", "message": "microsecondsToInches(1500)", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "microsecondsToInches", "arguments": [
       1500
-    ]
+    ], "timestamp": 0, "message": "microsecondsToInches(1500)"
   }, {
-    "type": "VAR_SET", "variable": "inches", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "inches", "value": 10.135135135135135, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "microsecondsToCentimeters", "message": "microsecondsToCentimeters(1500)", "timestamp": 0, "arguments": [
+    "type": "FUNCTION_CALL", "function": "microsecondsToCentimeters", "arguments": [
       1500
-    ]
+    ], "timestamp": 0, "message": "microsecondsToCentimeters(1500)"
   }, {
-    "type": "VAR_SET", "variable": "cm", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "cm", "value": 25.862068965517242, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
-      "\"undefined\""
-    ], "data": "undefined", "timestamp": 0, "message": "Serial.print(\"undefined\")"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(10.135135)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"in, \""
     ], "data": "in, ", "timestamp": 0, "message": "Serial.print(\"in, \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
-      "\"undefined\""
-    ], "data": "undefined", "timestamp": 0, "message": "Serial.print(\"undefined\")"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(25.862069)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"cm\""

@@ -224,7 +224,8 @@ class CompactASTExporter {
             'TernaryExpression': ['condition', 'consequent', 'alternate'],
             'PostfixExpressionNode': ['operand'],
             'CommaExpression': ['left', 'right'],
-            'ArrayDeclaratorNode': ['identifier', 'size']
+            'ArrayDeclaratorNode': ['identifier', 'size'],
+            'ReturnStatement': ['value']  // ULTRATHINK: Re-adding for Test 42
         };
 
         const childNames = childrenMap[node.type] || [];

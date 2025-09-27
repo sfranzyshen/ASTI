@@ -98,7 +98,7 @@
       "\"\t green: \""
     ], "data": "\t green: ", "timestamp": 0, "message": "Serial.print(\"\t green: \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(149.250000)"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(149.25)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"\t Blue: \""
