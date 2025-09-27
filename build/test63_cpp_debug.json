@@ -60,9 +60,17 @@
       14
     ]
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: readAxis", "errorType": "RuntimeError"
+    "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: readAxis"
+    "type": "VAR_SET", "variable": "reading", "value": 560, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "reading", "value": 7, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "distance", "value": 1, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "distance", "value": 0, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "xReading", "value": null, "timestamp": 0
   }, {
@@ -70,9 +78,17 @@
       15
     ]
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: readAxis", "errorType": "RuntimeError"
+    "type": "ANALOG_READ_REQUEST", "pin": 15, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: readAxis"
+    "type": "VAR_SET", "variable": "reading", "value": 597, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "reading", "value": 7, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "distance", "value": 1, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "distance", "value": 0, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "yReading", "value": null, "timestamp": 0
   }, {

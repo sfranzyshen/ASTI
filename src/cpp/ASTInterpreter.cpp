@@ -778,11 +778,14 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
 
 void ASTInterpreter::visit(arduino_ast::ReturnStatement& node) {
     shouldReturn_ = true;
-    
+
     if (node.getReturnValue()) {
+        std::cerr << "🎯 RETURN STATEMENT: About to evaluate return expression" << std::endl;
         returnValue_ = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getReturnValue()));
+        std::cerr << "🎯 RETURN RESULT: " << commandValueToString(returnValue_) << std::endl;
     } else {
         returnValue_ = std::monostate{};
+        std::cerr << "🎯 RETURN VOID: No return value" << std::endl;
     }
 }
 
@@ -2467,7 +2470,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
     debugLog("evaluateExpression: NodeType = " + std::to_string(static_cast<int>(nodeType)));
     std::cerr << "🔍 EVALUATEEXPRESSION: type=" << static_cast<int>(nodeType) << " (" << nodeTypeName << ")" << std::endl;
     TRACE_ENTRY("evaluateExpression", "type=" + nodeTypeName);
-    
+
     switch (nodeType) {
         case arduino_ast::ASTNodeType::NUMBER_LITERAL:
             if (auto* numNode = dynamic_cast<arduino_ast::NumberNode*>(expr)) {
@@ -2536,7 +2539,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             if (auto* funcNode = dynamic_cast<arduino_ast::FuncCallNode*>(expr)) {
                 std::string functionName;
                 debugLog("evaluateExpression: FUNC_CALL node found");
-                
+
                 if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(funcNode->getCallee())) {
                     functionName = identifier->getName();
                     debugLog("evaluateExpression: Identifier callee: " + functionName);
@@ -2563,14 +2566,25 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                         debugLog("evaluateExpression: Callee is null");
                     }
                 }
-                
+
                 debugLog("evaluateExpression: Final function name: '" + functionName + "'");
-                
+
                 std::vector<CommandValue> args;
                 for (const auto& arg : funcNode->getArguments()) {
                     args.push_back(evaluateExpression(arg.get()));
                 }
-                
+
+                // Check for user-defined function first
+                if (userFunctionNames_.count(functionName) > 0) {
+                    auto* userFunc = findFunctionInAST(functionName);
+                    if (userFunc) {
+                        debugLog("evaluateExpression: Executing user-defined function: " + functionName);
+                        return executeUserFunction(functionName,
+                            dynamic_cast<const arduino_ast::FuncDefNode*>(userFunc), args);
+                    }
+                }
+
+                // Fall back to Arduino/built-in functions
                 return executeArduinoFunction(functionName, args);
             }
             break;
@@ -2854,6 +2868,7 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
                     // Create parameter variable
                     Variable paramVar(paramValue, paramType);
                     scopeManager_->setVariable(paramName, paramVar);
+                    std::cerr << "🎯 PARAM SET: " << paramName << " = " << commandValueToString(paramValue) << std::endl;
                     
                 } else {
                     debugLog("Parameter " + std::to_string(i) + " has no declarator name");
@@ -2867,13 +2882,12 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
     }
     
     CommandValue result = std::monostate{};
-    resetControlFlow();
-    
+
     // Execute function body
     if (funcDef->getBody()) {
         const_cast<arduino_ast::ASTNode*>(funcDef->getBody())->accept(*this);
     }
-    
+
     // Handle return value
     if (shouldReturn_) {
         result = returnValue_;

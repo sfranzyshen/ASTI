@@ -182,6 +182,9 @@ public:
         } else if (cmdType == "DELAY") {
             // DELAY: type, duration, actualDelay, timestamp
             jsOrder = {"type", "duration", "actualDelay", "timestamp"};
+        } else if (cmdType == "DELAY_MICROSECONDS") {
+            // DELAY_MICROSECONDS: type, duration, timestamp (JavaScript field order)
+            jsOrder = {"type", "duration", "timestamp"};
         } else if (cmdType == "ANALOG_WRITE") {
             // ANALOG_WRITE: type, pin, value, timestamp
             jsOrder = {"type", "pin", "value", "timestamp"};

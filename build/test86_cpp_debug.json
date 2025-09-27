@@ -26,10 +26,6 @@
   }, {
     "type": "FUNCTION_CALL", "function": "getIndex", "message": "getIndex()", "timestamp": 0, "arguments": []
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: getIndex", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: getIndex"
-  }, {
     "type": "ERROR", "timestamp": 0, "message": "Array index must be integer", "errorType": "RuntimeError"
   }, {
     "type": "error", "timestamp": 0, "message": "Array index must be integer"

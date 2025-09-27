@@ -24,9 +24,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "myFunc", "message": "myFunc()", "timestamp": 0, "arguments": []
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: myFunc", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: myFunc"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"myFunc() was called.\""
+    ], "data": "myFunc() was called.", "timestamp": 0, "message": "Serial.println(\"myFunc() was called.\")"
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
@@ -36,9 +36,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "myFunc", "message": "myFunc()", "timestamp": 0, "arguments": []
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: myFunc", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: myFunc"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "\"myFunc() was called.\""
+    ], "data": "myFunc() was called.", "timestamp": 0, "message": "Serial.println(\"myFunc() was called.\")"
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

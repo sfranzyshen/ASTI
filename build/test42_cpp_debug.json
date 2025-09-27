@@ -30,11 +30,11 @@
   }, {
     "type": "DIGITAL_WRITE", "pin": 7, "value": 0, "timestamp": 0
   }, {
-    "type": "DELAY_MICROSECONDS", "timestamp": 0, "duration": 2
+    "type": "DELAY_MICROSECONDS", "duration": 2, "timestamp": 0
   }, {
     "type": "DIGITAL_WRITE", "pin": 7, "value": 1, "timestamp": 0
   }, {
-    "type": "DELAY_MICROSECONDS", "timestamp": 0, "duration": 5
+    "type": "DELAY_MICROSECONDS", "duration": 5, "timestamp": 0
   }, {
     "type": "DIGITAL_WRITE", "pin": 7, "value": 0, "timestamp": 0
   }, {
@@ -50,19 +50,11 @@
       1500
     ]
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: microsecondsToInches", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: microsecondsToInches"
-  }, {
     "type": "VAR_SET", "variable": "inches", "value": null, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "microsecondsToCentimeters", "message": "microsecondsToCentimeters(1500)", "timestamp": 0, "arguments": [
       1500
     ]
-  }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: microsecondsToCentimeters", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: microsecondsToCentimeters"
   }, {
     "type": "VAR_SET", "variable": "cm", "value": null, "timestamp": 0
   }, {

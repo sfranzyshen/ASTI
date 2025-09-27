@@ -28,10 +28,6 @@
       5, 10, 2
     ]
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Unknown function: calculate", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Unknown function: calculate"
-  }, {
     "type": "VAR_SET", "variable": "finalResult", "value": null, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
