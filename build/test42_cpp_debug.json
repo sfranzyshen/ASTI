@@ -58,13 +58,13 @@
   }, {
     "type": "VAR_SET", "variable": "cm", "value": 25.862068965517242, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(10.135135)"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(10.135135135135135)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"in, \""
     ], "data": "in, ", "timestamp": 0, "message": "Serial.print(\"in, \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(25.862069)"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.print(25.862068965517242)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"cm\""

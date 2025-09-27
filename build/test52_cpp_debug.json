@@ -8,7 +8,7 @@
       "value": ""
     }, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "lastStringLength", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "lastStringLength", "value": 0, "timestamp": 0
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {

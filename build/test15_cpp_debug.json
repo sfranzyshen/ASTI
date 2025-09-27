@@ -28,27 +28,23 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorValue", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "outputValue", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "outputValue", "value": 140, "timestamp": 0
   }, {
-    "type": "ANALOG_WRITE", "pin": 9, "value": 0, "timestamp": 0
+    "type": "ANALOG_WRITE", "pin": 9, "value": 140, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"sensor = \""
     ], "data": "sensor = ", "timestamp": 0, "message": "Serial.print(\"sensor = \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
-      "\"undefined\""
-    ], "data": "undefined", "timestamp": 0, "message": "Serial.print(\"undefined\")"
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": ["0"], "data": "560", "timestamp": 0, "message": "Serial.print(560)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"\t output = \""
     ], "data": "\t output = ", "timestamp": 0, "message": "Serial.print(\"\t output = \")"
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "undefined"
-    ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "140", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "DELAY", "duration": 2, "actualDelay": 2, "timestamp": 0
   }, {

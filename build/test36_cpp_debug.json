@@ -44,13 +44,13 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorValue", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorValue", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorValue", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "ANALOG_WRITE", "pin": 9, "value": 0, "timestamp": 0
+    "type": "ANALOG_WRITE", "pin": 9, "value": 115, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
   }, {

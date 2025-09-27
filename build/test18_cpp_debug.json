@@ -24,21 +24,9 @@
   }, {
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "WHILE_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "while loop iteration 0"
+    "type": "WHILE_LOOP", "phase": "end", "iterations": 0, "timestamp": 0, "message": "while loop completed (0 iterations)"
   }, {
-    "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "sensorValue", "value": null, "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
-  }, {
-    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "sensorMin", "value": null, "timestamp": 0
-  }, {
-    "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
-  }, {
-    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "While loop limit reached: completed 1 iterations (max: 1)"
+    "type": "DIGITAL_WRITE", "pin": 13, "value": 0, "timestamp": 0
   }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {
@@ -50,11 +38,11 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorValue", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorValue", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorValue", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorValue", "value": 0, "timestamp": 0
   }, {
     "type": "ANALOG_WRITE", "pin": 9, "value": 0, "timestamp": 0
   }, {

@@ -26,7 +26,7 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "buttonState", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "buttonState", "value": 0, "timestamp": 0
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

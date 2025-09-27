@@ -24,11 +24,9 @@
   }, {
     "type": "DIGITAL_READ_REQUEST", "pin": 2, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorVal", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorVal", "value": 0, "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "undefined"
-    ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "0", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
   }, {

@@ -20,9 +20,7 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
-      "undefined"
-    ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "560", "timestamp": 0, "message": "Serial.println(0)"
   }, {
     "type": "DELAY", "duration": 2, "actualDelay": 2, "timestamp": 0
   }, {

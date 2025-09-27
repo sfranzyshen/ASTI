@@ -36,9 +36,9 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorReading", "value": 2, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorReading", "value": 560, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "ledLevel", "value": 2, "timestamp": 0
+    "type": "VAR_SET", "variable": "ledLevel", "value": 5, "timestamp": 0
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {

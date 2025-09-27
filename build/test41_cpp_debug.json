@@ -38,29 +38,29 @@
       2, 1, 1000000
     ], "pin": 2, "value": 1, "timeout": 1000000, "timestamp": 0, "message": "pulseIn(2, 1)"
   }, {
-    "type": "VAR_SET", "variable": "pulseX", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "pulseX", "value": 1500, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "pulseIn", "arguments": [
       3, 1, 1000000
     ], "pin": 3, "value": 1, "timeout": 1000000, "timestamp": 0, "message": "pulseIn(3, 1)"
   }, {
-    "type": "VAR_SET", "variable": "pulseY", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "pulseY", "value": 1500, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "accelerationX", "value": -4000, "timestamp": 0
+    "type": "VAR_SET", "variable": "accelerationX", "value": -2800, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "accelerationY", "value": -4000, "timestamp": 0
+    "type": "VAR_SET", "variable": "accelerationY", "value": -2800, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
-      "-4000"
-    ], "data": "-4000", "timestamp": 0, "message": "Serial.print(-4000)"
+      "-2800"
+    ], "data": "-2800", "timestamp": 0, "message": "Serial.print(-2800)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
       "\"\t\""
     ], "data": "\t", "timestamp": 0, "message": "Serial.print(\"\t\")"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
-      "-4000"
-    ], "data": "-4000", "timestamp": 0, "message": "Serial.print(-4000)"
+      "-2800"
+    ], "data": "-2800", "timestamp": 0, "message": "Serial.print(-2800)"
   }, {
     "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [], "timestamp": 0, "message": "Serial.println()"
   }, {

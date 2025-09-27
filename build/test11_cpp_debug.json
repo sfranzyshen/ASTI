@@ -28,9 +28,13 @@
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "sensorReading", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "sensorReading", "value": 42, "timestamp": 0
   }, {
-    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "tone", "arguments": [
+      8, 440, 20
+    ], "pin": 8, "frequency": 440, "duration": 20, "timestamp": 0, "message": "tone(8, 440, 20)"
   }, {
     "type": "VAR_SET", "variable": "thisSensor", "value": 1, "timestamp": 0
   }, {
