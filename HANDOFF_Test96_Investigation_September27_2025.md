@@ -472,6 +472,9 @@ Use this prompt with Gemini, ChatGPT, or other AI agents to get expert insights 
 **CRITICAL C++ SEGMENTATION FAULT DIAGNOSIS REQUEST**
 
 **CONTEXT:** Arduino AST Interpreter with nested user-defined function calls causing segmentation fault during function return/cleanup phase.
+
+**PROBLEM SUMMARY:**
+- User-defined functions execute PERFECTLY (add(5,10)→15, multiply(15,2)→30)
 - Segmentation fault occurs immediately after successful arithmetic operation
 - Crash happens during stack unwinding when multiply() returns CommandValue to calculate()
 - All core logic works flawlessly - only cleanup/return phase fails
