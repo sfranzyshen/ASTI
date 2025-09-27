@@ -1,0 +1,65 @@
+[
+  {
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "10.0", "status": "started"
+  }, {
+    "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
+  }, {
+    "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.begin", "arguments": [
+      9600
+    ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
+  }, {
+    "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 1"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "x", "value": 100, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "p1", "value": {
+      "type": "ArduinoPointer", "address": 0, "pointsTo": "undefined"
+    }, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "p2", "value": {
+      "type": "ArduinoPointer", "address": 0, "pointsTo": "undefined"
+    }, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Value of x: \""
+    ], "data": "Value of x: ", "timestamp": 0, "message": "Serial.print(\"Value of x: \")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "100", "timestamp": 0, "message": "Serial.println(0)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Value of *p1: \""
+    ], "data": "Value of *p1: ", "timestamp": 0, "message": "Serial.print(\"Value of *p1: \")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "100", "timestamp": 0, "message": "Serial.println(0)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Value of **p2: \""
+    ], "data": "Value of **p2: ", "timestamp": 0, "message": "Serial.print(\"Value of **p2: \")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "100", "timestamp": 0, "message": "Serial.println(0)"
+  }, {
+    "type": "POINTER_ASSIGNMENT", "pointer": "ptr_1758999738709_ehbgj", "targetVariable": "x", "value": 200, "timestamp": 0, "message": "*x = 200"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"New value of x: \""
+    ], "data": "New value of x: ", "timestamp": 0, "message": "Serial.print(\"New value of x: \")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": ["0"], "data": "200", "timestamp": 0, "message": "Serial.println(0)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
+  }
+]

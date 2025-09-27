@@ -137,7 +137,10 @@ ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const Int
 }
 
 ASTInterpreter::~ASTInterpreter() {
+    std::cerr << "DESTRUCTOR: Starting ASTInterpreter destructor" << std::endl;
     stop();
+    std::cerr << "DESTRUCTOR: Completed stop() call" << std::endl;
+    std::cerr << "DESTRUCTOR: About to exit destructor" << std::endl;
 }
 
 void ASTInterpreter::initializeInterpreter() {
@@ -218,11 +221,16 @@ bool ASTInterpreter::start() {
 }
 
 void ASTInterpreter::stop() {
+    std::cerr << "STOP: Starting stop() method" << std::endl;
     if (state_ == ExecutionState::RUNNING || state_ == ExecutionState::PAUSED) {
+        std::cerr << "STOP: Setting state to IDLE" << std::endl;
         state_ = ExecutionState::IDLE;
+        std::cerr << "STOP: About to call resetControlFlow()" << std::endl;
         resetControlFlow();
+        std::cerr << "STOP: Completed resetControlFlow()" << std::endl;
         debugLog("Interpreter stopped");
     }
+    std::cerr << "STOP: Exiting stop() method" << std::endl;
 }
 
 void ASTInterpreter::pause() {
@@ -2603,14 +2611,16 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                         debugLog("evaluateExpression: Executing user-defined function: " + functionName);
 
                         // ULTRATHINK FIX: Save return state to prevent corruption during nested calls
+                        // SEGFAULT FIX: Use copy instead of move to avoid move semantics issues
                         bool savedShouldReturn = shouldReturn_;
-                        CommandValue savedReturnValue = returnValue_;
                         shouldReturn_ = false;
+                        CommandValue originalReturnValue = returnValue_;  // Copy instead of move
                         returnValue_ = std::monostate{};
 
                         // ULTRATHINK FIX: Save current scope only for nested calls to prevent parameter corruption
+                        // SEGFAULT FIX: Changed condition - save scope for ALL user function calls that might nest
                         std::unordered_map<std::string, Variable> savedScope;
-                        bool shouldRestoreScope = (recursionDepth_ > 0); // Only during nested calls
+                        bool shouldRestoreScope = true; // Always save/restore for user functions
                         if (shouldRestoreScope && scopeManager_) {
                             auto currentScope = scopeManager_->getCurrentScope();
                             if (currentScope) {
@@ -2621,20 +2631,27 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                         CommandValue result = executeUserFunction(functionName,
                             dynamic_cast<const arduino_ast::FuncDefNode*>(userFunc), args);
 
-                        // Restore previous scope after nested function execution (only for nested calls)
+                        // ULTRATHINK FIX: Restore previous scope after nested function execution
+                        // SEGFAULT FIX: Only restore if we actually saved a scope and it's still valid
                         if (shouldRestoreScope && scopeManager_ && !savedScope.empty()) {
-                            auto currentScope = scopeManager_->getCurrentScope();
-                            if (currentScope) {
-                                currentScope->clear();
-                                for (const auto& var : savedScope) {
-                                    currentScope->insert(var);
+                            // Only restore if we're not at global scope (which should never be modified)
+                            if (!scopeManager_->isGlobalScope()) {
+                                auto currentScope = scopeManager_->getCurrentScope();
+                                if (currentScope) {
+                                    // Create a new scope with the saved content instead of clearing/inserting
+                                    *currentScope = savedScope;
                                 }
                             }
                         }
 
-                        // Restore previous return state
+                        // ULTRATHINK FIX: Restore previous return state
+                        // SEGFAULT FIX: Use copy instead of move to avoid potential double-move issues
                         shouldReturn_ = savedShouldReturn;
-                        returnValue_ = savedReturnValue;
+                        returnValue_ = originalReturnValue;  // Copy instead of move
+
+                        std::cerr << "FUNCTION RETURN DEBUG: About to return result from " << functionName << std::endl;
+                        std::cerr << "FUNCTION RETURN DEBUG: Result variant index = " << result.index() << std::endl;
+                        std::cerr << "FUNCTION RETURN DEBUG: RecursionDepth = " << recursionDepth_ << std::endl;
 
                         return result;
                     }
@@ -2735,7 +2752,7 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
         debugLog("Comparison with monostate operand, proceeding with natural evaluation");
     }
 
-    
+
     // Arithmetic operations
     if (op == "+") {
         if (isNumeric(left) && isNumeric(right)) {
@@ -2747,7 +2764,16 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
     } else if (op == "-") {
         return convertToDouble(left) - convertToDouble(right);
     } else if (op == "*") {
-        return convertToDouble(left) * convertToDouble(right);
+        std::cerr << "MULTIPLY DEBUG: About to convert left operand" << std::endl;
+        double leftVal = convertToDouble(left);
+        std::cerr << "MULTIPLY DEBUG: Left value = " << leftVal << std::endl;
+        std::cerr << "MULTIPLY DEBUG: About to convert right operand" << std::endl;
+        double rightVal = convertToDouble(right);
+        std::cerr << "MULTIPLY DEBUG: Right value = " << rightVal << std::endl;
+        std::cerr << "MULTIPLY DEBUG: About to perform multiplication" << std::endl;
+        double result = leftVal * rightVal;
+        std::cerr << "MULTIPLY DEBUG: Result = " << result << std::endl;
+        return result;
     } else if (op == "/") {
         double rightVal = convertToDouble(right);
         if (rightVal == 0.0) {
@@ -2973,6 +2999,11 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
     recursionDepth_--;
     
     debugLog("User function " + name + " completed with result: " + commandValueToString(result));
+
+    std::cerr << "EXECUTE_USER_FUNCTION DEBUG: About to return from " << name << std::endl;
+    std::cerr << "EXECUTE_USER_FUNCTION DEBUG: Result variant index = " << result.index() << std::endl;
+    std::cerr << "EXECUTE_USER_FUNCTION DEBUG: RecursionDepth after decrement = " << recursionDepth_ << std::endl;
+
     return result;
 }
 

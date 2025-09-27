@@ -1,0 +1,75 @@
+[
+  {
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "10.0", "status": "started"
+  }, {
+    "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
+  }, {
+    "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.begin", "arguments": [
+      9600
+    ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
+  }, {
+    "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 1"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "arr", "value": [
+      10, 20, 30
+    ], "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "ptr", "value": [
+      10, 20, 30
+    ], "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"First element: \""
+    ], "data": "First element: ", "timestamp": 0, "message": "Serial.print(\"First element: \")"
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Pointer dereference requires pointer variable", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Pointer dereference requires pointer variable"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "undefined"
+    ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
+  }, {
+    "type": "VAR_SET", "variable": "ptr", "value": [
+      10, 20, 30
+    ], "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Next element: \""
+    ], "data": "Next element: ", "timestamp": 0, "message": "Serial.print(\"Next element: \")"
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Pointer dereference requires pointer variable", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Pointer dereference requires pointer variable"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "undefined"
+    ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
+  }, {
+    "type": "VAR_SET", "variable": "nextVal", "value": null, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.print", "arguments": [
+      "\"Next value with arithmetic: \""
+    ], "data": "Next value with arithmetic: ", "timestamp": 0, "message": "Serial.print(\"Next value with arithmetic: \")"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.println", "arguments": [
+      "undefined"
+    ], "data": "undefined", "timestamp": 0, "message": "Serial.println(undefined)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
+  }
+]

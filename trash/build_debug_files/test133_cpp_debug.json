@@ -1,0 +1,189 @@
+[
+  {
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "10.0", "status": "started"
+  }, {
+    "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Adafruit_NeoPixel", "message": "Adafruit_NeoPixel(60, 6, 82)", "timestamp": 0, "arguments": [
+      "60", "6", "82"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: Adafruit_NeoPixel", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: Adafruit_NeoPixel"
+  }, {
+    "type": "VAR_SET", "variable": "strip", "value": null, "timestamp": 0
+  }, {
+    "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
+  }, {
+    "type": "FUNCTION_CALL", "function": "clock_prescale_set", "message": "clock_prescale_set(0)", "timestamp": 0, "arguments": ["0"]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: clock_prescale_set", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: clock_prescale_set"
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.begin", "message": "strip.begin()", "timestamp": 0, "arguments": []
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.begin", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.begin"
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.show", "message": "strip.show()", "timestamp": 0, "arguments": []
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.show", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.show"
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.setBrightness", "message": "strip.setBrightness(50)", "timestamp": 0, "arguments": ["0"]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.setBrightness", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.setBrightness"
+  }, {
+    "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 1"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.Color", "message": "strip.Color(255, 0, 0)", "timestamp": 0, "arguments": [
+      "255", "0", "0"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.Color", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.Color"
+  }, {
+    "type": "FUNCTION_CALL", "function": "colorWipe", "message": "colorWipe(0, 50)", "timestamp": 0, "arguments": [
+      0, 50
+    ]
+  }, {
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
+  }, {
+    "type": "VAR_SET", "variable": "i", "value": 0, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.numPixels", "message": "strip.numPixels()", "timestamp": 0, "arguments": []
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.numPixels", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.numPixels"
+  }, {
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 0, "timestamp": 0, "message": "For loop limit reached: completed 0 iterations (max: 1)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.Color", "message": "strip.Color(0, 255, 0)", "timestamp": 0, "arguments": [
+      "0", "255", "0"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.Color", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.Color"
+  }, {
+    "type": "FUNCTION_CALL", "function": "colorWipe", "message": "colorWipe(0, 50)", "timestamp": 0, "arguments": [
+      0, 50
+    ]
+  }, {
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
+  }, {
+    "type": "VAR_SET", "variable": "i", "value": 0, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.numPixels", "message": "strip.numPixels()", "timestamp": 0, "arguments": []
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.numPixels", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.numPixels"
+  }, {
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 0, "timestamp": 0, "message": "For loop limit reached: completed 0 iterations (max: 1)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.Color", "message": "strip.Color(0, 0, 255)", "timestamp": 0, "arguments": [
+      "0", "0", "255"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.Color", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.Color"
+  }, {
+    "type": "FUNCTION_CALL", "function": "colorWipe", "message": "colorWipe(0, 50)", "timestamp": 0, "arguments": [
+      0, 50
+    ]
+  }, {
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
+  }, {
+    "type": "VAR_SET", "variable": "i", "value": 0, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.numPixels", "message": "strip.numPixels()", "timestamp": 0, "arguments": []
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.numPixels", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.numPixels"
+  }, {
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 0, "timestamp": 0, "message": "For loop limit reached: completed 0 iterations (max: 1)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.Color", "message": "strip.Color(127, 127, 127)", "timestamp": 0, "arguments": [
+      "127", "127", "127"
+    ]
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.Color", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.Color"
+  }, {
+    "type": "FUNCTION_CALL", "function": "theaterChase", "message": "theaterChase(0, 50)", "timestamp": 0, "arguments": [
+      0, 50
+    ]
+  }, {
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
+  }, {
+    "type": "VAR_SET", "variable": "a", "value": 0, "timestamp": 0
+  }, {
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
+  }, {
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
+  }, {
+    "type": "VAR_SET", "variable": "b", "value": 0, "timestamp": 0
+  }, {
+    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.clear", "message": "strip.clear()", "timestamp": 0, "arguments": []
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.clear", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.clear"
+  }, {
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
+  }, {
+    "type": "VAR_SET", "variable": "c", "value": 0, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.numPixels", "message": "strip.numPixels()", "timestamp": 0, "arguments": []
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.numPixels", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.numPixels"
+  }, {
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 0, "timestamp": 0, "message": "For loop limit reached: completed 0 iterations (max: 1)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "strip.show", "message": "strip.show()", "timestamp": 0, "arguments": []
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Unknown function: strip.show", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Unknown function: strip.show"
+  }, {
+    "type": "DELAY", "duration": 50, "actualDelay": 50, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "b", "value": 1, "timestamp": 0
+  }, {
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
+  }, {
+    "type": "VAR_SET", "variable": "a", "value": 1, "timestamp": 0
+  }, {
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
+  }
+]

@@ -85,11 +85,14 @@ int main(int argc, char* argv[]) {
 
         // Output ONLY JSON for validation compatibility
         std::cout << capture.getCommandsAsJson() << std::endl;
-        
+
+        std::cerr << "EXTRACT_DEBUG: About to exit try block" << std::endl;
+
     } catch (const std::exception& e) {
         std::cerr << "ERROR: " << e.what() << std::endl;
         return 1;
     }
-    
+
+    std::cerr << "EXTRACT_DEBUG: About to exit main function" << std::endl;
     return 0;
 }
