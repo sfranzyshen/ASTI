@@ -176,14 +176,6 @@ ASTNodePtr CompactASTReader::parseNode(size_t nodeIndex) {
     uint16_t dataSize = convertFromLittleEndian16(readUint16());
     
     
-    // DEBUG: Check flags for operator nodes
-    if (nodeTypeRaw == static_cast<uint8_t>(ASTNodeType::UNARY_OP) || 
-        nodeTypeRaw == static_cast<uint8_t>(ASTNodeType::BINARY_OP)) {
-        std::cerr << "OPERATOR NODE DEBUG: nodeType=" << static_cast<int>(nodeTypeRaw) 
-                  << ", flags=" << static_cast<int>(flags)
-                  << ", HAS_VALUE=" << (flags & static_cast<uint8_t>(ASTNodeFlags::HAS_VALUE) ? "YES" : "NO")
-                  << std::endl;
-    }
     
     // Validate node type
     validateNodeType(nodeTypeRaw);
@@ -533,7 +525,6 @@ void CompactASTReader::linkNodeChildren() {
                 if (varDeclNode) {
 
                     auto childType = childNodeRef->getType();
-                    std::cerr << "*** CHILD TYPE IS: " << static_cast<int>(childType) << " ***" << std::endl;
                     if (childType == ASTNodeType::TYPE_NODE && !varDeclNode->getVarType()) {
                         varDeclNode->setVarType(std::move(nodes_[childIndex]));
                     } else if (childType == ASTNodeType::DECLARATOR_NODE) {

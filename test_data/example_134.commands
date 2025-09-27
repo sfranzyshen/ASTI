@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759014970035,
+    "timestamp": 1759017237303,
     "component": "interpreter",
     "version": "11.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759014970035,
+    "timestamp": 1759017237303,
     "message": "Program execution started"
   },
   {
@@ -20,7 +20,7 @@
       6,
       82
     ],
-    "timestamp": 1759014970035,
+    "timestamp": 1759017237303,
     "message": "Adafruit_NeoPixel(60, 6, 82)"
   },
   {
@@ -34,67 +34,67 @@
         6,
         82
       ],
-      "objectId": "Adafruit_NeoPixel_1759014970035_p9agwcy81"
+      "objectId": "Adafruit_NeoPixel_1759017237303_wwyg4xme2"
     },
-    "timestamp": 1759014970035
+    "timestamp": 1759017237303
   },
   {
     "type": "VAR_SET",
     "variable": "pixelPrevious",
     "value": 0,
-    "timestamp": 1759014970035
+    "timestamp": 1759017237303
   },
   {
     "type": "VAR_SET",
     "variable": "patternPrevious",
     "value": 0,
-    "timestamp": 1759014970035
+    "timestamp": 1759017237303
   },
   {
     "type": "VAR_SET",
     "variable": "patternCurrent",
     "value": 0,
-    "timestamp": 1759014970035
+    "timestamp": 1759017237303
   },
   {
     "type": "VAR_SET",
     "variable": "patternInterval",
     "value": 5000,
-    "timestamp": 1759014970035
+    "timestamp": 1759017237303
   },
   {
     "type": "VAR_SET",
     "variable": "patternComplete",
     "value": false,
-    "timestamp": 1759014970035
+    "timestamp": 1759017237303
   },
   {
     "type": "VAR_SET",
     "variable": "pixelInterval",
     "value": 50,
-    "timestamp": 1759014970035
+    "timestamp": 1759017237303
   },
   {
     "type": "VAR_SET",
     "variable": "pixelQueue",
     "value": 0,
-    "timestamp": 1759014970035
+    "timestamp": 1759017237303
   },
   {
     "type": "VAR_SET",
     "variable": "pixelCycle",
     "value": 0,
-    "timestamp": 1759014970035
+    "timestamp": 1759017237303
   },
   {
     "type": "VAR_SET",
     "variable": "pixelNumber",
     "value": 60,
-    "timestamp": 1759014970035
+    "timestamp": 1759017237303
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759014970035,
+    "timestamp": 1759017237304,
     "message": "Executing setup() function"
   },
   {
@@ -104,53 +104,53 @@
       0
     ],
     "message": "clock_prescale_set(0)",
-    "timestamp": 1759014970035
+    "timestamp": 1759017237304
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Adafruit_NeoPixel",
-    "object": "Adafruit_NeoPixel_1759014970035_p9agwcy81",
+    "object": "Adafruit_NeoPixel_1759017237303_wwyg4xme2",
     "variableName": "strip",
     "method": "begin",
     "args": [],
     "message": "strip.begin()",
-    "timestamp": 1759014970035
+    "timestamp": 1759017237304
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Adafruit_NeoPixel",
-    "object": "Adafruit_NeoPixel_1759014970035_p9agwcy81",
+    "object": "Adafruit_NeoPixel_1759017237303_wwyg4xme2",
     "variableName": "strip",
     "method": "show",
     "args": [],
     "message": "strip.show()",
-    "timestamp": 1759014970035
+    "timestamp": 1759017237304
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Adafruit_NeoPixel",
-    "object": "Adafruit_NeoPixel_1759014970035_p9agwcy81",
+    "object": "Adafruit_NeoPixel_1759017237303_wwyg4xme2",
     "variableName": "strip",
     "method": "setBrightness",
     "args": [
       50
     ],
     "message": "strip.setBrightness(50)",
-    "timestamp": 1759014970035
+    "timestamp": 1759017237304
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759014970035,
+    "timestamp": 1759017237304,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759014970035,
+    "timestamp": 1759017237304,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759014970035,
+    "timestamp": 1759017237304,
     "message": "Starting loop iteration 1"
   },
   {
@@ -158,111 +158,111 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759014970035
+    "timestamp": 1759017237304
   },
   {
     "type": "MILLIS_REQUEST",
     "requestId": "millis_000001",
-    "timestamp": 1759014970036
+    "timestamp": 1759017237304
   },
   {
     "type": "VAR_SET",
     "variable": "currentMillis",
     "value": 17807,
-    "timestamp": 1759014970041
+    "timestamp": 1759017237310
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "VAR_SET",
     "variable": "patternComplete",
     "value": false,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "VAR_SET",
     "variable": "patternPrevious",
     "value": 17807,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "VAR_SET",
     "variable": "patternCurrent",
     "value": 1,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "VAR_SET",
     "variable": "pixelPrevious",
     "value": 17807,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "SWITCH_STATEMENT",
     "discriminant": 1,
-    "timestamp": 1759014970042,
+    "timestamp": 1759017237310,
     "message": "switch (1)"
   },
   {
     "type": "SWITCH_CASE",
     "caseValue": 7,
     "matched": false,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "SWITCH_CASE",
     "caseValue": 6,
     "matched": false,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "SWITCH_CASE",
     "caseValue": 5,
     "matched": false,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "SWITCH_CASE",
     "caseValue": 4,
     "matched": false,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "SWITCH_CASE",
     "caseValue": 3,
     "matched": false,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "SWITCH_CASE",
     "caseValue": 2,
     "matched": false,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "SWITCH_CASE",
     "caseValue": 1,
     "matched": true,
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "LIBRARY_METHOD_INTERNAL",
@@ -275,7 +275,7 @@
     ],
     "result": 255,
     "variableName": "strip",
-    "timestamp": 1759014970042
+    "timestamp": 1759017237310
   },
   {
     "type": "FUNCTION_CALL",
@@ -284,25 +284,25 @@
       255,
       50
     ],
-    "timestamp": 1759014970042,
+    "timestamp": 1759017237310,
     "message": "colorWipe(255, 50)"
   },
   {
     "type": "VAR_SET",
     "variable": "pixelInterval",
     "value": 50,
-    "timestamp": 1759014970046
+    "timestamp": 1759017237315
   },
   {
     "type": "VAR_SET",
     "variable": "current_pixel",
     "value": 1,
-    "timestamp": 1759014970052
+    "timestamp": 1759017237319
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Adafruit_NeoPixel",
-    "object": "Adafruit_NeoPixel_1759014970035_p9agwcy81",
+    "object": "Adafruit_NeoPixel_1759017237303_wwyg4xme2",
     "variableName": "strip",
     "method": "setPixelColor",
     "args": [
@@ -310,28 +310,28 @@
       255
     ],
     "message": "strip.setPixelColor(0, 255)",
-    "timestamp": 1759014970052
+    "timestamp": 1759017237320
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Adafruit_NeoPixel",
-    "object": "Adafruit_NeoPixel_1759014970035_p9agwcy81",
+    "object": "Adafruit_NeoPixel_1759017237303_wwyg4xme2",
     "variableName": "strip",
     "method": "show",
     "args": [],
     "message": "strip.show()",
-    "timestamp": 1759014970058
+    "timestamp": 1759017237325
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1759014970063
+    "timestamp": 1759017237331
   },
   {
     "type": "BREAK_STATEMENT",
-    "timestamp": 1759014970068,
+    "timestamp": 1759017237336,
     "action": "exit_switch"
   },
   {
@@ -340,23 +340,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759014970068
+    "timestamp": 1759017237336
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759014970074,
+    "timestamp": 1759017237341,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759014970074,
+    "timestamp": 1759017237341,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759014970074,
+    "timestamp": 1759017237341,
     "message": "Program execution stopped"
   }
 ]

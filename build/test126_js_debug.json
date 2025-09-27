@@ -19,18 +19,18 @@
     "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "n1", "value": {
-      "structName": "Node", "fields": {}, "type": "struct", "structId": "struct_1759014969869_ymq05"
+      "structName": "Node", "fields": {}, "type": "struct", "structId": "struct_1759017237141_l3bm6"
     }, "structType": "Node", "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "n2", "value": {
-      "structName": "Node", "fields": {}, "type": "struct", "structId": "struct_1759014969869_fpk1m"
+      "structName": "Node", "fields": {}, "type": "struct", "structId": "struct_1759017237141_0q909"
     }, "structType": "Node", "timestamp": 0
   }, {
     "type": "STRUCT_FIELD_SET", "struct": "Node", "field": "data", "value": 10, "timestamp": 0, "message": "Node.data = 10"
   }, {
     "type": "STRUCT_FIELD_SET", "struct": "Node", "field": "next", "value": {
       "type": "ArduinoPointer", "address": 0, "pointsTo": "undefined"
-    }, "timestamp": 0, "message": "Node.next = ArduinoPointer(ptr_1759014969869_p3wi3 -> n2)"
+    }, "timestamp": 0, "message": "Node.next = ArduinoPointer(ptr_1759017237141_0l6hh -> n2)"
   }, {
     "type": "STRUCT_FIELD_SET", "struct": "Node", "field": "data", "value": 20, "timestamp": 0, "message": "Node.data = 20"
   }, {
@@ -50,7 +50,7 @@
   }, {
     "type": "STRUCT_FIELD_ACCESS", "struct": "Node", "field": "next", "value": {
       "type": "ArduinoPointer", "address": 0, "pointsTo": "undefined"
-    }, "timestamp": 0, "message": "Node.next = ArduinoPointer(ptr_1759014969869_p3wi3 -> n2)"
+    }, "timestamp": 0, "message": "Node.next = ArduinoPointer(ptr_1759017237141_0l6hh -> n2)"
   }, {
     "type": "STRUCT_FIELD_ACCESS", "struct": "Node", "field": "data", "value": 20, "timestamp": 0, "message": "Node.data = 20"
   }, {

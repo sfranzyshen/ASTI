@@ -343,7 +343,6 @@ void ArduinoLibraryRegistry::emitExternalCommand(const std::string& libraryName,
     if (interpreter_) {
         // TODO: Use proper library command when available
         // interpreter_->emitSystemCommand(CommandType::LIBRARY_METHOD_REQUEST, oss.str());
-        std::cout << "LIBRARY_COMMAND: " << oss.str() << std::endl;  // Temporary debugging
     }
 }
 
