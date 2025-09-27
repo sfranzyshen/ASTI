@@ -171,10 +171,11 @@ public:
     }
     
     void printSummary() const {
+#ifdef DEBUG_EXECUTION_TRACER
         std::cout << "\n=== Execution Trace Summary ===\n";
         std::cout << "Total events: " << trace_.size() << "\n";
         std::cout << "Context: " << currentContext_ << "\n";
-        
+
         // Count event types
         int visitors = 0, expressions = 0, commands = 0;
         for (const auto& entry : trace_) {
@@ -182,11 +183,12 @@ public:
             else if (entry.event.find("EXPR:") != std::string::npos) expressions++;
             else if (entry.event.find("CMD:") != std::string::npos) commands++;
         }
-        
+
         std::cout << "Visitor calls: " << visitors << "\n";
         std::cout << "Expression evaluations: " << expressions << "\n";
         std::cout << "Commands generated: " << commands << "\n";
         std::cout << "===============================\n\n";
+#endif // DEBUG_EXECUTION_TRACER
     }
 };
 

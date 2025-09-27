@@ -843,9 +843,6 @@ namespace FlexibleCommandFactory {
         if (isCharLiteral && data.length() >= 3) {
             // Extract just the number from '65' -> "65"
             dataField = data.substr(1, data.length() - 2);
-            std::cerr << "🔥 CHARACTER LITERAL DEBUG: data='" << data << "' -> dataField='" << dataField << "'" << std::endl;
-        } else {
-            std::cerr << "🔥 NOT CHARACTER LITERAL: data='" << data << "' isCharLiteral=" << isCharLiteral << " length=" << data.length() << std::endl;
         }
 
         return FlexibleCommand("FUNCTION_CALL")

@@ -137,10 +137,7 @@ ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const Int
 }
 
 ASTInterpreter::~ASTInterpreter() {
-    std::cerr << "DESTRUCTOR: Starting ASTInterpreter destructor" << std::endl;
     stop();
-    std::cerr << "DESTRUCTOR: Completed stop() call" << std::endl;
-    std::cerr << "DESTRUCTOR: About to exit destructor" << std::endl;
 }
 
 // =============================================================================
@@ -265,16 +262,11 @@ bool ASTInterpreter::start() {
 }
 
 void ASTInterpreter::stop() {
-    std::cerr << "STOP: Starting stop() method" << std::endl;
     if (state_ == ExecutionState::RUNNING || state_ == ExecutionState::PAUSED) {
-        std::cerr << "STOP: Setting state to IDLE" << std::endl;
         state_ = ExecutionState::IDLE;
-        std::cerr << "STOP: About to call resetControlFlow()" << std::endl;
         resetControlFlow();
-        std::cerr << "STOP: Completed resetControlFlow()" << std::endl;
         debugLog("Interpreter stopped");
     }
-    std::cerr << "STOP: Exiting stop() method" << std::endl;
 }
 
 void ASTInterpreter::pause() {
@@ -2565,7 +2557,6 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             
         case arduino_ast::ASTNodeType::BINARY_OP:
             if (auto* binNode = dynamic_cast<arduino_ast::BinaryOpNode*>(expr)) {
-                // DEBUG: Log operator extraction
                 std::string extractedOp = binNode->getOperator();
                 debugLog("evaluateExpression: BINARY_OP extracted operator='" + extractedOp + "' (length=" + std::to_string(extractedOp.length()) + ")");
 
@@ -2622,20 +2613,18 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
 
                 std::vector<CommandValue> args;
 
-                // ULTRATHINK TEST 96 FIX: Preserve parameter scope during nested function argument evaluation
+                // Preserve parameter scope during nested function argument evaluation
                 // When evaluating arguments for nested function calls like multiply(add(x,y), z),
                 // the add(x,y) call can corrupt the parameter scope, making z undefined.
                 // We need to evaluate arguments in isolation to prevent scope collision.
 
-                // ULTRATHINK TEST 96 FIX: TEMPORARILY DISABLED SCOPE RESTORATION FOR DEBUGGING
                 // std::unordered_map<std::string, Variable> savedScopeContext;
 
                 for (const auto& arg : funcNode->getArguments()) {
                     // Evaluate the argument (this may call nested user functions)
                     CommandValue argResult = evaluateExpression(arg.get());
 
-                    // ULTRATHINK TEST 96 FIX: TEMPORARILY DISABLED SCOPE RESTORATION FOR DEBUGGING
-                    /*if (scopeManager_ && recursionDepth_ > 0 && !savedScopeContext.empty()) {
+                        /*if (scopeManager_ && recursionDepth_ > 0 && !savedScopeContext.empty()) {
                         auto currentScope = scopeManager_->getCurrentScope();
                         if (currentScope) {
                             currentScope->clear();
@@ -2741,7 +2730,6 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
 // =============================================================================
 
 CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, const CommandValue& left, const CommandValue& right) {
-    // DEBUG: Log the operator being evaluated
     debugLog("evaluateBinaryOperation: operator='" + op + "' (length=" + std::to_string(op.length()) + ")");
 
     // ULTRATHINK FIX: Prevent segmentation faults ONLY for arithmetic operations
