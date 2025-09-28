@@ -349,12 +349,77 @@ private:
     ResponseHandler* responseHandler_;
     std::queue<FlexibleCommand> commandQueue_;
     
+    // ULTRATHINK FIX: Context-Aware Execution Control Stack
+    class ExecutionControlStack {
+    public:
+        enum class ScopeType { SETUP, LOOP, COMPOUND_STMT, FOR_LOOP };
+        enum class StopReason { NONE, ITERATION_LIMIT, MANUAL_STOP };
+
+    private:
+        struct ExecutionContext {
+
+            ScopeType scope;
+            StopReason stopReason;
+            bool shouldContinueInParent;
+            std::string contextName;  // For debugging
+
+            ExecutionContext(ScopeType s, const std::string& name = "")
+                : scope(s), stopReason(StopReason::NONE), shouldContinueInParent(true), contextName(name) {}
+        };
+
+        std::stack<ExecutionContext> contextStack_;
+
+    public:
+        void pushContext(ScopeType scope, const std::string& name = "") {
+            contextStack_.push(ExecutionContext(scope, name));
+        }
+
+        void popContext() {
+            if (!contextStack_.empty()) contextStack_.pop();
+        }
+
+        void setStopReason(StopReason reason, bool continueInParent = false) {
+            if (!contextStack_.empty()) {
+                contextStack_.top().stopReason = reason;
+                contextStack_.top().shouldContinueInParent = continueInParent;
+            }
+        }
+
+        bool shouldContinueInCurrentScope() {
+            return contextStack_.empty() || contextStack_.top().stopReason == StopReason::NONE;
+        }
+
+        bool shouldContinueToNextStatement() {
+            if (contextStack_.empty()) return true;
+
+            auto& current = contextStack_.top();
+            if (current.stopReason == StopReason::ITERATION_LIMIT) {
+                // CRITICAL: Test 43 needs individual loop completion to continue to next statement in setup()
+                // But Test 17+ need iteration limit in loop() to stop everything
+                return current.scope == ScopeType::SETUP && current.shouldContinueInParent;
+            }
+
+            return current.stopReason == StopReason::NONE;
+        }
+
+        ScopeType getCurrentScope() {
+            return contextStack_.empty() ? ScopeType::SETUP : contextStack_.top().scope;
+        }
+
+        size_t getDepth() const { return contextStack_.size(); }
+
+        void clear() {
+            while (!contextStack_.empty()) contextStack_.pop();
+        }
+    };
+
     // Execution control
     bool setupCalled_;
     bool inLoop_;
     uint32_t currentLoopIteration_;
     uint32_t maxLoopIterations_;
-    bool shouldContinueExecution_;  // Flag to stop execution after loop limits in loop() context
+    ExecutionControlStack executionControl_;  // ULTRATHINK: Replace shouldContinueExecution_ with context-aware system
+    bool shouldContinueExecution_;  // Keep for backward compatibility during transition
     std::chrono::steady_clock::time_point executionStart_;
     
     // Function tracking - MEMORY SAFE: Store function names and look up in AST tree

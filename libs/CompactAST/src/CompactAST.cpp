@@ -641,13 +641,12 @@ void CompactASTReader::linkNodeChildren() {
                 auto* arrayDeclNode = dynamic_cast<arduino_ast::ArrayDeclaratorNode*>(parentNode.get());
                 if (arrayDeclNode) {
 
-                    // ArrayDeclaratorNode expects 2 children in order: identifier, size
+                    // ArrayDeclaratorNode expects: identifier, then multiple dimension nodes
                     if (!arrayDeclNode->getIdentifier()) {
                         arrayDeclNode->setIdentifier(std::move(nodes_[childIndex]));
-                    } else if (!arrayDeclNode->getSize()) {
-                        arrayDeclNode->setSize(std::move(nodes_[childIndex]));
                     } else {
-                        parentNode->addChild(std::move(nodes_[childIndex]));
+                        // All subsequent children are dimension nodes (supports multi-dimensional arrays)
+                        arrayDeclNode->addDimension(std::move(nodes_[childIndex]));
                     }
                 } else {
                     parentNode->addChild(std::move(nodes_[childIndex]));

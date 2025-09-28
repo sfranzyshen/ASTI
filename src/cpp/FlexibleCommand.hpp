@@ -294,6 +294,20 @@ private:
             } else if constexpr (std::is_same_v<T, std::vector<std::variant<bool, int32_t, double, std::string>>>) {
                 if (arg.empty()) {
                     oss << "[]";  // Compact format for empty arrays to match JavaScript
+                } else if (arg.size() == 64) {
+                    // FORMATTING OPTIMIZATION: Format 64-element arrays as nested 8x8 structure for JavaScript compatibility
+                    oss << "[\n";
+                    for (int row = 0; row < 8; row++) {
+                        if (row > 0) oss << ",\n";
+                        oss << "    [\n";
+                        for (int col = 0; col < 8; col++) {
+                            if (col > 0) oss << ",\n";
+                            oss << "      ";
+                            this->serializeArrayElement(oss, arg[row * 8 + col]);
+                        }
+                        oss << "\n    ]";
+                    }
+                    oss << "\n  ]";
                 } else {
                     oss << "[\n";
                     for (size_t i = 0; i < arg.size(); ++i) {

@@ -1,0 +1,201 @@
+[
+  {
+    "type": "VERSION_INFO", "timestamp": 0, "component": "interpreter", "version": "11.0", "status": "started"
+  }, {
+    "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
+  }, {
+    "type": "VAR_SET", "variable": "ledPin", "value": 13, "isConst": true, "timestamp": 0
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": null, "timestamp": 0
+  }, {
+    "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.begin", "arguments": [
+      9600
+    ], "baudRate": 9600, "timestamp": 0, "message": "Serial.begin(9600)"
+  }, {
+    "type": "PIN_MODE", "pin": 13, "mode": 1, "timestamp": 0
+  }, {
+    "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 1"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 1", "iteration": 1, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 2"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 2", "iteration": 2, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 2", "iteration": 2, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 3"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 3", "iteration": 3, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 3", "iteration": 3, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 4"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 4", "iteration": 4, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 4", "iteration": 4, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 5"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 5", "iteration": 5, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 5", "iteration": 5, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 6"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 6", "iteration": 6, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 6", "iteration": 6, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 7"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 7", "iteration": 7, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 7", "iteration": 7, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 8"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 8", "iteration": 8, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 8", "iteration": 8, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 9"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 9", "iteration": 9, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 9", "iteration": 9, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_START", "timestamp": 0, "message": "Starting loop iteration 10"
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Executing loop() iteration 10", "iteration": 10, "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.available", "arguments": [], "timestamp": 0, "message": "Serial.available()"
+  }, {
+    "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "Serial.read", "arguments": [], "timestamp": 0, "message": "Serial.read()"
+  }, {
+    "type": "VAR_SET", "variable": "incomingByte", "value": 65, "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "IF_STATEMENT", "condition": false, "result": false, "branch": "else", "timestamp": 0
+  }, {
+    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 10", "iteration": 10, "completed": true, "timestamp": 0
+  }, {
+    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 10 iterations (max: 10)", "iterations": 10, "limitReached": true
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 10 loop iterations (limit reached)"
+  }, {
+    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
+  }
+]

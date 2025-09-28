@@ -6,14 +6,30 @@
   }, {
     "type": "VAR_SET", "variable": "row", "value": [
       2, 7, 19, 5, 13, 18, 12, 16
-    ], "timestamp": 0
+    ], "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "col", "value": [
       6, 11, 10, 3, 17, 4, 8, 9
-    ], "timestamp": 0
+    ], "isConst": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "pixels", "value": [
-      0, 0, 0
+      [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ]
     ], "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "x", "value": 5, "timestamp": 0
@@ -38,6 +54,12 @@
   }, {
     "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
   }, {
+    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
+  }, {
+    "type": "VAR_SET", "variable": "x", "value": 0, "timestamp": 0
+  }, {
+    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 0, "timestamp": 0, "message": "For loop limit reached: completed 0 iterations (max: 1)"
+  }, {
     "type": "SETUP_END", "timestamp": 0, "message": "Completed setup() function"
   }, {
     "type": "LOOP_START", "timestamp": 0, "message": "Starting loop() execution"
@@ -48,9 +70,25 @@
   }, {
     "type": "FUNCTION_CALL", "function": "readSensors", "message": "readSensors()", "timestamp": 0, "arguments": []
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Complex array expressions not supported in assignment", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Complex array expressions not supported in assignment"
+    "type": "VAR_SET", "variable": "pixels", "value": [
+      [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 1, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ]
+    ], "timestamp": 0
   }, {
     "type": "ANALOG_READ_REQUEST", "pin": 0, "requestId": "normalized", "timestamp": 0
   }, {
@@ -60,9 +98,25 @@
   }, {
     "type": "VAR_SET", "variable": "y", "value": 4, "timestamp": 0
   }, {
-    "type": "ERROR", "timestamp": 0, "message": "Complex array expressions not supported in assignment", "errorType": "RuntimeError"
-  }, {
-    "type": "error", "timestamp": 0, "message": "Complex array expressions not supported in assignment"
+    "type": "VAR_SET", "variable": "pixels", "value": [
+      [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 1, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ], [
+        0, 0, 0, 0, 0, 0, 0, 0
+      ]
+    ], "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "refreshScreen", "message": "refreshScreen()", "timestamp": 0, "arguments": []
   }, {

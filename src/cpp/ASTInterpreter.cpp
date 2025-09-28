@@ -94,6 +94,9 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
     // Reset static timing counters for fresh state in each interpreter instance
     resetStaticTimingCounters();
 
+    // ULTRATHINK: Initialize execution control stack
+    executionControl_.clear();
+
     initializeInterpreter();
 }
 
@@ -137,6 +140,10 @@ ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const Int
     ast_ = reader.parse();
     
     DEBUG_OUT << "ASTInterpreter constructor: AST parsed, initializing interpreter..." << std::endl;
+
+    // ULTRATHINK: Initialize execution control stack
+    executionControl_.clear();
+
     initializeInterpreter();
     DEBUG_OUT << "ASTInterpreter constructor: Initialization complete" << std::endl;
 }
@@ -345,9 +352,12 @@ void ASTInterpreter::executeSetup() {
         auto* setupFunc = findFunctionInAST("setup");
         if (setupFunc) {
             emitCommand(FlexibleCommandFactory::createSetupStart());
-            
+
+            // ULTRATHINK: Push SETUP context for proper execution control
+            executionControl_.pushContext(ExecutionControlStack::ScopeType::SETUP, "setup()");
+
             // Function body will generate the actual commands
-            
+
             scopeManager_->pushScope();
             currentFunction_ = setupFunc;
             
@@ -365,7 +375,10 @@ void ASTInterpreter::executeSetup() {
             
             currentFunction_ = nullptr;
             scopeManager_->popScope();
-            
+
+            // ULTRATHINK: Pop SETUP context after execution
+            executionControl_.popContext();
+
             setupCalled_ = true;
             
             
@@ -390,8 +403,10 @@ void ASTInterpreter::executeLoop() {
                 // Increment iteration counter BEFORE processing (to match JS 1-based counting)
                 currentLoopIteration_++;
 
-                // Reset execution flag for this loop() iteration - allows loop() to execute even if setup() hit limits
-                shouldContinueExecution_ = true;
+                // ULTRATHINK: Reset execution control for this loop() iteration and push LOOP context
+                shouldContinueExecution_ = true;  // Keep for backward compatibility
+                executionControl_.clear();  // Clear any previous contexts
+                executionControl_.pushContext(ExecutionControlStack::ScopeType::LOOP, "loop()");
 
                 // Emit loop iteration start command
                 emitCommand(FlexibleCommandFactory::createLoopStart("loop", currentLoopIteration_));
@@ -520,9 +535,9 @@ void ASTInterpreter::visit(arduino_ast::CompoundStmtNode& node) {
             break;
         }
 
-        // CRITICAL FIX: Check shouldContinueExecution flag (matches JavaScript behavior)
-        if (!shouldContinueExecution_) {
-            TRACE("visit(CompoundStmtNode)", "Stopping execution due to loop limit reached in loop() context");
+        // ULTRATHINK: Use context-aware execution control instead of global flag
+        if (!executionControl_.shouldContinueToNextStatement()) {
+            TRACE("visit(CompoundStmtNode)", "Stopping execution due to context-aware execution control");
             break;
         }
 
@@ -545,11 +560,10 @@ void ASTInterpreter::visit(arduino_ast::CompoundStmtNode& node) {
             
             child->accept(*this);
 
-            // CROSS-PLATFORM FIX: Check shouldContinueExecution flag immediately after statement execution
-            // This ensures that if a nested statement (like a loop) hits its limit and sets
-            // shouldContinueExecution_ = false, we stop executing the rest of the sibling statements
-            if (!shouldContinueExecution_) {
-                TRACE("visit(CompoundStmtNode)", "Stopping execution after child due to nested loop limit");
+            // ULTRATHINK FIX: Check context-aware execution control after statement execution
+            // This ensures proper handling of different execution contexts (setup vs loop)
+            if (!executionControl_.shouldContinueToNextStatement()) {
+                TRACE("visit(CompoundStmtNode)", "Stopping execution after child due to context-aware execution control");
                 break;
             }
 
@@ -668,8 +682,13 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
            .set("message", message);
         emitCommand(cmd);
 
-        // Set flag to indicate loop limit reached - let execution unwind naturally
-        shouldContinueExecution_ = false;
+        // ULTRATHINK: Set context-aware execution control instead of global flag
+        shouldContinueExecution_ = false;  // Keep for backward compatibility
+
+        // CRITICAL: Test 43 needs individual loop completion in setup() to continue to next statement
+        // Test 17+ need iteration limit in loop() to stop everything
+        bool continueInParent = (executionControl_.getCurrentScope() == ExecutionControlStack::ScopeType::SETUP);
+        executionControl_.setStopReason(ExecutionControlStack::StopReason::ITERATION_LIMIT, continueInParent);
         if (currentLoopIteration_ > 0) {
         } else {
         }
@@ -722,10 +741,14 @@ void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
     // CROSS-PLATFORM FIX: Emit single DO_WHILE_LOOP end event to match JavaScript
     emitCommand(FlexibleCommandFactory::createDoWhileLoopEnd(iteration));
 
-    // CRITICAL FIX: Always stop execution when loop limit reached (like JavaScript)
-    // Set flag to indicate loop limit reached - let execution unwind naturally
+    // ULTRATHINK: Always stop execution when loop limit reached (like JavaScript)
+    // Set context-aware execution control instead of global flag
     if (iteration >= maxLoopIterations_) {
-        shouldContinueExecution_ = false;
+        shouldContinueExecution_ = false;  // Keep for backward compatibility
+
+        // CRITICAL: Test 43 needs individual loop completion in setup() to continue to next statement
+        bool continueInParent = (executionControl_.getCurrentScope() == ExecutionControlStack::ScopeType::SETUP);
+        executionControl_.setStopReason(ExecutionControlStack::StopReason::ITERATION_LIMIT, continueInParent);
         if (currentLoopIteration_ > 0) {
         } else {
         }
@@ -745,7 +768,7 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
         const_cast<arduino_ast::ASTNode*>(node.getInitializer())->accept(*this);
     }
 
-    while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING) {
+    while (executionControl_.shouldContinueInCurrentScope() && state_ == ExecutionState::RUNNING) {
         // Check condition
         bool shouldContinueLoop = true;
         if (node.getCondition()) {
@@ -798,10 +821,15 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
     const bool limitReached = iteration >= maxLoopIterations_;
     emitCommand(FlexibleCommandFactory::createForLoopEnd(iteration, maxLoopIterations_));
 
-    // CRITICAL FIX: Always stop execution when loop limit reached (like JavaScript)
-    // Set flag to indicate loop limit reached - let execution unwind naturally
+    // ULTRATHINK: Always stop execution when loop limit reached (like JavaScript)
+    // Set context-aware execution control instead of global flag
     if (limitReached) {
-        shouldContinueExecution_ = false;
+        shouldContinueExecution_ = false;  // Keep for backward compatibility
+
+        // CRITICAL: Test 43 needs individual loop completion in setup() to continue to next statement
+        // Test 17+ need iteration limit in loop() to stop everything
+        bool continueInParent = (executionControl_.getCurrentScope() == ExecutionControlStack::ScopeType::SETUP);
+        executionControl_.setStopReason(ExecutionControlStack::StopReason::ITERATION_LIMIT, continueInParent);
         if (currentLoopIteration_ > 0) {
         } else {
         }
@@ -1347,30 +1375,54 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(typedValue)));
             }
         } else if (auto* arrayDeclNode = dynamic_cast<arduino_ast::ArrayDeclaratorNode*>(declarator.get())) {
-            // Handle ArrayDeclaratorNode (like int notes[] = {...})
+            // Handle ArrayDeclaratorNode (like int notes[] = {...} or int pixels[8][8])
             std::string varName = "unknown_array";
             if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(arrayDeclNode->getIdentifier())) {
                 varName = identifier->getName();
             }
 
+            // ENHANCED: Check for multi-dimensional arrays (e.g., int pixels[8][8])
+            bool isMultiDimensional = arrayDeclNode->isMultiDimensional();
+            std::vector<int32_t> dimensions;
+
+
+            if (isMultiDimensional) {
+                // Multi-dimensional array: collect all dimensions
+                for (const auto& dimNode : arrayDeclNode->getDimensions()) {
+                    if (dimNode) {
+                        try {
+                            CommandValue dimValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(dimNode.get()));
+                            int32_t dimSize = convertToInt(dimValue);
+                            if (dimSize > 0) {
+                                dimensions.push_back(dimSize);
+                            } else {
+                                dimensions.push_back(8); // Default dimension
+                            }
+                        } catch (...) {
+                            dimensions.push_back(8); // Default dimension
+                        }
+                    }
+                }
+            } else {
+                // Single-dimensional array: get the size
+                int arraySize = 3; // Default
+                if (arrayDeclNode->getSize()) {
+                    try {
+                        CommandValue sizeValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(arrayDeclNode->getSize()));
+                        int actualSize = convertToInt(sizeValue);
+                        if (actualSize > 0) {
+                            arraySize = actualSize;
+                        }
+                    } catch (...) {
+                        // Exception evaluating size, use default
+                    }
+                }
+                dimensions.push_back(arraySize);
+            }
 
             // CROSS-PLATFORM FIX: Check for ArrayInitializerNode to get real values
             std::vector<int32_t> arrayValues;
             bool foundInitializer = false;
-
-            // First, try to evaluate the array size from the ArrayDeclaratorNode
-            int arraySize = 3; // Default
-            if (arrayDeclNode->getSize()) {
-                try {
-                    CommandValue sizeValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(arrayDeclNode->getSize()));
-                    int actualSize = convertToInt(sizeValue);
-                    if (actualSize > 0) {
-                        arraySize = actualSize;
-                    }
-                } catch (...) {
-                    // Exception evaluating size, use default
-                }
-            }
 
             // Look for ArrayInitializerNode in VarDeclNode children (not ArrayDeclaratorNode children)
             const auto& allChildren = node.getChildren();
@@ -1401,16 +1453,16 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             }
 
             if (!foundInitializer) {
-                // Use the evaluated array size, fallback to enhanced size detection if needed
-                if (arraySize == 3) { // Still using default, try enhanced detection
+                // Enhanced size detection for first dimension if still using default
+                if (dimensions.size() > 0 && dimensions[0] == 3) {
                     std::vector<std::string> sizeVarCandidates = {"numReadings", "ARRAY_SIZE", "arraySize", "size", "count", "length"};
                     for (const std::string& candidate : sizeVarCandidates) {
                         Variable* sizeVar = scopeManager_->getVariable(candidate);
                         if (sizeVar && sizeVar->isConst) {
                             try {
                                 int constValue = convertToInt(sizeVar->value);
-                                if (constValue > 0 && constValue <= 1000) { // Reasonable array size
-                                    arraySize = constValue;
+                                if (constValue > 0 && constValue <= 1000) {
+                                    dimensions[0] = constValue;
                                     break;
                                 }
                             } catch (...) {
@@ -1419,19 +1471,64 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                         }
                     }
                 }
+            }
 
-                arrayValues.clear();
-                for (int i = 0; i < arraySize; i++) {
-                    arrayValues.push_back(0);
+            // Create the appropriate array structure based on dimensions
+            CommandValue arrayValue;
+            if (dimensions.size() == 1) {
+                // Single-dimensional array
+                if (foundInitializer) {
+                    arrayValue = arrayValues;
+                } else {
+                    std::vector<int32_t> defaultArray;
+                    for (int i = 0; i < dimensions[0]; i++) {
+                        defaultArray.push_back(0);
+                    }
+                    arrayValue = defaultArray;
                 }
+            } else if (dimensions.size() == 2) {
+                // 2D array: for now create flattened array - proper nested structure needs FlexibleCommand enhancement
+                std::vector<int32_t> flattenedArray;
+                int totalSize = dimensions[0] * dimensions[1];
+                for (int i = 0; i < totalSize; i++) {
+                    flattenedArray.push_back(0); // Initialize with 0
+                }
+                arrayValue = flattenedArray;
+            } else {
+                // Fallback for higher dimensions or malformed - create 1D array
+                std::vector<int32_t> defaultArray;
+                int totalSize = 1;
+                for (int dim : dimensions) {
+                    totalSize *= dim;
+                }
+                for (int i = 0; i < totalSize; i++) {
+                    defaultArray.push_back(0);
+                }
+                arrayValue = defaultArray;
+            }
+
+            // Determine proper type string
+            std::string arrayType = "int";
+            for (size_t i = 0; i < dimensions.size(); i++) {
+                arrayType += "[]";
+            }
+
+            // Parse const qualifier from type name
+            bool isArrayConst = false;
+            if (typeName.length() >= 6 && typeName.substr(0, 6) == "const ") {
+                isArrayConst = true;
             }
 
             // Store array in scope manager
-            Variable arrayVar(arrayValues, "int[]", false, false, false, scopeManager_->isGlobalScope());
+            Variable arrayVar(arrayValue, arrayType, isArrayConst, false, false, scopeManager_->isGlobalScope());
             scopeManager_->setVariable(varName, arrayVar);
 
-            // Emit VAR_SET command for array
-            emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(CommandValue(arrayValues))));
+            // Emit VAR_SET command for array (with const field if applicable)
+            if (isArrayConst) {
+                emitCommand(FlexibleCommandFactory::createVarSetConst(varName, convertCommandValue(arrayValue)));
+            } else {
+                emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(arrayValue)));
+            }
 
         } else {
         }
@@ -1570,19 +1667,35 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
                 return;
             }
             
-            // Get array name (support simple identifier arrays)
+            // Get array name (support both 1D and 2D arrays)
             std::string arrayName;
+            int32_t firstIndex = -1;
+            bool is2DArray = false;
+
             if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(arrayAccessNode->getArray())) {
+                // Simple 1D array: arr[index]
                 arrayName = identifier->getName();
+            } else if (const auto* nestedAccess = dynamic_cast<const arduino_ast::ArrayAccessNode*>(arrayAccessNode->getArray())) {
+                // 2D array: arr[x][y] - arrayAccessNode->getArray() is arr[x]
+                if (const auto* baseIdentifier = dynamic_cast<const arduino_ast::IdentifierNode*>(nestedAccess->getArray())) {
+                    arrayName = baseIdentifier->getName();
+                    is2DArray = true;
+                    // Evaluate the first index (x in arr[x][y])
+                    CommandValue firstIndexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(nestedAccess->getIndex()));
+                    firstIndex = convertToInt(firstIndexValue);
+                } else {
+                    emitError("Complex nested array expressions not supported in assignment");
+                    return;
+                }
             } else {
                 emitError("Complex array expressions not supported in assignment");
                 return;
             }
             
-            // Evaluate index expression
+            // Evaluate second index expression (y in arr[x][y])
             CommandValue indexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(arrayAccessNode->getIndex()));
-            int32_t index = convertToInt(indexValue);
-            
+            int32_t secondIndex = convertToInt(indexValue);
+
 
             // Get array variable
             Variable* arrayVar = scopeManager_->getVariable(arrayName);
@@ -1591,14 +1704,25 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
                 return;
             }
 
+            // Calculate final index based on array type
+            int32_t finalIndex;
+            if (is2DArray) {
+                // For 2D arrays like pixels[8][8], convert [x][y] to flat index
+                // Assuming 8x8 array: finalIndex = x * 8 + y
+                finalIndex = firstIndex * 8 + secondIndex;
+            } else {
+                // For 1D arrays, use the index directly
+                finalIndex = secondIndex;
+            }
+
             // Use enhanced array access system for proper array element assignment
             EnhancedCommandValue enhancedRightValue = upgradeCommandValue(rightValue);
-            MemberAccessHelper::setArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(index), enhancedRightValue);
+            MemberAccessHelper::setArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(finalIndex), enhancedRightValue);
 
             // CRITICAL FIX: Emit VAR_SET command after array assignment to match JavaScript behavior
             // Use the EXISTING array from basic scope and just emit it
 
-            // Get the EXISTING array from basic scope manager (this should have 10 elements)
+            // Get the EXISTING array from basic scope manager (this should be 64 elements for 8x8)
             Variable* existingArrayVar = scopeManager_->getVariable(arrayName);
             if (existingArrayVar) {
 
@@ -1607,8 +1731,8 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
                     auto& arrayVec = std::get<std::vector<int32_t>>(existingArrayVar->value);
 
                     // Update the specific element in the basic scope array
-                    if (index >= 0 && static_cast<size_t>(index) < arrayVec.size()) {
-                        arrayVec[static_cast<size_t>(index)] = convertToInt(rightValue);
+                    if (finalIndex >= 0 && static_cast<size_t>(finalIndex) < arrayVec.size()) {
+                        arrayVec[static_cast<size_t>(finalIndex)] = convertToInt(rightValue);
 
                         // Now emit VAR_SET with the FULL existing array
                         emitCommand(FlexibleCommandFactory::createVarSet(arrayName, convertCommandValue(existingArrayVar->value)));
@@ -2029,25 +2153,42 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
             return;
         }
 
-        // Get array name (support simple identifier arrays)
+        // Get array name (support both 1D and 2D arrays)
         std::string arrayName;
+        int32_t firstIndex = -1;
+        bool is2DArray = false;
+
         if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(node.getArray())) {
+            // Simple 1D array: arr[index]
             arrayName = identifier->getName();
+        } else if (const auto* nestedAccess = dynamic_cast<const arduino_ast::ArrayAccessNode*>(node.getArray())) {
+            // 2D array: arr[x][y] - node.getArray() is arr[x]
+            if (const auto* baseIdentifier = dynamic_cast<const arduino_ast::IdentifierNode*>(nestedAccess->getArray())) {
+                arrayName = baseIdentifier->getName();
+                is2DArray = true;
+                // Evaluate the first index (x in arr[x][y])
+                CommandValue firstIndexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(nestedAccess->getIndex()));
+                firstIndex = convertToInt(firstIndexValue);
+            } else {
+                emitError("Complex nested array expressions not supported in access");
+                lastExpressionResult_ = std::monostate{};
+                return;
+            }
         } else {
             emitError("Complex array expressions not yet supported");
             lastExpressionResult_ = std::monostate{};
             return;
         }
 
-        // Evaluate index expression
+        // Evaluate second index expression (y in arr[x][y])
         CommandValue indexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getIndex()));
 
         // Convert index to integer
-        int32_t index = 0;
+        int32_t secondIndex = 0;
         if (std::holds_alternative<int32_t>(indexValue)) {
-            index = std::get<int32_t>(indexValue);
+            secondIndex = std::get<int32_t>(indexValue);
         } else if (std::holds_alternative<uint32_t>(indexValue)) {
-            index = static_cast<int32_t>(std::get<uint32_t>(indexValue));
+            secondIndex = static_cast<int32_t>(std::get<uint32_t>(indexValue));
         } else {
             emitError("Array index must be integer");
             lastExpressionResult_ = std::monostate{};
@@ -2055,9 +2196,20 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
         }
 
 
+        // Calculate final index based on array type
+        int32_t finalIndex;
+        if (is2DArray) {
+            // For 2D arrays like pixels[8][8], convert [x][y] to flat index
+            // Assuming 8x8 array: finalIndex = x * 8 + y
+            finalIndex = firstIndex * 8 + secondIndex;
+        } else {
+            // For 1D arrays, use the index directly
+            finalIndex = secondIndex;
+        }
+
         // CRITICAL FIX: Use enhanced scope manager for consistency with array assignments
         // Array assignments use enhancedScopeManager_, so reads must too
-        EnhancedCommandValue enhancedValue = MemberAccessHelper::getArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(index));
+        EnhancedCommandValue enhancedValue = MemberAccessHelper::getArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(finalIndex));
 
         // Check if enhanced value is valid (not std::monostate)
         if (!std::holds_alternative<std::monostate>(enhancedValue)) {
@@ -2076,12 +2228,12 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
         }
 
         // Check array type and access element
-        size_t idx = static_cast<size_t>(index);
+        size_t idx = static_cast<size_t>(finalIndex);
 
         if (std::holds_alternative<std::vector<int32_t>>(arrayVar->value)) {
             auto& arrayVector = std::get<std::vector<int32_t>>(arrayVar->value);
-            if (index < 0 || idx >= arrayVector.size()) {
-                emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
+            if (finalIndex < 0 || idx >= arrayVector.size()) {
+                emitError("Array index " + std::to_string(finalIndex) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
                 lastExpressionResult_ = std::monostate{};
                 return;
             }
@@ -2106,21 +2258,21 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
 
         } else if (std::holds_alternative<std::vector<double>>(arrayVar->value)) {
             auto& arrayVector = std::get<std::vector<double>>(arrayVar->value);
-            if (index < 0 || idx >= arrayVector.size()) {
-                emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
+            if (finalIndex < 0 || finalIndex >= arrayVector.size()) {
+                emitError("Array index " + std::to_string(finalIndex) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
                 lastExpressionResult_ = std::monostate{};
                 return;
             }
-            lastExpressionResult_ = arrayVector[idx];
+            lastExpressionResult_ = arrayVector[finalIndex];
 
         } else if (std::holds_alternative<std::vector<std::string>>(arrayVar->value)) {
             auto& arrayVector = std::get<std::vector<std::string>>(arrayVar->value);
-            if (index < 0 || idx >= arrayVector.size()) {
-                emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
+            if (finalIndex < 0 || finalIndex >= arrayVector.size()) {
+                emitError("Array index " + std::to_string(finalIndex) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
                 lastExpressionResult_ = std::monostate{};
                 return;
             }
-            lastExpressionResult_ = arrayVector[idx];
+            lastExpressionResult_ = arrayVector[finalIndex];
 
         } else {
             emitError("Variable '" + arrayName + "' is not an array (type: " + commandValueToString(arrayVar->value) + ")");
