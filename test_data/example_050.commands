@@ -1,31 +1,31 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759018054747,
+    "timestamp": 1759022844185,
     "component": "interpreter",
     "version": "11.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759018054747,
+    "timestamp": 1759022844185,
     "message": "Program execution started"
   },
   {
     "type": "VAR_SET",
     "variable": "stringOne",
     "value": null,
-    "timestamp": 1759018054747
+    "timestamp": 1759022844185
   },
   {
     "type": "VAR_SET",
     "variable": "stringTwo",
     "value": null,
-    "timestamp": 1759018054747
+    "timestamp": 1759022844185
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759018054748,
+    "timestamp": 1759022844185,
     "message": "Executing setup() function"
   },
   {
@@ -35,20 +35,20 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759018054748,
+    "timestamp": 1759022844185,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1759018054748,
+    "timestamp": 1759022844185,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "end",
     "iterations": 0,
-    "timestamp": 1759018054748,
+    "timestamp": 1759022844185,
     "message": "while loop completed (0 iterations)"
   },
   {
@@ -57,7 +57,7 @@
     "value": {
       "value": "this"
     },
-    "timestamp": 1759018054748
+    "timestamp": 1759022844185
   },
   {
     "type": "VAR_SET",
@@ -65,7 +65,7 @@
     "value": {
       "value": "that"
     },
-    "timestamp": 1759018054748
+    "timestamp": 1759022844185
   },
   {
     "type": "FUNCTION_CALL",
@@ -74,29 +74,29 @@
       "\"\n\nComparing Strings:\""
     ],
     "data": "\n\nComparing Strings:",
-    "timestamp": 1759018054748,
+    "timestamp": 1759022844185,
     "message": "Serial.println(\"\n\nComparing Strings:\")"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [],
-    "timestamp": 1759018054748,
+    "timestamp": 1759022844185,
     "message": "Serial.println()"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759018054748,
+    "timestamp": 1759022844185,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759018054748,
+    "timestamp": 1759022844185,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759018054748,
+    "timestamp": 1759022844185,
     "message": "Starting loop iteration 1"
   },
   {
@@ -104,14 +104,14 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759018054748
+    "timestamp": 1759022844185
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759018054748
+    "timestamp": 1759022844185
   },
   {
     "type": "FUNCTION_CALL",
@@ -120,7 +120,7 @@
       "\"StringOne == \"this\"\""
     ],
     "data": "StringOne == \"this\"",
-    "timestamp": 1759018054748,
+    "timestamp": 1759022844185,
     "message": "Serial.println(\"StringOne == \"this\"\")"
   },
   {
@@ -128,7 +128,7 @@
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759018054748
+    "timestamp": 1759022844185
   },
   {
     "type": "FUNCTION_CALL",
@@ -137,7 +137,7 @@
       "\"this =! that\""
     ],
     "data": "this =! that",
-    "timestamp": 1759018054749,
+    "timestamp": 1759022844185,
     "message": "Serial.println(\"this =! that\")"
   },
   {
@@ -146,7 +146,7 @@
     "value": {
       "value": "This"
     },
-    "timestamp": 1759018054749
+    "timestamp": 1759022844185
   },
   {
     "type": "VAR_SET",
@@ -154,14 +154,14 @@
     "value": {
       "value": "this"
     },
-    "timestamp": 1759018054749
+    "timestamp": 1759022844185
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759018054749
+    "timestamp": 1759022844185
   },
   {
     "type": "FUNCTION_CALL",
@@ -170,7 +170,7 @@
       "\"This =! this\""
     ],
     "data": "This =! this",
-    "timestamp": 1759018054749,
+    "timestamp": 1759022844185,
     "message": "Serial.println(\"This =! this\")"
   },
   {
@@ -178,7 +178,7 @@
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1759018054750
+    "timestamp": 1759022844186
   },
   {
     "type": "FUNCTION_CALL",
@@ -187,7 +187,7 @@
       "\"This does not equal this\""
     ],
     "data": "This does not equal this",
-    "timestamp": 1759018054750,
+    "timestamp": 1759022844186,
     "message": "Serial.println(\"This does not equal this\")"
   },
   {
@@ -195,7 +195,7 @@
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759018054750
+    "timestamp": 1759022844186
   },
   {
     "type": "FUNCTION_CALL",
@@ -204,7 +204,7 @@
       "\"This equals (ignoring case) this\""
     ],
     "data": "This equals (ignoring case) this",
-    "timestamp": 1759018054750,
+    "timestamp": 1759022844186,
     "message": "Serial.println(\"This equals (ignoring case) this\")"
   },
   {
@@ -213,20 +213,20 @@
     "value": {
       "value": "1"
     },
-    "timestamp": 1759018054750
+    "timestamp": 1759022844186
   },
   {
     "type": "VAR_SET",
     "variable": "numberOne",
     "value": 1,
-    "timestamp": 1759018054750
+    "timestamp": 1759022844186
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759018054751
+    "timestamp": 1759022844186
   },
   {
     "type": "FUNCTION_CALL",
@@ -235,7 +235,7 @@
       "\"1 = 1\""
     ],
     "data": "1 = 1",
-    "timestamp": 1759018054751,
+    "timestamp": 1759022844186,
     "message": "Serial.println(\"1 = 1\")"
   },
   {
@@ -244,7 +244,7 @@
     "value": {
       "value": "2"
     },
-    "timestamp": 1759018054751
+    "timestamp": 1759022844186
   },
   {
     "type": "VAR_SET",
@@ -252,14 +252,14 @@
     "value": {
       "value": "1"
     },
-    "timestamp": 1759018054751
+    "timestamp": 1759022844186
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759018054751
+    "timestamp": 1759022844186
   },
   {
     "type": "FUNCTION_CALL",
@@ -268,7 +268,7 @@
       "\"2 >= 1\""
     ],
     "data": "2 >= 1",
-    "timestamp": 1759018054751,
+    "timestamp": 1759022844186,
     "message": "Serial.println(\"2 >= 1\")"
   },
   {
@@ -277,28 +277,28 @@
     "value": {
       "value": "Brown"
     },
-    "timestamp": 1759018054751
+    "timestamp": 1759022844186
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1759018054751
+    "timestamp": 1759022844186
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1759018054751
+    "timestamp": 1759022844186
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759018054751
+    "timestamp": 1759022844186
   },
   {
     "type": "FUNCTION_CALL",
@@ -307,7 +307,7 @@
       "\"Brown <= Browne\""
     ],
     "data": "Brown <= Browne",
-    "timestamp": 1759018054751,
+    "timestamp": 1759022844186,
     "message": "Serial.println(\"Brown <= Browne\")"
   },
   {
@@ -315,7 +315,7 @@
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759018054751
+    "timestamp": 1759022844186
   },
   {
     "type": "FUNCTION_CALL",
@@ -324,7 +324,7 @@
       "\"Brown >= Brow\""
     ],
     "data": "Brown >= Brow",
-    "timestamp": 1759018054751,
+    "timestamp": 1759022844186,
     "message": "Serial.println(\"Brown >= Brow\")"
   },
   {
@@ -333,7 +333,7 @@
     "value": {
       "value": "Cucumber"
     },
-    "timestamp": 1759018054752
+    "timestamp": 1759022844186
   },
   {
     "type": "VAR_SET",
@@ -341,14 +341,14 @@
     "value": {
       "value": "Cucuracha"
     },
-    "timestamp": 1759018054752
+    "timestamp": 1759022844186
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759018054752
+    "timestamp": 1759022844186
   },
   {
     "type": "FUNCTION_CALL",
@@ -357,26 +357,26 @@
       "\"Cucumber comes before Cucuracha\""
     ],
     "data": "Cucumber comes before Cucuracha",
-    "timestamp": 1759018054752,
+    "timestamp": 1759022844186,
     "message": "Serial.println(\"Cucumber comes before Cucuracha\")"
   },
   {
     "type": "DELAY",
     "duration": 10000,
     "actualDelay": 10000,
-    "timestamp": 1759018054752
+    "timestamp": 1759022844186
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1759018054752,
+    "timestamp": 1759022844186,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1759018054752,
+    "timestamp": 1759022844186,
     "message": "while loop iteration 0"
   },
   {
@@ -385,7 +385,7 @@
     "value": {
       "value": "Sensor: "
     },
-    "timestamp": 1759018054752
+    "timestamp": 1759022844186
   },
   {
     "type": "VAR_SET",
@@ -393,13 +393,13 @@
     "value": {
       "value": "Sensor: "
     },
-    "timestamp": 1759018054752
+    "timestamp": 1759022844186
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
     "requestId": "analogRead_000001",
-    "timestamp": 1759018054752
+    "timestamp": 1759022844186
   },
   {
     "type": "VAR_SET",
@@ -407,13 +407,13 @@
     "value": {
       "value": "Sensor: 560"
     },
-    "timestamp": 1759018054757
+    "timestamp": 1759022844192
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 19,
     "requestId": "analogRead_000002",
-    "timestamp": 1759018054757
+    "timestamp": 1759022844192
   },
   {
     "type": "VAR_SET",
@@ -421,14 +421,14 @@
     "value": {
       "value": "Sensor: 745"
     },
-    "timestamp": 1759018054762
+    "timestamp": 1759022844198
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759018054762
+    "timestamp": 1759022844198
   },
   {
     "type": "FUNCTION_CALL",
@@ -437,14 +437,14 @@
       "\"Sensor: 560 comes before Sensor: 745\""
     ],
     "data": "Sensor: 560 comes before Sensor: 745",
-    "timestamp": 1759018054762,
+    "timestamp": 1759022844198,
     "message": "Serial.println(\"Sensor: 560 comes before Sensor: 745\")"
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1759018054768,
+    "timestamp": 1759022844203,
     "message": "While loop limit reached: completed 1 iterations (max: 1)"
   },
   {
@@ -453,23 +453,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759018054768
+    "timestamp": 1759022844203
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759018054773,
+    "timestamp": 1759022844208,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759018054773,
+    "timestamp": 1759022844208,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759018054773,
+    "timestamp": 1759022844208,
     "message": "Program execution stopped"
   }
 ]

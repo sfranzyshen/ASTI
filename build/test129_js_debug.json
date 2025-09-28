@@ -20,9 +20,9 @@
   }, {
     "type": "FUNCTION_CALL", "function": "applyOperation", "arguments": [
       {
-        "functionName": "add", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1759018056837_o8k5p"
+        "functionName": "add", "interpreter": "[Circular Reference Removed]", "type": "function_pointer", "pointerId": "fptr_1759022845993_3c372"
       }, 5, 10
-    ], "timestamp": 0, "message": "applyOperation(ArduinoFunctionPointer(fptr_1759018056837_o8k5p -> add), 5, 10)"
+    ], "timestamp": 0, "message": "applyOperation(ArduinoFunctionPointer(fptr_1759022845993_3c372 -> add), 5, 10)"
   }, {
     "type": "FUNCTION_CALL", "function": "add", "arguments": [
       5, 10
