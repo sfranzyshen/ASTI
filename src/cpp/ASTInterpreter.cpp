@@ -759,6 +759,7 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
     uint32_t iteration = 0;
 
     scopeManager_->pushScope();
+    executionControl_.pushContext(ExecutionControlStack::ScopeType::FOR_LOOP, "for_loop");
 
     // CROSS-PLATFORM FIX: Emit FOR_LOOP phase start to match JavaScript
     emitCommand(FlexibleCommandFactory::createForLoopStart());
@@ -815,6 +816,7 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
         if (iteration >= maxLoopIterations_) break;
     }
 
+    executionControl_.popContext();
     scopeManager_->popScope();
 
     // CROSS-PLATFORM FIX: Emit single FOR_LOOP end event to match JavaScript
@@ -1197,9 +1199,18 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             CommandValue initialValue;
             // In the CompactAST format, initializers should be stored as the first child
             if (!children.empty()) {
+                std::cerr << "DEBUG VarDecl: Variable '" << varName << "' has " << children.size() << " children" << std::endl;
+                for (size_t idx = 0; idx < children.size(); ++idx) {
+                    if (children[idx]) {
+                        std::cerr << "  Child " << idx << ": type = " << static_cast<int>(children[idx]->getType()) << std::endl;
+                    }
+                }
                 // Variable has initializer - evaluate it
+                std::cerr << "DEBUG VarDecl: Evaluating child[0] as initializer for '" << varName << "'" << std::endl;
                 initialValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(children[0].get()));
+                std::cerr << "DEBUG VarDecl: After evaluation, initialValue = " << commandValueToString(initialValue) << std::endl;
             } else {
+                std::cerr << "DEBUG VarDecl: Variable '" << varName << "' has NO children (no initializer)" << std::endl;
                 // Variable has no initializer - leave as null to match JavaScript behavior
                 initialValue = std::monostate{};  // Uninitialized variable = null
             }
@@ -1372,7 +1383,12 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 std::string stringVal = std::get<std::string>(typedValue);
                 emitCommand(FlexibleCommandFactory::createVarSetArduinoString(varName, stringVal));
             } else {
-                emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(typedValue)));
+                // TEST 43 ULTRATHINK FIX: Check if variable exists in parent scope (shadowing)
+                if (scopeManager_->hasVariableInParentScope(varName)) {
+                    emitCommand(FlexibleCommandFactory::createVarSetExtern(varName, convertCommandValue(typedValue)));
+                } else {
+                    emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(typedValue)));
+                }
             }
         } else if (auto* arrayDeclNode = dynamic_cast<arduino_ast::ArrayDeclaratorNode*>(declarator.get())) {
             // Handle ArrayDeclaratorNode (like int notes[] = {...} or int pixels[8][8])
@@ -1662,7 +1678,7 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             // Array element assignment (e.g., arr[i] = value)
             
             const auto* arrayAccessNode = dynamic_cast<const arduino_ast::ArrayAccessNode*>(leftNode);
-            if (!arrayAccessNode || !arrayAccessNode->getArray() || !arrayAccessNode->getIndex()) {
+            if (!arrayAccessNode || !arrayAccessNode->getIdentifier() || !arrayAccessNode->getIndex()) {
                 emitError("Invalid array access in assignment");
                 return;
             }
@@ -1672,12 +1688,12 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             int32_t firstIndex = -1;
             bool is2DArray = false;
 
-            if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(arrayAccessNode->getArray())) {
+            if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(arrayAccessNode->getIdentifier())) {
                 // Simple 1D array: arr[index]
                 arrayName = identifier->getName();
-            } else if (const auto* nestedAccess = dynamic_cast<const arduino_ast::ArrayAccessNode*>(arrayAccessNode->getArray())) {
-                // 2D array: arr[x][y] - arrayAccessNode->getArray() is arr[x]
-                if (const auto* baseIdentifier = dynamic_cast<const arduino_ast::IdentifierNode*>(nestedAccess->getArray())) {
+            } else if (const auto* nestedAccess = dynamic_cast<const arduino_ast::ArrayAccessNode*>(arrayAccessNode->getIdentifier())) {
+                // 2D array: arr[x][y] - arrayAccessNode->getIdentifier() is arr[x]
+                if (const auto* baseIdentifier = dynamic_cast<const arduino_ast::IdentifierNode*>(nestedAccess->getIdentifier())) {
                     arrayName = baseIdentifier->getName();
                     is2DArray = true;
                     // Evaluate the first index (x in arr[x][y])
@@ -1817,16 +1833,16 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
         } else if (leftNode && leftNode->getType() == arduino_ast::ASTNodeType::ARRAY_ACCESS) {
             // Check if this is a multi-dimensional array access (nested array access)
             const auto* outerArrayAccessNode = dynamic_cast<const arduino_ast::ArrayAccessNode*>(leftNode);
-            if (outerArrayAccessNode && outerArrayAccessNode->getArray() && 
-                outerArrayAccessNode->getArray()->getType() == arduino_ast::ASTNodeType::ARRAY_ACCESS) {
-                
+            if (outerArrayAccessNode && outerArrayAccessNode->getIdentifier() &&
+                outerArrayAccessNode->getIdentifier()->getType() == arduino_ast::ASTNodeType::ARRAY_ACCESS) {
+
                 // Multi-dimensional array assignment (e.g., arr[i][j] = value)
-                
-                const auto* innerArrayAccessNode = dynamic_cast<const arduino_ast::ArrayAccessNode*>(outerArrayAccessNode->getArray());
-                
+
+                const auto* innerArrayAccessNode = dynamic_cast<const arduino_ast::ArrayAccessNode*>(outerArrayAccessNode->getIdentifier());
+
                 // Get array name from the innermost access
                 std::string arrayName;
-                if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(innerArrayAccessNode->getArray())) {
+                if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(innerArrayAccessNode->getIdentifier())) {
                     arrayName = identifier->getName();
                 } else {
                     emitError("Complex multi-dimensional array expressions not supported");
@@ -2147,7 +2163,7 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
     try {
         // SIMPLIFIED ARRAY ACCESS: Focus on basic functionality
 
-        if (!node.getArray() || !node.getIndex()) {
+        if (!node.getIdentifier() || !node.getIndex()) {
             // TEMPORARY WORKAROUND: CompactAST export is broken for ArrayAccessNode, return null for undefined array elements
             lastExpressionResult_ = std::monostate{};
             return;
@@ -2158,12 +2174,12 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
         int32_t firstIndex = -1;
         bool is2DArray = false;
 
-        if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(node.getArray())) {
+        if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(node.getIdentifier())) {
             // Simple 1D array: arr[index]
             arrayName = identifier->getName();
-        } else if (const auto* nestedAccess = dynamic_cast<const arduino_ast::ArrayAccessNode*>(node.getArray())) {
-            // 2D array: arr[x][y] - node.getArray() is arr[x]
-            if (const auto* baseIdentifier = dynamic_cast<const arduino_ast::IdentifierNode*>(nestedAccess->getArray())) {
+        } else if (const auto* nestedAccess = dynamic_cast<const arduino_ast::ArrayAccessNode*>(node.getIdentifier())) {
+            // 2D array: arr[x][y] - node.getIdentifier() is arr[x]
+            if (const auto* baseIdentifier = dynamic_cast<const arduino_ast::IdentifierNode*>(nestedAccess->getIdentifier())) {
                 arrayName = baseIdentifier->getName();
                 is2DArray = true;
                 // Evaluate the first index (x in arr[x][y])
@@ -2202,30 +2218,38 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
             // For 2D arrays like pixels[8][8], convert [x][y] to flat index
             // Assuming 8x8 array: finalIndex = x * 8 + y
             finalIndex = firstIndex * 8 + secondIndex;
+            std::cerr << "DEBUG ArrayAccess: 2D array " << arrayName << "[" << firstIndex << "][" << secondIndex << "] => flat index " << finalIndex << std::endl;
         } else {
             // For 1D arrays, use the index directly
             finalIndex = secondIndex;
+            std::cerr << "DEBUG ArrayAccess: 1D array " << arrayName << "[" << secondIndex << "]" << std::endl;
         }
 
         // CRITICAL FIX: Use enhanced scope manager for consistency with array assignments
         // Array assignments use enhancedScopeManager_, so reads must too
+        std::cerr << "DEBUG ArrayAccess: Trying enhancedScopeManager_ for " << arrayName << std::endl;
         EnhancedCommandValue enhancedValue = MemberAccessHelper::getArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(finalIndex));
 
         // Check if enhanced value is valid (not std::monostate)
         if (!std::holds_alternative<std::monostate>(enhancedValue)) {
             // Convert enhanced value back to regular CommandValue
             lastExpressionResult_ = downgradeExtendedCommandValue(enhancedValue);
+            std::cerr << "DEBUG ArrayAccess: Found in enhancedScopeManager_, value = " << commandValueToString(lastExpressionResult_) << std::endl;
             return;
         }
+        std::cerr << "DEBUG ArrayAccess: NOT found in enhancedScopeManager_" << std::endl;
 
         // Fall back to basic scope manager if enhanced fails
+        std::cerr << "DEBUG ArrayAccess: Trying basic scopeManager_ for " << arrayName << std::endl;
         Variable* arrayVar = scopeManager_->getVariable(arrayName);
 
         if (!arrayVar) {
+            std::cerr << "DEBUG ArrayAccess: NOT found in basic scopeManager_ either!" << std::endl;
             emitError("Array variable '" + arrayName + "' not found in either scope manager");
             lastExpressionResult_ = std::monostate{};
             return;
         }
+        std::cerr << "DEBUG ArrayAccess: Found in basic scopeManager_" << std::endl;
 
         // Check array type and access element
         size_t idx = static_cast<size_t>(finalIndex);
@@ -2241,6 +2265,13 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
             // CROSS-PLATFORM FIX: Check if this array represents undefined preprocessor constants
             // Arrays with undefined constants (like {NOTE_A4, NOTE_B4, NOTE_C3}) are stored as all 0s
             // but should return null when accessed to match JavaScript behavior
+            std::cerr << "DEBUG ArrayAccess: Array size = " << arrayVector.size() << ", accessing index " << idx << std::endl;
+            std::cerr << "DEBUG ArrayAccess: First 10 elements: ";
+            for (size_t i = 0; i < std::min(size_t(10), arrayVector.size()); ++i) {
+                std::cerr << arrayVector[i] << " ";
+            }
+            std::cerr << std::endl;
+
             bool allElementsZero = true;
             for (const auto& elem : arrayVector) {
                 if (elem != 0) {
@@ -2248,11 +2279,15 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
                     break;
                 }
             }
+            std::cerr << "DEBUG ArrayAccess: allElementsZero = " << (allElementsZero ? "true" : "false") << std::endl;
+            std::cerr << "DEBUG ArrayAccess: arrayVector[" << idx << "] = " << arrayVector[idx] << std::endl;
 
             if (allElementsZero && arrayVector[idx] == 0) {
                 // This array contains only 0s (undefined constants), return null
+                std::cerr << "DEBUG ArrayAccess: Returning null because array is all zeros" << std::endl;
                 lastExpressionResult_ = std::monostate{};
             } else {
+                std::cerr << "DEBUG ArrayAccess: Returning value " << arrayVector[idx] << std::endl;
                 lastExpressionResult_ = arrayVector[idx];
             }
 

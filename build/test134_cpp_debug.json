@@ -112,7 +112,7 @@
       0, 50
     ]
   }, {
-    "type": "VAR_SET", "variable": "current_pixel", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "current_pixel", "value": 0, "isExtern": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "pixelInterval", "value": 50, "timestamp": 0
   }, {

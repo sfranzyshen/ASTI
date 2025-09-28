@@ -240,6 +240,26 @@ public:
         return scopes_.empty() ? nullptr : &scopes_.back();
     }
 
+    // TEST 43 ULTRATHINK FIX: Check if variable exists in parent scopes (not current scope)
+    bool hasVariableInParentScope(const std::string& name) const {
+        // Check static variables first
+        if (staticVariables_.find(name) != staticVariables_.end()) {
+            return true;
+        }
+
+        // Skip current scope (last element) and check parent scopes only
+        if (scopes_.size() <= 1) {
+            return false; // No parent scopes
+        }
+
+        for (auto it = scopes_.rbegin() + 1; it != scopes_.rend(); ++it) {
+            if (it->find(name) != it->end()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Get total variable count across all scopes
     uint32_t getVariableCount() const {
         uint32_t count = static_cast<uint32_t>(staticVariables_.size());

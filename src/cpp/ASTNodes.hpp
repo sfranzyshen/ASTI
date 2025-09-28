@@ -773,18 +773,18 @@ public:
 // Additional missing expression types
 class ArrayAccessNode : public ASTNode {
 private:
-    ASTNodePtr array_;
+    ASTNodePtr identifier_;
     ASTNodePtr index_;
 
 public:
     ArrayAccessNode() : ASTNode(ASTNodeType::ARRAY_ACCESS) {}
-    
-    void setArray(ASTNodePtr array) { array_ = std::move(array); }
+
+    void setIdentifier(ASTNodePtr identifier) { identifier_ = std::move(identifier); }
     void setIndex(ASTNodePtr index) { index_ = std::move(index); }
-    
-    const ASTNode* getArray() const { return array_.get(); }
+
+    const ASTNode* getIdentifier() const { return identifier_.get(); }
     const ASTNode* getIndex() const { return index_.get(); }
-    
+
     void accept(ASTVisitor& visitor) override;
 };
 

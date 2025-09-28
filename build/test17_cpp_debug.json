@@ -12,7 +12,7 @@
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
-    "type": "VAR_SET", "variable": "thisPin", "value": 2, "timestamp": 0
+    "type": "VAR_SET", "variable": "thisPin", "value": 2, "timestamp": 0, "isExtern": true
   }, {
     "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
@@ -32,13 +32,13 @@
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
-    "type": "VAR_SET", "variable": "thisPin", "value": 2, "timestamp": 0
+    "type": "VAR_SET", "variable": "thisPin", "value": 2, "timestamp": 0, "isExtern": true
   }, {
     "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
     "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
   }, {
-    "type": "VAR_SET", "variable": "brightness", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "brightness", "value": 0, "timestamp": 0, "isExtern": true
   }, {
     "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
   }, {
@@ -49,22 +49,6 @@
     "type": "VAR_SET", "variable": "brightness", "value": 1, "timestamp": 0
   }, {
     "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
-  }, {
-    "type": "FOR_LOOP", "phase": "start", "timestamp": 0, "message": "for loop started"
-  }, {
-    "type": "VAR_SET", "variable": "brightness", "value": 255, "timestamp": 0
-  }, {
-    "type": "FOR_LOOP", "phase": "iteration", "iteration": 0, "timestamp": 0, "message": "for loop iteration 0"
-  }, {
-    "type": "ANALOG_WRITE", "pin": 2, "value": 255, "timestamp": 0
-  }, {
-    "type": "DELAY", "duration": 2, "actualDelay": 2, "timestamp": 0
-  }, {
-    "type": "VAR_SET", "variable": "brightness", "value": 254, "timestamp": 0
-  }, {
-    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
-  }, {
-    "type": "DELAY", "duration": 100, "actualDelay": 100, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "thisPin", "value": 3, "timestamp": 0
   }, {

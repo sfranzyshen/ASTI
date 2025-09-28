@@ -32,20 +32,32 @@
   }, {
     "type": "IF_STATEMENT", "condition": true, "result": true, "branch": "then", "timestamp": 0
   }, {
+    "type": "ERROR", "message": "Line undefined, Column undefined: Invalid array access: no array identifier\n  → function call 'tone()'", "originalMessage": "Invalid array access: no array identifier", "node": {
+      "type": "ExpressionStatement", "expression": {
+        "type": "FuncCallNode", "callee": {
+          "type": "IdentifierNode", "value": "tone"
+        }, "arguments": [
+          {
+            "type": "NumberNode", "value": 8
+          }, {
+            "type": "ArrayAccessNode", "array": {
+              "type": "IdentifierNode", "value": "notes"
+            }, "index": {
+              "type": "IdentifierNode", "value": "thisSensor"
+            }
+          }, {
+            "type": "NumberNode", "value": 20
+          }
+        ]
+      }
+    }, "location": {
+      "context": "function call 'tone()'"
+    }, "timestamp": 0
+  }, {
     "type": "FUNCTION_CALL", "function": "tone", "arguments": [
-      8, 440, 20
-    ], "pin": 8, "frequency": 440, "duration": 20, "timestamp": 0, "message": "tone(8, 440, 20)"
+      8, null, 20
+    ], "pin": 8, "frequency": null, "duration": 20, "timestamp": 0, "message": "tone(8, null, 20)"
   }, {
     "type": "VAR_SET", "variable": "thisSensor", "value": 1, "timestamp": 0
-  }, {
-    "type": "LOOP_LIMIT_REACHED", "phase": "end", "iterations": 1, "timestamp": 0, "message": "For loop limit reached: completed 1 iterations (max: 1)"
-  }, {
-    "type": "FUNCTION_CALL", "function": "loop", "message": "Completed loop() iteration 1", "iteration": 1, "completed": true, "timestamp": 0
-  }, {
-    "type": "LOOP_END", "timestamp": 0, "message": "Loop limit reached: completed 1 iterations (max: 1)", "iterations": 1, "limitReached": true
-  }, {
-    "type": "PROGRAM_END", "timestamp": 0, "message": "Program completed after 1 loop iterations (limit reached)"
-  }, {
-    "type": "PROGRAM_END", "timestamp": 0, "message": "Program execution stopped"
   }
 ]

@@ -541,7 +541,8 @@ void CompactASTReader::linkNodeChildren() {
                                childType == ASTNodeType::FUNC_CALL ||
                                childType == ASTNodeType::CONSTRUCTOR_CALL ||
                                childType == ASTNodeType::ARRAY_INIT ||
-                               childType == ASTNodeType::CONSTANT) {
+                               childType == ASTNodeType::CONSTANT ||
+                               childType == ASTNodeType::ARRAY_ACCESS) {
                         // This is an initializer - add it as a child to the last DeclaratorNode
                         const auto& declarations = varDeclNode->getDeclarations();
                         if (!declarations.empty()) {
@@ -626,9 +627,9 @@ void CompactASTReader::linkNodeChildren() {
                 auto* arrayAccessNode = dynamic_cast<arduino_ast::ArrayAccessNode*>(parentNode.get());
                 if (arrayAccessNode) {
 
-                    // ArrayAccessNode expects 2 children in order: array (identifier), index
-                    if (!arrayAccessNode->getArray()) {
-                        arrayAccessNode->setArray(std::move(nodes_[childIndex]));
+                    // ArrayAccessNode expects 2 children in order: identifier, index
+                    if (!arrayAccessNode->getIdentifier()) {
+                        arrayAccessNode->setIdentifier(std::move(nodes_[childIndex]));
                     } else if (!arrayAccessNode->getIndex()) {
                         arrayAccessNode->setIndex(std::move(nodes_[childIndex]));
                     } else {

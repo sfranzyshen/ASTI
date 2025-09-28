@@ -20,7 +20,7 @@
   }, {
     "type": "VAR_SET", "variable": "hbdelta", "value": 8, "timestamp": 0
   }, {
-    "type": "VAR_SET", "variable": "rst_active_high", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "rst_active_high", "value": null, "isExtern": true, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "unsigned int", "message": "unsigned int()", "timestamp": 0, "arguments": []
   }, {
@@ -72,7 +72,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "heartbeat", "message": "heartbeat()", "timestamp": 0, "arguments": []
   }, {
-    "type": "VAR_SET", "variable": "last_time", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "last_time", "value": 0, "isExtern": true, "timestamp": 0
   }, {
     "type": "MILLIS_REQUEST", "requestId": "normalized", "timestamp": 0
   }, {

@@ -32,7 +32,15 @@
   }, {
     "type": "VAR_SET", "variable": "k", "value": 1, "timestamp": 0
   }, {
+    "type": "ERROR", "timestamp": 0, "message": "Array index must be integer", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Array index must be integer"
+  }, {
     "type": "VAR_SET", "variable": "val1", "value": null, "timestamp": 0
+  }, {
+    "type": "ERROR", "timestamp": 0, "message": "Array index 9 out of bounds (size: 6)", "errorType": "RuntimeError"
+  }, {
+    "type": "error", "timestamp": 0, "message": "Array index 9 out of bounds (size: 6)"
   }, {
     "type": "VAR_SET", "variable": "val2", "value": null, "timestamp": 0
   }, {

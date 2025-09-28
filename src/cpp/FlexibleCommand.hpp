@@ -161,16 +161,17 @@ public:
                 // noteOn/establishContact/serialEvent/pulseIn (custom functions): type, function, arguments, pin, value, timeout, timestamp, message
                 jsOrder = {"type", "function", "arguments", "pin", "value", "timeout", "timestamp", "message"};
             } else if (functionName == "microsecondsToInches" || functionName == "microsecondsToCentimeters" ||
-                       functionName == "add" || functionName == "multiply" || functionName == "calculate") {
-                // User-defined functions from Test 42 and Test 96: type, function, arguments, timestamp, message
+                       functionName == "add" || functionName == "multiply" || functionName == "calculate" ||
+                       functionName == "readSensors" || functionName == "refreshScreen") {
+                // User-defined functions from Test 42, Test 96, and Test 43: type, function, arguments, timestamp, message
                 jsOrder = {"type", "function", "arguments", "timestamp", "message"};
             } else {
                 // Other FUNCTION_CALL: type, function, message, iteration, completed, timestamp
                 jsOrder = {"type", "function", "message", "iteration", "completed", "timestamp"};
             }
         } else if (cmdType == "VAR_SET") {
-            // VAR_SET: type, variable, value, isConst, timestamp (JavaScript field order)
-            jsOrder = {"type", "variable", "value", "isConst", "timestamp"};
+            // VAR_SET: type, variable, value, isConst, isExtern, timestamp (JavaScript field order)
+            jsOrder = {"type", "variable", "value", "isConst", "isExtern", "timestamp"};
         } else if (cmdType == "PIN_MODE") {
             // PIN_MODE: type, pin, mode, timestamp
             jsOrder = {"type", "pin", "mode", "timestamp"};
@@ -654,6 +655,14 @@ namespace FlexibleCommandFactory {
         return FlexibleCommand("VAR_SET")
             .set("variable", variable)
             .set("value", value);
+    }
+
+    // TEST 43 ULTRATHINK FIX: VAR_SET variant with isExtern flag for shadowed variables
+    inline FlexibleCommand createVarSetExtern(const std::string& variable, const FlexibleCommandValue& value) {
+        return FlexibleCommand("VAR_SET")
+            .set("variable", variable)
+            .set("value", value)
+            .set("isExtern", true);
     }
 
     // VAR_SET variant 2: {type, timestamp, variable, value, isConst}

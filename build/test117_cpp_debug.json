@@ -20,7 +20,7 @@
   }, {
     "type": "FUNCTION_CALL", "function": "counter", "message": "counter()", "timestamp": 0, "arguments": []
   }, {
-    "type": "VAR_SET", "variable": "count", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "count", "value": 0, "isExtern": true, "timestamp": 0
   }, {
     "type": "VAR_SET", "variable": "count", "value": 1, "timestamp": 0
   }, {

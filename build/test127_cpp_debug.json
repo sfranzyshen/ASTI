@@ -4,7 +4,7 @@
   }, {
     "type": "PROGRAM_START", "timestamp": 0, "message": "Program execution started"
   }, {
-    "type": "VAR_SET", "variable": "global_counter", "value": 0, "timestamp": 0
+    "type": "VAR_SET", "variable": "global_counter", "value": 0, "isExtern": true, "timestamp": 0
   }, {
     "type": "FUNCTION_CALL", "function": "static void", "message": "static void()", "timestamp": 0, "arguments": []
   }, {
@@ -12,7 +12,7 @@
   }, {
     "type": "error", "timestamp": 0, "message": "Unknown function: static void"
   }, {
-    "type": "VAR_SET", "variable": "incrementCounter", "value": null, "timestamp": 0
+    "type": "VAR_SET", "variable": "incrementCounter", "value": null, "isExtern": true, "timestamp": 0
   }, {
     "type": "SETUP_START", "timestamp": 0, "message": "Executing setup() function"
   }, {

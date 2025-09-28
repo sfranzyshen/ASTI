@@ -72,10 +72,11 @@ std::string normalizeJSON(const std::string& json) {
     std::regex sensorVarSetRegex(R"("VAR_SET",\s*"variable":\s*"sensorValue",\s*"value":\s*\d+)");
     normalized = std::regex_replace(normalized, sensorVarSetRegex, R"("VAR_SET", "variable": "sensorValue", "value": 0)");
 
-    // VAR_SET for voltage (calculated from sensorValue)  
+    // VAR_SET for voltage (calculated from sensorValue)
     std::regex voltageVarSetRegex(R"("VAR_SET",\s*"variable":\s*"voltage",\s*"value":\s*[\d.]+)");
     normalized = std::regex_replace(normalized, voltageVarSetRegex, R"("VAR_SET", "variable": "voltage", "value": 0)");
-    
+
+
     // Serial.println arguments that contain calculated values
     std::regex serialArgsRegex(R"("arguments":\s*\[\s*"[\d.]+"?\s*\])");
     normalized = std::regex_replace(normalized, serialArgsRegex, R"("arguments": ["0"])");
