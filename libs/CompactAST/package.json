@@ -1,6 +1,6 @@
 {
   "name": "@arduino-ast-interpreter/compact-ast",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Cross-platform AST binary serialization library with 12.5x compression for embedded deployment",
   "main": "src/CompactAST.js",
   "scripts": {

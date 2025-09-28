@@ -1,0 +1,39 @@
+I need help with a complex CompactAST serialization issue in an Arduino AST interpreter project.
+
+CONTEXT:
+- Test 42 has user-defined functions that return null instead of calculated values in C++ but work correctly in JavaScript
+- Root cause identified: ReturnStatement missing from CompactAST export mapping in /libs/CompactAST/src/CompactAST.js line ~228
+- Adding 'ReturnStatement': ['value'] fixes simple cases but causes segmentation faults with complex nested function calls (Test 96)
+
+TECHNICAL DETAILS:
+User functions like:
+```cpp
+long microsecondsToInches(long microseconds) {
+  return microseconds / 74 / 2;  // Should return 10.135... for input 1500
+}
+```
+
+Current behavior:
+- JavaScript: Returns correct values (10.135...)
+- C++: Returns null (because return expressions aren't exported to binary format)
+
+ATTEMPTED FIX:
+```javascript
+// In getNamedChildren() mapping:
+'ReturnStatement': ['value']
+```
+
+RESULT: Works for Test 42 but segfaults on Test 96 (complex nested functions)
+
+SYSTEM STATUS:
+- Successfully reverted changes, stable baseline restored (77/135 tests passing)
+- No regressions from the failed attempt
+- Ready for safer approach
+
+QUESTION: What's the safest approach to add ReturnStatement export without causing segmentation faults? Should I:
+1. Investigate why ReturnStatement export causes segfaults in complex cases?
+2. Add safeguards to the CompactAST serialization/deserialization?
+3. Fix the issue on the C++ deserialization side instead?
+4. Some other approach?
+
+I need a systematic plan that won't break the 77/135 tests currently passing.

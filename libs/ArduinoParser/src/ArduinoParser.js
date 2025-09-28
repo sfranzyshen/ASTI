@@ -62,7 +62,7 @@ if (typeof require !== 'undefined') {
 // PARSER CONSTANTS AND CONFIGURATION
 // =============================================================================
 
-const PARSER_VERSION = "5.3.1";
+const PARSER_VERSION = "6.0.0";
 const PLATFORM_EMULATION_VERSION = '1.0.0';
 const PREPROCESSOR_VERSION = '1.2.0';
 
