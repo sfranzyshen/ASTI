@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759017234471,
+    "timestamp": 1759018053886,
     "component": "interpreter",
     "version": "11.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759017234471,
+    "timestamp": 1759018053886,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759017234471,
+    "timestamp": 1759018053886,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       31250
     ],
     "baudRate": 31250,
-    "timestamp": 1759017234471,
+    "timestamp": 1759018053886,
     "message": "Serial.begin(31250)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759017234471,
+    "timestamp": 1759018053886,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759017234471,
+    "timestamp": 1759018053886,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759017234471,
+    "timestamp": 1759018053886,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,25 +46,25 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759017234471
+    "timestamp": 1759018053886
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1759017234471,
+    "timestamp": 1759018053886,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "note",
     "value": 30,
-    "timestamp": 1759017234471
+    "timestamp": 1759018053887
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1759017234471,
+    "timestamp": 1759018053887,
     "message": "for loop iteration 0"
   },
   {
@@ -75,7 +75,7 @@
       30,
       69
     ],
-    "timestamp": 1759017234472,
+    "timestamp": 1759018053887,
     "message": "noteOn(144, 30, 69)"
   },
   {
@@ -84,7 +84,7 @@
     "arguments": [
       144
     ],
-    "timestamp": 1759017234472,
+    "timestamp": 1759018053887,
     "message": "Serial.write(144)"
   },
   {
@@ -93,7 +93,7 @@
     "arguments": [
       30
     ],
-    "timestamp": 1759017234477,
+    "timestamp": 1759018053892,
     "message": "Serial.write(30)"
   },
   {
@@ -102,14 +102,14 @@
     "arguments": [
       69
     ],
-    "timestamp": 1759017234483,
+    "timestamp": 1759018053897,
     "message": "Serial.write(69)"
   },
   {
     "type": "DELAY",
     "duration": 100,
     "actualDelay": 100,
-    "timestamp": 1759017234488
+    "timestamp": 1759018053902
   },
   {
     "type": "FUNCTION_CALL",
@@ -119,7 +119,7 @@
       30,
       0
     ],
-    "timestamp": 1759017234488,
+    "timestamp": 1759018053902,
     "message": "noteOn(144, 30, 0)"
   },
   {
@@ -128,7 +128,7 @@
     "arguments": [
       144
     ],
-    "timestamp": 1759017234488,
+    "timestamp": 1759018053902,
     "message": "Serial.write(144)"
   },
   {
@@ -137,7 +137,7 @@
     "arguments": [
       30
     ],
-    "timestamp": 1759017234494,
+    "timestamp": 1759018053907,
     "message": "Serial.write(30)"
   },
   {
@@ -146,26 +146,26 @@
     "arguments": [
       0
     ],
-    "timestamp": 1759017234499,
+    "timestamp": 1759018053912,
     "message": "Serial.write(0)"
   },
   {
     "type": "DELAY",
     "duration": 100,
     "actualDelay": 100,
-    "timestamp": 1759017234504
+    "timestamp": 1759018053917
   },
   {
     "type": "VAR_SET",
     "variable": "note",
     "value": 31,
-    "timestamp": 1759017234504
+    "timestamp": 1759018053917
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1759017234510,
+    "timestamp": 1759018053923,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
@@ -174,23 +174,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759017234510
+    "timestamp": 1759018053923
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759017234515,
+    "timestamp": 1759018053929,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759017234515,
+    "timestamp": 1759018053929,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759017234515,
+    "timestamp": 1759018053929,
     "message": "Program execution stopped"
   }
 ]

@@ -446,7 +446,6 @@ void ASTInterpreter::executeLoop() {
         auto* serialEventFunc = findFunctionInAST("serialEvent");
         if (serialEventFunc) {
             debugLog("Calling serialEvent() automatically after loop completion");
-            std::cerr << "🎯 TEST30 FIX: Automatically calling serialEvent() after loop" << std::endl;
 
             // Execute serialEvent function (this will emit the FUNCTION_CALL command internally)
             if (auto* funcDefNode = dynamic_cast<const arduino_ast::FuncDefNode*>(serialEventFunc)) {
@@ -596,9 +595,7 @@ void ASTInterpreter::visit(arduino_ast::ExpressionStatement& node) {
             expr->getType() == arduino_ast::ASTNodeType::CONSTRUCTOR_CALL ||
             expr->getType() == arduino_ast::ASTNodeType::POSTFIX_EXPRESSION) {
             // Use visitor pattern for statements that need to emit commands
-            std::cerr << "🚀🚀🚀 EVALUATE EXPRESSION: About to call accept() on " << static_cast<int>(expr->getType()) << std::endl;
             expr->accept(*this);
-            std::cerr << "🚀🚀🚀 EVALUATE EXPRESSION: accept() completed for " << static_cast<int>(expr->getType()) << std::endl;
         } else {
             // Use evaluateExpression for pure expressions
             evaluateExpression(expr);
@@ -849,11 +846,12 @@ void ASTInterpreter::visit(arduino_ast::ContinueStatement& node) {
 void ASTInterpreter::visit(arduino_ast::BinaryOpNode& node) {
     // Binary operations are handled by evaluateExpression
     // This visitor method is called when binary ops are statements
-    std::cerr << "🎯 BINARY_OP_VISITOR_CALLED: operator=" << node.getOperator() << std::endl;
+    // Binary operations are handled by evaluateExpression
+    // This visitor method is called when binary ops are statements
 
     // Check if this is an assignment operation
     if (node.getOperator() == "=" || node.getOperator() == "==") {
-        std::cerr << "🎯 BINARY_OP_ASSIGNMENT_DETECTED: " << node.getOperator() << std::endl;
+        // Assignment detected
     }
 }
 
@@ -862,7 +860,6 @@ void ASTInterpreter::visit(arduino_ast::UnaryOpNode& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
-    std::cerr << "🚨🚨🚨 FUNCCALLNODE VISITOR CALLED!!! 🚨🚨🚨" << std::endl;
     TRACE_ENTRY("visit(FuncCallNode)", "Starting function call");
     if (!node.getCallee()) {
         TRACE_EXIT("visit(FuncCallNode)", "No callee found");
@@ -883,7 +880,6 @@ void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
                 functionName = objectName + "." + methodName;
                 // Function call processing
                 TRACE("FuncCall-MemberAccess", "Calling member function: " + functionName);
-                std::cerr << "🔍 DEBUG: FuncCall member access: " << functionName << std::endl;
             }
         }
     }
@@ -891,7 +887,6 @@ void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
     // Evaluate arguments
     std::vector<CommandValue> args;
     for (const auto& arg : node.getArguments()) {
-        std::cerr << "🎯 EVALUATING FUNCTION ARG: type=" << static_cast<int>(arg->getType()) << std::endl;
 
         // CROSS-PLATFORM FIX: Special handling for character literals in Serial.print
         if (functionName == "Serial.print" && arg->getType() == arduino_ast::ASTNodeType::CHAR_LITERAL) {
@@ -906,7 +901,6 @@ void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
         }
 
         CommandValue result = evaluateExpression(arg.get());
-        std::cerr << "🎯 ARG RESULT: " << commandValueToString(result) << std::endl;
         args.push_back(result);
     }
 
@@ -936,14 +930,12 @@ void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::ConstructorCallNode& node) {
-    std::cerr << "🔧🔧🔧 CONSTRUCTOR CALL: ConstructorCallNode visit called!" << std::endl;
     if (!node.getCallee()) return;
 
     // Get constructor name
     std::string constructorName;
     if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(node.getCallee())) {
         constructorName = identifier->getName();
-        std::cerr << "🔧🔧🔧 CONSTRUCTOR CALL: name=" << constructorName << std::endl;
     }
     
     // Evaluate arguments
@@ -960,12 +952,10 @@ void ASTInterpreter::visit(arduino_ast::ConstructorCallNode& node) {
 
     if (primitiveTypes.find(constructorName) != primitiveTypes.end()) {
         // This is primitive type initialization like int(10), float(3.14), etc.
-        std::cerr << "🔧🔧🔧 CONSTRUCTOR CALL: primitive type initialization for " << constructorName << std::endl;
         debugLog("ConstructorCallNode: Primitive type initialization for: " + constructorName);
 
         if (!args.empty()) {
             // Return the first argument as the initialization value
-            std::cerr << "🔧🔧🔧 CONSTRUCTOR CALL: returning value " << commandValueToString(args[0]) << std::endl;
             lastExpressionResult_ = args[0];
         } else {
             // Default initialization (e.g., int() = 0)
@@ -1057,7 +1047,6 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
         }
         
         std::string accessOp = node.getAccessOperator();
-        std::cerr << "🔥 MEMBER ACCESS DEBUG: " << objectName << accessOp << propertyName << std::endl;
         debugLog("Member access: " + objectName + accessOp + propertyName);
         
         // Handle different types of member access operations
@@ -1146,17 +1135,12 @@ void ASTInterpreter::visit(arduino_ast::IdentifierNode& node) {
 
 void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
     TRACE_ENTRY("visit(VarDeclNode)", "Starting variable declaration");
-    std::cerr << "*** VARDECLNODE VISITOR CALLED! ***" << std::endl;
     debugLog("Declaring variable");
 
     const auto& children = node.getChildren();
-    std::cerr << "🔍🔍🔍 VarDeclNode has " << children.size() << " children" << std::endl;
     for (size_t i = 0; i < children.size(); ++i) {
         if (children[i]) {
             auto nodeType = children[i]->getType();
-            std::cerr << "🔍🔍🔍 Child " << i << " type: " << static_cast<int>(nodeType) << std::endl;
-        } else {
-            std::cerr << "🔍🔍🔍 Child " << i << " is null" << std::endl;
         }
     }
 
@@ -1197,9 +1181,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
 
             debugLog("=== DEBUGGING DECLARATOR NODE ===");
             debugLog("Variable name: " + varName);
-            std::cerr << "*** PROCESSING VARIABLE: " << varName << " ***" << std::endl;
             debugLog("DeclaratorNode children count: " + std::to_string(declNode->getChildren().size()));
-            std::cerr << "🔍🔍🔍 VAR DEBUG: " << varName << " has " << declNode->getChildren().size() << " children" << std::endl;
             
             // Debug: Print each child node type and check for ArrayDeclaratorNode
             const auto& children = declNode->getChildren();
@@ -1211,7 +1193,6 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                     // Check if this child is an ArrayDeclaratorNode
                     if (children[i]->getType() == arduino_ast::ASTNodeType::ARRAY_DECLARATOR) {
                         debugLog("*** FOUND ARRAY_DECLARATOR as child " + std::to_string(i) + " ***");
-                        std::cerr << "*** ARRAY FOUND IN DECLARATOR CHILDREN ***" << std::endl;
                         // This is an array declaration!
                     }
                 } else {
@@ -1226,16 +1207,13 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 // Variable has initializer - evaluate it
                 debugLog("Processing initializer for variable: " + varName);
                 debugLog("Initializer node type: " + std::to_string(static_cast<int>(children[0]->getType())));
-                std::cerr << "🔍🔍🔍 VARIABLE INIT DEBUG: " << varName << " initializer type=" << static_cast<int>(children[0]->getType()) << std::endl;
                 debugLog("About to call evaluateExpression...");
                 initialValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(children[0].get()));
-                std::cerr << "🔍🔍🔍 VARIABLE INIT DEBUG: " << varName << " evaluateExpression result=" << commandValueToString(initialValue) << std::endl;
                 debugLog("evaluateExpression returned: " + commandValueToString(initialValue));
                 debugLog("Variable " + varName + " initialized with value: " + commandValueToString(initialValue));
             } else {
                 // Variable has no initializer - leave as null to match JavaScript behavior
                 initialValue = std::monostate{};  // Uninitialized variable = null
-                std::cerr << "🔍🔍🔍 VARIABLE INIT DEBUG: " << varName << " has NO children - setting to null" << std::endl;
                 debugLog("No initializer found for variable: " + varName + " - setting to null");
             }
             
@@ -1377,17 +1355,14 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                     int arraySize = 10; // Default better than 3
 
                     // Enhanced array size detection for fallback arrays
-                    std::cerr << "🔍 FALLBACK ARRAY SIZE DETECTION for " << varName << std::endl;
                     std::vector<std::string> sizeVarCandidates = {"numReadings", "ARRAY_SIZE", "arraySize", "size", "count", "length"};
                     for (const std::string& candidate : sizeVarCandidates) {
-                        std::cerr << "🔍 Checking candidate: " << candidate << std::endl;
                         Variable* sizeVar = scopeManager_->getVariable(candidate);
                         if (sizeVar && sizeVar->isConst) {
                             try {
                                 int constValue = convertToInt(sizeVar->value);
                                 if (constValue > 0 && constValue <= 1000) {
                                     arraySize = constValue;
-                                    std::cerr << "🎯🎯🎯 FALLBACK ARRAY SIZE FOUND: " << candidate << " = " << arraySize << " for variable " << varName << std::endl;
                                     break;
                                 }
                             } catch (...) {
@@ -1427,7 +1402,6 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 // TEST 30 FIX: Arduino String objects should use StringObject wrapper format even when non-const
                 std::string stringVal = std::get<std::string>(typedValue);
                 debugLog("Using StringObject wrapper for Arduino String object: " + varName + " = " + stringVal);
-                std::cerr << "🎯 TEST30 FIX: Using StringObject wrapper for non-const Arduino String: " << varName << " = " << stringVal << std::endl;
                 emitCommand(FlexibleCommandFactory::createVarSetArduinoString(varName, stringVal));
             } else {
                 debugLog("Emitting VAR_SET for non-const variable: " + varName);
@@ -1442,7 +1416,6 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             }
 
             debugLog("Array variable name: " + varName);
-            std::cerr << "*** PROCESSING ARRAY VARIABLE: " << varName << " ***" << std::endl;
 
             // CROSS-PLATFORM FIX: Check for ArrayInitializerNode to get real values
             std::vector<int32_t> arrayValues;
@@ -1451,22 +1424,15 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             // First, try to evaluate the array size from the ArrayDeclaratorNode
             int arraySize = 3; // Default
             if (arrayDeclNode->getSize()) {
-                std::cerr << "🔍 VarDecl ArrayDeclaratorNode: Evaluating size expression for " << varName << std::endl;
                 try {
                     CommandValue sizeValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(arrayDeclNode->getSize()));
-                    std::cerr << "🔍 VarDecl size evaluation result: " << commandValueToString(sizeValue) << std::endl;
                     int actualSize = convertToInt(sizeValue);
                     if (actualSize > 0) {
                         arraySize = actualSize;
-                        std::cerr << "🎯 VarDecl ArrayDeclaratorNode: Using evaluated size " << actualSize << " for " << varName << std::endl;
-                    } else {
-                        std::cerr << "❌ VarDecl ArrayDeclaratorNode: Invalid size " << actualSize << " for " << varName << std::endl;
                     }
                 } catch (...) {
-                    std::cerr << "❌ VarDecl ArrayDeclaratorNode: Exception evaluating size for " << varName << std::endl;
+                    // Exception evaluating size, use default
                 }
-            } else {
-                std::cerr << "❌ VarDecl ArrayDeclaratorNode: No size expression found for " << varName << std::endl;
             }
 
             // Look for ArrayInitializerNode in VarDeclNode children (not ArrayDeclaratorNode children)
@@ -1476,10 +1442,8 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                     auto childType = allChildren[i]->getType();
                     if (childType == arduino_ast::ASTNodeType::ARRAY_INIT) {
                         // Process ArrayInitializerNode to get real values
-                        std::cerr << "🔍 FOUND ArrayInitializerNode for " << varName << std::endl;
                         if (auto* arrayInitNode = dynamic_cast<arduino_ast::ArrayInitializerNode*>(allChildren[i].get())) {
                             const auto& initChildren = arrayInitNode->getChildren();
-                            std::cerr << "🔍 ArrayInitializerNode has " << initChildren.size() << " children" << std::endl;
                             for (size_t j = 0; j < initChildren.size(); ++j) {
                                 if (initChildren[j]) {
                                     CommandValue elementValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(initChildren[j].get()));
@@ -1502,17 +1466,14 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             if (!foundInitializer) {
                 // Use the evaluated array size, fallback to enhanced size detection if needed
                 if (arraySize == 3) { // Still using default, try enhanced detection
-                    std::cerr << "🔍 ARRAY DECLARATOR SIZE DETECTION for " << varName << std::endl;
                     std::vector<std::string> sizeVarCandidates = {"numReadings", "ARRAY_SIZE", "arraySize", "size", "count", "length"};
                     for (const std::string& candidate : sizeVarCandidates) {
-                        std::cerr << "🔍 Checking candidate: " << candidate << std::endl;
                         Variable* sizeVar = scopeManager_->getVariable(candidate);
                         if (sizeVar && sizeVar->isConst) {
                             try {
                                 int constValue = convertToInt(sizeVar->value);
                                 if (constValue > 0 && constValue <= 1000) { // Reasonable array size
                                     arraySize = constValue;
-                                    std::cerr << "🎯🎯🎯 ARRAY SIZE FOUND: " << candidate << " = " << arraySize << " for variable " << varName << std::endl;
                                     break;
                                 }
                             } catch (...) {
@@ -1526,7 +1487,6 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 for (int i = 0; i < arraySize; i++) {
                     arrayValues.push_back(0);
                 }
-                std::cerr << "🎯 VarDecl: Created array " << varName << " with size " << arraySize << std::endl;
             }
 
             // Store array in scope manager
@@ -1534,12 +1494,6 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             scopeManager_->setVariable(varName, arrayVar);
 
             // Emit VAR_SET command for array
-            std::cerr << "🚀🚀🚀 EMITTING ARRAY VARDECL: " << varName << " size=" << arrayValues.size() << " values [";
-            for (size_t k = 0; k < arrayValues.size(); ++k) {
-                if (k > 0) std::cerr << ", ";
-                std::cerr << arrayValues[k];
-            }
-            std::cerr << "]" << std::endl;
             emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(CommandValue(arrayValues))));
 
         } else {
@@ -1608,7 +1562,6 @@ void ASTInterpreter::visit(arduino_ast::EmptyStatement& node) {
 void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
     TRACE_ENTRY("visit(AssignmentNode)", "Starting assignment operation");
     debugLog("Visiting AssignmentNode");
-    std::cerr << "🎯 ASSIGNMENT_NODE_VISITOR_CALLED: operator=" << node.getOperator() << std::endl;
     
     try {
         // Evaluate right-hand side first
@@ -1705,7 +1658,6 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             int32_t index = convertToInt(indexValue);
             
             debugLog("Array element assignment: " + arrayName + "[" + std::to_string(index) + "] = " + commandValueToString(rightValue));
-            std::cerr << "🔥 ARRAY_ASSIGNMENT: " << arrayName << "[" << index << "] = " << commandValueToString(rightValue) << std::endl;
 
             // Get array variable
             Variable* arrayVar = scopeManager_->getVariable(arrayName);
@@ -1718,38 +1670,29 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             EnhancedCommandValue enhancedRightValue = upgradeCommandValue(rightValue);
             MemberAccessHelper::setArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(index), enhancedRightValue);
             debugLog("Array element assignment completed: " + arrayName + "[" + std::to_string(index) + "] = " + enhancedCommandValueToString(enhancedRightValue));
-            std::cerr << "🔥 ARRAY_STORED: " << arrayName << "[" << index << "] stored as " << enhancedCommandValueToString(enhancedRightValue) << std::endl;
 
             // CRITICAL FIX: Emit VAR_SET command after array assignment to match JavaScript behavior
             // Use the EXISTING array from basic scope and just emit it
-            std::cerr << "🎯 EMITTING_VAR_SET: After array assignment for " << arrayName << std::endl;
 
             // Get the EXISTING array from basic scope manager (this should have 10 elements)
             Variable* existingArrayVar = scopeManager_->getVariable(arrayName);
             if (existingArrayVar) {
-                std::cerr << "🎯 EXISTING_ARRAY_FOUND: " << commandValueToString(existingArrayVar->value) << std::endl;
 
                 // Check if it's an array and what size
                 if (std::holds_alternative<std::vector<int32_t>>(existingArrayVar->value)) {
                     auto& arrayVec = std::get<std::vector<int32_t>>(existingArrayVar->value);
-                    std::cerr << "🎯 EXISTING_ARRAY_SIZE: " << arrayVec.size() << " elements" << std::endl;
 
                     // Update the specific element in the basic scope array
                     if (index >= 0 && static_cast<size_t>(index) < arrayVec.size()) {
                         arrayVec[static_cast<size_t>(index)] = convertToInt(rightValue);
-                        std::cerr << "🎯 UPDATED_ELEMENT: " << arrayName << "[" << index << "] = " << convertToInt(rightValue) << std::endl;
 
                         // Now emit VAR_SET with the FULL existing array
                         emitCommand(FlexibleCommandFactory::createVarSet(arrayName, convertCommandValue(existingArrayVar->value)));
-                        std::cerr << "🎯 VAR_SET_EMITTED: " << arrayName << " with " << arrayVec.size() << " elements" << std::endl;
                     } else {
-                        std::cerr << "❌ ERROR: Array index " << index << " out of bounds for " << arrayName << std::endl;
                     }
                 } else {
-                    std::cerr << "❌ ERROR: " << arrayName << " is not a vector<int32_t>" << std::endl;
                 }
             } else {
-                std::cerr << "❌ ERROR: Could not find existing array " << arrayName << " in basic scope" << std::endl;
             }
             
         } else if (leftNode && leftNode->getType() == arduino_ast::ASTNodeType::MEMBER_ACCESS) {
@@ -1905,7 +1848,6 @@ void ASTInterpreter::visit(arduino_ast::CharLiteralNode& node) {
     std::string charValue = node.getCharValue();
     char value = charValue.empty() ? '\0' : charValue[0];
     int32_t intValue = static_cast<int32_t>(value);
-    std::cerr << "🔥 CHARLITERAL VISITOR: charValue='" << charValue << "' value='" << value << "' intValue=" << intValue << std::endl;
 
     // CROSS-PLATFORM FIX: Set lastExpressionResult_ to the integer value of the character
     lastExpressionResult_ = intValue; // Convert char to int for Arduino compatibility
@@ -1913,18 +1855,14 @@ void ASTInterpreter::visit(arduino_ast::CharLiteralNode& node) {
 
 void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
     debugLog("Visiting PostfixExpressionNode");
-    std::cerr << "🔧🔧🔧 POSTFIX VISIT: Starting PostfixExpressionNode visit" << std::endl;
 
     try {
         const auto* operand = node.getOperand();
         std::string op = node.getOperator();
-        std::cerr << "🔧🔧🔧 POSTFIX VISIT: operator=" << op << std::endl;
         
         if (operand && operand->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
             std::string varName = operand->getValueAs<std::string>();
-            std::cerr << "🔧🔧🔧 POSTFIX VISIT: varName=" << varName << std::endl;
             Variable* var = scopeManager_->getVariable(varName);
-            std::cerr << "🔧🔧🔧 POSTFIX VISIT: variable found=" << (var ? "yes" : "no") << std::endl;
             
             if (var) {
                 CommandValue currentValue = var->value;
@@ -2189,14 +2127,11 @@ void ASTInterpreter::visit(arduino_ast::RangeBasedForStatement& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
-    std::cerr << "🚀🚀🚀 VISITING ARRAYACCESSNODE!" << std::endl;
 
     try {
         // SIMPLIFIED ARRAY ACCESS: Focus on basic functionality
 
         if (!node.getArray() || !node.getIndex()) {
-            std::cerr << "🔴 BROKEN ARRAYACCESSNODE: array=" << (node.getArray() ? "OK" : "NULL")
-                      << " index=" << (node.getIndex() ? "OK" : "NULL") << std::endl;
             // TEMPORARY WORKAROUND: CompactAST export is broken for ArrayAccessNode, return null for undefined array elements
             debugLog("ArrayAccessNode: null array or index - returning null (broken ArrayAccessNode in CompactAST)");
             lastExpressionResult_ = std::monostate{};
@@ -2511,7 +2446,6 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
     auto nodeType = expr->getType();
     std::string nodeTypeName = arduino_ast::nodeTypeToString(nodeType);
     debugLog("evaluateExpression: NodeType = " + std::to_string(static_cast<int>(nodeType)));
-    std::cerr << "🔍 EVALUATEEXPRESSION: type=" << static_cast<int>(nodeType) << " (" << nodeTypeName << ")" << std::endl;
     TRACE_ENTRY("evaluateExpression", "type=" + nodeTypeName);
 
     switch (nodeType) {
@@ -2532,22 +2466,17 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         case arduino_ast::ASTNodeType::IDENTIFIER:
             if (auto* idNode = dynamic_cast<arduino_ast::IdentifierNode*>(expr)) {
                 std::string name = idNode->getName();
-                std::cerr << "🔍 IDENTIFIER DEBUG: Looking up identifier '" << name << "'" << std::endl;
 
                 // Special handling for built-in objects like Serial
                 if (name == "Serial") {
                     // Serial object evaluates to a truthy value (for while (!Serial) checks)
-                    std::cerr << "🔍 IDENTIFIER DEBUG: Serial object evaluated as true" << std::endl;
                     return static_cast<int32_t>(1);
                 }
 
                 Variable* var = scopeManager_->getVariable(name);
                 if (var) {
-                    std::cerr << "🔍 IDENTIFIER DEBUG: Found variable '" << name << "' with value: " << commandValueToString(var->value) << std::endl;
                     return var->value;
                 } else {
-                    std::cerr << "🔍 IDENTIFIER DEBUG: Variable '" << name << "' not found in scope" << std::endl;
-                    std::cerr << "🔍 IDENTIFIER DEBUG: Current scope variables:" << std::endl;
                     // Add scope debug info
                     emitError("Undefined variable: " + name);
                     return std::monostate{};
@@ -2704,7 +2633,6 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                 std::string charStr = charNode->getCharValue();
                 char value = charStr.empty() ? '\0' : charStr[0];
                 int32_t intValue = static_cast<int32_t>(value);
-                std::cerr << "🔥 EVALUATEEXPRESSION CHAR_LITERAL: charStr='" << charStr << "' value='" << value << "' intValue=" << intValue << std::endl;
                 debugLog("evaluateExpression: CharLiteralNode value = '" + std::string(1, value) + "'");
                 return intValue; // Convert char to int for Arduino compatibility
             }
@@ -2756,15 +2684,9 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
     } else if (op == "-") {
         return convertToDouble(left) - convertToDouble(right);
     } else if (op == "*") {
-        std::cerr << "MULTIPLY DEBUG: About to convert left operand" << std::endl;
         double leftVal = convertToDouble(left);
-        std::cerr << "MULTIPLY DEBUG: Left value = " << leftVal << std::endl;
-        std::cerr << "MULTIPLY DEBUG: About to convert right operand" << std::endl;
         double rightVal = convertToDouble(right);
-        std::cerr << "MULTIPLY DEBUG: Right value = " << rightVal << std::endl;
-        std::cerr << "MULTIPLY DEBUG: About to perform multiplication" << std::endl;
         double result = leftVal * rightVal;
-        std::cerr << "MULTIPLY DEBUG: Result = " << result << std::endl;
         return result;
     } else if (op == "/") {
         double rightVal = convertToDouble(right);
@@ -4017,7 +3939,6 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
         
         // Handle different data types and formatting
         const CommandValue& data = args[0];
-        std::cerr << "🔥 SERIAL.PRINT DEBUG: args[0] type=" << data.index() << " value=" << commandValueToString(data) << std::endl;
         if (std::holds_alternative<int32_t>(data)) {
             int32_t value = std::get<int32_t>(data);
             switch (format) {
@@ -4819,7 +4740,6 @@ void ASTInterpreter::resetStatistics() {
 }
 
 CommandValue ASTInterpreter::evaluateUnaryOperation(const std::string& op, const CommandValue& operand) {
-    std::cerr << "DEBUG: evaluateUnaryOperation called with op='" << op << "'" << std::endl;
     // Handle different unary operators
     if (op == "-") {
         // Unary minus
@@ -5093,23 +5013,16 @@ void ASTInterpreter::visit(arduino_ast::ArrayDeclaratorNode& node) {
 
     // Try to determine actual array size from dimensions or initializer
     if (node.getSize()) {
-        std::cerr << "🔍 ArrayDeclaratorNode: Evaluating size expression for " << varName << std::endl;
         try {
             CommandValue sizeValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getSize()));
-            std::cerr << "🔍 Size evaluation result: " << commandValueToString(sizeValue) << std::endl;
             int actualSize = convertToInt(sizeValue);
             if (actualSize > 0) {
                 arraySize = actualSize;
-                std::cerr << "🎯 ArrayDeclaratorNode: Using evaluated size " << actualSize << " for " << varName << std::endl;
-            } else {
-                std::cerr << "❌ ArrayDeclaratorNode: Invalid size " << actualSize << " for " << varName << std::endl;
             }
         } catch (...) {
-            std::cerr << "❌ ArrayDeclaratorNode: Exception evaluating size for " << varName << std::endl;
             debugLog("Failed to evaluate array size, using default: " + std::to_string(arraySize));
         }
     } else {
-        std::cerr << "❌ ArrayDeclaratorNode: No size expression found for " << varName << std::endl;
     }
 
     // Create array with default values to match JavaScript behavior
