@@ -10,7 +10,6 @@
 
 #pragma once
 
-#include "CommandProtocol.hpp"
 #include "ArduinoDataTypes.hpp"
 #include <memory>
 #include <unordered_map>

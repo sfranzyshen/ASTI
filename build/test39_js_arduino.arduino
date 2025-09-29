@@ -1,0 +1,24 @@
+VERSION: interpreter v11.0.0 started
+PROGRAM_START
+SETUP_START
+Serial.begin(9600)
+pinMode(18, OUTPUT)
+pinMode(19, OUTPUT)
+digitalWrite(18, LOW)
+digitalWrite(19, HIGH)
+SETUP_END
+LOOP_START
+LOOP_START
+analogRead(17)
+Serial.print(671)
+Serial.print(\t)
+analogRead(16)
+Serial.print(634)
+Serial.print(\t)
+analogRead(15)
+Serial.print(597)
+delay(100)
+LOOP_END
+PROGRAM_END
+PROGRAM_END
+

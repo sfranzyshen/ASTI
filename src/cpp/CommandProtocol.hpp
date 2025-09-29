@@ -17,6 +17,7 @@
 #include <memory>
 #include <functional>
 #include <chrono>
+#include <sstream>
 
 namespace arduino_interpreter {
 
@@ -198,14 +199,18 @@ std::string commandTypeToString(CommandType type);
 struct Command {
     CommandType type;
     std::chrono::steady_clock::time_point timestamp;
-    
-    explicit Command(CommandType t) 
+
+    explicit Command(CommandType t)
         : type(t), timestamp(std::chrono::steady_clock::now()) {}
-    
+
     virtual ~Command() = default;
     virtual std::string toString() const;
     virtual CommandValue getValue([[maybe_unused]] const std::string& key) const { return std::monostate{}; }
-    
+    virtual std::string toArduino() const {
+        // Default implementation for commands that don't translate to Arduino code
+        return "// " + getTypeString() + " command";
+    }
+
     std::string getTypeString() const {
         return commandTypeToString(type);
     }
@@ -219,34 +224,37 @@ using CommandPtr = std::unique_ptr<Command>;
 struct PinModeCommand : public Command {
     int32_t pin;
     PinMode mode;
-    
-    PinModeCommand(int32_t p, PinMode m) 
+
+    PinModeCommand(int32_t p, PinMode m)
         : Command(CommandType::PIN_MODE), pin(p), mode(m) {}
-    
+
     std::string toString() const override;
     CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
 };
 
 struct DigitalWriteCommand : public Command {
     int32_t pin;
     DigitalValue value;
-    
-    DigitalWriteCommand(int32_t p, DigitalValue v) 
+
+    DigitalWriteCommand(int32_t p, DigitalValue v)
         : Command(CommandType::DIGITAL_WRITE), pin(p), value(v) {}
-    
+
     std::string toString() const override;
     CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
 };
 
 struct AnalogWriteCommand : public Command {
     int32_t pin;
     int32_t value; // 0-255 for PWM
-    
-    AnalogWriteCommand(int32_t p, int32_t v) 
+
+    AnalogWriteCommand(int32_t p, int32_t v)
         : Command(CommandType::ANALOG_WRITE), pin(p), value(v) {}
-    
+
     std::string toString() const override;
     CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
 };
 
 /**
@@ -255,47 +263,51 @@ struct AnalogWriteCommand : public Command {
 struct AnalogReadRequestCommand : public Command {
     int32_t pin;
     RequestId requestId;
-    
-    AnalogReadRequestCommand(int32_t p) 
-        : Command(CommandType::ANALOG_READ_REQUEST), pin(p), 
+
+    AnalogReadRequestCommand(int32_t p)
+        : Command(CommandType::ANALOG_READ_REQUEST), pin(p),
           requestId(RequestId::generate("analogRead")) {}
-    
+
     std::string toString() const override;
     CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
 };
 
 struct DigitalReadRequestCommand : public Command {
     int32_t pin;
     RequestId requestId;
-    
-    DigitalReadRequestCommand(int32_t p) 
+
+    DigitalReadRequestCommand(int32_t p)
         : Command(CommandType::DIGITAL_READ_REQUEST), pin(p),
           requestId(RequestId::generate("digitalRead")) {}
-    
+
     std::string toString() const override;
     CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
 };
 
 struct MillisRequestCommand : public Command {
     RequestId requestId;
-    
-    MillisRequestCommand() 
+
+    MillisRequestCommand()
         : Command(CommandType::MILLIS_REQUEST),
           requestId(RequestId::generate("millis")) {}
-    
+
     std::string toString() const override;
     CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
 };
 
 struct MicrosRequestCommand : public Command {
     RequestId requestId;
-    
-    MicrosRequestCommand() 
+
+    MicrosRequestCommand()
         : Command(CommandType::MICROS_REQUEST),
           requestId(RequestId::generate("micros")) {}
-    
+
     std::string toString() const override;
     CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
 };
 
 /**
@@ -303,22 +315,51 @@ struct MicrosRequestCommand : public Command {
  */
 struct DelayCommand : public Command {
     uint32_t duration; // milliseconds
-    
-    explicit DelayCommand(uint32_t d) 
+
+    explicit DelayCommand(uint32_t d)
         : Command(CommandType::DELAY), duration(d) {}
-    
+
     std::string toString() const override;
     CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
 };
 
 struct DelayMicrosecondsCommand : public Command {
     uint32_t duration; // microseconds
-    
-    explicit DelayMicrosecondsCommand(uint32_t d) 
+
+    explicit DelayMicrosecondsCommand(uint32_t d)
         : Command(CommandType::DELAY_MICROSECONDS), duration(d) {}
-    
+
     std::string toString() const override;
     CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
+};
+
+/**
+ * Serial communication commands
+ */
+struct SerialBeginCommand : public Command {
+    int32_t baudRate;
+
+    explicit SerialBeginCommand(int32_t baud)
+        : Command(CommandType::SERIAL_BEGIN), baudRate(baud) {}
+
+    std::string toString() const override;
+    CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
+};
+
+struct SerialPrintCommand : public Command {
+    std::string data;
+    bool newline;
+
+    SerialPrintCommand(const std::string& text, bool addNewline = false)
+        : Command(addNewline ? CommandType::SERIAL_PRINTLN : CommandType::SERIAL_PRINT),
+          data(text), newline(addNewline) {}
+
+    std::string toString() const override;
+    CommandValue getValue(const std::string& key) const override;
+    std::string toArduino() const override;
 };
 
 /**
@@ -564,6 +605,41 @@ public:
 // =============================================================================
 // UTILITY FUNCTIONS
 // =============================================================================
+
+/**
+ * Arduino Command Generator - converts semantic commands to Arduino code
+ */
+class ArduinoCommandGenerator {
+public:
+    /**
+     * Generate Arduino code for a single command
+     */
+    std::string generate(const Command& cmd) {
+        return cmd.toArduino();
+    }
+
+    /**
+     * Generate Arduino code for a stream of commands
+     */
+    std::string generateStream(const std::vector<std::unique_ptr<Command>>& commands) {
+        std::ostringstream arduino;
+        for (const auto& cmd : commands) {
+            arduino << cmd->toArduino() << ";\n";
+        }
+        return arduino.str();
+    }
+
+    /**
+     * Generate Arduino code for a vector of command pointers
+     */
+    std::string generateStream(const std::vector<Command*>& commands) {
+        std::ostringstream arduino;
+        for (const auto* cmd : commands) {
+            arduino << cmd->toArduino() << ";\n";
+        }
+        return arduino.str();
+    }
+};
 
 /**
  * Convert command type to string for debugging

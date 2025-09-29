@@ -41,6 +41,10 @@ CommandValue PinModeCommand::getValue(const std::string& key) const {
     return std::monostate{};
 }
 
+std::string PinModeCommand::toArduino() const {
+    return "pinMode(" + std::to_string(pin) + ", " + pinModeToString(mode) + ")";
+}
+
 std::string DigitalWriteCommand::toString() const {
     std::ostringstream oss;
     oss << "DIGITAL_WRITE(pin=" << pin << ", value=" << static_cast<int>(value) << ")";
@@ -53,6 +57,11 @@ CommandValue DigitalWriteCommand::getValue(const std::string& key) const {
     return std::monostate{};
 }
 
+std::string DigitalWriteCommand::toArduino() const {
+    std::string valueStr = (value == DigitalValue::HIGH) ? "HIGH" : "LOW";
+    return "digitalWrite(" + std::to_string(pin) + ", " + valueStr + ")";
+}
+
 std::string AnalogWriteCommand::toString() const {
     std::ostringstream oss;
     oss << "ANALOG_WRITE(pin=" << pin << ", value=" << value << ")";
@@ -63,6 +72,10 @@ CommandValue AnalogWriteCommand::getValue(const std::string& key) const {
     if (key == "pin") return pin;
     if (key == "value") return value;
     return std::monostate{};
+}
+
+std::string AnalogWriteCommand::toArduino() const {
+    return "analogWrite(" + std::to_string(pin) + ", " + std::to_string(value) + ")";
 }
 
 // =============================================================================
@@ -93,6 +106,18 @@ CommandValue DigitalReadRequestCommand::getValue(const std::string& key) const {
     return std::monostate{};
 }
 
+std::string AnalogReadRequestCommand::toArduino() const {
+    // Request commands don't translate directly to Arduino code
+    // They represent communication with external systems
+    return "/* analogRead(" + std::to_string(pin) + ") request */";
+}
+
+std::string DigitalReadRequestCommand::toArduino() const {
+    // Request commands don't translate directly to Arduino code
+    // They represent communication with external systems
+    return "/* digitalRead(" + std::to_string(pin) + ") request */";
+}
+
 std::string MillisRequestCommand::toString() const {
     std::ostringstream oss;
     oss << "MILLIS_REQUEST(requestId=" << requestId.toString() << ")";
@@ -115,6 +140,18 @@ CommandValue MicrosRequestCommand::getValue(const std::string& key) const {
     return std::monostate{};
 }
 
+std::string MillisRequestCommand::toArduino() const {
+    // Request commands don't translate directly to Arduino code
+    // They represent communication with external systems
+    return "/* millis() request */";
+}
+
+std::string MicrosRequestCommand::toArduino() const {
+    // Request commands don't translate directly to Arduino code
+    // They represent communication with external systems
+    return "/* micros() request */";
+}
+
 // =============================================================================
 // TIMING COMMAND IMPLEMENTATIONS
 // =============================================================================
@@ -130,6 +167,10 @@ CommandValue DelayCommand::getValue(const std::string& key) const {
     return std::monostate{};
 }
 
+std::string DelayCommand::toArduino() const {
+    return "delay(" + std::to_string(duration) + ")";
+}
+
 std::string DelayMicrosecondsCommand::toString() const {
     std::ostringstream oss;
     oss << "DELAY_MICROSECONDS(duration=" << duration << "us)";
@@ -139,6 +180,46 @@ std::string DelayMicrosecondsCommand::toString() const {
 CommandValue DelayMicrosecondsCommand::getValue(const std::string& key) const {
     if (key == "duration") return static_cast<int32_t>(duration);
     return std::monostate{};
+}
+
+std::string DelayMicrosecondsCommand::toArduino() const {
+    return "delayMicroseconds(" + std::to_string(duration) + ")";
+}
+
+// =============================================================================
+// SERIAL COMMAND IMPLEMENTATIONS
+// =============================================================================
+
+std::string SerialBeginCommand::toString() const {
+    std::ostringstream oss;
+    oss << "SERIAL_BEGIN(baudRate=" << baudRate << ")";
+    return oss.str();
+}
+
+CommandValue SerialBeginCommand::getValue(const std::string& key) const {
+    if (key == "baudRate") return baudRate;
+    return std::monostate{};
+}
+
+std::string SerialBeginCommand::toArduino() const {
+    return "Serial.begin(" + std::to_string(baudRate) + ")";
+}
+
+std::string SerialPrintCommand::toString() const {
+    std::ostringstream oss;
+    oss << (newline ? "SERIAL_PRINTLN" : "SERIAL_PRINT") << "(data=\"" << data << "\")";
+    return oss.str();
+}
+
+CommandValue SerialPrintCommand::getValue(const std::string& key) const {
+    if (key == "data") return data;
+    if (key == "newline") return newline;
+    return std::monostate{};
+}
+
+std::string SerialPrintCommand::toArduino() const {
+    std::string methodName = newline ? "Serial.println" : "Serial.print";
+    return methodName + "(\"" + data + "\")";
 }
 
 // =============================================================================

@@ -1,0 +1,21 @@
+name=p15_HackingButtons.ino
+source=unknown
+astSize=1432
+codeSize=271
+mode=AST_AND_COMMANDS
+commandCount=17
+content=// 10.StarterKit_BasicKit p15_HackingButtons
+
+const int optoPin = 2;
+
+void setup() {
+  // make the pin with the optocoupler an output
+  pinMode(optoPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(optoPin, HIGH);
+  delay(15);
+  digitalWrite(optoPin, LOW);
+  delay(10000);
+}

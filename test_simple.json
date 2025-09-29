@@ -1,0 +1,7 @@
+{"type":"SETUP_START","message":"Executing setup() function"}
+{
+  "type": "FUNCTION_CALL",
+  "function": "Serial.begin",
+  "baudRate": 9600
+}
+{"type":"SETUP_END","message":"Completed setup() function"}

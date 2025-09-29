@@ -5,7 +5,32 @@
 #include <memory>
 #include <string>
 #include <variant>
-#include "CommandProtocol.hpp"  // For CommandValue definition
+
+// Core CommandValue definition (moved from CommandProtocol.hpp)
+using CommandValue = std::variant<
+    std::monostate,                          // void/undefined
+    bool,                                    // boolean
+    int32_t,                                 // integer (Arduino pins, values)
+    uint32_t,                                // unsigned integer (compatibility)
+    double,                                  // floating point numbers
+    std::string,                             // strings and identifiers
+    std::vector<int32_t>,                    // simple integer arrays (most common)
+    std::vector<double>,                     // double arrays
+    std::vector<std::string>                 // string arrays
+>;
+
+/**
+ * Execution states matching JavaScript EXECUTION_STATE
+ */
+enum class ExecutionState {
+    IDLE,
+    RUNNING,
+    PAUSED,
+    STEPPING,
+    ERROR,
+    COMPLETE,
+    WAITING_FOR_RESPONSE
+};
 
 // Forward declarations
 namespace arduino_interpreter {
@@ -13,6 +38,29 @@ namespace arduino_interpreter {
     class ArduinoPointer;
     class ArduinoString;
     class ArduinoArray;
+
+    // Command system types (moved from deleted CommandProtocol.hpp)
+    class Command;
+    class ResponseHandler;
+
+    // Type aliases
+    using RequestId = std::string;
+
+    enum class CommandType {
+        VERSION_INFO,
+        PROGRAM_START,
+        PROGRAM_END,
+        SETUP_START,
+        SETUP_END,
+        LOOP_START,
+        LOOP_END,
+        FUNCTION_CALL,
+        VAR_SET,
+        DIGITAL_WRITE,
+        ANALOG_READ_REQUEST,
+        DELAY,
+        ERROR
+    };
 }
 
 // Enhanced CommandValue that will replace the basic variant

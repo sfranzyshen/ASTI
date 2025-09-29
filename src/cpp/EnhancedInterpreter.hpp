@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ArduinoDataTypes.hpp"
-#include "CommandProtocol.hpp"
 
 namespace arduino_interpreter {
 

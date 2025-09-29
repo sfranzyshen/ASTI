@@ -1,0 +1,37 @@
+name=StringCaseChanges.ino
+source=unknown
+astSize=1830
+codeSize=676
+mode=AST_AND_COMMANDS
+commandCount=25
+content=// 08.Strings StringCaseChanges
+
+void setup() {
+  // Open serial communications and wait for port to open:
+  Serial.begin(9600);
+  while (!Serial) {
+    ;
+  }
+
+  // send an intro:
+  Serial.println("\n\nString case changes:");
+  Serial.println();
+}
+
+void loop() {
+  // toUpperCase() changes all letters to upper case:
+  String stringOne = "<html><head><body>";
+  Serial.println(stringOne);
+  stringOne.toUpperCase();
+  Serial.println(stringOne);
+
+  // toLowerCase() changes all letters to lower case:
+  String stringTwo = "</BODY></HTML>";
+  Serial.println(stringTwo);
+  stringTwo.toLowerCase();
+  Serial.println(stringTwo);
+
+  // do nothing while true:
+  while (true)
+    ;
+}

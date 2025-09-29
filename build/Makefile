@@ -428,30 +428,6 @@ src/cpp/ArduinoLibraryRegistry.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/arduino_ast_interpreter.dir/build.make CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.s
 .PHONY : src/cpp/ArduinoLibraryRegistry.cpp.s
 
-src/cpp/CommandProtocol.o: src/cpp/CommandProtocol.cpp.o
-.PHONY : src/cpp/CommandProtocol.o
-
-# target to build an object file
-src/cpp/CommandProtocol.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arduino_ast_interpreter.dir/build.make CMakeFiles/arduino_ast_interpreter.dir/src/cpp/CommandProtocol.cpp.o
-.PHONY : src/cpp/CommandProtocol.cpp.o
-
-src/cpp/CommandProtocol.i: src/cpp/CommandProtocol.cpp.i
-.PHONY : src/cpp/CommandProtocol.i
-
-# target to preprocess a source file
-src/cpp/CommandProtocol.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arduino_ast_interpreter.dir/build.make CMakeFiles/arduino_ast_interpreter.dir/src/cpp/CommandProtocol.cpp.i
-.PHONY : src/cpp/CommandProtocol.cpp.i
-
-src/cpp/CommandProtocol.s: src/cpp/CommandProtocol.cpp.s
-.PHONY : src/cpp/CommandProtocol.s
-
-# target to generate assembly for a file
-src/cpp/CommandProtocol.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arduino_ast_interpreter.dir/build.make CMakeFiles/arduino_ast_interpreter.dir/src/cpp/CommandProtocol.cpp.s
-.PHONY : src/cpp/CommandProtocol.cpp.s
-
 src/cpp/EnhancedInterpreter.o: src/cpp/EnhancedInterpreter.cpp.o
 .PHONY : src/cpp/EnhancedInterpreter.o
 
@@ -707,9 +683,6 @@ help:
 	@echo "... src/cpp/ArduinoLibraryRegistry.o"
 	@echo "... src/cpp/ArduinoLibraryRegistry.i"
 	@echo "... src/cpp/ArduinoLibraryRegistry.s"
-	@echo "... src/cpp/CommandProtocol.o"
-	@echo "... src/cpp/CommandProtocol.i"
-	@echo "... src/cpp/CommandProtocol.s"
 	@echo "... src/cpp/EnhancedInterpreter.o"
 	@echo "... src/cpp/EnhancedInterpreter.i"
 	@echo "... src/cpp/EnhancedInterpreter.s"

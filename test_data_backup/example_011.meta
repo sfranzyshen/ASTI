@@ -1,0 +1,30 @@
+name=toneKeyboard.ino
+source=unknown
+astSize=1610
+codeSize=499
+mode=AST_AND_COMMANDS
+commandCount=22
+content=// 02.Digital toneKeyboard.ino
+
+const int threshold = 10;
+
+// notes to play, corresponding to the 3 sensors:
+int notes[] = {
+  440, 494, 131
+};
+
+void setup() {
+}
+
+void loop() {
+  for (int thisSensor = 0; thisSensor < 3; thisSensor++) {
+    // get a sensor reading:
+    int sensorReading = analogRead(thisSensor);
+
+    // if the sensor is pressed hard enough:
+    if (sensorReading > threshold) {
+      // play the note corresponding to this sensor:
+      tone(8, notes[thisSensor], 20);
+    }
+  }
+}

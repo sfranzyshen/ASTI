@@ -325,5 +325,166 @@ TestResult runTest(const std::string& testName, TestFunc&& testFunc) {
     return result;
 }
 
+// =============================================================================
+// ARDUINO CODE CAPTURE
+// =============================================================================
+
+/**
+ * Arduino code capture for testing CommandProtocol
+ * Records FlexibleCommands and converts them to Arduino code via CommandProtocol
+ */
+class ArduinoCodeCapture : public FlexibleCommandListener {
+private:
+    std::vector<FlexibleCommand> capturedCommands_;
+    std::vector<std::unique_ptr<arduino_interpreter::Command>> convertedCommands_;
+    mutable arduino_interpreter::ArduinoCommandGenerator generator_;
+    std::stringstream logStream_;
+    bool verbose_;
+
+public:
+    explicit ArduinoCodeCapture(bool verbose = false) : verbose_(verbose) {}
+
+    void onCommand(const FlexibleCommand& command) override {
+        if (verbose_) {
+            logStream_ << "[COMMAND] " << command.toJSON() << std::endl;
+        }
+
+        capturedCommands_.push_back(command);
+
+        // Convert FlexibleCommand to CommandProtocol Command
+        auto convertedCommand = convertFlexibleToCommand(command);
+        if (convertedCommand) {
+            convertedCommands_.push_back(std::move(convertedCommand));
+        }
+    }
+
+    void onError(const std::string& error) override {
+        if (verbose_) {
+            logStream_ << "[ERROR] " << error << std::endl;
+        }
+
+        FlexibleCommand errorCommand("error");
+        errorCommand.set("message", error);
+        capturedCommands_.push_back(errorCommand);
+    }
+
+    const std::vector<FlexibleCommand>& getFlexibleCommands() const { return capturedCommands_; }
+    const std::vector<std::unique_ptr<arduino_interpreter::Command>>& getConvertedCommands() const { return convertedCommands_; }
+    std::string getLog() const { return logStream_.str(); }
+    size_t getCommandCount() const { return capturedCommands_.size(); }
+
+    void clear() {
+        capturedCommands_.clear();
+        convertedCommands_.clear();
+        logStream_.str("");
+        logStream_.clear();
+    }
+
+    /**
+     * Get captured commands as Arduino code
+     * Uses CommandProtocol's toArduino() generation for structured output
+     */
+    std::string getArduinoCode() const {
+        return generator_.generateStream(convertedCommands_);
+    }
+
+private:
+    /**
+     * Convert FlexibleCommand to appropriate CommandProtocol Command
+     */
+    std::unique_ptr<arduino_interpreter::Command> convertFlexibleToCommand(const FlexibleCommand& flexCmd) {
+        std::string type = flexCmd.getType();
+
+        if (type == "PIN_MODE") {
+            int32_t pin = convertToInt(flexCmd.get("pin"));
+            int32_t modeVal = convertToInt(flexCmd.get("mode"));
+            arduino_interpreter::PinMode mode = static_cast<arduino_interpreter::PinMode>(modeVal);
+            return std::make_unique<arduino_interpreter::PinModeCommand>(pin, mode);
+        }
+        else if (type == "DIGITAL_WRITE") {
+            int32_t pin = convertToInt(flexCmd.get("pin"));
+            int32_t valueVal = convertToInt(flexCmd.get("value"));
+            arduino_interpreter::DigitalValue value = static_cast<arduino_interpreter::DigitalValue>(valueVal);
+            return std::make_unique<arduino_interpreter::DigitalWriteCommand>(pin, value);
+        }
+        else if (type == "ANALOG_WRITE") {
+            int32_t pin = convertToInt(flexCmd.get("pin"));
+            int32_t value = convertToInt(flexCmd.get("value"));
+            return std::make_unique<arduino_interpreter::AnalogWriteCommand>(pin, value);
+        }
+        else if (type == "DELAY") {
+            uint32_t duration = static_cast<uint32_t>(convertToInt(flexCmd.get("duration")));
+            return std::make_unique<arduino_interpreter::DelayCommand>(duration);
+        }
+        else if (type == "DELAY_MICROSECONDS") {
+            uint32_t duration = static_cast<uint32_t>(convertToInt(flexCmd.get("duration")));
+            return std::make_unique<arduino_interpreter::DelayMicrosecondsCommand>(duration);
+        }
+        else if (type == "SERIAL_BEGIN") {
+            int32_t baudRate = convertToInt(flexCmd.get("baudRate"));
+            return std::make_unique<arduino_interpreter::SerialBeginCommand>(baudRate);
+        }
+        else if (type == "SERIAL_PRINT") {
+            std::string data = convertToString(flexCmd.get("data"));
+            return std::make_unique<arduino_interpreter::SerialPrintCommand>(data, false);
+        }
+        else if (type == "SERIAL_PRINTLN") {
+            std::string data = convertToString(flexCmd.get("data"));
+            return std::make_unique<arduino_interpreter::SerialPrintCommand>(data, true);
+        }
+        else if (type == "ANALOG_READ_REQUEST") {
+            int32_t pin = convertToInt(flexCmd.get("pin"));
+            return std::make_unique<arduino_interpreter::AnalogReadRequestCommand>(pin);
+        }
+        else if (type == "DIGITAL_READ_REQUEST") {
+            int32_t pin = convertToInt(flexCmd.get("pin"));
+            return std::make_unique<arduino_interpreter::DigitalReadRequestCommand>(pin);
+        }
+        else if (type == "MILLIS_REQUEST") {
+            return std::make_unique<arduino_interpreter::MillisRequestCommand>();
+        }
+        else if (type == "MICROS_REQUEST") {
+            return std::make_unique<arduino_interpreter::MicrosRequestCommand>();
+        }
+
+        // Return nullptr for unsupported commands (will be skipped in Arduino generation)
+        return nullptr;
+    }
+
+    /**
+     * Helper to convert FlexibleCommandValue to int
+     */
+    int32_t convertToInt(const FlexibleCommandValue& value) const {
+        if (std::holds_alternative<int>(value)) {
+            return static_cast<int32_t>(std::get<int>(value));
+        } else if (std::holds_alternative<long>(value)) {
+            return static_cast<int32_t>(std::get<long>(value));
+        } else if (std::holds_alternative<double>(value)) {
+            return static_cast<int32_t>(std::get<double>(value));
+        } else if (std::holds_alternative<bool>(value)) {
+            return std::get<bool>(value) ? 1 : 0;
+        }
+        return 0;
+    }
+
+    /**
+     * Helper to convert FlexibleCommandValue to string
+     */
+    std::string convertToString(const FlexibleCommandValue& value) const {
+        if (std::holds_alternative<std::string>(value)) {
+            return std::get<std::string>(value);
+        } else if (std::holds_alternative<int>(value)) {
+            return std::to_string(std::get<int>(value));
+        } else if (std::holds_alternative<long>(value)) {
+            return std::to_string(std::get<long>(value));
+        } else if (std::holds_alternative<double>(value)) {
+            return std::to_string(std::get<double>(value));
+        } else if (std::holds_alternative<bool>(value)) {
+            return std::get<bool>(value) ? "true" : "false";
+        }
+        return "";
+    }
+};
+
 } // namespace testing
 } // namespace arduino_interpreter

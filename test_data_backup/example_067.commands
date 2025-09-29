@@ -1,0 +1,201 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1759124397029,
+    "component": "interpreter",
+    "version": "11.0.0",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1759124397029,
+    "message": "Program execution started"
+  },
+  {
+    "type": "LIBRARY_OBJECT_INSTANTIATION",
+    "library": "Servo",
+    "variableName": "myServo",
+    "constructorArgs": [],
+    "timestamp": 1759124397037,
+    "message": "Servo()"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "myServo",
+    "value": {
+      "__type": "ArduinoObject",
+      "className": "Servo",
+      "constructorArgs": [],
+      "objectId": "Servo_1759124397038_iq5ijlo1z"
+    },
+    "timestamp": 1759124397038
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "potPin",
+    "value": 14,
+    "timestamp": 1759124397038
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "potVal",
+    "value": null,
+    "timestamp": 1759124397038
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "angle",
+    "value": null,
+    "timestamp": 1759124397038
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1759124397038,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "Servo",
+    "object": "Servo_1759124397038_iq5ijlo1z",
+    "variableName": "myServo",
+    "method": "attach",
+    "args": [
+      9
+    ],
+    "message": "myServo.attach(9)",
+    "timestamp": 1759124397038
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.begin",
+    "arguments": [
+      9600
+    ],
+    "baudRate": 9600,
+    "timestamp": 1759124397038,
+    "message": "Serial.begin(9600)"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1759124397038,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1759124397038,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1759124397038,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1759124397038
+  },
+  {
+    "type": "ANALOG_READ_REQUEST",
+    "pin": 14,
+    "requestId": "analogRead_000001",
+    "timestamp": 1759124397038
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "potVal",
+    "value": 560,
+    "timestamp": 1759124397044
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.print",
+    "arguments": [
+      "\"potVal: \""
+    ],
+    "data": "potVal: ",
+    "timestamp": 1759124397044,
+    "message": "Serial.print(\"potVal: \")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.print",
+    "arguments": [
+      "560"
+    ],
+    "data": "560",
+    "timestamp": 1759124397044,
+    "message": "Serial.print(560)"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "angle",
+    "value": 98,
+    "timestamp": 1759124397044
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.print",
+    "arguments": [
+      "\", angle: \""
+    ],
+    "data": ", angle: ",
+    "timestamp": 1759124397044,
+    "message": "Serial.print(\", angle: \")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "98"
+    ],
+    "data": "98",
+    "timestamp": 1759124397044,
+    "message": "Serial.println(98)"
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "Servo",
+    "object": "Servo_1759124397038_iq5ijlo1z",
+    "variableName": "myServo",
+    "method": "write",
+    "args": [
+      98
+    ],
+    "message": "myServo.write(98)",
+    "timestamp": 1759124397044
+  },
+  {
+    "type": "DELAY",
+    "duration": 15,
+    "actualDelay": 15,
+    "timestamp": 1759124397044
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1759124397044
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1759124397050,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1759124397050,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1759124397050,
+    "message": "Program execution stopped"
+  }
+]

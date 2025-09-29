@@ -86,9 +86,7 @@ add_library(arduino_ast_interpreter
     libs/CompactAST/src/CompactAST.cpp
     libs/CompactAST/src/CompactAST.hpp
     
-    # Command protocol
-    src/cpp/CommandProtocol.cpp
-    src/cpp/CommandProtocol.hpp
+    # Ultra-minimal JSON command system (no command protocol needed)
     
     # Main interpreter
     src/cpp/ASTInterpreter.cpp
@@ -308,7 +306,6 @@ install(TARGETS arduino_ast_interpreter
 install(FILES
     ASTNodes.hpp
     CompactAST.hpp
-    CommandProtocol.hpp
     ASTInterpreter.hpp
     ArduinoDataTypes.hpp
     EnhancedInterpreter.hpp

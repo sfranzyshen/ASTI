@@ -1,0 +1,23 @@
+VERSION: interpreter v11.0.0 started
+PROGRAM_START
+SETUP_START
+Serial.begin(9600)
+Serial.println(\n\nAppending to a String:)
+SETUP_END
+LOOP_START
+LOOP_START
+Serial.println(Sensor )
+Serial.println(Sensor value)
+Serial.println(Sensor value for input )
+Serial.println(Sensor value for input 65)
+Serial.println(Sensor value for input 650)
+Serial.println(Sensor value for input 650: )
+analogRead(14)
+Serial.println(Sensor value for input 650: 560)
+Serial.println(\n\nchanging the Strings' values)
+Serial.println(A long integer: 123456789)
+Serial.println(The millis(): )
+LOOP_END
+PROGRAM_END
+PROGRAM_END
+

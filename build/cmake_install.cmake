@@ -50,7 +50,6 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/arduino_ast_interpreter" TYPE FILE FILES
     "/mnt/d/Devel/ASTInterpreter/ASTNodes.hpp"
     "/mnt/d/Devel/ASTInterpreter/CompactAST.hpp"
-    "/mnt/d/Devel/ASTInterpreter/CommandProtocol.hpp"
     "/mnt/d/Devel/ASTInterpreter/ASTInterpreter.hpp"
     "/mnt/d/Devel/ASTInterpreter/ArduinoDataTypes.hpp"
     "/mnt/d/Devel/ASTInterpreter/EnhancedInterpreter.hpp"

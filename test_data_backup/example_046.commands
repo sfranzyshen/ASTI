@@ -1,0 +1,327 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1759124395594,
+    "component": "interpreter",
+    "version": "11.0.0",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1759124395594,
+    "message": "Program execution started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": null,
+    "timestamp": 1759124395594
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringTwo",
+    "value": null,
+    "timestamp": 1759124395594
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringThree",
+    "value": null,
+    "timestamp": 1759124395594
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1759124395594,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.begin",
+    "arguments": [
+      9600
+    ],
+    "baudRate": 9600,
+    "timestamp": 1759124395594,
+    "message": "Serial.begin(9600)"
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "start",
+    "timestamp": 1759124395594,
+    "message": "while loop started"
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "end",
+    "iterations": 0,
+    "timestamp": 1759124395594,
+    "message": "while loop completed (0 iterations)"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "You added "
+    },
+    "timestamp": 1759124395595
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringTwo",
+    "value": {
+      "value": "this string"
+    },
+    "timestamp": 1759124395595
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringThree",
+    "value": {
+      "value": ""
+    },
+    "timestamp": 1759124395595
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"\n\nAdding Strings together (concatenation):\""
+    ],
+    "data": "\n\nAdding Strings together (concatenation):",
+    "timestamp": 1759124395595,
+    "message": "Serial.println(\"\n\nAdding Strings together (concatenation):\")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [],
+    "timestamp": 1759124395595,
+    "message": "Serial.println()"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1759124395595,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1759124395595,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1759124395595,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1759124395595
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringThree",
+    "value": {
+      "value": "You added 123"
+    },
+    "timestamp": 1759124395595
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"You added 123\""
+    ],
+    "data": "You added 123",
+    "timestamp": 1759124395595,
+    "message": "Serial.println(\"You added 123\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringThree",
+    "value": {
+      "value": "You added 123456789"
+    },
+    "timestamp": 1759124395595
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"You added 123456789\""
+    ],
+    "data": "You added 123456789",
+    "timestamp": 1759124395595,
+    "message": "Serial.println(\"You added 123456789\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringThree",
+    "value": {
+      "value": "You added 65"
+    },
+    "timestamp": 1759124395595
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"You added 65\""
+    ],
+    "data": "You added 65",
+    "timestamp": 1759124395595,
+    "message": "Serial.println(\"You added 65\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringThree",
+    "value": {
+      "value": "You added abc"
+    },
+    "timestamp": 1759124395595
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"You added abc\""
+    ],
+    "data": "You added abc",
+    "timestamp": 1759124395595,
+    "message": "Serial.println(\"You added abc\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringThree",
+    "value": {
+      "value": "You added this string"
+    },
+    "timestamp": 1759124395595
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"You added this string\""
+    ],
+    "data": "You added this string",
+    "timestamp": 1759124395595,
+    "message": "Serial.println(\"You added this string\")"
+  },
+  {
+    "type": "ANALOG_READ_REQUEST",
+    "pin": 14,
+    "requestId": "analogRead_000001",
+    "timestamp": 1759124395595
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "sensorValue",
+    "value": 560,
+    "timestamp": 1759124395600
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "Sensor value: "
+    },
+    "timestamp": 1759124395600
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringThree",
+    "value": {
+      "value": "Sensor value: 560"
+    },
+    "timestamp": 1759124395600
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"Sensor value: 560\""
+    ],
+    "data": "Sensor value: 560",
+    "timestamp": 1759124395600,
+    "message": "Serial.println(\"Sensor value: 560\")"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringOne",
+    "value": {
+      "value": "millis() value: "
+    },
+    "timestamp": 1759124395600
+  },
+  {
+    "type": "MILLIS_REQUEST",
+    "requestId": "millis_000002",
+    "timestamp": 1759124395600
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "stringThree",
+    "value": {
+      "value": "millis() value: 17807"
+    },
+    "timestamp": 1759124395604
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "\"millis() value: 17807\""
+    ],
+    "data": "millis() value: 17807",
+    "timestamp": 1759124395604,
+    "message": "Serial.println(\"millis() value: 17807\")"
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "start",
+    "timestamp": 1759124395604,
+    "message": "while loop started"
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1759124395605,
+    "message": "while loop iteration 0"
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "phase": "end",
+    "iterations": 1,
+    "timestamp": 1759124395609,
+    "message": "While loop limit reached: completed 1 iterations (max: 1)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1759124395609
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1759124395615,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1759124395615,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1759124395615,
+    "message": "Program execution stopped"
+  }
+]

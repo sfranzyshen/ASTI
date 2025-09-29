@@ -1,0 +1,196 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1759124394210,
+    "component": "interpreter",
+    "version": "11.0.0",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1759124394210,
+    "message": "Program execution started"
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1759124394210,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.begin",
+    "arguments": [
+      31250
+    ],
+    "baudRate": 31250,
+    "timestamp": 1759124394210,
+    "message": "Serial.begin(31250)"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1759124394210,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1759124394210,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1759124394210,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1759124394210
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1759124394210,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "note",
+    "value": 30,
+    "timestamp": 1759124394210
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1759124394210,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "noteOn",
+    "arguments": [
+      144,
+      30,
+      69
+    ],
+    "timestamp": 1759124394210,
+    "message": "noteOn(144, 30, 69)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.write",
+    "arguments": [
+      144
+    ],
+    "timestamp": 1759124394211,
+    "message": "Serial.write(144)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.write",
+    "arguments": [
+      30
+    ],
+    "timestamp": 1759124394215,
+    "message": "Serial.write(30)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.write",
+    "arguments": [
+      69
+    ],
+    "timestamp": 1759124394221,
+    "message": "Serial.write(69)"
+  },
+  {
+    "type": "DELAY",
+    "duration": 100,
+    "actualDelay": 100,
+    "timestamp": 1759124394227
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "noteOn",
+    "arguments": [
+      144,
+      30,
+      0
+    ],
+    "timestamp": 1759124394227,
+    "message": "noteOn(144, 30, 0)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.write",
+    "arguments": [
+      144
+    ],
+    "timestamp": 1759124394227,
+    "message": "Serial.write(144)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.write",
+    "arguments": [
+      30
+    ],
+    "timestamp": 1759124394233,
+    "message": "Serial.write(30)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.write",
+    "arguments": [
+      0
+    ],
+    "timestamp": 1759124394237,
+    "message": "Serial.write(0)"
+  },
+  {
+    "type": "DELAY",
+    "duration": 100,
+    "actualDelay": 100,
+    "timestamp": 1759124394243
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "note",
+    "value": 31,
+    "timestamp": 1759124394243
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "phase": "end",
+    "iterations": 1,
+    "timestamp": 1759124394249,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1759124394249
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1759124394255,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1759124394255,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1759124394255,
+    "message": "Program execution stopped"
+  }
+]

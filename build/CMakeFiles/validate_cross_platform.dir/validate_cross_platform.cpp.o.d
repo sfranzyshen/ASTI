@@ -191,9 +191,9 @@ CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: \
  /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/uniform_int_dist.h /usr/include/c++/11/chrono \
  /usr/include/c++/11/ratio /usr/include/c++/11/limits \
- /usr/include/c++/11/ctime \
+ /usr/include/c++/11/ctime /usr/include/c++/11/sstream \
+ /usr/include/c++/11/bits/sstream.tcc \
  /mnt/d/Devel/ASTInterpreter/build/../tests/../src/cpp/FlexibleCommand.hpp \
- /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc \
  /usr/include/c++/11/iomanip /usr/include/c++/11/locale \
  /usr/include/c++/11/bits/locale_facets_nonio.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \

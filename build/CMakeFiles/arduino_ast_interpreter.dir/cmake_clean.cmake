@@ -9,8 +9,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoDataTypes.cpp.o.d"
   "CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.o"
   "CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.o.d"
-  "CMakeFiles/arduino_ast_interpreter.dir/src/cpp/CommandProtocol.cpp.o"
-  "CMakeFiles/arduino_ast_interpreter.dir/src/cpp/CommandProtocol.cpp.o.d"
   "CMakeFiles/arduino_ast_interpreter.dir/src/cpp/EnhancedInterpreter.cpp.o"
   "CMakeFiles/arduino_ast_interpreter.dir/src/cpp/EnhancedInterpreter.cpp.o.d"
   "CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ExecutionTracer.cpp.o"

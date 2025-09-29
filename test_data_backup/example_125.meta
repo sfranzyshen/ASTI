@@ -1,0 +1,29 @@
+name=Pointer_to_Pointer.ino
+source=unknown
+astSize=1931
+codeSize=370
+mode=AST_AND_COMMANDS
+commandCount=24
+content=// Pointer to Pointer
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int x = 100;
+  int *p1 = &x;
+  int **p2 = &p1;
+
+  Serial.print("Value of x: ");
+  Serial.println(x);
+
+  Serial.print("Value of *p1: ");
+  Serial.println(*p1);
+
+  Serial.print("Value of **p2: ");
+  Serial.println(**p2);
+
+  **p2 = 200;
+  Serial.print("New value of x: ");
+  Serial.println(x);
+}

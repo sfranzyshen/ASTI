@@ -1,0 +1,26 @@
+name=Pointers_and_Pointer_Arithmetic.ino
+source=unknown
+astSize=1861
+codeSize=369
+mode=AST_AND_COMMANDS
+commandCount=22
+content=// Pointers and Pointer Arithmetic
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int arr[3] = {10, 20, 30};
+  int *ptr = arr;
+
+  Serial.print("First element: ");
+  Serial.println(*ptr);
+
+  ptr++;
+  Serial.print("Next element: ");
+  Serial.println(*ptr);
+
+  int nextVal = *(ptr + 1);
+  Serial.print("Next value with arithmetic: ");
+  Serial.println(nextVal);
+}

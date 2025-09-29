@@ -1,0 +1,24 @@
+VERSION: interpreter v11.0.0 started
+PROGRAM_START
+SETUP_START
+Serial.begin(9600)
+Serial.println(\n\nString Constructors:)
+SETUP_END
+LOOP_START
+LOOP_START
+Serial.println(Hello String)
+Serial.println(97)
+Serial.println(This is a string)
+Serial.println(\)
+Serial.println(13.000000)
+analogRead(14)
+Serial.println(560)
+Serial.println(45.000000)
+Serial.println(255.000000)
+Serial.println(17807)
+Serial.println(5.698000)
+Serial.println(5.698000)
+LOOP_END
+PROGRAM_END
+PROGRAM_END
+
