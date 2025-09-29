@@ -1383,11 +1383,11 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             } else if (isArduinoStringObject && std::holds_alternative<std::string>(typedValue)) {
                 // TEST 30 FIX: Arduino String objects should use StringObject wrapper format even when non-const
                 std::string stringVal = std::get<std::string>(typedValue);
-                emitCommand(FlexibleCommandFactory::createVarSetArduinoString(varName, stringVal));
+                emitVarSetArduinoString(varName, stringVal);
             } else {
                 // TEST 43 ULTRATHINK FIX: Check if variable exists in parent scope (shadowing)
                 if (scopeManager_->hasVariableInParentScope(varName)) {
-                    emitCommand(FlexibleCommandFactory::createVarSetExtern(varName, convertCommandValue(typedValue)));
+                    emitVarSetExtern(varName, commandValueToJsonString(typedValue));
                 } else {
                     emitVarSet(varName, commandValueToJsonString(typedValue));
                 }
@@ -1960,8 +1960,8 @@ void ASTInterpreter::visit(arduino_ast::SwitchStatement& node) {
 
 
         // Emit SWITCH_STATEMENT command to match JavaScript format
-        FlexibleCommandValue discriminant = convertCommandValue(condition);
-        emitCommand(FlexibleCommandFactory::createSwitchStatement(discriminant));
+        std::string discriminant = commandValueToJsonString(condition);
+        emitSwitchStatement(discriminant);
 
         // Set switch condition for case matching
         currentSwitchValue_ = condition;
@@ -2013,8 +2013,8 @@ void ASTInterpreter::visit(arduino_ast::CaseStatement& node) {
                 }, currentSwitchValue_, caseValue));
 
                 // Emit SWITCH_CASE command to match JavaScript format
-                FlexibleCommandValue caseValueFlex = convertCommandValue(caseValue);
-                emitCommand(FlexibleCommandFactory::createSwitchCase(caseValueFlex, shouldExecute));
+                std::string caseValueJson = commandValueToJsonString(caseValue);
+                emitSwitchCase(caseValueJson, shouldExecute);
 
                 if (shouldExecute) {
                     inSwitchFallthrough_ = true; // Enable fall-through for subsequent cases
@@ -2767,7 +2767,7 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
     // CROSS-PLATFORM FIX: Emit function call command with arguments for user functions too (preserve types)
     // TEST 30 FIX: Use specialized serialEvent function that omits empty arguments
     if (name == "serialEvent") {
-        emitCommand(FlexibleCommandFactory::createFunctionCallSerialEvent("Calling serialEvent()"));
+        emitSerialEvent("Calling serialEvent()");
     } else {
         emitFunctionCall(name, args);
     }
@@ -3987,7 +3987,7 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
         // Serial.write(data) - Write binary data (CROSS-PLATFORM FIX: preserve precision)
         if (args.size() > 0) {
             // Use CommandValue overload to preserve double precision (fixes 19 vs 19.75)
-            emitCommand(FlexibleCommandFactory::createSerialWrite(args[0]));
+            emitSerialWrite(commandValueToJsonString(args[0]));
         }
         return std::monostate{};
     }
@@ -4072,14 +4072,14 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
         // Serial.setTimeout(time) - Set timeout for parse functions
         if (args.size() > 0) {
             int32_t timeout = convertToInt(args[0]);
-            emitCommand(FlexibleCommandFactory::createSerialTimeout(timeout));
+            emitSerialTimeout(timeout);
         }
         return std::monostate{};
     }
-    
+
     else if (methodName == "flush") {
         // Serial.flush() - Wait for transmission to complete
-        emitCommand(FlexibleCommandFactory::createSerialFlush());
+        emitSerialFlush();
         return std::monostate{};
     }
     
@@ -4541,6 +4541,56 @@ void ASTInterpreter::emitIfStatement(const std::string& condition, const std::st
     std::ostringstream json;
     json << "{\"type\":\"IF_STATEMENT\",\"timestamp\":0,\"condition\":" << condition
          << ",\"conditionDisplay\":\"" << conditionDisplay << "\",\"branch\":" << branch << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitVarSetExtern(const std::string& variable, const std::string& value) {
+    std::ostringstream json;
+    json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << variable
+         << "\",\"value\":" << value << ",\"isExtern\":true}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitSwitchStatement(const std::string& discriminant) {
+    std::ostringstream json;
+    json << "{\"type\":\"SWITCH_STATEMENT\",\"timestamp\":0,\"discriminant\":" << discriminant << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitSwitchCase(const std::string& value, bool shouldExecute) {
+    std::ostringstream json;
+    json << "{\"type\":\"SWITCH_CASE\",\"timestamp\":0,\"value\":" << value
+         << ",\"shouldExecute\":" << (shouldExecute ? "true" : "false") << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitSerialWrite(const std::string& data) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.write\""
+         << ",\"arguments\":[" << data << "],\"data\":\"" << data
+         << "\",\"message\":\"Serial.write(" << data << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitSerialTimeout(int timeout) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.setTimeout\""
+         << ",\"arguments\":[" << timeout << "],\"timeout\":" << timeout
+         << ",\"message\":\"Serial.setTimeout(" << timeout << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitSerialFlush() {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.flush\""
+         << ",\"arguments\":[],\"message\":\"Serial.flush()\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitSerialEvent(const std::string& message) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"serialEvent\""
+         << ",\"message\":\"" << message << "\"}";
     emitJSON(json.str());
 }
 
