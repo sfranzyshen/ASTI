@@ -2767,7 +2767,7 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
     if (name == "serialEvent") {
         emitCommand(FlexibleCommandFactory::createFunctionCallSerialEvent("Calling serialEvent()"));
     } else {
-        emitCommand(FlexibleCommandFactory::createFunctionCall(name, args));
+        emitFunctionCall(name, args);
     }
 
     // Track user function call statistics
@@ -3073,7 +3073,7 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         for (const auto& arg : args) {
             argStrings.push_back(commandValueToString(arg));
         }
-        emitCommand(FlexibleCommandFactory::createFunctionCall(name, argStrings));
+        emitFunctionCall(name, argStrings);
     }
     
     // Track function call statistics
@@ -4011,7 +4011,7 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
         callCount++;
 
         // Emit FUNCTION_CALL command to match JavaScript format
-        emitCommand(FlexibleCommandFactory::createFunctionCall(function, std::vector<std::string>{}));
+        emitFunctionCall(function, std::vector<std::string>{});
 
         return availableBytes;
     }
@@ -4023,7 +4023,7 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
         int readByte = 65;
 
         // Emit FUNCTION_CALL command to match JavaScript format
-        emitCommand(FlexibleCommandFactory::createFunctionCall("Serial.read", std::vector<std::string>{}));
+        emitFunctionCall("Serial.read", std::vector<std::string>{});
 
         return readByte;
     }
@@ -4090,9 +4090,9 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
         // Delegate to specific serial port handler
         return handleMultipleSerialOperation(portName, methodName, args);
     }
-    
+
     // Default: emit as generic serial command
-    emitCommand(FlexibleCommandFactory::createFunctionCall(function, std::vector<std::string>{}));
+    emitFunctionCall(function, std::vector<std::string>{});
     return std::monostate{};
 }
 
