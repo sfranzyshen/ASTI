@@ -94,6 +94,51 @@ This is an **inexcusable** basic compilation error that wasted enormous time and
 
 ---
 
+## **🚨 CRITICAL: VERSION SYNCHRONIZATION REQUIREMENT 🚨**
+
+### **MANDATORY PROCEDURE AFTER VERSION BUMPS**
+
+**THE RULE**: When you bump version numbers in the C++ or JavaScript interpreters, you **MUST** regenerate test data to synchronize version strings across platforms.
+
+### **WHY THIS MATTERS:**
+- C++ interpreter emits: `{"type":"VERSION_INFO","version":"12.0.0",...}`
+- JavaScript reference shows: `{"type":"VERSION_INFO","version":"11.0.0",...}`
+- **Result**: ALL tests fail due to version mismatch in first command
+
+### **REQUIRED WORKFLOW AFTER VERSION BUMP:**
+
+```bash
+# 1. Update version numbers
+# - CMakeLists.txt: project(ArduinoASTInterpreter VERSION X.Y.Z)
+# - src/cpp/ASTInterpreter.hpp: #define INTERPRETER_VERSION "X.Y.Z"
+# - src/cpp/ASTInterpreter.cpp: VERSION_INFO string
+# - src/javascript/ASTInterpreter.js: const INTERPRETER_VERSION = "X.Y.Z"
+
+# 2. Rebuild C++ tools
+cd build
+make clean && make
+
+# 3. Regenerate test data (JavaScript reference outputs)
+cd ..
+node generate_test_data.js
+
+# 4. Run validation to confirm synchronization
+cd build
+./run_baseline_validation.sh 0 10  # Test first 10 to verify
+```
+
+### **VERSION SYNCHRONIZATION CHECKLIST:**
+- ✅ CMakeLists.txt `VERSION` field
+- ✅ ASTInterpreter.hpp `INTERPRETER_VERSION` define
+- ✅ ASTInterpreter.cpp VERSION_INFO emission
+- ✅ ASTInterpreter.js `INTERPRETER_VERSION` constant
+- ✅ Test data regenerated with `generate_test_data.js`
+- ✅ Validation confirms matching version strings
+
+**NEVER bump versions without regenerating test data!** Version mismatches cause 100% test failure rate.
+
+---
+
 ## **🚨 CRITICAL DEBUGGING METHODOLOGY BREAKTHROUGH 🚨**
 
 ### **MANDATORY: USE GDB FOR ALL SEGFAULTS**
