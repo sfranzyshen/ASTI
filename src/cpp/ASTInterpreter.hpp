@@ -938,7 +938,7 @@ private:
     void emitDigitalReadRequest(int pin, const std::string& requestId);
     void emitDigitalWrite(int pin, int value);
     void emitAnalogWrite(int pin, int value);
-    void emitPinMode(int pin, const std::string& mode);
+    void emitPinMode(int pin, int mode);
     void emitDelay(int duration);
     void emitDelayMicroseconds(int duration);
 

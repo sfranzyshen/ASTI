@@ -3737,8 +3737,8 @@ CommandValue ASTInterpreter::handlePinOperation(const std::string& function, con
         int32_t pin = convertToInt(args[0]);
         int32_t modeVal = convertToInt(args[1]);
 
-        // Convert mode value to string (0=INPUT, 1=OUTPUT)
-        emitPinMode(pin, modeVal == 1 ? "OUTPUT" : "INPUT");
+        // Emit pinMode with numeric mode (0=INPUT, 1=OUTPUT)
+        emitPinMode(pin, modeVal);
 
         return std::monostate{};
 
@@ -4349,10 +4349,10 @@ void ASTInterpreter::emitAnalogWrite(int pin, int value) {
     emitJSON(json.str());
 }
 
-void ASTInterpreter::emitPinMode(int pin, const std::string& mode) {
+void ASTInterpreter::emitPinMode(int pin, int mode) {
     std::ostringstream json;
     json << "{\"type\":\"PIN_MODE\",\"timestamp\":0,\"pin\":" << pin
-         << ",\"mode\":\"" << mode << "\"}";
+         << ",\"mode\":" << mode << "}";
     emitJSON(json.str());
 }
 
