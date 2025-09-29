@@ -1543,7 +1543,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             if (isArrayConst) {
                 emitCommand(FlexibleCommandFactory::createVarSetConst(varName, convertCommandValue(arrayValue)));
             } else {
-                emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(arrayValue)));
+                emitVarSet(varName, commandValueToJsonString(arrayValue));
             }
 
         } else {
@@ -1651,7 +1651,7 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
                         emitCommand(FlexibleCommandFactory::createVarSetConst(varName, convertCommandValue(rightValue)));
                     }
                 } else {
-                    emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(rightValue)));
+                    emitVarSet(varName, commandValueToJsonString(rightValue));
                 }
                 lastExpressionResult_ = rightValue;
             } else if (op == "+=" || op == "-=" || op == "*=" || op == "/=" || op == "%=" || op == "&=" || op == "|=" || op == "^=") {
@@ -1668,9 +1668,9 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
                 
                 Variable var(newValue);
                 scopeManager_->setVariable(varName, var);
-                
-                // Emit VAR_SET command for parent application  
-                emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(newValue)));
+
+                // Emit VAR_SET command for parent application
+                emitVarSet(varName, commandValueToJsonString(newValue));
                 lastExpressionResult_ = newValue;
             }
             
@@ -1751,7 +1751,7 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
                         arrayVec[static_cast<size_t>(finalIndex)] = convertToInt(rightValue);
 
                         // Now emit VAR_SET with the FULL existing array
-                        emitCommand(FlexibleCommandFactory::createVarSet(arrayName, convertCommandValue(existingArrayVar->value)));
+                        emitVarSet(arrayName, commandValueToJsonString(existingArrayVar->value));
                     } else {
                     }
                 } else {
@@ -1940,7 +1940,7 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
 
                 // CROSS-PLATFORM FIX: Emit VAR_SET command to match JavaScript behavior
                 // JavaScript emits VAR_SET for postfix increment/decrement operations
-                emitCommand(FlexibleCommandFactory::createVarSet(varName, convertCommandValue(newValue)));
+                emitVarSet(varName, commandValueToJsonString(newValue));
 
                 // For postfix, return the original value (though in visitor pattern, this is contextual)
                 // The original value was in currentValue
@@ -5195,7 +5195,8 @@ void ASTInterpreter::visit(arduino_ast::ArrayDeclaratorNode& node) {
     }
 
     // Emit VAR_SET command to ensure array is declared
-    emitCommand(FlexibleCommandFactory::createVarSet(varName, defaultArray));
+    CommandValue arrayValue = defaultArray;
+    emitVarSet(varName, commandValueToJsonString(arrayValue));
 
     // Store array in scope manager - using CommandValue array format for compatibility
     std::vector<int32_t> commandArray;
