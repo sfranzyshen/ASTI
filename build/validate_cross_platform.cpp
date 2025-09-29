@@ -6,6 +6,7 @@
 #include <chrono>
 #include <thread>
 #include <algorithm>
+#include <cmath>
 #include <unistd.h>
 #include <cstdlib>
 #include <sys/wait.h>
@@ -18,8 +19,46 @@
  */
 
 // Normalize Arduino code for comparison
+// Helper function to round floating-point Serial.println values to 6 decimal places
+std::string roundFloatPrintValues(const std::string& input) {
+    std::string result = input;
+    std::regex floatRegex(R"(Serial\.println\((\d+\.\d+)\))");
+    std::smatch match;
+    std::string::const_iterator searchStart(result.cbegin());
+
+    while (std::regex_search(searchStart, result.cend(), match, floatRegex)) {
+        std::string fullMatch = match[0].str();
+        std::string numStr = match[1].str();
+        double value = std::stod(numStr);
+
+        // Round to 6 decimal places to match C++ std::to_string precision
+        double rounded = std::round(value * 1000000.0) / 1000000.0;
+
+        // Format with 6 decimal places
+        std::ostringstream oss;
+        oss << std::fixed << std::setprecision(6) << rounded;
+        std::string roundedStr = oss.str();
+
+        // Create replacement
+        std::string replacement = "Serial.println(" + roundedStr + ")";
+
+        // Replace in result
+        size_t pos = match.position() + (searchStart - result.cbegin());
+        result.replace(pos, fullMatch.length(), replacement);
+
+        // Move search position forward
+        searchStart = result.cbegin() + pos + replacement.length();
+    }
+
+    return result;
+}
+
 std::string normalizeArduino(const std::string& arduino) {
     std::string normalized = arduino;
+
+    // FIRST: Round all floating-point Serial.println values to 6 decimal places
+    // This matches C++ std::to_string precision and properly rounds JS values
+    normalized = roundFloatPrintValues(normalized);
 
     // Normalize timing function values that vary between platforms
     std::regex millisVarRegex(R"(millis\(\))");
@@ -37,7 +76,7 @@ std::string normalizeArduino(const std::string& arduino) {
     std::regex analogReadVarRegex(R"(analogRead\(\d+\))");
     normalized = std::regex_replace(normalized, analogReadVarRegex, "analogRead(A0)");
 
-    // Normalize calculated values in Serial.print/println
+    // Normalize calculated values in Serial.print/println (integers)
     std::regex serialPrintVarRegex(R"(Serial\.println\(\d+\))");
     normalized = std::regex_replace(normalized, serialPrintVarRegex, "Serial.println(0)");
 
@@ -295,12 +334,17 @@ bool compareJSONCommands(const std::string& cppJSON, const std::string& jsJSON, 
     }
 
     // CRITICAL FIX: ALWAYS save .arduino files for ALL tests (pass or fail)
+    // Normalize both command streams before comparison AND saving
+    std::string normalizedCpp = normalizeArduino(cppArduino);
+    std::string normalizedJs = normalizeArduino(jsArduino);
+
+    // Save NORMALIZED versions so user can see what was actually compared
     std::ofstream cppFile("test" + std::to_string(testNumber) + "_cpp.arduino");
-    cppFile << cppArduino << std::endl;
+    cppFile << normalizedCpp << std::endl;
     cppFile.close();
 
     std::ofstream jsFile("test" + std::to_string(testNumber) + "_js.arduino");
-    jsFile << jsArduino << std::endl;
+    jsFile << normalizedJs << std::endl;
     jsFile.close();
 
     // NOTE: We don't save _debug.json copies here because:
@@ -308,7 +352,7 @@ bool compareJSONCommands(const std::string& cppJSON, const std::string& jsJSON, 
     // - JS JSON is the reference file test_data/example_NNN.commands
     // - The pipe JSON may have stderr mixed in (corrupted)
 
-    if (cppArduino == jsArduino) {
+    if (normalizedCpp == normalizedJs) {
         std::cout << "Test " << testNumber << ": EXACT MATCH ✅" << std::endl;
         return true;
     } else {

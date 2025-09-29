@@ -1,15 +1,1 @@
-VERSION: interpreter v12.0.0 started
-PROGRAM_START
-SETUP_START
-pinMode(2, OUTPUT)
-SETUP_END
-LOOP_START
-LOOP_START
-digitalWrite(2, HIGH)
-delay(15)
-digitalWrite(2, LOW)
-delay(10000)
-LOOP_END
-PROGRAM_END
-PROGRAM_END
-
+VERSION: interpreter v12.0.0 started PROGRAM_START SETUP_START pinMode(2, OUTPUT) SETUP_END LOOP_START LOOP_START digitalWrite(2, HIGH) delay(1000) digitalWrite(2, LOW) delay(1000) LOOP_END PROGRAM_END PROGRAM_END 
