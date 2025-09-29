@@ -294,7 +294,7 @@ bool compareJSONCommands(const std::string& cppJSON, const std::string& jsJSON, 
         return false;  // Conversion failure is FAILURE
     }
 
-    // CRITICAL FIX: ALWAYS save debug files for ALL tests (pass or fail)
+    // CRITICAL FIX: ALWAYS save .arduino files for ALL tests (pass or fail)
     std::ofstream cppFile("test" + std::to_string(testNumber) + "_cpp.arduino");
     cppFile << cppArduino << std::endl;
     cppFile.close();
@@ -303,14 +303,10 @@ bool compareJSONCommands(const std::string& cppJSON, const std::string& jsJSON, 
     jsFile << jsArduino << std::endl;
     jsFile.close();
 
-    // Save JSON debug files for deep analysis
-    std::ofstream cppJsonFile("test" + std::to_string(testNumber) + "_cpp_debug.json");
-    cppJsonFile << cppJSON << std::endl;
-    cppJsonFile.close();
-
-    std::ofstream jsJsonFile("test" + std::to_string(testNumber) + "_js_debug.json");
-    jsJsonFile << jsJSON << std::endl;
-    jsJsonFile.close();
+    // NOTE: We don't save _debug.json copies here because:
+    // - Clean C++ JSON is already saved by extract_cpp_commands as testN_cpp.json
+    // - JS JSON is the reference file test_data/example_NNN.commands
+    // - The pipe JSON may have stderr mixed in (corrupted)
 
     if (cppArduino == jsArduino) {
         std::cout << "Test " << testNumber << ": EXACT MATCH ✅" << std::endl;
@@ -322,7 +318,8 @@ bool compareJSONCommands(const std::string& cppJSON, const std::string& jsJSON, 
         std::cout << "C++ command stream (first 200 chars): " << cppArduino.substr(0, 200) << "..." << std::endl;
         std::cout << "JS command stream (first 200 chars): " << jsArduino.substr(0, 200) << "..." << std::endl;
         std::cout << "Full outputs saved to test" << testNumber << "_cpp.arduino and test" << testNumber << "_js.arduino" << std::endl;
-        std::cout << "JSON debug files: test" << testNumber << "_cpp_debug.json and test" << testNumber << "_js_debug.json" << std::endl;
+        std::cout << "JSON source files: build/test" << testNumber << "_cpp.json and test_data/example_"
+                  << std::setfill('0') << std::setw(3) << testNumber << ".commands" << std::endl;
 
         return false;
     }
