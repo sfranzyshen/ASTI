@@ -4030,39 +4030,39 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
     else if (methodName == "peek") {
         // Serial.peek() - Look at next byte without removing it
         std::string requestId = generateRequestId("serialPeek");
-        emitCommand(FlexibleCommandFactory::createSerialRequest("peek", requestId));
+        emitSerialRequest("peek", requestId);
         return waitForResponse(requestId);
     }
-    
+
     else if (methodName == "readString") {
         // Serial.readString() - Read characters into String
         std::string requestId = generateRequestId("serialReadString");
-        emitCommand(FlexibleCommandFactory::createSerialRequest("readString", requestId));
+        emitSerialRequest("readString", requestId);
         return waitForResponse(requestId);
     }
-    
+
     else if (methodName == "readStringUntil") {
         // Serial.readStringUntil(char) - Read until character found
         if (args.size() > 0) {
             char terminator = static_cast<char>(convertToInt(args[0]));
             std::string requestId = generateRequestId("serialReadStringUntil");
-            emitCommand(FlexibleCommandFactory::createSerialRequestWithChar("readStringUntil", terminator, requestId));
+            emitSerialRequestWithChar("readStringUntil", terminator, requestId);
             return waitForResponse(requestId);
         }
         return std::string("");
     }
-    
+
     else if (methodName == "parseInt") {
         // Serial.parseInt() - Parse integer from serial input
         std::string requestId = generateRequestId("serialParseInt");
-        emitCommand(FlexibleCommandFactory::createSerialRequest("parseInt", requestId));
+        emitSerialRequest("parseInt", requestId);
         return waitForResponse(requestId);
     }
-    
+
     else if (methodName == "parseFloat") {
         // Serial.parseFloat() - Parse float from serial input
         std::string requestId = generateRequestId("serialParseFloat");
-        emitCommand(FlexibleCommandFactory::createSerialRequest("parseFloat", requestId));
+        emitSerialRequest("parseFloat", requestId);
         return waitForResponse(requestId);
     }
     
