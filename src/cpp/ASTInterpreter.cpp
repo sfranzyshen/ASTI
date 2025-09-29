@@ -4638,6 +4638,93 @@ void ASTInterpreter::emitPulseInRequest(int pin, int value, int timeout, const s
     emitJSON(json.str());
 }
 
+void ASTInterpreter::emitConstructorRegistered(const std::string& constructorName) {
+    std::ostringstream json;
+    json << "{\"type\":\"CONSTRUCTOR_REGISTERED\",\"timestamp\":0,\"name\":\"" << constructorName << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitEnumMember(const std::string& memberName, int memberValue) {
+    std::ostringstream json;
+    json << "{\"type\":\"ENUM_MEMBER\",\"timestamp\":0,\"name\":\"" << memberName << "\",\"value\":" << memberValue << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitEnumTypeRef(const std::string& enumName) {
+    std::ostringstream json;
+    json << "{\"type\":\"ENUM_TYPE_REF\",\"timestamp\":0,\"name\":\"" << enumName << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitLambdaFunction(const std::string& captures, const std::string& parameters, const std::string& body) {
+    std::ostringstream json;
+    json << "{\"type\":\"LAMBDA_FUNCTION\",\"timestamp\":0,\"captures\":\"" << captures
+         << "\",\"parameters\":\"" << parameters << "\",\"body\":\"" << body << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitMemberFunctionRegistered(const std::string& className, const std::string& functionName) {
+    std::ostringstream json;
+    json << "{\"type\":\"MEMBER_FUNCTION_REGISTERED\",\"timestamp\":0,\"class\":\"" << className
+         << "\",\"function\":\"" << functionName << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitMultipleStructMembers(const std::string& memberNames, const std::string& typeName) {
+    std::ostringstream json;
+    json << "{\"type\":\"MULTIPLE_STRUCT_MEMBERS\",\"timestamp\":0,\"members\":\"" << memberNames
+         << "\",\"type\":\"" << typeName << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitObjectInstance(const std::string& typeName, const std::string& args) {
+    std::ostringstream json;
+    json << "{\"type\":\"OBJECT_INSTANCE\",\"timestamp\":0,\"typeName\":\"" << typeName
+         << "\",\"arguments\":\"" << args << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitPreprocessorError(const std::string& directive, const std::string& errorMessage) {
+    std::ostringstream json;
+    json << "{\"type\":\"PREPROCESSOR_ERROR\",\"timestamp\":0,\"directive\":\"" << directive
+         << "\",\"error\":\"" << errorMessage << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitRangeExpression(const std::string& start, const std::string& end) {
+    std::ostringstream json;
+    json << "{\"type\":\"RANGE_EXPRESSION\",\"timestamp\":0,\"start\":" << start << ",\"end\":" << end << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitStructMember(const std::string& memberName, const std::string& typeName, int size) {
+    std::ostringstream json;
+    json << "{\"type\":\"STRUCT_MEMBER\",\"timestamp\":0,\"name\":\"" << memberName
+         << "\",\"typeName\":\"" << typeName << "\",\"size\":" << size << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitTemplateTypeParam(const std::string& parameterName, const std::string& constraint) {
+    std::ostringstream json;
+    json << "{\"type\":\"TEMPLATE_TYPE_PARAM\",\"timestamp\":0,\"parameter\":\"" << parameterName
+         << "\",\"constraint\":\"" << constraint << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitUnionDefinition(const std::string& unionName, const std::string& members, const std::string& variables) {
+    std::ostringstream json;
+    json << "{\"type\":\"UNION_DEFINITION\",\"timestamp\":0,\"name\":\"" << unionName
+         << "\",\"members\":\"" << members << "\",\"variables\":\"" << variables << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitUnionTypeRef(const std::string& typeName, int defaultSize) {
+    std::ostringstream json;
+    json << "{\"type\":\"UNION_TYPE_REF\",\"timestamp\":0,\"name\":\"" << typeName
+         << "\",\"size\":" << defaultSize << "}";
+    emitJSON(json.str());
+}
+
 // Helper to convert CommandValue to JSON string for VarSet
 std::string commandValueToJsonString(const CommandValue& value) {
     return std::visit([](const auto& v) -> std::string {
@@ -5710,7 +5797,7 @@ void ASTInterpreter::visit(arduino_ast::ConstructorDeclarationNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'constructor_registered', className}
-    emitCommand(FlexibleCommandFactory::createConstructorRegistered(constructorName));
+    emitConstructorRegistered(constructorName);
     
     if (options_.verbose) {
         DEBUG_OUT << "Constructor declaration: " << constructorName << std::endl;
@@ -5742,7 +5829,7 @@ void ASTInterpreter::visit(arduino_ast::EnumMemberNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'enum_member', name: memberName, value: memberValue}
-    emitCommand(FlexibleCommandFactory::createEnumMember(memberName, memberValue));
+    emitEnumMember(memberName, memberValue);
     
     // Set lastExpressionResult for any parent expressions
     lastExpressionResult_ = std::visit([](auto&& arg) -> CommandValue {
@@ -5783,7 +5870,7 @@ void ASTInterpreter::visit(arduino_ast::EnumTypeNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'enum_type_ref', enumName, values}
-    emitCommand(FlexibleCommandFactory::createEnumTypeRef(enumName.empty() ? "anonymous" : enumName));
+    emitEnumTypeRef(enumName.empty() ? "anonymous" : enumName);
     
     if (options_.verbose) {
         DEBUG_OUT << "Enum type: " << enumName << " with " << node.getMembers().size() << " members" << std::endl;
@@ -5821,7 +5908,7 @@ void ASTInterpreter::visit(arduino_ast::LambdaExpressionNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'lambda_function', captures, parameters, body}
-    emitCommand(FlexibleCommandFactory::createLambdaFunction(captures, parameters, "lambda_body"));
+    emitLambdaFunction(captures, parameters, "lambda_body");
     
     // Lambda expressions return function objects in C++
     lastExpressionResult_ = std::string("lambda_function");
@@ -5858,7 +5945,7 @@ void ASTInterpreter::visit(arduino_ast::MemberFunctionDeclarationNode& node) {
     
     // Generate FlexibleCommand matching JavaScript: {type: 'member_function_registered', className, methodName}
     // For now, use "UnknownClass" as className since we don't have class context
-    emitCommand(FlexibleCommandFactory::createMemberFunctionRegistered("UnknownClass", functionName));
+    emitMemberFunctionRegistered("UnknownClass", functionName);
     
     if (options_.verbose) {
         DEBUG_OUT << "Member function: " << returnTypeName << " " << functionName << "(...)";
@@ -5883,7 +5970,7 @@ void ASTInterpreter::visit(arduino_ast::MultipleStructMembersNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'multiple_struct_members', members, memberType}
-    emitCommand(FlexibleCommandFactory::createMultipleStructMembers(memberNames, "unknown"));
+    emitMultipleStructMembers(memberNames, "unknown");
     
     if (options_.verbose) {
         DEBUG_OUT << "Multiple struct members: " << node.getMembers().size() << " members" << std::endl;
@@ -5914,7 +6001,7 @@ void ASTInterpreter::visit(arduino_ast::NewExpressionNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'object_instance', className, arguments, isHeapAllocated: true}
-    emitCommand(FlexibleCommandFactory::createObjectInstance(typeName, args));
+    emitObjectInstance(typeName, args);
     
     // For Arduino simulation, we'll represent new objects as strings
     lastExpressionResult_ = std::string("new_" + typeName);
@@ -5934,8 +6021,8 @@ void ASTInterpreter::visit(arduino_ast::PreprocessorDirectiveNode& node) {
     // JavaScript throws an error: "Unexpected PreprocessorDirective AST node"
     // PreprocessorDirective nodes should not exist in clean architecture - preprocessing should happen before parsing
     std::string errorMessage = "Preprocessor should have been handled before parsing.";
-    
-    emitCommand(FlexibleCommandFactory::createPreprocessorError(directive, errorMessage));
+
+    emitPreprocessorError(directive, errorMessage);
     
     // Also emit as a runtime error to match JavaScript behavior
     emitError("Unexpected PreprocessorDirective AST node: " + directive + ". " + errorMessage, "PreprocessorError");
@@ -5966,9 +6053,9 @@ void ASTInterpreter::visit(arduino_ast::RangeExpressionNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'range', start, end}
-    FlexibleCommandValue flexStart = convertCommandValue(startValue);
-    FlexibleCommandValue flexEnd = convertCommandValue(endValue);
-    emitCommand(FlexibleCommandFactory::createRangeExpression(flexStart, flexEnd));
+    std::string jsonStart = commandValueToJsonString(startValue);
+    std::string jsonEnd = commandValueToJsonString(endValue);
+    emitRangeExpression(jsonStart, jsonEnd);
     
     // Range expressions are used in range-based for loops
     std::string rangeStr = "range(";
@@ -6023,7 +6110,7 @@ void ASTInterpreter::visit(arduino_ast::StructMemberNode& node) {
     
     // Generate FlexibleCommand matching JavaScript: {type: 'struct_member', memberName, memberType, size}
     int32_t size = (typeName == "int") ? 4 : (typeName == "char") ? 1 : (typeName == "double") ? 8 : 4;
-    emitCommand(FlexibleCommandFactory::createStructMember(memberName, typeName, size));
+    emitStructMember(memberName, typeName, size);
 }
 
 void ASTInterpreter::visit(arduino_ast::TemplateTypeParameterNode& node) {
@@ -6040,7 +6127,7 @@ void ASTInterpreter::visit(arduino_ast::TemplateTypeParameterNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'template_type_param', paramName, constraint}
-    emitCommand(FlexibleCommandFactory::createTemplateTypeParam(parameterName, constraint));
+    emitTemplateTypeParam(parameterName, constraint);
     
     if (options_.verbose) {
         DEBUG_OUT << "Template type parameter: " << parameterName;
@@ -6067,8 +6154,9 @@ void ASTInterpreter::visit(arduino_ast::UnionDeclarationNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'union_definition', name, members, variables, isUnion: true}
-    std::vector<std::string> variables; // Empty for now
-    emitCommand(FlexibleCommandFactory::createUnionDefinition(unionName, members, variables));
+    std::string membersStr = members.empty() ? "" : members[0]; // Simplified for now
+    std::string variablesStr = ""; // Empty for now
+    emitUnionDefinition(unionName, membersStr, variablesStr);
     
     if (options_.verbose) {
         DEBUG_OUT << "Union declaration: " << unionName << " with " << node.getMembers().size() << " members" << std::endl;
@@ -6089,7 +6177,7 @@ void ASTInterpreter::visit(arduino_ast::UnionTypeNode& node) {
     
     // Generate FlexibleCommand matching JavaScript: {type: 'union_type_ref', unionName, size}
     int32_t defaultSize = 8; // Default union size
-    emitCommand(FlexibleCommandFactory::createUnionTypeRef(typeName.empty() ? "anonymous" : typeName, defaultSize));
+    emitUnionTypeRef(typeName.empty() ? "anonymous" : typeName, defaultSize);
     
     if (options_.verbose) {
         DEBUG_OUT << "Union type: " << typeName << " with " << node.getTypes().size() << " alternative types" << std::endl;
