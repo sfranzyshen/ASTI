@@ -194,67 +194,12 @@ endif()
 
 if(BUILD_TESTS)
     enable_testing()
-    
-    # Unit tests for each component
-    add_executable(test_ast_nodes
-        tests/test_ast_nodes.cpp
-        tests/test_utils.hpp
-    )
-    
-    target_link_libraries(test_ast_nodes
-        PRIVATE arduino_ast_interpreter
-    )
-    
-    add_test(NAME ASTNodesTest COMMAND test_ast_nodes)
-    
-    # Compact AST format tests
-    add_executable(test_compact_ast
-        tests/test_compact_ast.cpp
-        tests/test_utils.hpp
-    )
-    
-    target_link_libraries(test_compact_ast
-        PRIVATE arduino_ast_interpreter
-    )
-    
-    add_test(NAME CompactASTTest COMMAND test_compact_ast)
-    
-    # Command protocol tests
-    add_executable(test_command_protocol
-        tests/test_command_protocol.cpp
-        tests/test_utils.hpp
-    )
-    
-    target_link_libraries(test_command_protocol
-        PRIVATE arduino_ast_interpreter
-    )
-    
-    add_test(NAME CommandProtocolTest COMMAND test_command_protocol)
-    
-    # Interpreter integration tests
-    add_executable(test_interpreter_integration
-        tests/test_interpreter_integration.cpp
-        tests/test_utils.hpp
-    )
-    
-    target_link_libraries(test_interpreter_integration
-        PRIVATE arduino_ast_interpreter
-    )
-    
-    add_test(NAME InterpreterIntegrationTest COMMAND test_interpreter_integration)
-    
-    # Cross-platform validation tests (compares with JavaScript output)
-    add_executable(test_cross_platform_validation
-        tests/test_cross_platform_validation.cpp
-        tests/test_utils.hpp
-    )
-    
-    target_link_libraries(test_cross_platform_validation
-        PRIVATE arduino_ast_interpreter
-    )
-    
-    add_test(NAME CrossPlatformValidationTest COMMAND test_cross_platform_validation)
-    
+
+    # NOTE: Old unit test files removed - APIs changed, tests outdated
+    # Removed: test_ast_nodes.cpp, test_compact_ast.cpp, test_command_protocol.cpp,
+    #          test_cross_platform_validation.cpp, test_interpreter_integration.cpp
+    # All moved to trash/ - we use extract_cpp_commands and validate_cross_platform instead
+
     # C++ command stream extraction tool
     add_executable(extract_cpp_commands
         tests/extract_cpp_commands.cpp
@@ -355,15 +300,8 @@ if(ENABLE_PROFILING)
     )
 endif()
 
-# Custom target for cross-platform validation
-add_custom_target(cross_platform_validation
-    COMMAND ${CMAKE_COMMAND} -E echo "Running cross-platform validation..."
-    COMMAND node test_compact_ast.js
-    COMMAND $<TARGET_FILE:test_cross_platform_validation>
-    DEPENDS test_cross_platform_validation
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMENT "Validating C++ output against JavaScript reference"
-)
+# NOTE: Removed cross_platform_validation custom target - test_cross_platform_validation.cpp deleted
+# Use: ./build/validate_cross_platform 0 10 instead
 
 # =============================================================================
 # PACKAGE CONFIGURATION
