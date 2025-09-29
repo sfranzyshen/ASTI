@@ -58,7 +58,10 @@
       "Bash(echo \"Exit code: $?\")",
       "Bash(/mnt/d/Devel/ASTInterpreter/run_baseline_validation.sh:*)",
       "Bash(./universal_json_to_arduino:*)",
-      "Bash(./debug_simple_converter)"
+      "Bash(./debug_simple_converter)",
+      "Bash(cmake:*)",
+      "Bash(git stash:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": [],

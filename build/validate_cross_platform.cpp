@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <unistd.h>
 #include <cstdlib>
+#include <sys/wait.h>
 
 /**
  * Arduino Cross-Platform Validation Tool
@@ -145,10 +146,12 @@ std::string extractCppCommands(int testNumber) {
     // Use the existing extract_cpp_commands binary to get JSON output
     // MUST run from root folder according to COMMANDS.md
     std::ostringstream command;
-    command << "cd .. && ./build/extract_cpp_commands " << testNumber << " 2>/dev/null";
+    // CRITICAL FIX: Capture stderr to detect crashes/errors, not silence them
+    command << "cd .. && ./build/extract_cpp_commands " << testNumber << " 2>&1";
 
     FILE* pipe = popen(command.str().c_str(), "r");
     if (!pipe) {
+        std::cerr << "ERROR: Failed to execute extract_cpp_commands for test " << testNumber << std::endl;
         return "";
     }
 
@@ -159,7 +162,19 @@ std::string extractCppCommands(int testNumber) {
     }
 
     int status = pclose(pipe);
+
+    // CRITICAL FIX: Detect non-zero exit code as error
     if (status != 0) {
+        int exitCode = WEXITSTATUS(status);
+        bool segfault = WIFSIGNALED(status);
+        std::cerr << "ERROR: extract_cpp_commands failed for test " << testNumber;
+        if (segfault) {
+            std::cerr << " (SEGFAULT - signal " << WTERMSIG(status) << ")";
+        } else {
+            std::cerr << " (exit code " << exitCode << ")";
+        }
+        std::cerr << std::endl;
+        std::cerr << "Output: " << result.str() << std::endl;
         return "";
     }
 
@@ -234,39 +249,52 @@ std::string convertJSONToArduino(const std::string& json) {
 }
 
 bool compareJSONCommands(const std::string& cppJSON, const std::string& jsJSON, int testNumber) {
+    // CRITICAL FIX: Missing data is an ERROR, not a skip or match
     if (cppJSON.empty() || jsJSON.empty()) {
+        std::cout << "Test " << testNumber << ": ERROR - Missing data - ";
         if (cppJSON.empty() && jsJSON.empty()) {
-            std::cout << "Test " << testNumber << ": Both streams empty - SKIP (no execution)" << std::endl;
-            return true;  // Both empty is considered a match
+            std::cout << "Both C++ and JS streams empty (possible crash or no test data)" << std::endl;
+        } else if (cppJSON.empty()) {
+            std::cout << "C++ stream empty (segfault/crash/timeout)" << std::endl;
+        } else {
+            std::cout << "JS reference missing" << std::endl;
         }
-        std::cout << "Test " << testNumber << ": One stream missing - ";
-        std::cout << (cppJSON.empty() ? "C++ missing" : "JS missing") << std::endl;
-        return false;
+        return false;  // Missing data is FAILURE
     }
 
     // Convert both JSON streams to Arduino code
     std::string cppArduino = convertJSONToArduino(cppJSON);
     std::string jsArduino = convertJSONToArduino(jsJSON);
 
+    // CRITICAL FIX: ALWAYS save debug files for ALL tests (pass or fail)
+    std::ofstream cppFile("test" + std::to_string(testNumber) + "_cpp_arduino.arduino");
+    cppFile << cppArduino << std::endl;
+    cppFile.close();
+
+    std::ofstream jsFile("test" + std::to_string(testNumber) + "_js_arduino.arduino");
+    jsFile << jsArduino << std::endl;
+    jsFile.close();
+
+    // Save JSON debug files for deep analysis
+    std::ofstream cppJsonFile("test" + std::to_string(testNumber) + "_cpp_debug.json");
+    cppJsonFile << cppJSON << std::endl;
+    cppJsonFile.close();
+
+    std::ofstream jsJsonFile("test" + std::to_string(testNumber) + "_js_debug.json");
+    jsJsonFile << jsJSON << std::endl;
+    jsJsonFile.close();
+
     if (cppArduino == jsArduino) {
-        std::cout << "Test " << testNumber << ": ARDUINO MATCH ✅" << std::endl;
+        std::cout << "Test " << testNumber << ": EXACT MATCH ✅" << std::endl;
         return true;
     } else {
-        std::cout << "Test " << testNumber << ": ARDUINO DIFFERENCE ❌" << std::endl;
-
-        // Save command stream outputs for detailed comparison
-        std::ofstream cppFile("test" + std::to_string(testNumber) + "_cpp_arduino.arduino");
-        cppFile << cppArduino << std::endl;
-        cppFile.close();
-
-        std::ofstream jsFile("test" + std::to_string(testNumber) + "_js_arduino.arduino");
-        jsFile << jsArduino << std::endl;
-        jsFile.close();
+        std::cout << "Test " << testNumber << ": MISMATCH ❌" << std::endl;
 
         // Show first 200 chars of difference for debugging
         std::cout << "C++ command stream (first 200 chars): " << cppArduino.substr(0, 200) << "..." << std::endl;
         std::cout << "JS command stream (first 200 chars): " << jsArduino.substr(0, 200) << "..." << std::endl;
-        std::cout << "Full command streams saved to test" << testNumber << "_cpp_arduino.arduino and test" << testNumber << "_js_arduino.arduino" << std::endl;
+        std::cout << "Full outputs saved to test" << testNumber << "_cpp_arduino.arduino and test" << testNumber << "_js_arduino.arduino" << std::endl;
+        std::cout << "JSON debug files: test" << testNumber << "_cpp_debug.json and test" << testNumber << "_js_debug.json" << std::endl;
 
         return false;
     }

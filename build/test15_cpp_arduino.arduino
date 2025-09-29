@@ -6,6 +6,9 @@ SETUP_END
 LOOP_START
 LOOP_START
 analogRead(14)
+Serial.print(sensor = )
+Serial.print(560)
+Serial.print(	 output = )
 Serial.println(140)
 delay(2)
 LOOP_END

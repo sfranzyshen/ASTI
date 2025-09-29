@@ -7,6 +7,9 @@ pinMode(3, INPUT)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(-2800)
+Serial.print(	)
+Serial.print(-2800)
 delay(100)
 LOOP_END
 PROGRAM_END

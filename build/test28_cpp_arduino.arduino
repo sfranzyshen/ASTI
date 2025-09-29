@@ -3,6 +3,7 @@ PROGRAM_START
 SETUP_START
 Serial.begin(9600)
 pinMode(2, INPUT)
+Serial.print('65')
 delay(300)
 SETUP_END
 LOOP_START

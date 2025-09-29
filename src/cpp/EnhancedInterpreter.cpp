@@ -1,5 +1,4 @@
 #include "EnhancedInterpreter.hpp"
-#include "CommandProtocol.hpp"
 #include <iostream>
 
 namespace arduino_interpreter {

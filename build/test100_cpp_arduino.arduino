@@ -5,8 +5,11 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
-Serial.println( world!)
+Serial.print(Hello)
+Serial.print(My character is: )
 Serial.println(65)
+Serial.print(65)
+Serial.print(10)
 LOOP_END
 PROGRAM_END
 PROGRAM_END

@@ -5,8 +5,11 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(First element: )
 Serial.println(undefined)
+Serial.print(Next element: )
 Serial.println(undefined)
+Serial.print(Next value with arithmetic: )
 Serial.println(undefined)
 LOOP_END
 PROGRAM_END

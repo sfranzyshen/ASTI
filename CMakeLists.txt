@@ -87,7 +87,8 @@ add_library(arduino_ast_interpreter
     libs/CompactAST/src/CompactAST.hpp
     
     # Ultra-minimal JSON command system (no command protocol needed)
-    
+    # FlexibleCommand infrastructure completely removed
+
     # Main interpreter
     src/cpp/ASTInterpreter.cpp
     src/cpp/ASTInterpreter.hpp

@@ -2,9 +2,9 @@ VERSION: interpreter v11.0.0 started
 PROGRAM_START
 SETUP_START
 Serial.begin(9600)
-pinMode(9, OUTPUT)
-pinMode(10, OUTPUT)
-pinMode(11, OUTPUT)
+pinMode(9, INPUT)
+pinMode(10, INPUT)
+pinMode(11, INPUT)
 SETUP_END
 LOOP_START
 LOOP_START
@@ -13,7 +13,17 @@ delay(5)
 analogRead(15)
 delay(5)
 analogRead(16)
+Serial.print(raw sensor Values 	 red: )
+Serial.print(560)
+Serial.print(	 green: )
+Serial.print(597)
+Serial.print(	 Blue: )
 Serial.println(634)
+Serial.print(Mapped sensor Values 	 red: )
+Serial.print(140)
+Serial.print(	 green: )
+Serial.print(149.25)
+Serial.print(	 Blue: )
 Serial.println(158.500000)
 LOOP_END
 PROGRAM_END

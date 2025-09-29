@@ -5,6 +5,10 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(i: )
+Serial.print(0)
+Serial.print(, j: )
+Serial.print(10)
 Serial.println(10.000000)
 LOOP_END
 PROGRAM_END

@@ -13,8 +13,6 @@
 #pragma once
 
 #include "ASTNodes.hpp"
-#include "CommandProtocol.hpp"
-#include "FlexibleCommand.hpp"
 #include "CompactAST.hpp"
 #include "EnhancedInterpreter.hpp"
 #include "ArduinoLibraryRegistry.hpp"
@@ -365,9 +363,7 @@ private:
     std::unique_ptr<ArduinoLibraryRegistry> libraryRegistry_;    // New comprehensive system
     
     // Command handling
-    FlexibleCommandListener* commandListener_;
     ResponseHandler* responseHandler_;
-    std::queue<FlexibleCommand> commandQueue_;
     
     // ULTRATHINK FIX: Context-Aware Execution Control Stack
     class ExecutionControlStack {
@@ -629,10 +625,7 @@ public:
     // EVENT HANDLERS
     // =============================================================================
     
-    /**
-     * Set command listener for receiving commands
-     */
-    void setCommandListener(FlexibleCommandListener* listener) { commandListener_ = listener; }
+    // Command listener removed - FlexibleCommand infrastructure eliminated
     
     /**
      * Set response handler for request-response operations
@@ -916,7 +909,6 @@ private:
     
     // Helper methods for Serial system
     std::string generateRequestId(const std::string& prefix);
-    CommandValue waitForResponse(const std::string& requestId);
     
     // External data functions using continuation pattern
     void requestAnalogRead(int32_t pin);
@@ -937,6 +929,8 @@ private:
     void emitSetupEnd();
     void emitLoopStart(const std::string& type, int iteration = 0);
     void emitFunctionCall(const std::string& function, const std::string& message, int iteration = 0, bool completed = false);
+    void emitFunctionCall(const std::string& function, const std::vector<std::string>& arguments);
+    void emitFunctionCall(const std::string& function, const std::vector<CommandValue>& arguments);
     void emitError(const std::string& message, const std::string& type = "RuntimeError");
 
     // Arduino hardware commands
@@ -947,6 +941,8 @@ private:
     void emitPinMode(int pin, const std::string& mode);
     void emitDelay(int duration);
     void emitDelayMicroseconds(int duration);
+
+    // Legacy emitCommand removed - FlexibleCommand infrastructure eliminated
 
     // Serial communication
     void emitSerialBegin(int baudRate);
@@ -963,10 +959,9 @@ private:
     // Loop and control flow
     void emitLoopEnd(const std::string& message, int iterations);
     void emitFunctionCallLoop(int iteration, bool completed);
-    void emitForLoopStart(const std::string& variable, int start, int end);
-    void emitForLoopEnd();
+    void emitForLoopStart();
     void emitWhileLoopStart();
-    void emitWhileLoopEnd();
+    void emitWhileLoopEnd(int iteration);
 
     // Audio
     void emitTone(int pin, int frequency);
@@ -1018,7 +1013,7 @@ private:
     void emitUnionTypeRef(const std::string& typeName, int defaultSize);
 
     // Request handling
-    CommandValue waitForResponse(const RequestId& requestId);
+    CommandValue waitForResponse(const std::string& requestId);
     void processRequestQueue();
     
     // Control flow helpers
@@ -1087,6 +1082,11 @@ private:
 // =============================================================================
 // UTILITY FUNCTIONS
 // =============================================================================
+
+/**
+ * Helper function to convert CommandValue to JSON string representation
+ */
+std::string commandValueToJsonString(const CommandValue& value);
 
 /**
  * Create interpreter from JavaScript-generated compact AST

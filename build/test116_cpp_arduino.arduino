@@ -5,7 +5,9 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(Value of x using pointer: )
 Serial.println(undefined)
+Serial.print(Modified value of y: )
 Serial.println(undefined)
 LOOP_END
 PROGRAM_END

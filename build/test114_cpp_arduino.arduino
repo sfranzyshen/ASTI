@@ -5,8 +5,11 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(Numbers[1]: )
 Serial.println(undefined)
+Serial.print(Point x: )
 Serial.println(undefined)
+Serial.print(Point y: )
 Serial.println(undefined)
 LOOP_END
 PROGRAM_END

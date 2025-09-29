@@ -5,8 +5,11 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(Initial value: )
 Serial.println(-2147483648)
+Serial.print(After increment (rollover): )
 Serial.println(-2147483647)
+Serial.print(After decrement (rollover): )
 Serial.println(-1.000000)
 LOOP_END
 PROGRAM_END

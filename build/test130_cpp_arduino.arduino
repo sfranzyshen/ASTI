@@ -5,7 +5,9 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(Flag a: )
 Serial.println(undefined)
+Serial.print(Flag c: )
 Serial.println(undefined)
 LOOP_END
 PROGRAM_END

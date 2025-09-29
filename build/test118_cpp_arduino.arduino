@@ -5,7 +5,9 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(My constant: )
 Serial.println(100.000000)
+Serial.print(My volatile: )
 Serial.println(50.000000)
 LOOP_END
 PROGRAM_END

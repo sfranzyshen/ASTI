@@ -5,6 +5,7 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(Counter: )
 Serial.println(0.000000)
 delay(1000)
 LOOP_END

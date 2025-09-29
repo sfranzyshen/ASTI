@@ -5,8 +5,11 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(Result 1 (int div, cast): )
 Serial.println(undefined)
+Serial.print(Result 2 (float div): )
 Serial.println(3.333333)
+Serial.print(Result 3 (mixed): )
 Serial.println(5.500000)
 LOOP_END
 PROGRAM_END

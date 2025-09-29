@@ -5,10 +5,15 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(Max value: )
 Serial.println(20)
+Serial.print(AND result: )
 Serial.println(undefined)
+Serial.print(OR result: )
 Serial.println(undefined)
+Serial.print(XOR result: )
 Serial.println(undefined)
+Serial.print(Shift result: )
 Serial.println(undefined)
 LOOP_END
 PROGRAM_END

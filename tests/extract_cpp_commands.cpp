@@ -81,10 +81,24 @@ int main(int argc, char* argv[]) {
         if (interpreter->isRunning()) {
             interpreter->stop();
         }
-        
 
-        // Output ONLY JSON for validation compatibility
-        std::cout << capture.getCommandsAsJson() << std::endl;
+        // Get JSON output
+        std::string jsonOutput = capture.getCommandsAsJson();
+
+        // CRITICAL FIX: ALWAYS save JSON to file for debugging and analysis
+        std::ostringstream outputFileName;
+        outputFileName << "build/test" << testNumber << "_cpp.json";
+        std::ofstream outputFile(outputFileName.str());
+        if (outputFile) {
+            outputFile << jsonOutput << std::endl;
+            outputFile.close();
+            std::cerr << "Saved C++ JSON to " << outputFileName.str() << std::endl;
+        } else {
+            std::cerr << "WARNING: Could not save JSON to " << outputFileName.str() << std::endl;
+        }
+
+        // Also output to stdout for pipe compatibility
+        std::cout << jsonOutput << std::endl;
 
         std::cerr << "EXTRACT_DEBUG: About to exit try block" << std::endl;
 

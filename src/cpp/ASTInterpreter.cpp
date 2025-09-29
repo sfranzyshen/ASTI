@@ -64,7 +64,7 @@ namespace arduino_interpreter {
 
 ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOptions& options)
     : ast_(std::move(ast)), options_(options), state_(ExecutionState::IDLE),
-      commandListener_(nullptr), responseHandler_(nullptr),
+      responseHandler_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
       maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
@@ -102,7 +102,7 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
 
 ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const InterpreterOptions& options)
     : options_(options), state_(ExecutionState::IDLE),
-      commandListener_(nullptr), responseHandler_(nullptr),
+      responseHandler_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
       maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
@@ -3928,19 +3928,19 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
             switch (format) {
                 case 16: // HEX
                     output = std::to_string(value); // Will be formatted by parent app
-                    emitCommand(FlexibleCommandFactory::createSerialPrint(output, "HEX"));
+                    emitSerialPrint(output, "HEX");
                     break;
                 case 2: // BIN
                     output = std::to_string(value);
-                    emitCommand(FlexibleCommandFactory::createSerialPrint(output, "BIN"));
+                    emitSerialPrint(output, "BIN");
                     break;
                 case 8: // OCT
                     output = std::to_string(value);
-                    emitCommand(FlexibleCommandFactory::createSerialPrint(output, "OCT"));
+                    emitSerialPrint(output, "OCT");
                     break;
                 default: // DEC
                     output = std::to_string(value);
-                    emitCommand(FlexibleCommandFactory::createSerialPrint(output, "DEC"));
+                    emitSerialPrint(output, "DEC");
                     break;
             }
         } else if (std::holds_alternative<double>(data)) {
@@ -3955,16 +3955,16 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
                 output.erase(output.find_last_not_of('0') + 1, std::string::npos);
                 output.erase(output.find_last_not_of('.') + 1, std::string::npos);
             }
-            emitCommand(FlexibleCommandFactory::createSerialPrint(output, "FLOAT"));
+            emitSerialPrint(output, "FLOAT");
         } else if (std::holds_alternative<std::string>(data)) {
             output = std::get<std::string>(data);
-            emitCommand(FlexibleCommandFactory::createSerialPrint(output, "STRING"));
+            emitSerialPrint(output, "STRING");
         } else if (std::holds_alternative<bool>(data)) {
             output = std::get<bool>(data) ? "1" : "0";
-            emitCommand(FlexibleCommandFactory::createSerialPrint(output, "BOOL"));
+            emitSerialPrint(output, "BOOL");
         } else {
             output = commandValueToString(data);
-            emitCommand(FlexibleCommandFactory::createSerialPrint(output, "AUTO"));
+            emitSerialPrint(output, "AUTO");
         }
         return std::monostate{};
     }
@@ -4374,6 +4374,42 @@ void ASTInterpreter::emitSerialPrint(const std::string& data) {
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.print\""
          << ",\"arguments\":[\"" << data << "\"],\"data\":\"" << data
          << "\",\"message\":\"Serial.print(" << data << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitSerialPrint(const std::string& data, const std::string& format) {
+    // CROSS-PLATFORM FIX: Handle numeric detection and formatting like FlexibleCommand
+    std::string displayArg = data;
+    bool isNumeric = false;
+
+    if (!data.empty()) {
+        try {
+            size_t pos;
+            std::stod(data, &pos);
+            isNumeric = (pos == data.length());
+        } catch (...) {
+            isNumeric = false;
+        }
+    }
+
+    // Don't add quotes around character literals or numeric values
+    bool isCharLiteral = (data.length() >= 3 && data[0] == '\'' && data[data.length()-1] == '\'');
+    if (!isCharLiteral && !isNumeric && (data.find(' ') != std::string::npos || data.find('\t') != std::string::npos ||
+        data.find('=') != std::string::npos || data.find(',') != std::string::npos ||
+        (!data.empty() && !std::isdigit(data[0]) && data != "true" && data != "false"))) {
+        displayArg = "\"" + data + "\"";
+    }
+
+    // For character literals like '65', data field should be just "65"
+    std::string dataField = data;
+    if (isCharLiteral && data.length() >= 3) {
+        dataField = data.substr(1, data.length() - 2);
+    }
+
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.print\""
+         << ",\"arguments\":[" << displayArg << "],\"data\":\"" << dataField
+         << "\",\"message\":\"Serial.print(" << displayArg << ")\"}";
     emitJSON(json.str());
 }
 

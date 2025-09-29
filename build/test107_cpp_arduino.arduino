@@ -5,10 +5,15 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(a: )
 Serial.println(5.000000)
+Serial.print(x: )
 Serial.println(10)
+Serial.print(y: )
 Serial.println(undefined)
+Serial.print(z: )
 Serial.println(undefined)
+Serial.print(Final result: )
 Serial.println(0)
 LOOP_END
 PROGRAM_END

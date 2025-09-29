@@ -1,5 +1,4 @@
 #include "ArduinoDataTypes.hpp"
-#include "CommandProtocol.hpp"  // For CommandValue definition
 #include <sstream>
 #include <stdexcept>
 
@@ -510,8 +509,6 @@ std::shared_ptr<ArduinoString> createString(const std::string& initialValue) {
 // =============================================================================
 // EXTENDED COMMAND VALUE SUPPORT (after namespace to avoid circular includes)
 // =============================================================================
-
-#include "CommandProtocol.hpp"
 
 namespace arduino_interpreter {
 

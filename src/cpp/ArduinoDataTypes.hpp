@@ -39,12 +39,35 @@ namespace arduino_interpreter {
     class ArduinoString;
     class ArduinoArray;
 
+    // String object wrapper for Arduino String compatibility
+    struct StringObject {
+        std::string value;
+        StringObject() = default;
+        StringObject(const std::string& s) : value(s) {}
+        StringObject(const char* s) : value(s) {}
+    };
+
     // Command system types (moved from deleted CommandProtocol.hpp)
     class Command;
     class ResponseHandler;
 
     // Type aliases
     using RequestId = std::string;
+
+    /**
+     * Dynamic command value that can hold any JSON-compatible type
+     * (moved from deleted FlexibleCommand.hpp)
+     */
+    using FlexibleCommandValue = std::variant<
+        std::monostate,    // null
+        bool,              // boolean
+        int32_t,           // integer (32-bit)
+        int64_t,           // long integer (64-bit, for timestamps)
+        double,            // floating point
+        std::string,       // string
+        StringObject,      // string object wrapper
+        std::vector<std::variant<bool, int32_t, double, std::string>>  // array
+    >;
 
     enum class CommandType {
         VERSION_INFO,
@@ -262,9 +285,56 @@ bool isStringType(const EnhancedCommandValue& value);
 // String representation for debugging
 std::string enhancedCommandValueToString(const EnhancedCommandValue& value);
 
+// Command value utilities (moved from deleted CommandProtocol.hpp)
+std::string commandValueToString(const CommandValue& value);
+bool commandValuesEqual(const CommandValue& a, const CommandValue& b);
+
 // Factory functions for creating complex types
 std::shared_ptr<ArduinoStruct> createStruct(const std::string& typeName = "struct");
 std::shared_ptr<ArduinoArray> createArray(const std::string& elementType, const std::vector<size_t>& dimensions);
 std::shared_ptr<ArduinoString> createString(const std::string& initialValue = "");
+
+// =============================================================================
+// CONVERT COMMANDVALUE TO FLEXIBLECOMMANDVALUE
+// =============================================================================
+
+/**
+ * Helper function to convert CommandValue to FlexibleCommandValue
+ * (moved from deleted FlexibleCommand.hpp)
+ */
+template<typename OldCommandValue>
+inline FlexibleCommandValue convertCommandValue(const OldCommandValue& oldValue) {
+    return std::visit([](auto&& arg) -> FlexibleCommandValue {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, std::vector<int32_t>>) {
+            // Convert typed int array to mixed array format
+            std::vector<std::variant<bool, int32_t, double, std::string>> mixedArray;
+            for (const auto& elem : arg) {
+                mixedArray.emplace_back(elem);
+            }
+            return mixedArray;
+        } else if constexpr (std::is_same_v<T, std::vector<double>>) {
+            // Convert typed double array to mixed array format
+            std::vector<std::variant<bool, int32_t, double, std::string>> mixedArray;
+            for (const auto& elem : arg) {
+                mixedArray.emplace_back(elem);
+            }
+            return mixedArray;
+        } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
+            // Convert typed string array to mixed array format
+            std::vector<std::variant<bool, int32_t, double, std::string>> mixedArray;
+            for (const auto& elem : arg) {
+                mixedArray.emplace_back(elem);
+            }
+            return mixedArray;
+        } else if constexpr (std::is_same_v<T, uint32_t>) {
+            // Convert uint32_t to int64_t for FlexibleCommandValue
+            return static_cast<int64_t>(arg);
+        } else {
+            // Direct conversion for basic types
+            return arg;
+        }
+    }, oldValue);
+}
 
 } // namespace arduino_interpreter

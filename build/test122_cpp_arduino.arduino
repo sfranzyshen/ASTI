@@ -5,8 +5,11 @@ Serial.begin(9600)
 SETUP_END
 LOOP_START
 LOOP_START
+Serial.print(Size of int: )
 Serial.println(undefined)
+Serial.print(Size of char: )
 Serial.println(undefined)
+Serial.print(Size of float: )
 Serial.println(undefined)
 LOOP_END
 PROGRAM_END
