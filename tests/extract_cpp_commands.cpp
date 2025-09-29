@@ -54,20 +54,19 @@ int main(int argc, char* argv[]) {
     file.close();
     try {
         // Set up C++ interpreter with command capture - use constructor that loads compact AST directly
-        CommandStreamCapture capture;
+        CommandStreamCapture capture;  // Captures stdout automatically in constructor
         MockResponseHandler responseHandler;
-        
+
         InterpreterOptions options;
         options.verbose = false;
         options.debug = false;
         options.maxLoopIterations = Config::TEST_MAX_LOOP_ITERATIONS; // MATCH JAVASCRIPT: Use exactly 1 iteration like JS test data
         options.syncMode = true; // TEST MODE: Enable synchronous responses for digitalRead/analogRead
-        
+
         auto interpreter = std::make_unique<ASTInterpreter>(compactAST.data(), compactAST.size(), options);
-        interpreter->setCommandListener(&capture);
         interpreter->setResponseHandler(&responseHandler);
-        
-        // Execute interpreter
+
+        // Execute interpreter (JSON output captured by CommandStreamCapture)
         interpreter->start();
         
         // Wait for completion with timeout

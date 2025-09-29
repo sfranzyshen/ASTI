@@ -49,10 +49,20 @@ namespace arduino_interpreter {
 
     // Command system types (moved from deleted CommandProtocol.hpp)
     class Command;
-    class ResponseHandler;
 
     // Type aliases
     using RequestId = std::string;
+
+    /**
+     * Response handler interface for async operations
+     * Handles responses from external systems (analogRead, digitalRead, etc.)
+     */
+    class ResponseHandler {
+    public:
+        virtual ~ResponseHandler() = default;
+        virtual void handleResponse(const RequestId& requestId, const CommandValue& value) = 0;
+        virtual bool waitForResponse(const RequestId& requestId, CommandValue& result, uint32_t timeoutMs) = 0;
+    };
 
     /**
      * Dynamic command value that can hold any JSON-compatible type

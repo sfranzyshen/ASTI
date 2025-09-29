@@ -994,8 +994,11 @@ private:
     void emitMultiSerialRequest(const std::string& portName, const std::string& method, const std::string& requestId);
     void emitMultiSerialCommand(const std::string& portName, const std::string& methodName);
 
-    // PulseIn
+    // PulseIn and timing
     void emitPulseInRequest(int pin, int value, int timeout, const std::string& requestId);
+    void emitMillisRequest();
+    void emitMicrosRequest();
+    void emitSerialRequestWithChar(const std::string& type, char terminator, const std::string& requestId);
 
     // Advanced C++ features
     void emitConstructorRegistered(const std::string& constructorName);

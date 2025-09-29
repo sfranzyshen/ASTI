@@ -3736,19 +3736,19 @@ CommandValue ASTInterpreter::handlePinOperation(const std::string& function, con
     if (function == "pinMode" && args.size() >= 2) {
         int32_t pin = convertToInt(args[0]);
         int32_t modeVal = convertToInt(args[1]);
-        
-        PinMode mode = static_cast<PinMode>(modeVal);
-        emitPinMode(pin, mode == DigitalMode::OUTPUT ? "OUTPUT" : "INPUT");
-        
+
+        // Convert mode value to string (0=INPUT, 1=OUTPUT)
+        emitPinMode(pin, modeVal == 1 ? "OUTPUT" : "INPUT");
+
         return std::monostate{};
-        
+
     } else if (function == "digitalWrite" && args.size() >= 2) {
         int32_t pin = convertToInt(args[0]);
         int32_t value = convertToInt(args[1]);
-        
-        DigitalValue digitalVal = static_cast<DigitalValue>(value);
-        emitDigitalWrite(pin, static_cast<int32_t>(digitalVal));
-        
+
+        // Direct value output (0=LOW, 1=HIGH)
+        emitDigitalWrite(pin, value);
+
         return std::monostate{};
         
     } else if (function == "digitalRead" && args.size() >= 1) {
@@ -4221,14 +4221,7 @@ bool ASTInterpreter::isNumeric(const CommandValue& value) {
 
 // Simple JSON emission methods (replacing FlexibleCommand)
 void ASTInterpreter::emitJSON(const std::string& jsonString) {
-    // For now, output directly - will be captured by test infrastructure
-    // This bypasses FlexibleCommand completely
-    if (commandListener_) {
-        // TODO: Update listener interface to accept JSON strings
-        // For now, create a temporary FlexibleCommand for compatibility
-        // This will be removed once we update the listener
-    }
-
+    // Direct JSON output - captured by test infrastructure
     // Update statistics
     commandsGenerated_++;
     currentCommandMemory_ += jsonString.length();
@@ -4288,6 +4281,35 @@ void ASTInterpreter::emitFunctionCall(const std::string& function, const std::st
     emitJSON(json.str());
 }
 
+void ASTInterpreter::emitFunctionCall(const std::string& function, const std::vector<std::string>& arguments) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << function << "\",\"arguments\":[";
+    for (size_t i = 0; i < arguments.size(); i++) {
+        if (i > 0) json << ",";
+        json << "\"" << arguments[i] << "\"";
+    }
+    json << "]}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitFunctionCall(const std::string& function, const std::vector<CommandValue>& arguments) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << function << "\",\"arguments\":[";
+    for (size_t i = 0; i < arguments.size(); i++) {
+        if (i > 0) json << ",";
+        json << commandValueToJsonString(arguments[i]);
+    }
+    json << "]}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitSerialRequest(const std::string& type, const std::string& requestId) {
+    std::ostringstream json;
+    json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"Serial." << type
+         << "\",\"requestType\":\"" << type << "\",\"requestId\":\"" << requestId << "\"}";
+    emitJSON(json.str());
+}
+
 void ASTInterpreter::emitError(const std::string& message, const std::string& type) {
     std::ostringstream json;
     json << "{\"type\":\"ERROR\",\"timestamp\":0,\"message\":\"" << message
@@ -4296,11 +4318,6 @@ void ASTInterpreter::emitError(const std::string& message, const std::string& ty
 
     // Track error statistics
     errorsGenerated_++;
-
-    if (commandListener_) {
-        // TODO: Update listener interface
-        // commandListener_->onError(message);
-    }
 }
 
 // Arduino hardware commands
@@ -4432,6 +4449,13 @@ void ASTInterpreter::emitVarSetConstString(const std::string& varName, const std
     std::ostringstream json;
     json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << varName
          << "\",\"value\":{\"value\":\"" << stringVal << "\"},\"isConst\":true}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitVarSetArduinoString(const std::string& varName, const std::string& stringVal) {
+    std::ostringstream json;
+    json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << varName
+         << "\",\"value\":{\"value\":\"" << stringVal << "\",\"type\":\"ArduinoString\"}}";
     emitJSON(json.str());
 }
 
@@ -4632,6 +4656,26 @@ void ASTInterpreter::emitPulseInRequest(int pin, int value, int timeout, const s
     emitJSON(json.str());
 }
 
+void ASTInterpreter::emitMillisRequest() {
+    std::ostringstream json;
+    json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"millis\",\"requestType\":\"millis\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitMicrosRequest() {
+    std::ostringstream json;
+    json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"micros\",\"requestType\":\"micros\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitSerialRequestWithChar(const std::string& type, char terminator, const std::string& requestId) {
+    std::ostringstream json;
+    json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"Serial." << type
+         << "\",\"requestType\":\"" << type << "\",\"terminator\":\"" << terminator
+         << "\",\"requestId\":\"" << requestId << "\"}";
+    emitJSON(json.str());
+}
+
 void ASTInterpreter::emitConstructorRegistered(const std::string& constructorName) {
     std::ostringstream json;
     json << "{\"type\":\"CONSTRUCTOR_REGISTERED\",\"timestamp\":0,\"name\":\"" << constructorName << "\"}";
@@ -4735,10 +4779,126 @@ std::string commandValueToJsonString(const CommandValue& value) {
             return std::to_string(v);
         } else if constexpr (std::is_same_v<T, std::string>) {
             return "\"" + v + "\"";
+        } else if constexpr (std::is_same_v<T, std::vector<int32_t>>) {
+            std::ostringstream json;
+            json << "[";
+            for (size_t i = 0; i < v.size(); i++) {
+                if (i > 0) json << ",";
+                json << v[i];
+            }
+            json << "]";
+            return json.str();
+        } else if constexpr (std::is_same_v<T, std::vector<double>>) {
+            std::ostringstream json;
+            json << "[";
+            for (size_t i = 0; i < v.size(); i++) {
+                if (i > 0) json << ",";
+                json << v[i];
+            }
+            json << "]";
+            return json.str();
+        } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
+            std::ostringstream json;
+            json << "[";
+            for (size_t i = 0; i < v.size(); i++) {
+                if (i > 0) json << ",";
+                json << "\"" << v[i] << "\"";
+            }
+            json << "]";
+            return json.str();
         } else {
-            return "\"" + std::to_string(v) + "\"";
+            return "null";
         }
     }, value);
+}
+
+// Helper to convert CommandValue to string for display/debugging (non-JSON)
+std::string commandValueToString(const CommandValue& value) {
+    return std::visit([](const auto& v) -> std::string {
+        using T = std::decay_t<decltype(v)>;
+        if constexpr (std::is_same_v<T, std::monostate>) {
+            return "null";
+        } else if constexpr (std::is_same_v<T, bool>) {
+            return v ? "true" : "false";
+        } else if constexpr (std::is_same_v<T, int32_t>) {
+            return std::to_string(v);
+        } else if constexpr (std::is_same_v<T, uint32_t>) {
+            return std::to_string(v);
+        } else if constexpr (std::is_same_v<T, double>) {
+            return std::to_string(v);
+        } else if constexpr (std::is_same_v<T, std::string>) {
+            return v;
+        } else if constexpr (std::is_same_v<T, std::vector<int32_t>>) {
+            std::ostringstream os;
+            os << "[";
+            for (size_t i = 0; i < v.size(); i++) {
+                if (i > 0) os << ",";
+                os << v[i];
+            }
+            os << "]";
+            return os.str();
+        } else if constexpr (std::is_same_v<T, std::vector<double>>) {
+            std::ostringstream os;
+            os << "[";
+            for (size_t i = 0; i < v.size(); i++) {
+                if (i > 0) os << ",";
+                os << v[i];
+            }
+            os << "]";
+            return os.str();
+        } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
+            std::ostringstream os;
+            os << "[";
+            for (size_t i = 0; i < v.size(); i++) {
+                if (i > 0) os << ",";
+                os << v[i];
+            }
+            os << "]";
+            return os.str();
+        } else {
+            return "null";
+        }
+    }, value);
+}
+
+// Helper to compare two CommandValue objects for equality
+bool commandValuesEqual(const CommandValue& a, const CommandValue& b) {
+    // If types don't match, not equal
+    if (a.index() != b.index()) {
+        return false;
+    }
+
+    return std::visit([&b](const auto& aVal) -> bool {
+        using T = std::decay_t<decltype(aVal)>;
+        if constexpr (std::is_same_v<T, std::monostate>) {
+            return std::holds_alternative<std::monostate>(b);
+        } else if constexpr (std::is_same_v<T, bool>) {
+            auto bVal = std::get_if<bool>(&b);
+            return bVal && (*bVal == aVal);
+        } else if constexpr (std::is_same_v<T, int32_t>) {
+            auto bVal = std::get_if<int32_t>(&b);
+            return bVal && (*bVal == aVal);
+        } else if constexpr (std::is_same_v<T, uint32_t>) {
+            auto bVal = std::get_if<uint32_t>(&b);
+            return bVal && (*bVal == aVal);
+        } else if constexpr (std::is_same_v<T, double>) {
+            auto bVal = std::get_if<double>(&b);
+            return bVal && (*bVal == aVal);
+        } else if constexpr (std::is_same_v<T, std::string>) {
+            auto bVal = std::get_if<std::string>(&b);
+            return bVal && (*bVal == aVal);
+        } else if constexpr (std::is_same_v<T, std::vector<int32_t>>) {
+            auto bVal = std::get_if<std::vector<int32_t>>(&b);
+            return bVal && (*bVal == aVal);
+        } else if constexpr (std::is_same_v<T, std::vector<double>>) {
+            auto bVal = std::get_if<std::vector<double>>(&b);
+            return bVal && (*bVal == aVal);
+        } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
+            auto bVal = std::get_if<std::vector<std::string>>(&b);
+            return bVal && (*bVal == aVal);
+        }
+        return false;
+    }, a);
 }
 
 void ASTInterpreter::emitLoopEnd(const std::string& message, int iterations) {
@@ -4916,7 +5076,7 @@ void ASTInterpreter::verboseLog(const std::string& message) {
 
 void ASTInterpreter::logExecutionState(const std::string& context) {
     if (options_.debug) {
-        DEBUG_OUT << "[STATE] " << context << " - State: " << executionStateToString(state_) << std::endl;
+        DEBUG_OUT << "[STATE] " << context << " - State: " << static_cast<int>(state_) << std::endl;
     }
 }
 
@@ -5473,23 +5633,17 @@ void ASTInterpreter::visit(arduino_ast::ArrayDeclaratorNode& node) {
     } else {
     }
 
-    // Create array with default values to match JavaScript behavior
-    // Note: FlexibleCommand arrays use std::vector<std::variant<bool, int32_t, double, std::string>>
-    // which doesn't support null, so we'll use integer 0 as placeholder
-    std::vector<std::variant<bool, int32_t, double, std::string>> defaultArray;
-    for (int i = 0; i < arraySize; i++) {
-        defaultArray.push_back(static_cast<int32_t>(0)); // Default to 0
-    }
-
-    // Emit VAR_SET command to ensure array is declared
-    CommandValue arrayValue = defaultArray;
-    emitVarSet(varName, commandValueToJsonString(arrayValue));
-
-    // Store array in scope manager - using CommandValue array format for compatibility
+    // Create array with default values (all zeros)
     std::vector<int32_t> commandArray;
     for (int i = 0; i < arraySize; i++) {
         commandArray.push_back(0);
     }
+
+    // Emit VAR_SET command to ensure array is declared
+    CommandValue arrayValue = commandArray;
+    emitVarSet(varName, commandValueToJsonString(arrayValue));
+
+    // Store array in scope manager
     Variable arrayVar(commandArray);
     scopeManager_->setVariable(varName, arrayVar);
     
@@ -5823,7 +5977,18 @@ void ASTInterpreter::visit(arduino_ast::EnumMemberNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'enum_member', name: memberName, value: memberValue}
-    emitEnumMember(memberName, memberValue);
+    // Extract int value from FlexibleCommandValue variant
+    int intValue = std::visit([](auto&& arg) -> int {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, int64_t>) {
+            return static_cast<int>(arg);
+        } else if constexpr (std::is_same_v<T, bool>) {
+            return arg ? 1 : 0;
+        } else {
+            return 0;
+        }
+    }, memberValue);
+    emitEnumMember(memberName, intValue);
     
     // Set lastExpressionResult for any parent expressions
     lastExpressionResult_ = std::visit([](auto&& arg) -> CommandValue {
@@ -5902,7 +6067,18 @@ void ASTInterpreter::visit(arduino_ast::LambdaExpressionNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'lambda_function', captures, parameters, body}
-    emitLambdaFunction(captures, parameters, "lambda_body");
+    // Convert vectors to comma-separated strings
+    std::string capturesStr;
+    for (size_t i = 0; i < captures.size(); i++) {
+        if (i > 0) capturesStr += ",";
+        capturesStr += captures[i];
+    }
+    std::string parametersStr;
+    for (size_t i = 0; i < parameters.size(); i++) {
+        if (i > 0) parametersStr += ",";
+        parametersStr += parameters[i];
+    }
+    emitLambdaFunction(capturesStr, parametersStr, "lambda_body");
     
     // Lambda expressions return function objects in C++
     lastExpressionResult_ = std::string("lambda_function");
@@ -5964,7 +6140,13 @@ void ASTInterpreter::visit(arduino_ast::MultipleStructMembersNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'multiple_struct_members', members, memberType}
-    emitMultipleStructMembers(memberNames, "unknown");
+    // Convert vector to comma-separated string
+    std::string memberNamesStr;
+    for (size_t i = 0; i < memberNames.size(); i++) {
+        if (i > 0) memberNamesStr += ",";
+        memberNamesStr += memberNames[i];
+    }
+    emitMultipleStructMembers(memberNamesStr, "unknown");
     
     if (options_.verbose) {
         DEBUG_OUT << "Multiple struct members: " << node.getMembers().size() << " members" << std::endl;
@@ -5995,7 +6177,22 @@ void ASTInterpreter::visit(arduino_ast::NewExpressionNode& node) {
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'object_instance', className, arguments, isHeapAllocated: true}
-    emitObjectInstance(typeName, args);
+    // Convert vector to JSON array string
+    std::ostringstream argsJson;
+    argsJson << "[";
+    for (size_t i = 0; i < args.size(); i++) {
+        if (i > 0) argsJson << ",";
+        std::visit([&argsJson](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, std::string>) {
+                argsJson << "\"" << arg << "\"";
+            } else {
+                argsJson << arg;
+            }
+        }, args[i]);
+    }
+    argsJson << "]";
+    emitObjectInstance(typeName, argsJson.str());
     
     // For Arduino simulation, we'll represent new objects as strings
     lastExpressionResult_ = std::string("new_" + typeName);
