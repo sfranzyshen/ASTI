@@ -678,11 +678,10 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
         // Emit LOOP_LIMIT_REACHED instead of WHILE_LOOP end (matches JavaScript exactly)
         std::string message = "While loop limit reached: completed " + std::to_string(iteration) +
                              " iterations (max: " + std::to_string(maxLoopIterations_) + ")";
-        FlexibleCommand cmd("LOOP_LIMIT_REACHED");
-        cmd.set("phase", std::string("end"))
-           .set("iterations", static_cast<int32_t>(iteration))
-           .set("message", message);
-        emitCommand(cmd);
+        std::ostringstream json;
+        json << "{\"type\":\"LOOP_LIMIT_REACHED\",\"timestamp\":0,\"phase\":\"end\""
+             << ",\"iterations\":" << iteration << ",\"message\":\"" << message << "\"}";
+        emitJSON(json.str());
 
         // ULTRATHINK: Set context-aware execution control instead of global flag
         shouldContinueExecution_ = false;  // Keep for backward compatibility
@@ -3239,17 +3238,12 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         int32_t timeout = args.size() > 2 ? convertToInt(args[2]) : 1000000;
 
         // Create FUNCTION_CALL command to match JavaScript implementation
-        std::vector<std::variant<bool, int32_t, double, std::string>> commandArgs = {pin, value, timeout};
-
-        FlexibleCommand cmd("FUNCTION_CALL");
-        cmd.set("function", std::string("pulseIn"));
-        cmd.set("arguments", commandArgs);
-        cmd.set("pin", pin);
-        cmd.set("value", value);
-        cmd.set("timeout", timeout);
-        cmd.set("timestamp", 0);
-        cmd.set("message", std::string("pulseIn(" + std::to_string(pin) + ", " + std::to_string(value) + ")"));
-        emitCommand(cmd);
+        std::ostringstream json;
+        json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"pulseIn\""
+             << ",\"arguments\":[" << pin << "," << value << "," << timeout << "]"
+             << ",\"pin\":" << pin << ",\"value\":" << value << ",\"timeout\":" << timeout
+             << ",\"message\":\"pulseIn(" << pin << ", " << value << ")\"}";
+        emitJSON(json.str());
 
         // Return mock value for testing (typical pulse width in microseconds)
         return static_cast<int32_t>(1500);
