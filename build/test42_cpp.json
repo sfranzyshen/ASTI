@@ -1,0 +1,36 @@
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"11.0.0","status":"started"}
+{"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
+{"type":"VAR_SET","timestamp":0,"variable":"pingPin","value":7.000000,"isConst":true}
+{"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
+{"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"VAR_SET","timestamp":0,"variable":"duration","value":null}
+{"type":"VAR_SET","timestamp":0,"variable":"inches","value":null}
+{"type":"VAR_SET","timestamp":0,"variable":"cm","value":null}
+{"type":"PIN_MODE","timestamp":0,"pin":7,"mode":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":7,"value":0}
+{"type":"DELAY_MICROSECONDS","timestamp":0,"duration":2,"actualDelay":2}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":7,"value":1}
+{"type":"DELAY_MICROSECONDS","timestamp":0,"duration":5,"actualDelay":5}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":7,"value":0}
+{"type":"PIN_MODE","timestamp":0,"pin":7,"mode":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"pulseIn","arguments":[7,1,1000000],"pin":7,"value":1,"timeout":1000000,"message":"pulseIn(7, 1)"}
+{"type":"VAR_SET","timestamp":0,"variable":"duration","value":1500}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"microsecondsToInches","arguments":[1500]}
+{"type":"VAR_SET","timestamp":0,"variable":"inches","value":10.135135}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"microsecondsToCentimeters","arguments":[1500]}
+{"type":"VAR_SET","timestamp":0,"variable":"cm","value":25.862069}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[10.135135135135135],"data":"10.135135135135135","message":"Serial.print(10.135135135135135)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["in, "],"data":"in, ","message":"Serial.print("in, ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[25.862068965517242],"data":"25.862068965517242","message":"Serial.print(25.862068965517242)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["cm"],"data":"cm","message":"Serial.print("cm")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[""],"data":"","message":"Serial.println()"}
+{"type":"DELAY","timestamp":0,"duration":100,"actualDelay":100}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program execution stopped"}
+

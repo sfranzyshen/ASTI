@@ -8,8 +8,8 @@
 
 cmake_minimum_required(VERSION 3.12)
 
-project(ArduinoASTInterpreter 
-    VERSION 1.0.0 
+project(ArduinoASTInterpreter
+    VERSION 12.0.0
     DESCRIPTION "ESP32-S3 Arduino AST Interpreter - Host Development"
     LANGUAGES CXX)
 

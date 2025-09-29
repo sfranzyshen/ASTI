@@ -1,0 +1,35 @@
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"11.0.0","status":"started"}
+{"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
+{"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
+{"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
+{"type":"WHILE_LOOP","timestamp":0,"phase":"end","iterations":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["
+
+String length() and trim():"],"data":"
+
+String length() and trim():","message":"Serial.println(
+
+String length() and trim():)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[""],"data":"","message":"Serial.println()"}
+{"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":{"value":"Hello!       ","type":"ArduinoString"}}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Hello!       "],"data":"Hello!       ","message":"Serial.print("Hello!       ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["<--- end of string. Length: "],"data":"<--- end of string. Length: ","message":"Serial.print("<--- end of string. Length: ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["13"],"data":"13","message":"Serial.println(13)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.trim","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.trim","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Hello!       "],"data":"Hello!       ","message":"Serial.print("Hello!       ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["<--- end of trimmed string. Length: "],"data":"<--- end of trimmed string. Length: ","message":"Serial.print("<--- end of trimmed string. Length: ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["13"],"data":"13","message":"Serial.println(13)"}
+{"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
+{"type":"WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}
+{"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"While loop limit reached: completed 1 iterations (max: 1)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program execution stopped"}
+

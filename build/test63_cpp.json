@@ -1,0 +1,56 @@
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"11.0.0","status":"started"}
+{"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
+{"type":"VAR_SET","timestamp":0,"variable":"switchPin","value":2.000000,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"mouseButton","value":3.000000,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"xAxis","value":14,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"yAxis","value":15,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"ledPin","value":5.000000,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"range","value":12}
+{"type":"VAR_SET","timestamp":0,"variable":"responseDelay","value":5}
+{"type":"VAR_SET","timestamp":0,"variable":"threshold","value":3}
+{"type":"VAR_SET","timestamp":0,"variable":"center","value":6}
+{"type":"VAR_SET","timestamp":0,"variable":"mouseIsActive","value":false}
+{"type":"VAR_SET","timestamp":0,"variable":"lastSwitchState","value":0}
+{"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
+{"type":"PIN_MODE","timestamp":0,"pin":2,"mode":0}
+{"type":"PIN_MODE","timestamp":0,"pin":3,"mode":0}
+{"type":"PIN_MODE","timestamp":0,"pin":5,"mode":1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Mouse.begin","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: Mouse.begin","errorType":"RuntimeError"}
+{"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_READ_REQUEST","timestamp":0,"pin":2,"requestId":"digitalRead_static_2"}
+{"type":"VAR_SET","timestamp":0,"variable":"switchState","value":0}
+{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"VAR_SET","timestamp":0,"variable":"lastSwitchState","value":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"readAxis","arguments":[14]}
+{"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
+{"type":"VAR_SET","timestamp":0,"variable":"reading","value":560}
+{"type":"VAR_SET","timestamp":0,"variable":"reading","value":7}
+{"type":"VAR_SET","timestamp":0,"variable":"distance","value":1}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"VAR_SET","timestamp":0,"variable":"distance","value":0.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"xReading","value":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"readAxis","arguments":[15]}
+{"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":15,"requestId":"analogRead_static_15"}
+{"type":"VAR_SET","timestamp":0,"variable":"reading","value":597}
+{"type":"VAR_SET","timestamp":0,"variable":"reading","value":7}
+{"type":"VAR_SET","timestamp":0,"variable":"distance","value":1}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"VAR_SET","timestamp":0,"variable":"distance","value":0.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"yReading","value":0}
+{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"DIGITAL_READ_REQUEST","timestamp":0,"pin":3,"requestId":"digitalRead_static_3"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"ERROR","timestamp":0,"message":"Undefined variable: MOUSE_LEFT","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Mouse.isPressed","arguments":["null"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: Mouse.isPressed","errorType":"RuntimeError"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":null,"conditionDisplay":"null","branch":"else"}
+{"type":"DELAY","timestamp":0,"duration":5,"actualDelay":5}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program execution stopped"}
+

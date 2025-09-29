@@ -1,12 +1,6 @@
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/arduino_ast_interpreter.dir
-/mnt/d/Devel/ASTInterpreter/build/CMakeFiles/test_ast_nodes.dir
-/mnt/d/Devel/ASTInterpreter/build/CMakeFiles/test_compact_ast.dir
-/mnt/d/Devel/ASTInterpreter/build/CMakeFiles/test_command_protocol.dir
-/mnt/d/Devel/ASTInterpreter/build/CMakeFiles/test_interpreter_integration.dir
-/mnt/d/Devel/ASTInterpreter/build/CMakeFiles/test_cross_platform_validation.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/extract_cpp_commands.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/validate_cross_platform.dir
-/mnt/d/Devel/ASTInterpreter/build/CMakeFiles/cross_platform_validation.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/package.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/package_source.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/test.dir

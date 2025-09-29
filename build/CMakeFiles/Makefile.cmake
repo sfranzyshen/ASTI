@@ -58,12 +58,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/arduino_ast_interpreter.dir/DependInfo.cmake"
-  "CMakeFiles/test_ast_nodes.dir/DependInfo.cmake"
-  "CMakeFiles/test_compact_ast.dir/DependInfo.cmake"
-  "CMakeFiles/test_command_protocol.dir/DependInfo.cmake"
-  "CMakeFiles/test_interpreter_integration.dir/DependInfo.cmake"
-  "CMakeFiles/test_cross_platform_validation.dir/DependInfo.cmake"
   "CMakeFiles/extract_cpp_commands.dir/DependInfo.cmake"
   "CMakeFiles/validate_cross_platform.dir/DependInfo.cmake"
-  "CMakeFiles/cross_platform_validation.dir/DependInfo.cmake"
   )

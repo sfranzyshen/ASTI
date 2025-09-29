@@ -1,0 +1,40 @@
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"11.0.0","status":"started"}
+{"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
+{"type":"VAR_SET","timestamp":0,"variable":"sensorPin","value":14,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"baselineTemp","value":20.000000,"isConst":true}
+{"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
+{"type":"FOR_LOOP","timestamp":0,"phase":"start"}
+{"type":"VAR_SET","timestamp":0,"variable":"pinNumber","value":2}
+{"type":"FOR_LOOP","timestamp":0,"phase":"iteration","iteration":0}
+{"type":"PIN_MODE","timestamp":0,"pin":2,"mode":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":2,"value":0}
+{"type":"VAR_SET","timestamp":0,"variable":"pinNumber","value":3}
+{"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":1,"maxIterations":1}
+{"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
+{"type":"VAR_SET","timestamp":0,"variable":"sensorVal","value":560}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["sensor Value: "],"data":"sensor Value: ","message":"Serial.print("sensor Value: ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[560],"data":"560","message":"Serial.print(560)"}
+{"type":"VAR_SET","timestamp":0,"variable":"voltage","value":2.734375}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[", Volts: "],"data":", Volts: ","message":"Serial.print(", Volts: ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[2.734375],"data":"2.734375","message":"Serial.print(2.734375)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[", degrees C: "],"data":", degrees C: ","message":"Serial.print(", degrees C: ")"}
+{"type":"VAR_SET","timestamp":0,"variable":"temperature","value":223.437500}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["223.437500"],"data":"223.437500","message":"Serial.println(223.437500)"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":2,"value":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":3,"value":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":4,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1,"actualDelay":1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program execution stopped"}
+

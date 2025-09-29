@@ -1,2 +1,0 @@
-# Hashes of file build rules.
-c3b4fb8d9a2db38a6aaf8f03e2786739 CMakeFiles/cross_platform_validation

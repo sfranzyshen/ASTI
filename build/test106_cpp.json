@@ -1,0 +1,21 @@
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"11.0.0","status":"started"}
+{"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
+{"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
+{"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"ERROR","timestamp":0,"message":"Undefined variable: myFunc","errorType":"RuntimeError"}
+{"type":"ERROR","timestamp":0,"message":"Address-of operator requires variable name","errorType":"RuntimeError"}
+{"type":"VAR_SET","timestamp":0,"variable":"ptr","value":null}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"callFunc","arguments":[null]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Result: "],"data":"Result: ","message":"Serial.print("Result: ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"funcPtr","arguments":["10.000000","20.000000"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: funcPtr","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println(null)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program execution stopped"}
+

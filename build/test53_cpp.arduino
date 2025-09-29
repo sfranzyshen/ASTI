@@ -1,0 +1,18 @@
+VERSION: interpreter v11.0.0 started
+PROGRAM_START
+SETUP_START
+Serial.begin(9600)
+Serial.println( String length() and trim():)
+SETUP_END
+LOOP_START
+LOOP_START
+Serial.print(Hello!       )
+Serial.print(<--- end of string. Length: )
+Serial.println(13)
+Serial.print(Hello!       )
+Serial.print(<--- end of trimmed string. Length: )
+Serial.println(13)
+LOOP_END
+PROGRAM_END
+PROGRAM_END
+

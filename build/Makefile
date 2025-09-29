@@ -205,71 +205,6 @@ arduino_ast_interpreter/fast:
 .PHONY : arduino_ast_interpreter/fast
 
 #=============================================================================
-# Target rules for targets named test_ast_nodes
-
-# Build rule for target.
-test_ast_nodes: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_ast_nodes
-.PHONY : test_ast_nodes
-
-# fast build rule for target.
-test_ast_nodes/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ast_nodes.dir/build.make CMakeFiles/test_ast_nodes.dir/build
-.PHONY : test_ast_nodes/fast
-
-#=============================================================================
-# Target rules for targets named test_compact_ast
-
-# Build rule for target.
-test_compact_ast: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_compact_ast
-.PHONY : test_compact_ast
-
-# fast build rule for target.
-test_compact_ast/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_compact_ast.dir/build.make CMakeFiles/test_compact_ast.dir/build
-.PHONY : test_compact_ast/fast
-
-#=============================================================================
-# Target rules for targets named test_command_protocol
-
-# Build rule for target.
-test_command_protocol: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_command_protocol
-.PHONY : test_command_protocol
-
-# fast build rule for target.
-test_command_protocol/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_command_protocol.dir/build.make CMakeFiles/test_command_protocol.dir/build
-.PHONY : test_command_protocol/fast
-
-#=============================================================================
-# Target rules for targets named test_interpreter_integration
-
-# Build rule for target.
-test_interpreter_integration: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_interpreter_integration
-.PHONY : test_interpreter_integration
-
-# fast build rule for target.
-test_interpreter_integration/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_interpreter_integration.dir/build.make CMakeFiles/test_interpreter_integration.dir/build
-.PHONY : test_interpreter_integration/fast
-
-#=============================================================================
-# Target rules for targets named test_cross_platform_validation
-
-# Build rule for target.
-test_cross_platform_validation: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_cross_platform_validation
-.PHONY : test_cross_platform_validation
-
-# fast build rule for target.
-test_cross_platform_validation/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cross_platform_validation.dir/build.make CMakeFiles/test_cross_platform_validation.dir/build
-.PHONY : test_cross_platform_validation/fast
-
-#=============================================================================
 # Target rules for targets named extract_cpp_commands
 
 # Build rule for target.
@@ -294,19 +229,6 @@ validate_cross_platform: cmake_check_build_system
 validate_cross_platform/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/build
 .PHONY : validate_cross_platform/fast
-
-#=============================================================================
-# Target rules for targets named cross_platform_validation
-
-# Build rule for target.
-cross_platform_validation: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 cross_platform_validation
-.PHONY : cross_platform_validation
-
-# fast build rule for target.
-cross_platform_validation/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cross_platform_validation.dir/build.make CMakeFiles/cross_platform_validation.dir/build
-.PHONY : cross_platform_validation/fast
 
 libs/CompactAST/src/CompactAST.o: libs/CompactAST/src/CompactAST.cpp.o
 .PHONY : libs/CompactAST/src/CompactAST.o
@@ -500,126 +422,6 @@ tests/extract_cpp_commands.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extract_cpp_commands.dir/build.make CMakeFiles/extract_cpp_commands.dir/tests/extract_cpp_commands.cpp.s
 .PHONY : tests/extract_cpp_commands.cpp.s
 
-tests/test_ast_nodes.o: tests/test_ast_nodes.cpp.o
-.PHONY : tests/test_ast_nodes.o
-
-# target to build an object file
-tests/test_ast_nodes.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ast_nodes.dir/build.make CMakeFiles/test_ast_nodes.dir/tests/test_ast_nodes.cpp.o
-.PHONY : tests/test_ast_nodes.cpp.o
-
-tests/test_ast_nodes.i: tests/test_ast_nodes.cpp.i
-.PHONY : tests/test_ast_nodes.i
-
-# target to preprocess a source file
-tests/test_ast_nodes.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ast_nodes.dir/build.make CMakeFiles/test_ast_nodes.dir/tests/test_ast_nodes.cpp.i
-.PHONY : tests/test_ast_nodes.cpp.i
-
-tests/test_ast_nodes.s: tests/test_ast_nodes.cpp.s
-.PHONY : tests/test_ast_nodes.s
-
-# target to generate assembly for a file
-tests/test_ast_nodes.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ast_nodes.dir/build.make CMakeFiles/test_ast_nodes.dir/tests/test_ast_nodes.cpp.s
-.PHONY : tests/test_ast_nodes.cpp.s
-
-tests/test_command_protocol.o: tests/test_command_protocol.cpp.o
-.PHONY : tests/test_command_protocol.o
-
-# target to build an object file
-tests/test_command_protocol.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_command_protocol.dir/build.make CMakeFiles/test_command_protocol.dir/tests/test_command_protocol.cpp.o
-.PHONY : tests/test_command_protocol.cpp.o
-
-tests/test_command_protocol.i: tests/test_command_protocol.cpp.i
-.PHONY : tests/test_command_protocol.i
-
-# target to preprocess a source file
-tests/test_command_protocol.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_command_protocol.dir/build.make CMakeFiles/test_command_protocol.dir/tests/test_command_protocol.cpp.i
-.PHONY : tests/test_command_protocol.cpp.i
-
-tests/test_command_protocol.s: tests/test_command_protocol.cpp.s
-.PHONY : tests/test_command_protocol.s
-
-# target to generate assembly for a file
-tests/test_command_protocol.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_command_protocol.dir/build.make CMakeFiles/test_command_protocol.dir/tests/test_command_protocol.cpp.s
-.PHONY : tests/test_command_protocol.cpp.s
-
-tests/test_compact_ast.o: tests/test_compact_ast.cpp.o
-.PHONY : tests/test_compact_ast.o
-
-# target to build an object file
-tests/test_compact_ast.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_compact_ast.dir/build.make CMakeFiles/test_compact_ast.dir/tests/test_compact_ast.cpp.o
-.PHONY : tests/test_compact_ast.cpp.o
-
-tests/test_compact_ast.i: tests/test_compact_ast.cpp.i
-.PHONY : tests/test_compact_ast.i
-
-# target to preprocess a source file
-tests/test_compact_ast.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_compact_ast.dir/build.make CMakeFiles/test_compact_ast.dir/tests/test_compact_ast.cpp.i
-.PHONY : tests/test_compact_ast.cpp.i
-
-tests/test_compact_ast.s: tests/test_compact_ast.cpp.s
-.PHONY : tests/test_compact_ast.s
-
-# target to generate assembly for a file
-tests/test_compact_ast.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_compact_ast.dir/build.make CMakeFiles/test_compact_ast.dir/tests/test_compact_ast.cpp.s
-.PHONY : tests/test_compact_ast.cpp.s
-
-tests/test_cross_platform_validation.o: tests/test_cross_platform_validation.cpp.o
-.PHONY : tests/test_cross_platform_validation.o
-
-# target to build an object file
-tests/test_cross_platform_validation.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cross_platform_validation.dir/build.make CMakeFiles/test_cross_platform_validation.dir/tests/test_cross_platform_validation.cpp.o
-.PHONY : tests/test_cross_platform_validation.cpp.o
-
-tests/test_cross_platform_validation.i: tests/test_cross_platform_validation.cpp.i
-.PHONY : tests/test_cross_platform_validation.i
-
-# target to preprocess a source file
-tests/test_cross_platform_validation.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cross_platform_validation.dir/build.make CMakeFiles/test_cross_platform_validation.dir/tests/test_cross_platform_validation.cpp.i
-.PHONY : tests/test_cross_platform_validation.cpp.i
-
-tests/test_cross_platform_validation.s: tests/test_cross_platform_validation.cpp.s
-.PHONY : tests/test_cross_platform_validation.s
-
-# target to generate assembly for a file
-tests/test_cross_platform_validation.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cross_platform_validation.dir/build.make CMakeFiles/test_cross_platform_validation.dir/tests/test_cross_platform_validation.cpp.s
-.PHONY : tests/test_cross_platform_validation.cpp.s
-
-tests/test_interpreter_integration.o: tests/test_interpreter_integration.cpp.o
-.PHONY : tests/test_interpreter_integration.o
-
-# target to build an object file
-tests/test_interpreter_integration.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_interpreter_integration.dir/build.make CMakeFiles/test_interpreter_integration.dir/tests/test_interpreter_integration.cpp.o
-.PHONY : tests/test_interpreter_integration.cpp.o
-
-tests/test_interpreter_integration.i: tests/test_interpreter_integration.cpp.i
-.PHONY : tests/test_interpreter_integration.i
-
-# target to preprocess a source file
-tests/test_interpreter_integration.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_interpreter_integration.dir/build.make CMakeFiles/test_interpreter_integration.dir/tests/test_interpreter_integration.cpp.i
-.PHONY : tests/test_interpreter_integration.cpp.i
-
-tests/test_interpreter_integration.s: tests/test_interpreter_integration.cpp.s
-.PHONY : tests/test_interpreter_integration.s
-
-# target to generate assembly for a file
-tests/test_interpreter_integration.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_interpreter_integration.dir/build.make CMakeFiles/test_interpreter_integration.dir/tests/test_interpreter_integration.cpp.s
-.PHONY : tests/test_interpreter_integration.cpp.s
-
 validate_cross_platform.o: validate_cross_platform.cpp.o
 .PHONY : validate_cross_platform.o
 
@@ -659,14 +461,8 @@ help:
 	@echo "... package_source"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... cross_platform_validation"
 	@echo "... arduino_ast_interpreter"
 	@echo "... extract_cpp_commands"
-	@echo "... test_ast_nodes"
-	@echo "... test_command_protocol"
-	@echo "... test_compact_ast"
-	@echo "... test_cross_platform_validation"
-	@echo "... test_interpreter_integration"
 	@echo "... validate_cross_platform"
 	@echo "... libs/CompactAST/src/CompactAST.o"
 	@echo "... libs/CompactAST/src/CompactAST.i"
@@ -692,21 +488,6 @@ help:
 	@echo "... tests/extract_cpp_commands.o"
 	@echo "... tests/extract_cpp_commands.i"
 	@echo "... tests/extract_cpp_commands.s"
-	@echo "... tests/test_ast_nodes.o"
-	@echo "... tests/test_ast_nodes.i"
-	@echo "... tests/test_ast_nodes.s"
-	@echo "... tests/test_command_protocol.o"
-	@echo "... tests/test_command_protocol.i"
-	@echo "... tests/test_command_protocol.s"
-	@echo "... tests/test_compact_ast.o"
-	@echo "... tests/test_compact_ast.i"
-	@echo "... tests/test_compact_ast.s"
-	@echo "... tests/test_cross_platform_validation.o"
-	@echo "... tests/test_cross_platform_validation.i"
-	@echo "... tests/test_cross_platform_validation.s"
-	@echo "... tests/test_interpreter_integration.o"
-	@echo "... tests/test_interpreter_integration.i"
-	@echo "... tests/test_interpreter_integration.s"
 	@echo "... validate_cross_platform.o"
 	@echo "... validate_cross_platform.i"
 	@echo "... validate_cross_platform.s"

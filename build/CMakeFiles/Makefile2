@@ -64,11 +64,6 @@ CMAKE_BINARY_DIR = /mnt/d/Devel/ASTInterpreter/build
 
 # The main recursive "all" target.
 all: CMakeFiles/arduino_ast_interpreter.dir/all
-all: CMakeFiles/test_ast_nodes.dir/all
-all: CMakeFiles/test_compact_ast.dir/all
-all: CMakeFiles/test_command_protocol.dir/all
-all: CMakeFiles/test_interpreter_integration.dir/all
-all: CMakeFiles/test_cross_platform_validation.dir/all
 all: CMakeFiles/extract_cpp_commands.dir/all
 all: CMakeFiles/validate_cross_platform.dir/all
 .PHONY : all
@@ -79,14 +74,8 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/arduino_ast_interpreter.dir/clean
-clean: CMakeFiles/test_ast_nodes.dir/clean
-clean: CMakeFiles/test_compact_ast.dir/clean
-clean: CMakeFiles/test_command_protocol.dir/clean
-clean: CMakeFiles/test_interpreter_integration.dir/clean
-clean: CMakeFiles/test_cross_platform_validation.dir/clean
 clean: CMakeFiles/extract_cpp_commands.dir/clean
 clean: CMakeFiles/validate_cross_platform.dir/clean
-clean: CMakeFiles/cross_platform_validation.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -116,143 +105,13 @@ CMakeFiles/arduino_ast_interpreter.dir/clean:
 .PHONY : CMakeFiles/arduino_ast_interpreter.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/test_ast_nodes.dir
-
-# All Build rule for target.
-CMakeFiles/test_ast_nodes.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ast_nodes.dir/build.make CMakeFiles/test_ast_nodes.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ast_nodes.dir/build.make CMakeFiles/test_ast_nodes.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=12,13 "Built target test_ast_nodes"
-.PHONY : CMakeFiles/test_ast_nodes.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_ast_nodes.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 10
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_ast_nodes.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_ast_nodes.dir/rule
-
-# Convenience name for target.
-test_ast_nodes: CMakeFiles/test_ast_nodes.dir/rule
-.PHONY : test_ast_nodes
-
-# clean rule for target.
-CMakeFiles/test_ast_nodes.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ast_nodes.dir/build.make CMakeFiles/test_ast_nodes.dir/clean
-.PHONY : CMakeFiles/test_ast_nodes.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_compact_ast.dir
-
-# All Build rule for target.
-CMakeFiles/test_compact_ast.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_compact_ast.dir/build.make CMakeFiles/test_compact_ast.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_compact_ast.dir/build.make CMakeFiles/test_compact_ast.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=16,17 "Built target test_compact_ast"
-.PHONY : CMakeFiles/test_compact_ast.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_compact_ast.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 10
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_compact_ast.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_compact_ast.dir/rule
-
-# Convenience name for target.
-test_compact_ast: CMakeFiles/test_compact_ast.dir/rule
-.PHONY : test_compact_ast
-
-# clean rule for target.
-CMakeFiles/test_compact_ast.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_compact_ast.dir/build.make CMakeFiles/test_compact_ast.dir/clean
-.PHONY : CMakeFiles/test_compact_ast.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_command_protocol.dir
-
-# All Build rule for target.
-CMakeFiles/test_command_protocol.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_command_protocol.dir/build.make CMakeFiles/test_command_protocol.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_command_protocol.dir/build.make CMakeFiles/test_command_protocol.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=14,15 "Built target test_command_protocol"
-.PHONY : CMakeFiles/test_command_protocol.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_command_protocol.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 10
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_command_protocol.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_command_protocol.dir/rule
-
-# Convenience name for target.
-test_command_protocol: CMakeFiles/test_command_protocol.dir/rule
-.PHONY : test_command_protocol
-
-# clean rule for target.
-CMakeFiles/test_command_protocol.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_command_protocol.dir/build.make CMakeFiles/test_command_protocol.dir/clean
-.PHONY : CMakeFiles/test_command_protocol.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_interpreter_integration.dir
-
-# All Build rule for target.
-CMakeFiles/test_interpreter_integration.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_interpreter_integration.dir/build.make CMakeFiles/test_interpreter_integration.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_interpreter_integration.dir/build.make CMakeFiles/test_interpreter_integration.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=20,21 "Built target test_interpreter_integration"
-.PHONY : CMakeFiles/test_interpreter_integration.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_interpreter_integration.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 10
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_interpreter_integration.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_interpreter_integration.dir/rule
-
-# Convenience name for target.
-test_interpreter_integration: CMakeFiles/test_interpreter_integration.dir/rule
-.PHONY : test_interpreter_integration
-
-# clean rule for target.
-CMakeFiles/test_interpreter_integration.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_interpreter_integration.dir/build.make CMakeFiles/test_interpreter_integration.dir/clean
-.PHONY : CMakeFiles/test_interpreter_integration.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_cross_platform_validation.dir
-
-# All Build rule for target.
-CMakeFiles/test_cross_platform_validation.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cross_platform_validation.dir/build.make CMakeFiles/test_cross_platform_validation.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cross_platform_validation.dir/build.make CMakeFiles/test_cross_platform_validation.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=18,19 "Built target test_cross_platform_validation"
-.PHONY : CMakeFiles/test_cross_platform_validation.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_cross_platform_validation.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 10
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_cross_platform_validation.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_cross_platform_validation.dir/rule
-
-# Convenience name for target.
-test_cross_platform_validation: CMakeFiles/test_cross_platform_validation.dir/rule
-.PHONY : test_cross_platform_validation
-
-# clean rule for target.
-CMakeFiles/test_cross_platform_validation.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cross_platform_validation.dir/build.make CMakeFiles/test_cross_platform_validation.dir/clean
-.PHONY : CMakeFiles/test_cross_platform_validation.dir/clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/extract_cpp_commands.dir
 
 # All Build rule for target.
 CMakeFiles/extract_cpp_commands.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extract_cpp_commands.dir/build.make CMakeFiles/extract_cpp_commands.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extract_cpp_commands.dir/build.make CMakeFiles/extract_cpp_commands.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=10,11 "Built target extract_cpp_commands"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=9,10 "Built target extract_cpp_commands"
 .PHONY : CMakeFiles/extract_cpp_commands.dir/all
 
 # Build rule for subdir invocation for target.
@@ -278,7 +137,7 @@ CMakeFiles/extract_cpp_commands.dir/clean:
 CMakeFiles/validate_cross_platform.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=22,23 "Built target validate_cross_platform"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=11,12 "Built target validate_cross_platform"
 .PHONY : CMakeFiles/validate_cross_platform.dir/all
 
 # Build rule for subdir invocation for target.
@@ -296,32 +155,6 @@ validate_cross_platform: CMakeFiles/validate_cross_platform.dir/rule
 CMakeFiles/validate_cross_platform.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/clean
 .PHONY : CMakeFiles/validate_cross_platform.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/cross_platform_validation.dir
-
-# All Build rule for target.
-CMakeFiles/cross_platform_validation.dir/all: CMakeFiles/test_cross_platform_validation.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cross_platform_validation.dir/build.make CMakeFiles/cross_platform_validation.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cross_platform_validation.dir/build.make CMakeFiles/cross_platform_validation.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=9 "Built target cross_platform_validation"
-.PHONY : CMakeFiles/cross_platform_validation.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/cross_platform_validation.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 11
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/cross_platform_validation.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
-.PHONY : CMakeFiles/cross_platform_validation.dir/rule
-
-# Convenience name for target.
-cross_platform_validation: CMakeFiles/cross_platform_validation.dir/rule
-.PHONY : cross_platform_validation
-
-# clean rule for target.
-CMakeFiles/cross_platform_validation.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cross_platform_validation.dir/build.make CMakeFiles/cross_platform_validation.dir/clean
-.PHONY : CMakeFiles/cross_platform_validation.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
