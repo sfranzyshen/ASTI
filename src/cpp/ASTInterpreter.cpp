@@ -620,7 +620,9 @@ void ASTInterpreter::visit(arduino_ast::IfStatement& node) {
     bool result = convertToBool(conditionValue);
 
     std::string branch = result ? "then" : "else";
-    emitCommand(FlexibleCommandFactory::createIfStatement(convertCommandValue(conditionValue), convertCommandValue(conditionValue), branch));
+    std::string conditionJson = commandValueToJsonString(conditionValue);
+    std::string conditionDisplay = commandValueToJsonString(conditionValue);
+    emitIfStatement(conditionJson, conditionDisplay, branch);
     
     if (result && node.getConsequent()) {
         const_cast<arduino_ast::ASTNode*>(node.getConsequent())->accept(*this);
@@ -635,7 +637,7 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
     uint32_t iteration = 0;
 
     // CROSS-PLATFORM FIX: Emit WHILE_LOOP phase start to match JavaScript
-    emitCommand(FlexibleCommandFactory::createWhileLoopStart());
+    emitWhileLoopStart();
 
     while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING && iteration < maxLoopIterations_) {
         CommandValue conditionValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getCondition()));
@@ -644,7 +646,7 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
         if (!shouldContinueLoop) break;
 
         // CROSS-PLATFORM FIX: Emit WHILE_LOOP phase iteration to match JavaScript
-        emitCommand(FlexibleCommandFactory::createWhileLoopIteration(iteration));
+        emitWhileLoopIteration(iteration);
 
         scopeManager_->pushScope();
         shouldBreak_ = false;
@@ -694,7 +696,7 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
         }
     } else {
         // Normal termination: emit regular WHILE_LOOP end event
-        emitCommand(FlexibleCommandFactory::createWhileLoopEnd(iteration));
+        emitWhileLoopEnd(iteration);
     }
 }
 
@@ -704,11 +706,11 @@ void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
     uint32_t iteration = 0;
 
     // CROSS-PLATFORM FIX: Emit DO_WHILE_LOOP phase start to match JavaScript
-    emitCommand(FlexibleCommandFactory::createDoWhileLoopStart());
+    emitDoWhileLoopStart();
 
     do {
         // CROSS-PLATFORM FIX: Emit DO_WHILE_LOOP phase iteration to match JavaScript
-        emitCommand(FlexibleCommandFactory::createDoWhileLoopIteration(iteration));
+        emitDoWhileLoopIteration(iteration);
 
         scopeManager_->pushScope();
         shouldBreak_ = false;
@@ -739,7 +741,7 @@ void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
     } while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING && iteration < maxLoopIterations_);
 
     // CROSS-PLATFORM FIX: Emit single DO_WHILE_LOOP end event to match JavaScript
-    emitCommand(FlexibleCommandFactory::createDoWhileLoopEnd(iteration));
+    emitDoWhileLoopEnd(iteration);
 
     // ULTRATHINK: Always stop execution when loop limit reached (like JavaScript)
     // Set context-aware execution control instead of global flag
@@ -762,7 +764,7 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
     executionControl_.pushContext(ExecutionControlStack::ScopeType::FOR_LOOP, "for_loop");
 
     // CROSS-PLATFORM FIX: Emit FOR_LOOP phase start to match JavaScript
-    emitCommand(FlexibleCommandFactory::createForLoopStart());
+    emitForLoopStart();
 
     // Execute initializer
     if (node.getInitializer()) {
@@ -783,7 +785,7 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
         if (iteration >= maxLoopIterations_) break;
 
         // CROSS-PLATFORM FIX: Emit FOR_LOOP phase iteration to match JavaScript
-        emitCommand(FlexibleCommandFactory::createForLoopIteration(iteration));
+        emitForLoopIteration(iteration);
 
         shouldBreak_ = false;
         shouldContinue_ = false;
@@ -821,7 +823,7 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
 
     // CROSS-PLATFORM FIX: Emit single FOR_LOOP end event to match JavaScript
     const bool limitReached = iteration >= maxLoopIterations_;
-    emitCommand(FlexibleCommandFactory::createForLoopEnd(iteration, maxLoopIterations_));
+    emitForLoopEnd(iteration, maxLoopIterations_);
 
     // ULTRATHINK: Always stop execution when loop limit reached (like JavaScript)
     // Set context-aware execution control instead of global flag
@@ -851,12 +853,12 @@ void ASTInterpreter::visit(arduino_ast::ReturnStatement& node) {
 
 void ASTInterpreter::visit(arduino_ast::BreakStatement& node) {
     shouldBreak_ = true;
-    emitCommand(FlexibleCommandFactory::createBreakStatement());
+    emitBreakStatement();
 }
 
 void ASTInterpreter::visit(arduino_ast::ContinueStatement& node) {
     shouldContinue_ = true;
-    emitCommand(FlexibleCommandFactory::createContinueStatement());
+    emitContinueStatement();
 }
 
 // =============================================================================
@@ -4465,6 +4467,80 @@ void ASTInterpreter::emitNoTone(int pin) {
          << ",\"arguments\":[" << pin << "]"
          << ",\"pin\":" << pin
          << ",\"message\":\"noTone(" << pin << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitWhileLoopStart() {
+    std::ostringstream json;
+    json << "{\"type\":\"WHILE_LOOP\",\"timestamp\":0,\"phase\":\"start\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitWhileLoopIteration(int iteration) {
+    std::ostringstream json;
+    json << "{\"type\":\"WHILE_LOOP\",\"timestamp\":0,\"phase\":\"iteration\",\"iteration\":" << iteration << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitWhileLoopEnd(int iteration) {
+    std::ostringstream json;
+    json << "{\"type\":\"WHILE_LOOP\",\"timestamp\":0,\"phase\":\"end\",\"iterations\":" << iteration << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitForLoopStart() {
+    std::ostringstream json;
+    json << "{\"type\":\"FOR_LOOP\",\"timestamp\":0,\"phase\":\"start\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitForLoopIteration(int iteration) {
+    std::ostringstream json;
+    json << "{\"type\":\"FOR_LOOP\",\"timestamp\":0,\"phase\":\"iteration\",\"iteration\":" << iteration << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitForLoopEnd(int iteration, int maxIterations) {
+    std::ostringstream json;
+    json << "{\"type\":\"FOR_LOOP\",\"timestamp\":0,\"phase\":\"end\",\"iterations\":" << iteration
+         << ",\"maxIterations\":" << maxIterations << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitDoWhileLoopStart() {
+    std::ostringstream json;
+    json << "{\"type\":\"DO_WHILE_LOOP\",\"timestamp\":0,\"phase\":\"start\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitDoWhileLoopIteration(int iteration) {
+    std::ostringstream json;
+    json << "{\"type\":\"DO_WHILE_LOOP\",\"timestamp\":0,\"phase\":\"iteration\",\"iteration\":" << iteration << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitDoWhileLoopEnd(int iteration) {
+    std::ostringstream json;
+    json << "{\"type\":\"DO_WHILE_LOOP\",\"timestamp\":0,\"phase\":\"end\",\"iterations\":" << iteration << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitBreakStatement() {
+    std::ostringstream json;
+    json << "{\"type\":\"BREAK_STATEMENT\",\"timestamp\":0}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitContinueStatement() {
+    std::ostringstream json;
+    json << "{\"type\":\"CONTINUE_STATEMENT\",\"timestamp\":0}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitIfStatement(const std::string& condition, const std::string& conditionDisplay, int branch) {
+    std::ostringstream json;
+    json << "{\"type\":\"IF_STATEMENT\",\"timestamp\":0,\"condition\":" << condition
+         << ",\"conditionDisplay\":\"" << conditionDisplay << "\",\"branch\":" << branch << "}";
     emitJSON(json.str());
 }
 
