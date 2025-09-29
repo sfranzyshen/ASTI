@@ -4529,10 +4529,10 @@ void ASTInterpreter::emitContinueStatement() {
     emitJSON(json.str());
 }
 
-void ASTInterpreter::emitIfStatement(const std::string& condition, const std::string& conditionDisplay, int branch) {
+void ASTInterpreter::emitIfStatement(const std::string& condition, const std::string& conditionDisplay, const std::string& branch) {
     std::ostringstream json;
     json << "{\"type\":\"IF_STATEMENT\",\"timestamp\":0,\"condition\":" << condition
-         << ",\"conditionDisplay\":\"" << conditionDisplay << "\",\"branch\":" << branch << "}";
+         << ",\"conditionDisplay\":\"" << conditionDisplay << "\",\"branch\":\"" << branch << "\"}";
     emitJSON(json.str());
 }
 

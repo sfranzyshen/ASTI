@@ -947,14 +947,20 @@ private:
     // Serial communication
     void emitSerialBegin(int baudRate);
     void emitSerialPrint(const std::string& data);
+    void emitSerialPrint(const std::string& data, const std::string& format);  // Overload
     void emitSerialPrintln(const std::string& data);
-    void emitSerialWrite(int value);
+    void emitSerialWrite(const std::string& data);  // Changed from int to string
     void emitSerialFlush();
-    void emitSerialRequest(const std::string& requestId);
+    void emitSerialRequest(const std::string& type, const std::string& requestId);  // Added type parameter
+    void emitSerialTimeout(int timeout);
+    void emitSerialEvent(const std::string& message);
 
     // Variable operations
     void emitVarSet(const std::string& variable, const std::string& value);
     void emitVarSetConst(const std::string& variable, const std::string& value, const std::string& type);
+    void emitVarSetConstString(const std::string& varName, const std::string& stringVal);
+    void emitVarSetArduinoString(const std::string& varName, const std::string& stringVal);
+    void emitVarSetExtern(const std::string& variable, const std::string& value);
 
     // Loop and control flow
     void emitLoopEnd(const std::string& message, int iterations);
@@ -969,7 +975,7 @@ private:
     void emitNoTone(int pin);
 
     // Additional emission methods to replace ALL FlexibleCommandFactory calls
-    void emitIfStatement(const std::string& condition, const std::string& conditionValue, const std::string& branch);
+    void emitIfStatement(const std::string& condition, const std::string& conditionDisplay, const std::string& branch);
     void emitWhileLoopIteration(int iteration);
     void emitDoWhileLoopStart();
     void emitDoWhileLoopIteration(int iteration);
@@ -980,36 +986,30 @@ private:
     void emitContinueStatement();
     void emitSwitchStatement(const std::string& discriminant);
     void emitSwitchCase(const std::string& caseValue, bool shouldExecute);
-    void emitFunctionCallSerialEvent(const std::string& message);
-    void emitPulseInRequest(int pin, int value, int timeout, const std::string& requestId);
-    void emitMillisRequest();
-    void emitMicrosRequest();
-    void emitSerialPrint(const std::string& data, const std::string& format);
-    void emitSerialPrintln(const std::string& data, const std::string& format);
-    void emitSerialWrite(const CommandValue& value);
-    void emitSerialRequest(const std::string& type, const std::string& requestId);
-    void emitSerialRequestWithChar(const std::string& type, char terminator, const std::string& requestId);
-    void emitSerialTimeout(int timeout);
+
+    // Multi-Serial
     void emitMultiSerialBegin(const std::string& portName, int baudRate);
     void emitMultiSerialPrint(const std::string& portName, const std::string& output, const std::string& format);
     void emitMultiSerialPrintln(const std::string& portName, const std::string& data, const std::string& format);
     void emitMultiSerialRequest(const std::string& portName, const std::string& method, const std::string& requestId);
     void emitMultiSerialCommand(const std::string& portName, const std::string& methodName);
-    void emitVarSetConstString(const std::string& varName, const std::string& stringVal);
-    void emitVarSetArduinoString(const std::string& varName, const std::string& stringVal);
-    void emitVarSetExtern(const std::string& varName, const std::string& value);
+
+    // PulseIn
+    void emitPulseInRequest(int pin, int value, int timeout, const std::string& requestId);
+
+    // Advanced C++ features
     void emitConstructorRegistered(const std::string& constructorName);
     void emitEnumMember(const std::string& memberName, int memberValue);
     void emitEnumTypeRef(const std::string& enumName);
     void emitLambdaFunction(const std::string& captures, const std::string& parameters, const std::string& body);
     void emitMemberFunctionRegistered(const std::string& className, const std::string& functionName);
-    void emitMultipleStructMembers(const std::vector<std::string>& memberNames, const std::string& typeName);
-    void emitObjectInstance(const std::string& typeName, const std::vector<std::string>& args);
+    void emitMultipleStructMembers(const std::string& memberNames, const std::string& typeName);
+    void emitObjectInstance(const std::string& typeName, const std::string& args);
     void emitPreprocessorError(const std::string& directive, const std::string& errorMessage);
     void emitRangeExpression(const std::string& start, const std::string& end);
     void emitStructMember(const std::string& memberName, const std::string& typeName, int size);
     void emitTemplateTypeParam(const std::string& parameterName, const std::string& constraint);
-    void emitUnionDefinition(const std::string& unionName, const std::vector<std::string>& members, const std::vector<std::string>& variables);
+    void emitUnionDefinition(const std::string& unionName, const std::string& members, const std::string& variables);
     void emitUnionTypeRef(const std::string& typeName, int defaultSize);
 
     // Request handling
