@@ -47,16 +47,14 @@ private:
 public:
     explicit CommandStreamCapture(bool verbose = false)
         : verbose_(verbose), oldCoutBuf_(nullptr) {
-        // Redirect stdout to our capture buffer
-        oldCoutBuf_ = std::cout.rdbuf();
-        std::cout.rdbuf(captureBuffer_.rdbuf());
+        // NOTE: We do NOT redirect stdout anymore!
+        // The interpreter writes JSON directly to stdout, which is captured by popen
+        // in validate_cross_platform. We let it flow naturally to stdout.
+        // The JSON is also saved to file by extract_cpp_commands for later analysis.
     }
 
     ~CommandStreamCapture() {
-        // Restore stdout
-        if (oldCoutBuf_) {
-            std::cout.rdbuf(oldCoutBuf_);
-        }
+        // No stdout restoration needed since we don't redirect anymore
     }
 
     size_t getCommandCount() const {

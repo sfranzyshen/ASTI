@@ -53,8 +53,7 @@ int main(int argc, char* argv[]) {
     file.read(reinterpret_cast<char*>(compactAST.data()), size);
     file.close();
     try {
-        // Set up C++ interpreter with command capture - use constructor that loads compact AST directly
-        CommandStreamCapture capture;  // Captures stdout automatically in constructor
+        // Set up C++ interpreter - JSON will flow directly to stdout (no capture needed)
         MockResponseHandler responseHandler;
 
         InterpreterOptions options;
@@ -66,9 +65,35 @@ int main(int argc, char* argv[]) {
         auto interpreter = std::make_unique<ASTInterpreter>(compactAST.data(), compactAST.size(), options);
         interpreter->setResponseHandler(&responseHandler);
 
-        // Execute interpreter (JSON output captured by CommandStreamCapture)
+        // Capture stdout to collect JSON AND let it flow to pipe
+        std::ostringstream jsonBuffer;
+        std::streambuf* oldCoutBuf = std::cout.rdbuf();
+
+        // Create a custom streambuf that writes to BOTH jsonBuffer AND original stdout
+        class TeeStreambuf : public std::streambuf {
+            std::streambuf* sb1;
+            std::streambuf* sb2;
+        protected:
+            virtual int overflow(int c) override {
+                if (c == EOF) return !EOF;
+                if (sb1->sputc(c) == EOF || sb2->sputc(c) == EOF) return EOF;
+                return c;
+            }
+            virtual int sync() override {
+                sb1->pubsync();
+                sb2->pubsync();
+                return 0;
+            }
+        public:
+            TeeStreambuf(std::streambuf* s1, std::streambuf* s2) : sb1(s1), sb2(s2) {}
+        };
+
+        TeeStreambuf tee(oldCoutBuf, jsonBuffer.rdbuf());
+        std::cout.rdbuf(&tee);
+
+        // Execute interpreter (JSON flows to both stdout pipe AND jsonBuffer)
         interpreter->start();
-        
+
         // Wait for completion with timeout
         auto startTime = std::chrono::steady_clock::now();
         auto timeoutMs = 5000;
@@ -76,13 +101,16 @@ int main(int argc, char* argv[]) {
         while (interpreter->isRunning() && std::chrono::steady_clock::now() < deadline) {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
-        
+
         if (interpreter->isRunning()) {
             interpreter->stop();
         }
 
-        // Get JSON output
-        std::string jsonOutput = capture.getCommandsAsJson();
+        // Restore stdout
+        std::cout.rdbuf(oldCoutBuf);
+
+        // Get JSON output from buffer
+        std::string jsonOutput = jsonBuffer.str();
 
         // CRITICAL FIX: ALWAYS save JSON to file for debugging and analysis
         std::ostringstream outputFileName;
@@ -95,9 +123,6 @@ int main(int argc, char* argv[]) {
         } else {
             std::cerr << "WARNING: Could not save JSON to " << outputFileName.str() << std::endl;
         }
-
-        // Also output to stdout for pipe compatibility
-        std::cout << jsonOutput << std::endl;
 
         std::cerr << "EXTRACT_DEBUG: About to exit try block" << std::endl;
 

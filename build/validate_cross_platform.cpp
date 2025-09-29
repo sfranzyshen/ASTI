@@ -227,8 +227,8 @@ std::string convertJSONToArduino(const std::string& json) {
     jsonFile << json;
     jsonFile.close();
 
-    // Run universal converter
-    std::string command = "../universal_json_to_arduino " + tempJsonFile + " " + tempArduinoFile + " 2>/dev/null";
+    // Run universal converter - REMOVED 2>/dev/null to see errors
+    std::string command = "../universal_json_to_arduino " + tempJsonFile + " " + tempArduinoFile;
     int result = system(command.c_str());
 
     std::string arduinoCode;
@@ -238,7 +238,16 @@ std::string convertJSONToArduino(const std::string& json) {
             std::ostringstream buffer;
             buffer << arduinoFile.rdbuf();
             arduinoCode = buffer.str();
+
+            // CRITICAL FIX: Detect if converter silently failed
+            if (arduinoCode.empty()) {
+                std::cerr << "WARNING: Converter succeeded but produced empty output for " << tempJsonFile << std::endl;
+            }
+        } else {
+            std::cerr << "ERROR: Could not read converter output file: " << tempArduinoFile << std::endl;
         }
+    } else {
+        std::cerr << "ERROR: Converter failed with exit code: " << result << " for " << tempJsonFile << std::endl;
     }
 
     // Clean up temp files
@@ -249,6 +258,9 @@ std::string convertJSONToArduino(const std::string& json) {
 }
 
 bool compareJSONCommands(const std::string& cppJSON, const std::string& jsJSON, int testNumber) {
+    std::cerr << "DEBUG: Comparing test " << testNumber << " - C++ JSON size: " << cppJSON.size()
+              << " bytes, JS JSON size: " << jsJSON.size() << " bytes" << std::endl;
+
     // CRITICAL FIX: Missing data is an ERROR, not a skip or match
     if (cppJSON.empty() || jsJSON.empty()) {
         std::cout << "Test " << testNumber << ": ERROR - Missing data - ";
@@ -263,15 +275,31 @@ bool compareJSONCommands(const std::string& cppJSON, const std::string& jsJSON, 
     }
 
     // Convert both JSON streams to Arduino code
+    std::cerr << "DEBUG: Converting test " << testNumber << " JSON to Arduino command streams..." << std::endl;
     std::string cppArduino = convertJSONToArduino(cppJSON);
     std::string jsArduino = convertJSONToArduino(jsJSON);
+    std::cerr << "DEBUG: Conversion complete - C++ arduino size: " << cppArduino.size()
+              << " bytes, JS arduino size: " << jsArduino.size() << " bytes" << std::endl;
+
+    // CRITICAL FIX: Detect conversion failures (empty output)
+    if (cppArduino.empty() || jsArduino.empty()) {
+        std::cout << "Test " << testNumber << ": ERROR - Conversion failed - ";
+        if (cppArduino.empty() && jsArduino.empty()) {
+            std::cout << "Both conversions produced empty output" << std::endl;
+        } else if (cppArduino.empty()) {
+            std::cout << "C++ JSON to Arduino conversion failed" << std::endl;
+        } else {
+            std::cout << "JS JSON to Arduino conversion failed" << std::endl;
+        }
+        return false;  // Conversion failure is FAILURE
+    }
 
     // CRITICAL FIX: ALWAYS save debug files for ALL tests (pass or fail)
-    std::ofstream cppFile("test" + std::to_string(testNumber) + "_cpp_arduino.arduino");
+    std::ofstream cppFile("test" + std::to_string(testNumber) + "_cpp.arduino");
     cppFile << cppArduino << std::endl;
     cppFile.close();
 
-    std::ofstream jsFile("test" + std::to_string(testNumber) + "_js_arduino.arduino");
+    std::ofstream jsFile("test" + std::to_string(testNumber) + "_js.arduino");
     jsFile << jsArduino << std::endl;
     jsFile.close();
 
@@ -293,7 +321,7 @@ bool compareJSONCommands(const std::string& cppJSON, const std::string& jsJSON, 
         // Show first 200 chars of difference for debugging
         std::cout << "C++ command stream (first 200 chars): " << cppArduino.substr(0, 200) << "..." << std::endl;
         std::cout << "JS command stream (first 200 chars): " << jsArduino.substr(0, 200) << "..." << std::endl;
-        std::cout << "Full outputs saved to test" << testNumber << "_cpp_arduino.arduino and test" << testNumber << "_js_arduino.arduino" << std::endl;
+        std::cout << "Full outputs saved to test" << testNumber << "_cpp.arduino and test" << testNumber << "_js.arduino" << std::endl;
         std::cout << "JSON debug files: test" << testNumber << "_cpp_debug.json and test" << testNumber << "_js_debug.json" << std::endl;
 
         return false;
