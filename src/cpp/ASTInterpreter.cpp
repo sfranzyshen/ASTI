@@ -3910,7 +3910,7 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
     if (methodName == "begin") {
         // Serial.begin(baudRate) - Initialize serial communication
         int32_t baudRate = args.size() > 0 ? convertToInt(args[0]) : 9600;
-        emitCommand(FlexibleCommandFactory::createSerialBegin(baudRate));
+        emitSerialBegin(baudRate);
         return std::monostate{};
     }
     
@@ -3972,12 +3972,11 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
     else if (methodName == "println") {
         // Serial.println(data) or Serial.println(data, format) - print with newline
         if (args.size() == 0) {
-            emitCommand(FlexibleCommandFactory::createSerialPrintln("", "NEWLINE"));
+            emitSerialPrintln("");
         } else {
             // CROSS-PLATFORM FIX: Emit single Serial.println command like JavaScript
             std::string data = commandValueToString(args[0]);
-            std::string format = (args.size() > 1) ? commandValueToString(args[1]) : "AUTO";
-            emitCommand(FlexibleCommandFactory::createSerialPrintln(data, format));
+            emitSerialPrintln(data);
         }
         return std::monostate{};
     }
@@ -4547,11 +4546,10 @@ void ASTInterpreter::requestAnalogRead(int32_t pin) {
     state_ = ExecutionState::WAITING_FOR_RESPONSE;
     waitingForRequestId_ = requestId;
     suspendedFunction_ = "analogRead";
-    
+
     // Emit request command
-    auto cmd = FlexibleCommandFactory::createAnalogReadRequest(pin);
-    emitCommand(std::move(cmd));
-    
+    emitAnalogReadRequest(pin, requestId);
+
 }
 
 void ASTInterpreter::requestDigitalRead(int32_t pin) {
@@ -4564,10 +4562,9 @@ void ASTInterpreter::requestDigitalRead(int32_t pin) {
     state_ = ExecutionState::WAITING_FOR_RESPONSE;
     waitingForRequestId_ = requestId;
     suspendedFunction_ = "digitalRead";
-    
-    auto cmd = FlexibleCommandFactory::createDigitalReadRequest(pin);
-    emitCommand(std::move(cmd));
-    
+
+    emitDigitalReadRequest(pin, requestId);
+
 }
 
 void ASTInterpreter::requestMillis() {
@@ -6197,8 +6194,8 @@ void ASTInterpreter::enterSafeMode(const std::string& reason) {
     if (!safeMode_) {
         safeMode_ = true;
         safeModeReason_ = reason;
-        emitCommand(FlexibleCommandFactory::createError("Safe mode activated: " + reason));
-        
+        emitError("Safe mode activated: " + reason);
+
         // Pause execution to prevent further errors
         state_ = ExecutionState::PAUSED;
     }
