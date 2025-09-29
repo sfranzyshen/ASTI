@@ -3260,7 +3260,7 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         int32_t timeout = args.size() > 2 ? convertToInt(args[2]) : 1000000;
 
         std::string requestId = generateRequestId("pulseInLong");
-        emitCommand(FlexibleCommandFactory::createPulseInRequest(pin, value, timeout, requestId));
+        emitPulseInRequest(pin, value, timeout, requestId);
 
         return static_cast<int32_t>(1500);
     }
@@ -3846,8 +3846,7 @@ CommandValue ASTInterpreter::handleTimingOperation(const std::string& function, 
         // TEST MODE: Synchronous response for JavaScript compatibility
         if (options_.syncMode) {
             // Emit the request command for consistency with JavaScript
-            auto cmd = FlexibleCommandFactory::createMillisRequest();
-            emitCommand(std::move(cmd));
+            emitMillisRequest();
 
             // Return deterministic mock response for cross-platform consistency
             uint32_t mockValue = getDeterministicMillisValue();
@@ -3872,8 +3871,7 @@ CommandValue ASTInterpreter::handleTimingOperation(const std::string& function, 
         // TEST MODE: Synchronous response for JavaScript compatibility
         if (options_.syncMode) {
             // Emit the request command for consistency with JavaScript
-            auto cmd = FlexibleCommandFactory::createMicrosRequest();
-            emitCommand(std::move(cmd));
+            emitMicrosRequest();
 
             // Return deterministic mock response for cross-platform consistency
             uint32_t mockValue = getDeterministicMicrosValue();
@@ -4104,39 +4102,39 @@ CommandValue ASTInterpreter::handleMultipleSerialOperation(const std::string& po
     
     if (methodName == "begin") {
         int32_t baudRate = args.size() > 0 ? convertToInt(args[0]) : 9600;
-        emitCommand(FlexibleCommandFactory::createMultiSerialBegin(portName, baudRate));
+        emitMultiSerialBegin(portName, baudRate);
         return std::monostate{};
     }
     else if (methodName == "print") {
         if (args.size() > 0) {
             std::string output = convertToString(args[0]);
             std::string format = args.size() > 1 ? convertToString(args[1]) : "DEC";
-            emitCommand(FlexibleCommandFactory::createMultiSerialPrint(portName, output, format));
+            emitMultiSerialPrint(portName, output, format);
         }
         return std::monostate{};
     }
     else if (methodName == "println") {
         if (args.size() == 0) {
-            emitCommand(FlexibleCommandFactory::createMultiSerialPrintln(portName, "", "NEWLINE"));
+            emitMultiSerialPrintln(portName, "", "NEWLINE");
         } else {
             handleMultipleSerialOperation(portName, "print", args);
-            emitCommand(FlexibleCommandFactory::createMultiSerialPrintln(portName, "", "NEWLINE"));
+            emitMultiSerialPrintln(portName, "", "NEWLINE");
         }
         return std::monostate{};
     }
     else if (methodName == "available") {
         std::string requestId = generateRequestId("multiSerial" + portName + "Available");
-        emitCommand(FlexibleCommandFactory::createMultiSerialRequest(portName, "available", requestId));
+        emitMultiSerialRequest(portName, "available", requestId);
         return waitForResponse(requestId);
     }
     else if (methodName == "read") {
         std::string requestId = generateRequestId("multiSerial" + portName + "Read");
-        emitCommand(FlexibleCommandFactory::createMultiSerialRequest(portName, "read", requestId));
+        emitMultiSerialRequest(portName, "read", requestId);
         return waitForResponse(requestId);
     }
-    
+
     // Default: emit as generic multi-serial command
-    emitCommand(FlexibleCommandFactory::createMultiSerialCommand(portName, methodName));
+    emitMultiSerialCommand(portName, methodName);
     return std::monostate{};
 }
 
@@ -4594,6 +4592,52 @@ void ASTInterpreter::emitSerialEvent(const std::string& message) {
     emitJSON(json.str());
 }
 
+void ASTInterpreter::emitMultiSerialBegin(const std::string& portName, int baudRate) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << portName << ".begin\""
+         << ",\"arguments\":[" << baudRate << "],\"baudRate\":" << baudRate
+         << ",\"message\":\"" << portName << ".begin(" << baudRate << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitMultiSerialPrint(const std::string& portName, const std::string& output, const std::string& format) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << portName << ".print\""
+         << ",\"arguments\":[\"" << output << "\"],\"data\":\"" << output
+         << "\",\"format\":\"" << format << "\",\"message\":\"" << portName << ".print(\\\"" << output << "\\\")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitMultiSerialPrintln(const std::string& portName, const std::string& data, const std::string& format) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << portName << ".println\""
+         << ",\"arguments\":[],\"data\":\"" << data << "\",\"format\":\"" << format
+         << "\",\"message\":\"" << portName << ".println()\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitMultiSerialRequest(const std::string& portName, const std::string& method, const std::string& requestId) {
+    std::ostringstream json;
+    json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"" << portName << "." << method
+         << "\",\"requestType\":\"" << method << "\",\"requestId\":\"" << requestId << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitMultiSerialCommand(const std::string& portName, const std::string& methodName) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << portName << "." << methodName
+         << "\",\"arguments\":[],\"message\":\"" << portName << "." << methodName << "()\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitPulseInRequest(int pin, int value, int timeout, const std::string& requestId) {
+    std::ostringstream json;
+    json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"pulseIn\""
+         << ",\"requestType\":\"pulseIn\",\"requestId\":\"" << requestId
+         << "\",\"pin\":" << pin << ",\"value\":" << value << ",\"timeout\":" << timeout << "}";
+    emitJSON(json.str());
+}
+
 // Helper to convert CommandValue to JSON string for VarSet
 std::string commandValueToJsonString(const CommandValue& value) {
     return std::visit([](const auto& v) -> std::string {
@@ -4744,9 +4788,8 @@ void ASTInterpreter::requestMillis() {
     state_ = ExecutionState::WAITING_FOR_RESPONSE;
     waitingForRequestId_ = requestId;
     suspendedFunction_ = "millis";
-    
-    auto cmd = FlexibleCommandFactory::createMillisRequest();
-    emitCommand(std::move(cmd));
+
+    emitMillisRequest();
     
 }
 
@@ -4760,9 +4803,8 @@ void ASTInterpreter::requestMicros() {
     state_ = ExecutionState::WAITING_FOR_RESPONSE;
     waitingForRequestId_ = requestId;
     suspendedFunction_ = "micros";
-    
-    auto cmd = FlexibleCommandFactory::createMicrosRequest();
-    emitCommand(std::move(cmd));
+
+    emitMicrosRequest();
     
 }
 
