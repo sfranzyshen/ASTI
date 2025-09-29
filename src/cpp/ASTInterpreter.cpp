@@ -1374,9 +1374,9 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 // Special handling for const strings to match JavaScript object wrapper format
                 if (std::holds_alternative<std::string>(typedValue)) {
                     std::string stringVal = std::get<std::string>(typedValue);
-                    emitCommand(FlexibleCommandFactory::createVarSetConstString(varName, stringVal));
+                    emitVarSetConstString(varName, stringVal);
                 } else {
-                    emitCommand(FlexibleCommandFactory::createVarSetConst(varName, convertCommandValue(typedValue)));
+                    emitVarSetConst(varName, commandValueToJsonString(typedValue), "");
                 }
             } else if (isArduinoStringObject && std::holds_alternative<std::string>(typedValue)) {
                 // TEST 30 FIX: Arduino String objects should use StringObject wrapper format even when non-const
@@ -1541,7 +1541,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
 
             // Emit VAR_SET command for array (with const field if applicable)
             if (isArrayConst) {
-                emitCommand(FlexibleCommandFactory::createVarSetConst(varName, convertCommandValue(arrayValue)));
+                emitVarSetConst(varName, commandValueToJsonString(arrayValue), "");
             } else {
                 emitVarSet(varName, commandValueToJsonString(arrayValue));
             }
@@ -1646,9 +1646,9 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
                         // Special handling for const strings to match JavaScript object wrapper format
                     if (std::holds_alternative<std::string>(rightValue)) {
                         std::string stringVal = std::get<std::string>(rightValue);
-                            emitCommand(FlexibleCommandFactory::createVarSetConstString(varName, stringVal));
+                        emitVarSetConstString(varName, stringVal);
                     } else {
-                        emitCommand(FlexibleCommandFactory::createVarSetConst(varName, convertCommandValue(rightValue)));
+                        emitVarSetConst(varName, commandValueToJsonString(rightValue), "");
                     }
                 } else {
                     emitVarSet(varName, commandValueToJsonString(rightValue));
@@ -3219,15 +3219,15 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
 
         if (args.size() > 2) {
             int32_t duration = convertToInt(args[2]);
-            emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, frequency, duration));
+            emitToneWithDuration(pin, frequency, duration);
         } else {
-            emitCommand(FlexibleCommandFactory::createTone(pin, frequency));
+            emitTone(pin, frequency);
         }
         return std::monostate{};
     }
     else if (name == "noTone" && args.size() >= 1) {
         int32_t pin = convertToInt(args[0]);
-        emitCommand(FlexibleCommandFactory::createNoTone(pin));
+        emitNoTone(pin);
         return std::monostate{};
     }
     // Hardware sensor functions
@@ -3705,9 +3705,9 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
             int32_t frequency = convertToInt(args[1]);
             if (args.size() >= 3) {
                 int32_t duration = convertToInt(args[2]);
-                emitCommand(FlexibleCommandFactory::createToneWithDuration(pin, frequency, duration));
+                emitToneWithDuration(pin, frequency, duration);
             } else {
-                emitCommand(FlexibleCommandFactory::createTone(pin, frequency));
+                emitTone(pin, frequency);
             }
             auto functionEnd = std::chrono::steady_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(functionEnd - functionStart);
@@ -3718,7 +3718,7 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         // noTone(pin)
         if (args.size() >= 1) {
             int32_t pin = convertToInt(args[0]);
-            emitCommand(FlexibleCommandFactory::createNoTone(pin));
+            emitNoTone(pin);
             auto functionEnd = std::chrono::steady_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(functionEnd - functionStart);
             functionExecutionTimes_[name] += duration;
@@ -4424,6 +4424,47 @@ void ASTInterpreter::emitVarSet(const std::string& variable, const std::string& 
     std::ostringstream json;
     json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << variable
          << "\",\"value\":" << value << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitVarSetConst(const std::string& variable, const std::string& value, const std::string& type) {
+    std::ostringstream json;
+    json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << variable
+         << "\",\"value\":" << value << ",\"isConst\":true}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitVarSetConstString(const std::string& varName, const std::string& stringVal) {
+    std::ostringstream json;
+    json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << varName
+         << "\",\"value\":{\"value\":\"" << stringVal << "\"},\"isConst\":true}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitTone(int pin, int frequency) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"tone\""
+         << ",\"arguments\":[" << pin << "," << frequency << "]"
+         << ",\"pin\":" << pin << ",\"frequency\":" << frequency
+         << ",\"message\":\"tone(" << pin << ", " << frequency << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitToneWithDuration(int pin, int frequency, int duration) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"tone\""
+         << ",\"arguments\":[" << pin << "," << frequency << "," << duration << "]"
+         << ",\"pin\":" << pin << ",\"frequency\":" << frequency << ",\"duration\":" << duration
+         << ",\"message\":\"tone(" << pin << ", " << frequency << ", " << duration << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitNoTone(int pin) {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"noTone\""
+         << ",\"arguments\":[" << pin << "]"
+         << ",\"pin\":" << pin
+         << ",\"message\":\"noTone(" << pin << ")\"}";
     emitJSON(json.str());
 }
 
