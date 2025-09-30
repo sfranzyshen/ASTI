@@ -2965,6 +2965,17 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
     // Handle return value - capture result before StateGuard destructor runs
     if (shouldReturn_) {
         result = returnValue_;  // Capture the return value while it's still valid
+
+        // TEST 42 FIX: Convert result to function's declared return type
+        // Example: long microsecondsToInches(long) should return int, not double
+        std::string returnType = "void";
+        const auto* returnTypeNode = funcDef->getReturnType();
+        if (auto* typeNode = dynamic_cast<const arduino_ast::TypeNode*>(returnTypeNode)) {
+            returnType = typeNode->getTypeName();
+            if (returnType != "void") {
+                result = convertToType(result, returnType);
+            }
+        }
     }
 
     // Clean up scope and call stack
@@ -6500,8 +6511,13 @@ CommandValue ASTInterpreter::convertToType(const CommandValue& value, const std:
     }
 
     // Handle conversion from any CommandValue type to the target type
-    if (baseTypeName == "int" || baseTypeName == "unsigned int" || baseTypeName == "byte") {
+    if (baseTypeName == "int" || baseTypeName == "unsigned int" || baseTypeName == "byte" ||
+        baseTypeName == "long" || baseTypeName == "unsigned long" ||
+        baseTypeName == "int32_t" || baseTypeName == "uint32_t" ||
+        baseTypeName == "int16_t" || baseTypeName == "uint16_t" ||
+        baseTypeName == "int8_t" || baseTypeName == "uint8_t") {
         // Convert to integer (int32_t to match CommandValue variant)
+        // TEST 42 FIX: Added "long" and other integer type variants
         if (std::holds_alternative<double>(value)) {
             int32_t intValue = static_cast<int32_t>(std::get<double>(value));
             return intValue;

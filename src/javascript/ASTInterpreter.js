@@ -5511,7 +5511,7 @@ class ASTInterpreter {
                 const rightMul = this.getNumericValue(right);
                 result = leftMul * rightMul; 
                 break;
-            case '/': 
+            case '/':
                 // Extract numeric values for arithmetic operations
                 const leftDiv = this.getNumericValue(left);
                 const rightDiv = this.getNumericValue(right);
@@ -5522,7 +5522,23 @@ class ASTInterpreter {
                     this.executionContext.isExecuting = false;
                     return null;
                 }
-                result = leftDiv / rightDiv; 
+
+                // Type-aware division: int / int = int (C++/Arduino semantics)
+                // Match C++ behavior: check if VALUES are integers AND variables have integer types
+                const leftVarIsInt = this.isIntegerType(node.left);
+                const rightVarIsInt = this.isIntegerType(node.right);
+                const leftValueIsInt = Number.isInteger(leftDiv);
+                const rightValueIsInt = Number.isInteger(rightDiv);
+
+                // Integer division if both values are integers AND at least one has integer type metadata
+                // This matches C++ behavior where int / int = int even if stored as numeric types
+                if (leftValueIsInt && rightValueIsInt && (leftVarIsInt || rightVarIsInt)) {
+                    // Integer division: truncate toward zero (C++ behavior)
+                    result = Math.trunc(leftDiv / rightDiv);
+                } else {
+                    // Float division
+                    result = leftDiv / rightDiv;
+                }
                 break;
             case '%': 
                 // Extract numeric values for arithmetic operations
@@ -7073,11 +7089,20 @@ class ASTInterpreter {
                     }
                     
                     const argValue = i < args.length ? args[i] : null;
-                    
+
                     if (paramName) {
-                        this.variables.set(paramName, argValue);
-                        debugLog(`DEBUG Parameter: ${paramName} = ${argValue} (type: ${typeof argValue})`);
-                        
+                        // TEST 42 FIX: Set parameter type metadata for integer division
+                        // Extract parameter type from paramType node
+                        let paramType = 'auto';
+                        if (param.paramType?.value) {
+                            paramType = param.paramType.value;
+                        } else if (param.paramType?.typeName) {
+                            paramType = param.paramType.typeName;
+                        }
+
+                        this.variables.set(paramName, argValue, {type: paramType, declaredType: paramType});
+                        debugLog(`DEBUG Parameter: ${paramName} = ${argValue} (type: ${typeof argValue}, declared: ${paramType})`);
+
                         // Debug array parameters specifically
                         if (Array.isArray(argValue)) {
                             debugLog(`DEBUG Array parameter: ${paramName} = [${argValue.join(', ')}] (length: ${argValue.length})`);
@@ -7130,7 +7155,20 @@ class ASTInterpreter {
             if (statement.type === 'ReturnStatement') {
                 // Handle return statement - evaluate and return the value
                 if (statement.value) {
-                    const returnValue = await this.evaluateExpression(statement.value);
+                    let returnValue = await this.evaluateExpression(statement.value);
+
+                    // TEST 42 FIX: Convert return value to function's declared return type
+                    // Match C++ behavior for integer division in return values
+                    if (this.currentFunction && this.currentFunction.returnType) {
+                        const returnType = this.currentFunction.returnType.value || this.currentFunction.returnType.typeName || 'void';
+                        if (returnType === 'int' || returnType === 'long' || returnType === 'short' || returnType === 'byte') {
+                            // Convert to integer (truncate)
+                            if (typeof returnValue === 'number' && !Number.isInteger(returnValue)) {
+                                returnValue = Math.trunc(returnValue);
+                            }
+                        }
+                    }
+
                     debugLog(`DEBUG Return statement: ${returnValue}`);
                     return returnValue;
                 } else {
@@ -8093,6 +8131,41 @@ class ASTInterpreter {
         
         // If all else fails, return 0
         return 0;
+    }
+
+    // Helper function to check if an AST node represents an integer type
+    // Used for type-aware arithmetic operations (e.g., integer division)
+    isIntegerType(node) {
+        if (!node) return false;
+
+        // Check IdentifierNode - look up variable type metadata
+        if (node.type === 'IdentifierNode') {
+            const varName = node.value;
+            const metadata = this.variables.getMetadata(varName);
+            if (metadata) {
+                const type = metadata.type || metadata.declaredType;
+                // Arduino/C++ integer types
+                const integerTypes = ['int', 'long', 'short', 'byte', 'word', 'char',
+                                     'unsigned int', 'unsigned long', 'unsigned short', 'unsigned char',
+                                     'int8_t', 'int16_t', 'int32_t', 'int64_t',
+                                     'uint8_t', 'uint16_t', 'uint32_t', 'uint64_t',
+                                     'size_t'];
+                return integerTypes.includes(type);
+            }
+            return false;
+        }
+
+        // Check LiteralNode - integer literals
+        if (node.type === 'LiteralNode' || node.type === 'NumberLiteralNode') {
+            const value = node.value;
+            if (typeof value === 'number') {
+                return Number.isInteger(value);
+            }
+            return false;
+        }
+
+        // For other node types, assume not integer (conservative)
+        return false;
     }
 
     // Helper function to sanitize objects for JSON serialization (remove circular references)
