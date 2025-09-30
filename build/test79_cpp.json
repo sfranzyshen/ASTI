@@ -2,8 +2,7 @@
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"VAR_SET","timestamp":0,"variable":"myPins","value":[2,4,8]}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
-{"type":"ERROR","timestamp":0,"message":"Array index must be integer","errorType":"RuntimeError"}
-{"type":"PIN_MODE","timestamp":0,"pin":0,"mode":1}
+{"type":"PIN_MODE","timestamp":0,"pin":4,"mode":1}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}

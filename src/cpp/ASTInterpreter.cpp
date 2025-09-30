@@ -1245,6 +1245,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             // TODO: Add storageSpecifier field to VarDeclNode for cross-platform parity
             
             bool isStatic = (typeName.find("static") == 0) || (typeName.find(" static") != std::string::npos);
+            bool isVolatile = (typeName.find("volatile") == 0) || (typeName.find(" volatile") != std::string::npos);
             bool isReference = typeName.find("&") != std::string::npos;
             
             // Extract clean type name without modifiers
@@ -1260,6 +1261,12 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 size_t pos = cleanTypeName.find("static");
                 if (pos != std::string::npos) {
                     cleanTypeName.erase(pos, 6); // Remove "static"
+                }
+            }
+            if (isVolatile) {
+                size_t pos = cleanTypeName.find("volatile");
+                if (pos != std::string::npos) {
+                    cleanTypeName.erase(pos, 8); // Remove "volatile"
                 }
             }
             if (isReference) {
@@ -2215,17 +2222,8 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
         // Evaluate second index expression (y in arr[x][y])
         CommandValue indexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getIndex()));
 
-        // Convert index to integer
-        int32_t secondIndex = 0;
-        if (std::holds_alternative<int32_t>(indexValue)) {
-            secondIndex = std::get<int32_t>(indexValue);
-        } else if (std::holds_alternative<uint32_t>(indexValue)) {
-            secondIndex = static_cast<int32_t>(std::get<uint32_t>(indexValue));
-        } else {
-            emitError("Array index must be integer");
-            lastExpressionResult_ = std::monostate{};
-            return;
-        }
+        // Convert index to integer (handles int32_t, double, etc.)
+        int32_t secondIndex = convertToInt(indexValue);
 
 
         // Calculate final index based on array type
@@ -6486,10 +6484,16 @@ void ASTInterpreter::visit(arduino_ast::UnionTypeNode& node) {
 
 CommandValue ASTInterpreter::convertToType(const CommandValue& value, const std::string& typeName) {
 
-    // Strip "const " prefix if present for type checking
+    // Strip qualifiers ("const ", "volatile ", "static ") if present for type checking
     std::string baseTypeName = typeName;
     if (baseTypeName.substr(0, 6) == "const ") {
         baseTypeName = baseTypeName.substr(6);
+    }
+    if (baseTypeName.substr(0, 9) == "volatile ") {
+        baseTypeName = baseTypeName.substr(9);
+    }
+    if (baseTypeName.substr(0, 7) == "static ") {
+        baseTypeName = baseTypeName.substr(7);
     }
 
     // Handle uninitialized variables (std::monostate) - provide default values

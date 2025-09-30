@@ -5,8 +5,8 @@
 {"type":"VAR_SET","timestamp":0,"variable":"ledState","value":1}
 {"type":"VAR_SET","timestamp":0,"variable":"buttonState","value":null}
 {"type":"VAR_SET","timestamp":0,"variable":"lastButtonState","value":0}
-{"type":"VAR_SET","timestamp":0,"variable":"lastDebounceTime","value":0.000000}
-{"type":"VAR_SET","timestamp":0,"variable":"debounceDelay","value":50.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"lastDebounceTime","value":0}
+{"type":"VAR_SET","timestamp":0,"variable":"debounceDelay","value":50}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"PIN_MODE","timestamp":0,"pin":2,"mode":0}
 {"type":"PIN_MODE","timestamp":0,"pin":13,"mode":1}

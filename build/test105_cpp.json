@@ -11,12 +11,11 @@
 {"type":"VAR_SET","timestamp":0,"variable":"i","value":2}
 {"type":"VAR_SET","timestamp":0,"variable":"j","value":1}
 {"type":"VAR_SET","timestamp":0,"variable":"k","value":1}
-{"type":"ERROR","timestamp":0,"message":"Array index must be integer","errorType":"RuntimeError"}
-{"type":"VAR_SET","timestamp":0,"variable":"val1","value":null}
+{"type":"VAR_SET","timestamp":0,"variable":"val1","value":40}
 {"type":"ERROR","timestamp":0,"message":"Array index 9 out of bounds (size: 6)","errorType":"RuntimeError"}
 {"type":"VAR_SET","timestamp":0,"variable":"val2","value":null}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Val 1: "],"data":"Val 1: ","message":"Serial.print("Val 1: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println(null)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["40"],"data":"40","message":"Serial.println(40)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Val 2: "],"data":"Val 2: ","message":"Serial.print("Val 2: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println(null)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}

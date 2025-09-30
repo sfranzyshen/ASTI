@@ -3,15 +3,15 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Adafruit_NeoPixel","arguments":["60.000000","6.000000","82.000000"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: Adafruit_NeoPixel","errorType":"RuntimeError"}
 {"type":"VAR_SET","timestamp":0,"variable":"strip","value":null}
-{"type":"VAR_SET","timestamp":0,"variable":"pixelPrevious","value":0.000000}
-{"type":"VAR_SET","timestamp":0,"variable":"patternPrevious","value":0.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"pixelPrevious","value":0}
+{"type":"VAR_SET","timestamp":0,"variable":"patternPrevious","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"patternCurrent","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"patternInterval","value":5000}
 {"type":"VAR_SET","timestamp":0,"variable":"patternComplete","value":false}
 {"type":"VAR_SET","timestamp":0,"variable":"pixelInterval","value":50}
 {"type":"VAR_SET","timestamp":0,"variable":"pixelQueue","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"pixelCycle","value":0}
-{"type":"VAR_SET","timestamp":0,"variable":"pixelNumber","value":60.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"pixelNumber","value":60}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"clock_prescale_set","arguments":["0.000000"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: clock_prescale_set","errorType":"RuntimeError"}
@@ -45,7 +45,7 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["0.000000","255.000000","0.000000"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50.000000]}
-{"type":"VAR_SET","timestamp":0,"variable":"current_pixel","value":0.000000,"isExtern":true}
+{"type":"VAR_SET","timestamp":0,"variable":"current_pixel","value":0,"isExtern":true}
 {"type":"VAR_SET","timestamp":0,"variable":"pixelInterval","value":50}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.setPixelColor","arguments":["null","null"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: strip.setPixelColor","errorType":"RuntimeError"}

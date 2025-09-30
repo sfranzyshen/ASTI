@@ -7,11 +7,11 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"VAR_SET","timestamp":0,"variable":"myConst","value":100,"isConst":true}
-{"type":"VAR_SET","timestamp":0,"variable":"myVolatile","value":50.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"myVolatile","value":50}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["My constant: "],"data":"My constant: ","message":"Serial.print("My constant: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["100"],"data":"100","message":"Serial.println(100)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["My volatile: "],"data":"My volatile: ","message":"Serial.print("My volatile: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["50.000000"],"data":"50.000000","message":"Serial.println(50.000000)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["50"],"data":"50","message":"Serial.println(50)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}

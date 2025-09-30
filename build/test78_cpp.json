@@ -5,8 +5,8 @@
 {"type":"VAR_SET","timestamp":0,"variable":"here","value":null}
 {"type":"VAR_SET","timestamp":0,"variable":"buff","value":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
 {"type":"VAR_SET","timestamp":0,"variable":"param","value":null}
-{"type":"VAR_SET","timestamp":0,"variable":"hbval","value":128.000000}
-{"type":"VAR_SET","timestamp":0,"variable":"hbdelta","value":8.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"hbval","value":128}
+{"type":"VAR_SET","timestamp":0,"variable":"hbdelta","value":8}
 {"type":"VAR_SET","timestamp":0,"variable":"rst_active_high","value":null,"isExtern":true}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"unsigned int","arguments":[]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: unsigned int","errorType":"RuntimeError"}
@@ -28,14 +28,14 @@
 {"type":"IF_STATEMENT","timestamp":0,"condition":0,"conditionDisplay":"0","branch":"else"}
 {"type":"DIGITAL_WRITE","timestamp":0,"pin":6,"value":0}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"heartbeat","arguments":[]}
-{"type":"VAR_SET","timestamp":0,"variable":"last_time","value":0.000000,"isExtern":true}
+{"type":"VAR_SET","timestamp":0,"variable":"last_time","value":0,"isExtern":true}
 {"type":"EXTERNAL_REQUEST","timestamp":0,"function":"millis","requestType":"millis"}
 {"type":"VAR_SET","timestamp":0,"variable":"now","value":17807}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"VAR_SET","timestamp":0,"variable":"last_time","value":17807}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
-{"type":"VAR_SET","timestamp":0,"variable":"hbval","value":8.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"hbval","value":8}
 {"type":"ANALOG_WRITE","timestamp":0,"pin":7,"value":8}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.available","arguments":[]}
 {"type":"IF_STATEMENT","timestamp":0,"condition":0,"conditionDisplay":"0","branch":"else"}

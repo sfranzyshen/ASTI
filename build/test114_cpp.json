@@ -9,8 +9,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"numbers","value":[1,2,3]}
 {"type":"VAR_SET","timestamp":0,"variable":"p","value":null}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Numbers[1]: "],"data":"Numbers[1]: ","message":"Serial.print("Numbers[1]: ")"}
-{"type":"ERROR","timestamp":0,"message":"Array index must be integer","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println(null)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["2"],"data":"2","message":"Serial.println(2)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Point x: "],"data":"Point x: ","message":"Serial.print("Point x: ")"}
 {"type":"ERROR","timestamp":0,"message":"Unsupported access operator: ","errorType":"RuntimeError"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println(null)"}
