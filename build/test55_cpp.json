@@ -27,8 +27,8 @@ String startsWith() and endsWith():)"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":null,"conditionDisplay":"null","branch":"else"}
 {"type":"VAR_SET","timestamp":0,"variable":"sensorReading","value":{"value":"sensor = ","type":"ArduinoString"}}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
-{"type":"VAR_SET","timestamp":0,"variable":"sensorReading","value":"560"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[560],"data":"560","message":"Serial.print(560)"}
+{"type":"VAR_SET","timestamp":0,"variable":"sensorReading","value":"sensor = 560"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["sensor = 560"],"data":"sensor = 560","message":"Serial.print("sensor = 560")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"sensorReading.endsWith","arguments":["0"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: sensorReading.endsWith","errorType":"RuntimeError"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":null,"conditionDisplay":"null","branch":"else"}

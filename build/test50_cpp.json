@@ -59,13 +59,13 @@ Comparing Strings:)"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor: "}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"Sensor: "}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"560"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor: 560"}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":19,"requestId":"analogRead_static_19"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"745"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.compareTo","arguments":["745"]}
+{"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"Sensor: 745"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.compareTo","arguments":["Sensor: 745"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.compareTo","errorType":"RuntimeError"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["560 comes after 745"],"data":"560 comes after 745","message":"Serial.println(560 comes after 745)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor: 560 comes after Sensor: 745"],"data":"Sensor: 560 comes after Sensor: 745","message":"Serial.println(Sensor: 560 comes after Sensor: 745)"}
 {"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"While loop limit reached: completed 1 iterations (max: 1)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}

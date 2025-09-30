@@ -21,19 +21,19 @@ Appending to a String:)"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor "],"data":"Sensor ","message":"Serial.println(Sensor )"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"value"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["value"],"data":"value","message":"Serial.println(value)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":" for input "}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[" for input "],"data":" for input ","message":"Serial.println( for input )"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"65"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["65"],"data":"65","message":"Serial.println(65)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"0.000000"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["0.000000"],"data":"0.000000","message":"Serial.println(0.000000)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":": "}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[": "],"data":": ","message":"Serial.println(: )"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor value"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor value"],"data":"Sensor value","message":"Serial.println(Sensor value)"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor value for input "}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor value for input "],"data":"Sensor value for input ","message":"Serial.println(Sensor value for input )"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor value for input 65"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor value for input 65"],"data":"Sensor value for input 65","message":"Serial.println(Sensor value for input 65)"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor value for input 650"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor value for input 650"],"data":"Sensor value for input 650","message":"Serial.println(Sensor value for input 650)"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor value for input 650: "}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor value for input 650: "],"data":"Sensor value for input 650: ","message":"Serial.println(Sensor value for input 650: )"}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"560"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["560"],"data":"560","message":"Serial.println(560)"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor value for input 650: 560"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor value for input 650: 560"],"data":"Sensor value for input 650: 560","message":"Serial.println(Sensor value for input 650: 560)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["
 
 changing the Strings' values"],"data":"
@@ -43,8 +43,8 @@ changing the Strings' values","message":"Serial.println(
 changing the Strings' values)"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"A long integer: "}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"The millis(): "}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"123456789.000000"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["123456789.000000"],"data":"123456789.000000","message":"Serial.println(123456789.000000)"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"A long integer: 123456789"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["A long integer: 123456789"],"data":"A long integer: 123456789","message":"Serial.println(A long integer: 123456789)"}
 {"type":"EXTERNAL_REQUEST","timestamp":0,"function":"millis","requestType":"millis"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["The millis(): 17807"],"data":"The millis(): 17807","message":"Serial.println(The millis(): 17807)"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}

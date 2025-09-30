@@ -670,7 +670,20 @@ public:
     const ASTNode* getLeft() const { return left_.get(); }
     const ASTNode* getRight() const { return right_.get(); }
     std::string getOperator() const { return operator_; }
-    
+
+    // CRITICAL FIX: Override setValue to extract operator string from ASTValue
+    // This matches the pattern used by BinaryOpNode and UnaryOpNode
+    // Fixes Test 47: += operator now works correctly for string concatenation
+    void setValue(const ASTValue& value) override {
+        // Call base class first
+        ASTNode::setValue(value);
+
+        // Extract operator string if the value contains one
+        if (std::holds_alternative<std::string>(value)) {
+            operator_ = std::get<std::string>(value);
+        }
+    }
+
     void accept(ASTVisitor& visitor) override;
 };
 
