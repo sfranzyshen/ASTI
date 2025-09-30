@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759208237259,
+    "timestamp": 1759210687128,
     "component": "interpreter",
     "version": "12.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759208237259,
+    "timestamp": 1759210687128,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759208237260,
+    "timestamp": 1759210687128,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759208237260,
+    "timestamp": 1759210687128,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759208237260,
+    "timestamp": 1759210687128,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759208237260,
+    "timestamp": 1759210687128,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759208237260,
+    "timestamp": 1759210687128,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,7 +46,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759208237260
+    "timestamp": 1759210687128
   },
   {
     "type": "FUNCTION_CALL",
@@ -56,13 +56,13 @@
         "functionName": "add",
         "interpreter": "[Circular Reference Removed]",
         "type": "function_pointer",
-        "pointerId": "fptr_1759208237260_sdhbe"
+        "pointerId": "fptr_1759210687128_f0mwm"
       },
       5,
       10
     ],
-    "timestamp": 1759208237260,
-    "message": "applyOperation(ArduinoFunctionPointer(fptr_1759208237260_sdhbe -> add), 5, 10)"
+    "timestamp": 1759210687128,
+    "message": "applyOperation(ArduinoFunctionPointer(fptr_1759210687128_f0mwm -> add), 5, 10)"
   },
   {
     "type": "FUNCTION_CALL",
@@ -71,14 +71,14 @@
       5,
       10
     ],
-    "timestamp": 1759208237260,
+    "timestamp": 1759210687129,
     "message": "add(5, 10)"
   },
   {
     "type": "VAR_SET",
     "variable": "result",
     "value": 15,
-    "timestamp": 1759208237260
+    "timestamp": 1759210687129
   },
   {
     "type": "FUNCTION_CALL",
@@ -87,7 +87,7 @@
       "\"Result of applyOperation: \""
     ],
     "data": "Result of applyOperation: ",
-    "timestamp": 1759208237260,
+    "timestamp": 1759210687129,
     "message": "Serial.print(\"Result of applyOperation: \")"
   },
   {
@@ -97,7 +97,7 @@
       "15"
     ],
     "data": "15",
-    "timestamp": 1759208237260,
+    "timestamp": 1759210687129,
     "message": "Serial.println(15)"
   },
   {
@@ -106,23 +106,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759208237260
+    "timestamp": 1759210687129
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759208237266,
+    "timestamp": 1759210687133,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759208237266,
+    "timestamp": 1759210687133,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759208237266,
+    "timestamp": 1759210687133,
     "message": "Program execution stopped"
   }
 ]

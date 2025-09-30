@@ -741,10 +741,11 @@ class ArduinoString {
         return this.value;
     }
     
-    // Concatenation operator
+    // Concatenation operator - modifies in-place to match Arduino behavior
     concat(other) {
         const otherValue = other instanceof ArduinoString ? other.value : String(other);
-        return new ArduinoString(this.value + otherValue);
+        this.value += otherValue;
+        return this;  // Return self for chaining, like Arduino String.concat()
     }
     
     // Set character at specific position
