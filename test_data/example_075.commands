@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759210685985,
+    "timestamp": 1759211150224,
     "component": "interpreter",
     "version": "12.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759210685985,
+    "timestamp": 1759211150224,
     "message": "Program execution started"
   },
   {
@@ -18,8 +18,8 @@
       4,
       2
     ],
-    "objectId": "CapacitiveSensor_1759210685985_ww9p",
-    "timestamp": 1759210685985,
+    "objectId": "CapacitiveSensor_1759211150224_36yj",
+    "timestamp": 1759211150224,
     "message": "CapacitiveSensor(4, 2)"
   },
   {
@@ -32,28 +32,28 @@
         2
       ],
       "type": "library_object",
-      "objectId": "CapacitiveSensor_1759210685985_ww9p",
+      "objectId": "CapacitiveSensor_1759211150224_36yj",
       "initialized": true,
       "properties": {}
     },
-    "timestamp": 1759210685986
+    "timestamp": 1759211150224
   },
   {
     "type": "VAR_SET",
     "variable": "threshold",
     "value": 1000,
-    "timestamp": 1759210685986
+    "timestamp": 1759211150224
   },
   {
     "type": "VAR_SET",
     "variable": "ledPin",
     "value": 12,
     "isConst": true,
-    "timestamp": 1759210685986
+    "timestamp": 1759211150224
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759210685986,
+    "timestamp": 1759211150225,
     "message": "Executing setup() function"
   },
   {
@@ -63,28 +63,28 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759210685986,
+    "timestamp": 1759211150225,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "PIN_MODE",
     "pin": 12,
     "mode": 1,
-    "timestamp": 1759210685986
+    "timestamp": 1759211150225
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759210685986,
+    "timestamp": 1759211150225,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759210685986,
+    "timestamp": 1759211150225,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759210685986,
+    "timestamp": 1759211150225,
     "message": "Starting loop iteration 1"
   },
   {
@@ -92,42 +92,42 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759210685986
+    "timestamp": 1759211150225
   },
   {
     "type": "VAR_SET",
     "variable": "sensorValue",
-    "value": 1921,
-    "timestamp": 1759210685986
+    "value": 728,
+    "timestamp": 1759211150225
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "1921"
+      "728"
     ],
-    "data": "1921",
-    "timestamp": 1759210685986,
-    "message": "Serial.println(1921)"
+    "data": "728",
+    "timestamp": 1759211150225,
+    "message": "Serial.println(728)"
   },
   {
     "type": "IF_STATEMENT",
-    "condition": true,
-    "result": true,
-    "branch": "then",
-    "timestamp": 1759210685986
+    "condition": false,
+    "result": false,
+    "branch": "else",
+    "timestamp": 1759211150225
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 12,
-    "value": 1,
-    "timestamp": 1759210685986
+    "value": 0,
+    "timestamp": 1759211150225
   },
   {
     "type": "DELAY",
     "duration": 10,
     "actualDelay": 10,
-    "timestamp": 1759210685986
+    "timestamp": 1759211150225
   },
   {
     "type": "FUNCTION_CALL",
@@ -135,23 +135,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759210685986
+    "timestamp": 1759211150225
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759210685992,
+    "timestamp": 1759211150231,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759210685992,
+    "timestamp": 1759211150231,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759210685992,
+    "timestamp": 1759211150231,
     "message": "Program execution stopped"
   }
 ]

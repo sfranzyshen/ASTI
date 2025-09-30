@@ -5473,10 +5473,11 @@ class ASTInterpreter {
                 } else if (typeof left === 'number' && right instanceof ArduinoPointer) {
                     result = right.add(left);
                 } else if (left instanceof ArduinoString || right instanceof ArduinoString) {
-                    // Handle String concatenation
+                    // Handle String concatenation - create NEW object without modifying operands
                     const leftStr = left instanceof ArduinoString ? left : new ArduinoString(String(left));
                     const rightStr = right instanceof ArduinoString ? right : new ArduinoString(String(right));
-                    result = leftStr.concat(rightStr);
+                    const rightValue = rightStr instanceof ArduinoString ? rightStr.value : String(rightStr);
+                    result = new ArduinoString(leftStr.value + rightValue);
                 } else {
                     // Extract numeric values for arithmetic operations
                     const leftValue = this.getNumericValue(left);
