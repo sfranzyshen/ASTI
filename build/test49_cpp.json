@@ -22,7 +22,7 @@ String charAt() and setCharAt():)"}
 {"type":"VAR_SET","timestamp":0,"variable":"message","value":{"value":"Most significant digit of the sensor reading is: ","type":"ArduinoString"}}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Most significant digit of the sensor reading is: null"],"data":"Most significant digit of the sensor reading is: null","message":"Serial.println(Most significant digit of the sensor reading is: null)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[""],"data":"","message":"Serial.println()"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"reportString.setCharAt","arguments":["13.000000","61"]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"reportString.setCharAt","arguments":["13","61"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: reportString.setCharAt","errorType":"RuntimeError"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["SensorReading: 456"],"data":"SensorReading: 456","message":"Serial.println(SensorReading: 456)"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}

@@ -67,7 +67,8 @@
       "Bash(do echo \"=== TEST $i ===\")",
       "Bash(for i in 058 075 086 093 098)",
       "Bash(python3:*)",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "Bash(./build/validate_cross_platform:*)"
     ],
     "deny": [],
     "ask": [],

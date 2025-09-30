@@ -22,10 +22,10 @@ Adding Strings together (concatenation):)"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
-{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"You added 123.000000"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["You added 123.000000"],"data":"You added 123.000000","message":"Serial.println(You added 123.000000)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"You added 123456789.000000"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["You added 123456789.000000"],"data":"You added 123456789.000000","message":"Serial.println(You added 123456789.000000)"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"You added 123"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["You added 123"],"data":"You added 123","message":"Serial.println(You added 123)"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"You added 123456789"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["You added 123456789"],"data":"You added 123456789","message":"Serial.println(You added 123456789)"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"You added 65"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["You added 65"],"data":"You added 65","message":"Serial.println(You added 65)"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"You added abc"}

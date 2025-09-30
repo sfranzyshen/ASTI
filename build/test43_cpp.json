@@ -30,12 +30,12 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"readSensors","arguments":[]}
-{"type":"VAR_SET","timestamp":0,"variable":"pixels","value":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
+{"type":"VAR_SET","timestamp":0,"variable":"pixels","value":[1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
 {"type":"VAR_SET","timestamp":0,"variable":"x","value":3}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":15,"requestId":"analogRead_static_15"}
 {"type":"VAR_SET","timestamp":0,"variable":"y","value":4}
-{"type":"VAR_SET","timestamp":0,"variable":"pixels","value":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
+{"type":"VAR_SET","timestamp":0,"variable":"pixels","value":[1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"refreshScreen","arguments":[]}
 {"type":"FOR_LOOP","timestamp":0,"phase":"start"}
 {"type":"VAR_SET","timestamp":0,"variable":"thisRow","value":0}

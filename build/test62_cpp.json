@@ -32,7 +32,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"xDistance","value":-5}
 {"type":"VAR_SET","timestamp":0,"variable":"yDistance","value":-5}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Mouse.move","arguments":["-5","-5","0.000000"]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Mouse.move","arguments":["-5","-5","0"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: Mouse.move","errorType":"RuntimeError"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"ERROR","timestamp":0,"message":"Undefined variable: MOUSE_LEFT","errorType":"RuntimeError"}

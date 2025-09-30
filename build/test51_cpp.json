@@ -24,15 +24,15 @@ String Constructors:)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["This is a string"],"data":"This is a string","message":"Serial.println(This is a string)"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"This is a string with more"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["This is a string with more"],"data":"This is a string with more","message":"Serial.println(This is a string with more)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"13.000000"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["13.000000"],"data":"13.000000","message":"Serial.println(13.000000)"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"13"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["13"],"data":"13","message":"Serial.println(13)"}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"560"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["560"],"data":"560","message":"Serial.println(560)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"45.000000"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["45.000000"],"data":"45.000000","message":"Serial.println(45.000000)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"255.000000"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["255.000000"],"data":"255.000000","message":"Serial.println(255.000000)"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"45"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["45"],"data":"45","message":"Serial.println(45)"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"255"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["255"],"data":"255","message":"Serial.println(255)"}
 {"type":"EXTERNAL_REQUEST","timestamp":0,"function":"millis","requestType":"millis"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"17807"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["17807"],"data":"17807","message":"Serial.println(17807)"}

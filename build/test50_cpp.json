@@ -20,8 +20,10 @@ Comparing Strings:)"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["StringOne == "this""],"data":"StringOne == "this"","message":"Serial.println(StringOne == "this")"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["this =! that"],"data":"this =! that","message":"Serial.println(this =! that)"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"This"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"this"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}

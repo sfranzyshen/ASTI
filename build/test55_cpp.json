@@ -22,7 +22,7 @@ String startsWith() and endsWith():)"}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.startsWith","errorType":"RuntimeError"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":null,"conditionDisplay":"null","branch":"else"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"HTTP/1.1 200 OK"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.startsWith","arguments":["200 OK","9.000000"]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.startsWith","arguments":["200 OK","9"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.startsWith","errorType":"RuntimeError"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":null,"conditionDisplay":"null","branch":"else"}
 {"type":"VAR_SET","timestamp":0,"variable":"sensorReading","value":{"value":"sensor = ","type":"ArduinoString"}}

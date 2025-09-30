@@ -4915,6 +4915,14 @@ std::string commandValueToString(const CommandValue& value) {
         } else if constexpr (std::is_same_v<T, uint32_t>) {
             return std::to_string(v);
         } else if constexpr (std::is_same_v<T, double>) {
+            // Arduino String() formats integer-valued doubles without decimals
+            // This matches JavaScript behavior for string concatenation
+            if (std::floor(v) == v && std::isfinite(v)) {
+                // Whole number - format as integer to match Arduino/JS behavior
+                std::ostringstream os;
+                os << std::fixed << std::setprecision(0) << v;
+                return os.str();
+            }
             return std::to_string(v);
         } else if constexpr (std::is_same_v<T, std::string>) {
             return v;

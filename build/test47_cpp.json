@@ -20,9 +20,9 @@ Appending to a String:)"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println(null)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":null}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println(null)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor "],"data":"Sensor ","message":"Serial.println(Sensor )"}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"value"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["value"],"data":"value","message":"Serial.println(value)"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":" for input "}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[" for input "],"data":" for input ","message":"Serial.println( for input )"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"65"}

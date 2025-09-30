@@ -11,7 +11,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"ptr","value":null}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"callFunc","arguments":[null]}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Result: "],"data":"Result: ","message":"Serial.print("Result: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"funcPtr","arguments":["10.000000","20.000000"]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"funcPtr","arguments":["10","20"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: funcPtr","errorType":"RuntimeError"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println(null)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
