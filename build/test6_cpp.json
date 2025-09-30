@@ -14,9 +14,9 @@
 {"type":"VAR_SET","timestamp":0,"variable":"currentMillis","value":17807}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
 {"type":"VAR_SET","timestamp":0,"variable":"previousMillis","value":17807}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
-{"type":"VAR_SET","timestamp":0,"variable":"ledState","value":0.000000}
-{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"VAR_SET","timestamp":0,"variable":"ledState","value":1.000000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}

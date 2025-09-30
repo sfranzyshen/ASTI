@@ -43,11 +43,14 @@
 {"type":"VAR_SET","timestamp":0,"variable":"yReading","value":0}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"DIGITAL_READ_REQUEST","timestamp":0,"pin":3,"requestId":"digitalRead_static_3"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
 {"type":"ERROR","timestamp":0,"message":"Undefined variable: MOUSE_LEFT","errorType":"RuntimeError"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Mouse.isPressed","arguments":["null"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: Mouse.isPressed","errorType":"RuntimeError"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":null,"conditionDisplay":"null","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":1,"conditionDisplay":"1","branch":"then"}
+{"type":"ERROR","timestamp":0,"message":"Undefined variable: MOUSE_LEFT","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Mouse.press","arguments":["null"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: Mouse.press","errorType":"RuntimeError"}
 {"type":"DELAY","timestamp":0,"duration":5,"actualDelay":5}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}

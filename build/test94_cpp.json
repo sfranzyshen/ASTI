@@ -10,8 +10,8 @@
 {"type":"VAR_SET","timestamp":0,"variable":"y","value":10}
 {"type":"VAR_SET","timestamp":0,"variable":"z","value":15}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Condition 2 met."],"data":"Condition 2 met.","message":"Serial.println(Condition 2 met.)"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Condition 1 met."],"data":"Condition 1 met.","message":"Serial.println(Condition 1 met.)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}

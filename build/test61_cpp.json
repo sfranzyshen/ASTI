@@ -25,11 +25,15 @@
 {"type":"DIGITAL_READ_REQUEST","timestamp":0,"pin":2,"requestId":"digitalRead_static_2"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"DIGITAL_READ_REQUEST","timestamp":0,"pin":3,"requestId":"digitalRead_static_3"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.write","arguments":["100"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: Keyboard.write","errorType":"RuntimeError"}
 {"type":"DIGITAL_READ_REQUEST","timestamp":0,"pin":4,"requestId":"digitalRead_static_4"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"DIGITAL_READ_REQUEST","timestamp":0,"pin":5,"requestId":"digitalRead_static_5"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.write","arguments":["114"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: Keyboard.write","errorType":"RuntimeError"}
 {"type":"DIGITAL_READ_REQUEST","timestamp":0,"pin":6,"requestId":"digitalRead_static_6"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}

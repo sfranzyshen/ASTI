@@ -4863,7 +4863,41 @@ std::string commandValueToString(const CommandValue& value) {
 
 // Helper to compare two CommandValue objects for equality
 bool commandValuesEqual(const CommandValue& a, const CommandValue& b) {
-    // If types don't match, not equal
+    // CROSS-PLATFORM FIX: Allow cross-type numeric comparisons
+    // Arduino allows comparing int (0) with double (0.0) - they should be equal
+    // This fixes issues like "int ledState = LOW; if (ledState == LOW)" where
+    // ledState might be stored as double but LOW is int32_t
+
+    // Check if both are numeric types (int32_t, uint32_t, or double)
+    bool aIsNumeric = std::holds_alternative<int32_t>(a) ||
+                      std::holds_alternative<uint32_t>(a) ||
+                      std::holds_alternative<double>(a);
+    bool bIsNumeric = std::holds_alternative<int32_t>(b) ||
+                      std::holds_alternative<uint32_t>(b) ||
+                      std::holds_alternative<double>(b);
+
+    if (aIsNumeric && bIsNumeric) {
+        // Compare numerically, not by type
+        double aNum = std::visit([](const auto& v) -> double {
+            using T = std::decay_t<decltype(v)>;
+            if constexpr (std::is_same_v<T, int32_t>) return static_cast<double>(v);
+            if constexpr (std::is_same_v<T, uint32_t>) return static_cast<double>(v);
+            if constexpr (std::is_same_v<T, double>) return v;
+            return 0.0;
+        }, a);
+
+        double bNum = std::visit([](const auto& v) -> double {
+            using T = std::decay_t<decltype(v)>;
+            if constexpr (std::is_same_v<T, int32_t>) return static_cast<double>(v);
+            if constexpr (std::is_same_v<T, uint32_t>) return static_cast<double>(v);
+            if constexpr (std::is_same_v<T, double>) return v;
+            return 0.0;
+        }, b);
+
+        return aNum == bNum;
+    }
+
+    // For non-numeric types, types must match exactly
     if (a.index() != b.index()) {
         return false;
     }

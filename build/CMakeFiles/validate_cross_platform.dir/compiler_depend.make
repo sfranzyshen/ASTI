@@ -277,6 +277,30 @@ CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: validate_c
   /usr/include/c++/11/thread \
   /usr/include/c++/11/bits/std_thread.h \
   /usr/include/c++/11/bits/this_thread_sleep.h \
+  /usr/include/c++/11/cmath \
+  /usr/include/math.h \
+  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+  /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+  /usr/include/c++/11/bits/specfun.h \
+  /usr/include/c++/11/tr1/gamma.tcc \
+  /usr/include/c++/11/tr1/special_function_util.h \
+  /usr/include/c++/11/tr1/bessel_function.tcc \
+  /usr/include/c++/11/tr1/beta_function.tcc \
+  /usr/include/c++/11/tr1/ell_integral.tcc \
+  /usr/include/c++/11/tr1/exp_integral.tcc \
+  /usr/include/c++/11/tr1/hypergeometric.tcc \
+  /usr/include/c++/11/tr1/legendre_function.tcc \
+  /usr/include/c++/11/tr1/modified_bessel_func.tcc \
+  /usr/include/c++/11/tr1/poly_hermite.tcc \
+  /usr/include/c++/11/tr1/poly_laguerre.tcc \
+  /usr/include/c++/11/tr1/riemann_zeta.tcc \
   /usr/include/unistd.h \
   /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
   /usr/include/x86_64-linux-gnu/bits/environments.h \
@@ -330,8 +354,6 @@ CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: validate_c
 
 /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h:
-
 /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h:
 
 /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h:
@@ -349,6 +371,40 @@ CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: validate_c
 /usr/include/x86_64-linux-gnu/bits/confname.h:
 
 /usr/include/x86_64-linux-gnu/bits/posix_opt.h:
+
+/usr/include/c++/11/tr1/riemann_zeta.tcc:
+
+/usr/include/c++/11/tr1/poly_laguerre.tcc:
+
+/usr/include/c++/11/tr1/poly_hermite.tcc:
+
+/usr/include/c++/11/tr1/modified_bessel_func.tcc:
+
+/usr/include/c++/11/tr1/hypergeometric.tcc:
+
+/usr/include/c++/11/tr1/exp_integral.tcc:
+
+/usr/include/c++/11/tr1/ell_integral.tcc:
+
+/usr/include/c++/11/tr1/bessel_function.tcc:
+
+/usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h:
+
+/usr/include/c++/11/tr1/special_function_util.h:
+
+/usr/include/c++/11/bits/specfun.h:
+
+/usr/include/x86_64-linux-gnu/bits/iscanonical.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
+
+/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
+
+/usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
+
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
 
 /usr/include/c++/11/bits/parse_numbers.h:
 
@@ -508,6 +564,8 @@ CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: validate_c
 
 /usr/include/c++/11/bits/invoke.h:
 
+/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
+
 /usr/include/c++/11/bits/postypes.h:
 
 /usr/include/c++/11/cstdint:
@@ -530,7 +588,11 @@ CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: validate_c
 
 /usr/include/c++/11/stack:
 
+/usr/include/c++/11/tr1/gamma.tcc:
+
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/include/x86_64-linux-gnu/bits/fp-fast.h:
 
 /usr/include/c++/11/iostream:
 
@@ -565,6 +627,8 @@ CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: validate_c
 /usr/include/x86_64-linux-gnu/sys/single_threaded.h:
 
 /usr/include/c++/11/pstl/pstl_config.h:
+
+/usr/include/c++/11/cmath:
 
 /usr/include/c++/11/bits/allocator.h:
 
@@ -603,6 +667,8 @@ CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: validate_c
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
 
 /usr/include/c++/11/bits/ostream_insert.h:
+
+/usr/include/c++/11/tr1/legendre_function.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
 
@@ -669,6 +735,8 @@ CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: validate_c
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/c++/11/regex:
+
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:
 
@@ -846,6 +914,8 @@ validate_cross_platform.cpp:
 
 /usr/include/c++/11/bits/stl_relops.h:
 
+/usr/include/c++/11/tr1/beta_function.tcc:
+
 /usr/include/c++/11/array:
 
 /usr/include/c++/11/bits/uses_allocator.h:
@@ -915,6 +985,8 @@ validate_cross_platform.cpp:
 /usr/include/c++/11/bits/stl_stack.h:
 
 /usr/include/c++/11/bits/stl_map.h:
+
+/usr/include/math.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
 
