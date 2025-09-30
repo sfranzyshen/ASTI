@@ -61,7 +61,8 @@
       "Bash(./debug_simple_converter)",
       "Bash(cmake:*)",
       "Bash(git stash:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(xxd:*)"
     ],
     "deny": [],
     "ask": [],

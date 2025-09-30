@@ -83,6 +83,18 @@ std::string normalizeArduino(const std::string& arduino) {
     std::regex serialPrintStringRegex(R"(Serial\.print\("[^"]*"\))");
     // Preserve literal strings, only normalize calculated values
 
+    // Normalize escape sequences BEFORE whitespace normalization
+    // Convert literal \t, \n, \r (two chars) to actual whitespace characters
+    // This ensures C++ literal tabs and JS escaped \t are treated the same
+    std::regex escapeTabRegex(R"(\\t)");
+    normalized = std::regex_replace(normalized, escapeTabRegex, "\t");
+
+    std::regex escapeNewlineRegex(R"(\\n)");
+    normalized = std::regex_replace(normalized, escapeNewlineRegex, "\n");
+
+    std::regex escapeCarriageRegex(R"(\\r)");
+    normalized = std::regex_replace(normalized, escapeCarriageRegex, "\r");
+
     // Remove extra whitespace and normalize line endings
     std::regex whitespaceRegex(R"(\s+)");
     normalized = std::regex_replace(normalized, whitespaceRegex, " ");
