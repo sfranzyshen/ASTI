@@ -2496,11 +2496,8 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         case arduino_ast::ASTNodeType::NUMBER_LITERAL:
             if (auto* numNode = dynamic_cast<arduino_ast::NumberNode*>(expr)) {
                 double value = numNode->getNumber();
-                // Preserve integer type: if value is whole number, return as int
-                // This matches Arduino/C++ literal semantics (0 is int, 0.0 is double)
-                if (value == std::floor(value) && value >= INT32_MIN && value <= INT32_MAX) {
-                    return static_cast<int32_t>(value);
-                }
+                // Keep all literals as double - we can't distinguish "5" from "5.0" at this level
+                // Integer type preservation happens in arithmetic operations based on operand types
                 return value;
             }
             break;
