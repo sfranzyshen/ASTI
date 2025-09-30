@@ -771,7 +771,16 @@ void loop() {
             updateStatus('IDLE', 0, 0, 0);
             updateButtons('IDLE');
         }
-        
+
+        // Helper function to convert actual control characters back to escape sequences for display
+        function escapeForDisplay(str) {
+            if (!str) return str;
+            return str
+                .replace(/\n/g, '\\n')   // Actual newline → literal \n
+                .replace(/\t/g, '\\t')   // Actual tab → literal \t
+                .replace(/\r/g, '\\r');  // Actual carriage return → literal \r
+        }
+
         // Display functions - completely simple, no scroll management
         function displayCommand(command) {
             // Only filter out truly invalid commands and redundant library instantiation
@@ -829,7 +838,7 @@ void loop() {
                             content += `▶ ${command.message}`;
                         }
                     } else {
-                        content += `${command.function}(${command.arguments ? command.arguments.join(', ') : ''})`;
+                        content += escapeForDisplay(command.message) || `${command.function}()`;
                     }
                     break;
                 case 'CONDITION_EVAL':
