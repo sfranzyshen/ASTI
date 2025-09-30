@@ -1,4 +1,4 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"12.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"13.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"VAR_SET","timestamp":0,"variable":"xPin","value":2,"isConst":true}
 {"type":"VAR_SET","timestamp":0,"variable":"yPin","value":3,"isConst":true}
@@ -21,7 +21,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"accelerationX","value":-2800}
 {"type":"VAR_SET","timestamp":0,"variable":"accelerationY","value":-2800}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[-2800],"data":"-2800","message":"Serial.print(-2800)"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["	"],"data":"	","message":"Serial.print("	")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["	"],"data":"\t","message":"Serial.print("	")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[-2800],"data":"-2800","message":"Serial.print(-2800)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[""],"data":"","message":"Serial.println()"}
 {"type":"DELAY","timestamp":0,"duration":100,"actualDelay":100}

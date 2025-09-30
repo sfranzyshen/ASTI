@@ -963,7 +963,11 @@ void ASTInterpreter::visit(arduino_ast::ConstructorCallNode& node) {
     for (const auto& arg : node.getArguments()) {
         args.push_back(evaluateExpression(arg.get()));
     }
-    
+
+    if (constructorName == "String") {
+        std::cerr << "DEBUG ConstructorCallNode: String constructor called with " << node.getArguments().size() << " AST arguments (evaluated to " << args.size() << " values)" << std::endl;
+    }
+
     // CROSS-PLATFORM FIX: Handle primitive type initialization vs library constructor calls
     // For C++ style initialization like int x(10), we should return the initialization value
     // For actual constructors like String(), we call the library function
@@ -3008,14 +3012,46 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
     // Arduino function execution
     TRACE_ENTRY("executeArduinoFunction", "Function: " + name + ", args: " + std::to_string(args.size()));
 
-    // String() constructor implementation
+    // String() constructor implementation with decimal place support
     if (name == "String") {
-        // String() with no args returns empty string
-        if (args.empty()) {
-            return std::string("");
+        std::string initialValue = "";
+        if (args.size() > 0) {
+            // Check if second argument exists (decimal places for float/double)
+            int decimalPlaces = -1;
+            if (args.size() > 1) {
+                decimalPlaces = std::visit([](auto&& arg) -> int {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, int32_t>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return static_cast<int>(arg);
+                    }
+                    return -1;
+                }, args[1]);
+            }
+
+            initialValue = std::visit([decimalPlaces](auto&& arg) -> std::string {
+                using T = std::decay_t<decltype(arg)>;
+                if constexpr (std::is_same_v<T, std::string>) {
+                    return arg;
+                } else if constexpr (std::is_same_v<T, int32_t>) {
+                    return std::to_string(arg);
+                } else if constexpr (std::is_same_v<T, double>) {
+                    // Handle decimal places formatting if specified
+                    if (decimalPlaces >= 0) {
+                        std::ostringstream oss;
+                        oss << std::fixed << std::setprecision(decimalPlaces) << arg;
+                        return oss.str();
+                    }
+                    return std::to_string(arg);
+                } else if constexpr (std::is_same_v<T, bool>) {
+                    return arg ? "true" : "false";
+                } else {
+                    return "";
+                }
+            }, args[0]);
         }
-        // String(value) returns string representation of value
-        return convertToString(args[0]);
+        return initialValue;
     }
 
     // String method implementations - HANDLE FIRST before hasSpecificHandler check
@@ -3736,13 +3772,34 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         // String constructor - create new ArduinoString object
         std::string initialValue = "";
         if (args.size() > 0) {
-            initialValue = std::visit([](auto&& arg) -> std::string {
+            // Check if second argument exists (decimal places for float/double)
+            int decimalPlaces = -1;
+            if (args.size() > 1) {
+                decimalPlaces = std::visit([](auto&& arg) -> int {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, int32_t>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return static_cast<int>(arg);
+                    }
+                    return -1;
+                }, args[1]);
+                std::cerr << "DEBUG: String constructor with " << args.size() << " args, decimalPlaces=" << decimalPlaces << std::endl;
+            }
+
+            initialValue = std::visit([decimalPlaces](auto&& arg) -> std::string {
                 using T = std::decay_t<decltype(arg)>;
                 if constexpr (std::is_same_v<T, std::string>) {
                     return arg;
                 } else if constexpr (std::is_same_v<T, int32_t>) {
                     return std::to_string(arg);
                 } else if constexpr (std::is_same_v<T, double>) {
+                    // Handle decimal places formatting if specified
+                    if (decimalPlaces >= 0) {
+                        std::ostringstream oss;
+                        oss << std::fixed << std::setprecision(decimalPlaces) << arg;
+                        return oss.str();
+                    }
                     return std::to_string(arg);
                 } else if constexpr (std::is_same_v<T, bool>) {
                     return arg ? "true" : "false";
@@ -3751,7 +3808,7 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                 }
             }, args[0]);
         }
-        
+
         auto arduinoString = createString(initialValue);
         EnhancedCommandValue enhancedResult = arduinoString;
         // Convert back to basic CommandValue for compatibility
@@ -4718,11 +4775,51 @@ void ASTInterpreter::emitSerialBegin(int baudRate) {
     emitJSON(json.str());
 }
 
+
+// Format argument for display in message field (matches JavaScript formatArgumentForDisplay)
+// Adds quotes around string arguments but not around numbers, booleans, or character literals
+std::string formatArgumentForDisplay(const std::string& data) {
+    // Detect if value is numeric
+    bool isNumeric = false;
+    if (!data.empty()) {
+        try {
+            size_t pos;
+            std::stod(data, &pos);
+            isNumeric = (pos == data.length());
+        } catch (...) {
+            isNumeric = false;
+        }
+    }
+
+    // Detect character literals (e.g., 'A')
+    bool isCharLiteral = (data.length() >= 3 && data[0] == '\'' && data[data.length()-1] == '\'');
+
+    // Detect booleans
+    bool isBoolean = (data == "true" || data == "false");
+
+    // Don't add quotes for: numbers, character literals, booleans
+    if (isNumeric || isCharLiteral || isBoolean) {
+        return data;
+    }
+
+    // Add quotes for strings (especially those with special characters)
+    if (!data.empty() && (data.find(' ') != std::string::npos ||
+                          data.find('\t') != std::string::npos ||
+                          data.find('\n') != std::string::npos ||
+                          data.find('=') != std::string::npos ||
+                          data.find(',') != std::string::npos ||
+                          data.find(':') != std::string::npos ||
+                          !std::isdigit(data[0]))) {
+        return "\"" + data + "\"";
+    }
+
+    return data;
+}
 void ASTInterpreter::emitSerialPrint(const std::string& data) {
     std::ostringstream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.print\""
          << ",\"arguments\":[\"" << data << "\"],\"data\":\"" << data
-         << "\",\"message\":\"Serial.print(" << data << ")\"}";
+         << ",\"message\":\"Serial.print(" << formatArgumentForDisplay(data) << ")\"}";
     emitJSON(json.str());
 }
 
@@ -4786,7 +4883,7 @@ void ASTInterpreter::emitSerialPrintln(const std::string& data) {
     std::ostringstream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.println\""
          << ",\"arguments\":[\"" << escapedData << "\"],\"data\":\"" << escapedData
-         << "\",\"message\":\"Serial.println(" << escapedData << ")\"}";
+         << "\",\"message\":\"Serial.println(" << formatArgumentForDisplay(escapedData) << ")\"}";
     emitJSON(json.str());
 }
 

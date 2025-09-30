@@ -1,0 +1,2 @@
+ERROR: Cannot open test_data/example_051.ast
+Make sure test data exists. Run: node generate_test_data.js

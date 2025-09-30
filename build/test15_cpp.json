@@ -1,4 +1,4 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"12.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"13.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"VAR_SET","timestamp":0,"variable":"analogInPin","value":14,"isConst":true}
 {"type":"VAR_SET","timestamp":0,"variable":"analogOutPin","value":9,"isConst":true}
@@ -16,7 +16,7 @@
 {"type":"ANALOG_WRITE","timestamp":0,"pin":9,"value":140}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["sensor = "],"data":"sensor = ","message":"Serial.print("sensor = ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[560],"data":"560","message":"Serial.print(560)"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["	 output = "],"data":"	 output = ","message":"Serial.print("	 output = ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["	 output = "],"data":"\t output = ","message":"Serial.print("	 output = ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["140"],"data":"140","message":"Serial.println(140)"}
 {"type":"DELAY","timestamp":0,"duration":2,"actualDelay":2}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}

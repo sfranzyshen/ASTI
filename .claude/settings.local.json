@@ -69,7 +69,8 @@
       "Bash(python3:*)",
       "Bash(awk:*)",
       "Bash(./build/validate_cross_platform:*)",
-      "Bash(jq:*)"
+      "Bash(jq:*)",
+      "Bash(1)"
     ],
     "deny": [],
     "ask": [],

@@ -1,36 +1,27 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"12.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"13.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"end","iterations":0}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["
-
-String replace:
-"],"data":"
-
-String replace:
-","message":"Serial.println(
-
-String replace:
-)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["\n\nString replace:\n"],"data":"\n\nString replace:\n","message":"Serial.println("\n\nString replace:\n")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[""],"data":"","message":"Serial.println()"}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":{"value":"<html><head><body>","type":"ArduinoString"}}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["<html><head><body>"],"data":"<html><head><body>","message":"Serial.println(<html><head><body>)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["<html><head><body>"],"data":"<html><head><body>","message":"Serial.println("<html><head><body>")"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":{"value":"<html><head><body>","type":"ArduinoString"}}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: stringTwo.replace","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Original string: <html><head><body>"],"data":"Original string: <html><head><body>","message":"Serial.println(Original string: <html><head><body>)"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Modified string: <html><head><body>"],"data":"Modified string: <html><head><body>","message":"Serial.println(Modified string: <html><head><body>)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Original string: <html><head><body>"],"data":"Original string: <html><head><body>","message":"Serial.println("Original string: <html><head><body>")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Modified string: <html><head><body>"],"data":"Modified string: <html><head><body>","message":"Serial.println("Modified string: <html><head><body>")"}
 {"type":"VAR_SET","timestamp":0,"variable":"normalString","value":{"value":"bookkeeper","type":"ArduinoString"}}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["normal: bookkeeper"],"data":"normal: bookkeeper","message":"Serial.println(normal: bookkeeper)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["normal: bookkeeper"],"data":"normal: bookkeeper","message":"Serial.println("normal: bookkeeper")"}
 {"type":"VAR_SET","timestamp":0,"variable":"leetString","value":{"value":"bookkeeper","type":"ArduinoString"}}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: leetString.replace","errorType":"RuntimeError"}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: leetString.replace","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["l33tspeak: bookkeeper"],"data":"l33tspeak: bookkeeper","message":"Serial.println(l33tspeak: bookkeeper)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["l33tspeak: bookkeeper"],"data":"l33tspeak: bookkeeper","message":"Serial.println("l33tspeak: bookkeeper")"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}
 {"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"While loop limit reached: completed 1 iterations (max: 1)"}

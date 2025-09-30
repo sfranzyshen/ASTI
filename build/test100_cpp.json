@@ -1,4 +1,4 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"12.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"13.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
@@ -11,7 +11,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"str1","value":{"value":"Hello"},"isConst":true}
 {"type":"VAR_SET","timestamp":0,"variable":"str2","value":{"value":" world!"},"isConst":true}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Hello"],"data":"Hello","message":"Serial.print("Hello")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[" world!"],"data":" world!","message":"Serial.println( world!)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[" world!"],"data":" world!","message":"Serial.println(" world!")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["My character is: "],"data":"My character is: ","message":"Serial.print("My character is: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["65"],"data":"65","message":"Serial.println(65)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[65],"data":"65","message":"Serial.print(65)"}

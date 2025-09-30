@@ -1,4 +1,4 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"12.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"13.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":null}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":null}
@@ -8,51 +8,43 @@
 {"type":"WHILE_LOOP","timestamp":0,"phase":"end","iterations":0}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"this"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"that"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["
-
-Comparing Strings:"],"data":"
-
-Comparing Strings:","message":"Serial.println(
-
-Comparing Strings:)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["\n\nComparing Strings:"],"data":"\n\nComparing Strings:","message":"Serial.println("\n\nComparing Strings:")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[""],"data":"","message":"Serial.println()"}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["StringOne == "this""],"data":"StringOne == "this"","message":"Serial.println(StringOne == "this")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["StringOne == \"this\""],"data":"StringOne == \"this\"","message":"Serial.println("StringOne == \"this\"")"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["this =! that"],"data":"this =! that","message":"Serial.println(this =! that)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["this =! that"],"data":"this =! that","message":"Serial.println("this =! that")"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"This"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"this"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["This =! this"],"data":"This =! this","message":"Serial.println(This =! this)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["This =! this"],"data":"This =! this","message":"Serial.println("This =! this")"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":0,"conditionDisplay":"0","branch":"else"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["This does not equal this"],"data":"This does not equal this","message":"Serial.println(This does not equal this)"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":0,"conditionDisplay":"0","branch":"else"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["This does not equal (ignoring case) this"],"data":"This does not equal (ignoring case) this","message":"Serial.println(This does not equal (ignoring case) this)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["This does not equal this"],"data":"This does not equal this","message":"Serial.println("This does not equal this")"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":1,"conditionDisplay":"1","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["This equals (ignoring case) this"],"data":"This equals (ignoring case) this","message":"Serial.println("This equals (ignoring case) this")"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"1"}
 {"type":"VAR_SET","timestamp":0,"variable":"numberOne","value":1}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["1 = 1"],"data":"1 = 1","message":"Serial.println(1 = 1)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["1 = 1"],"data":"1 = 1","message":"Serial.println("1 = 1")"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"2"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"1"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["2 >= 1"],"data":"2 >= 1","message":"Serial.println(2 >= 1)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["2 >= 1"],"data":"2 >= 1","message":"Serial.println("2 >= 1")"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Brown"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Brown <= Browne"],"data":"Brown <= Browne","message":"Serial.println(Brown <= Browne)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Brown <= Browne"],"data":"Brown <= Browne","message":"Serial.println("Brown <= Browne")"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Brown >= Brow"],"data":"Brown >= Brow","message":"Serial.println(Brown >= Brow)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Brown >= Brow"],"data":"Brown >= Brow","message":"Serial.println("Brown >= Brow")"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Cucumber"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"Cucuracha"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.compareTo","arguments":["Cucuracha"]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.compareTo","errorType":"RuntimeError"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Cucumber comes after Cucuracha"],"data":"Cucumber comes after Cucuracha","message":"Serial.println(Cucumber comes after Cucuracha)"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Cucumber comes before Cucuracha"],"data":"Cucumber comes before Cucuracha","message":"Serial.println("Cucumber comes before Cucuracha")"}
 {"type":"DELAY","timestamp":0,"duration":10000,"actualDelay":10000}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}
@@ -62,10 +54,8 @@ Comparing Strings:)"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor: 560"}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":19,"requestId":"analogRead_static_19"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"Sensor: 745"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.compareTo","arguments":["Sensor: 745"]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.compareTo","errorType":"RuntimeError"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor: 560 comes after Sensor: 745"],"data":"Sensor: 560 comes after Sensor: 745","message":"Serial.println(Sensor: 560 comes after Sensor: 745)"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Sensor: 560 comes before Sensor: 745"],"data":"Sensor: 560 comes before Sensor: 745","message":"Serial.println("Sensor: 560 comes before Sensor: 745")"}
 {"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"While loop limit reached: completed 1 iterations (max: 1)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}

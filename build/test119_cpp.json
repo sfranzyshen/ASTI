@@ -1,4 +1,4 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"12.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"13.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
@@ -9,11 +9,11 @@
 {"type":"VAR_SET","timestamp":0,"variable":"x","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"y","value":5}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"myFunc","arguments":[]}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["myFunc() was called."],"data":"myFunc() was called.","message":"Serial.println(myFunc() was called.)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["myFunc() was called."],"data":"myFunc() was called.","message":"Serial.println("myFunc() was called.")"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Condition 1 is true."],"data":"Condition 1 is true.","message":"Serial.println(Condition 1 is true.)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Condition 1 is true."],"data":"Condition 1 is true.","message":"Serial.println("Condition 1 is true.")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"myFunc","arguments":[]}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["myFunc() was called."],"data":"myFunc() was called.","message":"Serial.println(myFunc() was called.)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["myFunc() was called."],"data":"myFunc() was called.","message":"Serial.println("myFunc() was called.")"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
