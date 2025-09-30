@@ -4,7 +4,7 @@
  * Core interpreter implementation that executes AST nodes and generates
  * command streams matching JavaScript ASTInterpreter.js exactly.
  * 
- * Version: 12.0.0
+ * Version: 13.0.0
  */
 
 #include "ASTInterpreter.hpp"
@@ -245,7 +245,7 @@ bool ASTInterpreter::start() {
     totalExecutionStart_ = std::chrono::steady_clock::now();
     
     // Emit VERSION_INFO first, then PROGRAM_START (matches JavaScript order)
-    emitVersionInfo("interpreter", "12.0.0", "started");
+    emitVersionInfo("interpreter", "13.0.0", "started");
     emitProgramStart();
     
     try {
@@ -3007,7 +3007,6 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
 CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, const std::vector<CommandValue>& args) {
     // Arduino function execution
     TRACE_ENTRY("executeArduinoFunction", "Function: " + name + ", args: " + std::to_string(args.size()));
-    // Debug output removed after String method fix confirmed working
 
     // String() constructor implementation
     if (name == "String") {
@@ -3062,6 +3061,51 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
             }
         }
         return std::string("");
+    }
+
+    // TEST 50 FIX: Check .equalsIgnoreCase BEFORE .equals (substring matching issue)
+    else if (name.find(".equalsIgnoreCase") != std::string::npos) {
+        // String.equalsIgnoreCase(other) method
+        std::string varName = name.substr(0, name.find(".equalsIgnoreCase"));
+        if (scopeManager_->hasVariable(varName) && args.size() > 0) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                std::string currentStr = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                std::string compareStr = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, args[0]);
+
+                // Convert both to lowercase for comparison
+                std::transform(currentStr.begin(), currentStr.end(), currentStr.begin(),
+                    [](unsigned char c){ return std::tolower(c); });
+                std::transform(compareStr.begin(), compareStr.end(), compareStr.begin(),
+                    [](unsigned char c){ return std::tolower(c); });
+
+                return static_cast<int32_t>(currentStr == compareStr);
+            }
+        }
+        return static_cast<int32_t>(0);
     }
 
     else if (name.find(".equals") != std::string::npos) {
@@ -3136,6 +3180,209 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         return static_cast<int32_t>(0);
     }
 
+    else if (name.find(".toUpperCase") != std::string::npos) {
+        // String.toUpperCase() method - TEST 48 FIX
+        std::string varName = name.substr(0, name.find(".toUpperCase"));
+        if (scopeManager_->hasVariable(varName)) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                std::string str = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                // Convert to uppercase
+                for (char& c : str) {
+                    c = std::toupper(c);
+                }
+
+                // Update the variable with uppercase string
+                Variable newVar(str, var->type, var->isConst, var->isReference, var->isStatic, var->isGlobal);
+                scopeManager_->setVariable(varName, newVar);
+                return str;
+            }
+        }
+        return std::string("");
+    }
+
+    else if (name.find(".toLowerCase") != std::string::npos) {
+        // String.toLowerCase() method - TEST 48 FIX
+        std::string varName = name.substr(0, name.find(".toLowerCase"));
+        if (scopeManager_->hasVariable(varName)) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                std::string str = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                // Convert to lowercase
+                for (char& c : str) {
+                    c = std::tolower(c);
+                }
+
+                // Update the variable with lowercase string
+                Variable newVar(str, var->type, var->isConst, var->isReference, var->isStatic, var->isGlobal);
+                scopeManager_->setVariable(varName, newVar);
+                return str;
+            }
+        }
+        return std::string("");
+    }
+
+    else if (name.find(".compareTo") != std::string::npos) {
+        // String.compareTo(other) method - TEST 50 FIX
+        std::string varName = name.substr(0, name.find(".compareTo"));
+        if (scopeManager_->hasVariable(varName) && args.size() > 0) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                std::string currentStr = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                std::string compareStr = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, args[0]);
+
+                // Return negative if less, 0 if equal, positive if greater
+                int result = currentStr.compare(compareStr);
+                return static_cast<int32_t>(result);
+            }
+        }
+        return static_cast<int32_t>(0);
+    }
+
+    else if (name.find(".charAt") != std::string::npos) {
+        // String.charAt(index) method - TEST 49 FIX
+        std::string varName = name.substr(0, name.find(".charAt"));
+        if (scopeManager_->hasVariable(varName) && args.size() > 0) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                std::string str = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                int32_t index = std::visit([](auto&& arg) -> int32_t {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, int32_t>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return static_cast<int32_t>(arg);
+                    } else {
+                        return 0;
+                    }
+                }, args[0]);
+
+                // Return character at index (Arduino returns 0 for out of bounds)
+                if (index >= 0 && static_cast<size_t>(index) < str.length()) {
+                    // Return as single character string for compatibility
+                    return std::string(1, str[index]);
+                }
+                return std::string("");
+            }
+        }
+        return std::string("");
+    }
+
+    else if (name.find(".setCharAt") != std::string::npos) {
+        // String.setCharAt(index, char) method - TEST 49 FIX
+        std::string varName = name.substr(0, name.find(".setCharAt"));
+        if (scopeManager_->hasVariable(varName) && args.size() >= 2) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                std::string str = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                int32_t index = std::visit([](auto&& arg) -> int32_t {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, int32_t>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return static_cast<int32_t>(arg);
+                    } else {
+                        return 0;
+                    }
+                }, args[0]);
+
+                // Get character value from second argument
+                char charValue;
+                std::visit([&charValue](auto&& arg) {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, int32_t>) {
+                        charValue = static_cast<char>(arg);
+                    } else if constexpr (std::is_same_v<T, std::string>) {
+                        charValue = arg.empty() ? '\0' : arg[0];
+                    } else {
+                        charValue = '\0';
+                    }
+                }, args[1]);
+
+                // Set character at index (Arduino does nothing for out of bounds)
+                if (index >= 0 && static_cast<size_t>(index) < str.length()) {
+                    str[index] = charValue;
+                    // Update the variable with modified string
+                    Variable newVar(str, var->type, var->isConst, var->isReference, var->isStatic, var->isGlobal);
+                    scopeManager_->setVariable(varName, newVar);
+                }
+                return std::monostate{};
+            }
+        }
+        return std::monostate{};
+    }
+
     // CROSS-PLATFORM FIX: Emit function call command with arguments
     // Skip generic emission for functions that have specific command factories to avoid duplicates
     bool hasSpecificHandler = (name == "Serial.begin" || name == "Serial.print" || name == "Serial.println" ||
@@ -3156,8 +3403,10 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                                name.find(".concat") != std::string::npos || name.find(".equals") != std::string::npos ||
                                name.find(".length") != std::string::npos || name.find(".indexOf") != std::string::npos ||
                                name.find(".substring") != std::string::npos || name.find(".toInt") != std::string::npos ||
-                               name.find(".charAt") != std::string::npos || name.find(".replace") != std::string::npos ||
-                               name.find(".reserve") != std::string::npos);
+                               name.find(".charAt") != std::string::npos || name.find(".setCharAt") != std::string::npos ||
+                               name.find(".replace") != std::string::npos || name.find(".reserve") != std::string::npos ||
+                               name.find(".toUpperCase") != std::string::npos || name.find(".toLowerCase") != std::string::npos ||
+                               name.find(".compareTo") != std::string::npos || name.find(".equalsIgnoreCase") != std::string::npos);
     
     if (!hasSpecificHandler) {
         std::vector<std::string> argStrings;
@@ -4477,6 +4726,25 @@ void ASTInterpreter::emitSerialPrint(const std::string& data) {
     emitJSON(json.str());
 }
 
+// Helper function to escape strings for JSON output
+// Converts special characters to their JSON escape sequences
+std::string escapeJsonString(const std::string& str) {
+    std::ostringstream escaped;
+    for (char c : str) {
+        switch (c) {
+            case '\\': escaped << "\\\\"; break;  // Backslash
+            case '"':  escaped << "\\\""; break;  // Quote
+            case '\n': escaped << "\\n"; break;   // Newline
+            case '\r': escaped << "\\r"; break;   // Carriage return
+            case '\t': escaped << "\\t"; break;   // Tab
+            case '\b': escaped << "\\b"; break;   // Backspace
+            case '\f': escaped << "\\f"; break;   // Form feed
+            default:   escaped << c; break;
+        }
+    }
+    return escaped.str();
+}
+
 void ASTInterpreter::emitSerialPrint(const std::string& data, const std::string& format) {
     // CROSS-PLATFORM FIX: Handle numeric detection and formatting like FlexibleCommand
     std::string displayArg = data;
@@ -4508,16 +4776,17 @@ void ASTInterpreter::emitSerialPrint(const std::string& data, const std::string&
 
     std::ostringstream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.print\""
-         << ",\"arguments\":[" << displayArg << "],\"data\":\"" << dataField
+         << ",\"arguments\":[" << displayArg << "],\"data\":\"" << escapeJsonString(dataField)
          << "\",\"message\":\"Serial.print(" << displayArg << ")\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitSerialPrintln(const std::string& data) {
+    std::string escapedData = escapeJsonString(data);
     std::ostringstream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.println\""
-         << ",\"arguments\":[\"" << data << "\"],\"data\":\"" << data
-         << "\",\"message\":\"Serial.println(" << data << ")\"}";
+         << ",\"arguments\":[\"" << escapedData << "\"],\"data\":\"" << escapedData
+         << "\",\"message\":\"Serial.println(" << escapedData << ")\"}";
     emitJSON(json.str());
 }
 

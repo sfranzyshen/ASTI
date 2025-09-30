@@ -27,7 +27,7 @@ if (typeof conditionalLog === 'undefined') {
  *   ✅ setup() and loop() execution flow
  */
 
-const INTERPRETER_VERSION = "12.0.0";
+const INTERPRETER_VERSION = "13.0.0";
 
 // Global debugLog function for contexts where 'this' is not available
 function debugLog(...args) {
@@ -751,7 +751,9 @@ class ArduinoString {
     // Set character at specific position
     setCharAt(index, char) {
         if (index >= 0 && index < this.value.length) {
-            const charStr = String(char).charAt(0);
+            // TEST 49 FIX: Character literals are evaluated as ASCII values (e.g., '=' → 61)
+            // Convert numbers to characters, preserve strings as-is
+            const charStr = typeof char === 'number' ? String.fromCharCode(char) : String(char).charAt(0);
             this.value = this.value.substring(0, index) + charStr + this.value.substring(index + 1);
         }
     }
