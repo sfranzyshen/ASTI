@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604272,
     "component": "interpreter",
     "version": "12.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604272,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604272,
     "message": "Executing setup() function"
   },
   {
@@ -23,52 +23,52 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604272,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604272,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "end",
     "iterations": 0,
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604272,
     "message": "while loop completed (0 iterations)"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "\"\n\nString startsWith() and endsWith():\""
+      "\n\nString startsWith() and endsWith():"
     ],
     "data": "\n\nString startsWith() and endsWith():",
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604272,
     "message": "Serial.println(\"\n\nString startsWith() and endsWith():\")"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [],
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604273,
     "message": "Serial.println()"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604273,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604273,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604273,
     "message": "Starting loop iteration 1"
   },
   {
@@ -76,7 +76,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759211149621
+    "timestamp": 1759211604273
   },
   {
     "type": "VAR_SET",
@@ -84,16 +84,16 @@
     "value": {
       "value": "HTTP/1.1 200 OK"
     },
-    "timestamp": 1759211149621
+    "timestamp": 1759211604273
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "\"HTTP/1.1 200 OK\""
+      "HTTP/1.1 200 OK"
     ],
     "data": "HTTP/1.1 200 OK",
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604273,
     "message": "Serial.println(\"HTTP/1.1 200 OK\")"
   },
   {
@@ -101,16 +101,16 @@
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759211149621
+    "timestamp": 1759211604273
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "\"Server's using http version 1.1\""
+      "Server's using http version 1.1"
     ],
     "data": "Server's using http version 1.1",
-    "timestamp": 1759211149621,
+    "timestamp": 1759211604273,
     "message": "Serial.println(\"Server's using http version 1.1\")"
   },
   {
@@ -119,23 +119,23 @@
     "value": {
       "value": "HTTP/1.1 200 OK"
     },
-    "timestamp": 1759211149621
+    "timestamp": 1759211604273
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759211149622
+    "timestamp": 1759211604273
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "\"Got an OK from the server\""
+      "Got an OK from the server"
     ],
     "data": "Got an OK from the server",
-    "timestamp": 1759211149622,
+    "timestamp": 1759211604273,
     "message": "Serial.println(\"Got an OK from the server\")"
   },
   {
@@ -144,13 +144,13 @@
     "value": {
       "value": "sensor = 560"
     },
-    "timestamp": 1759211149622
+    "timestamp": 1759211604273
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
     "requestId": "analogRead_000001",
-    "timestamp": 1759211149622
+    "timestamp": 1759211604273
   },
   {
     "type": "VAR_SET",
@@ -158,16 +158,16 @@
     "value": {
       "value": "sensor = 560"
     },
-    "timestamp": 1759211149626
+    "timestamp": 1759211604279
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "\"sensor = 560\""
+      "sensor = 560"
     ],
     "data": "sensor = 560",
-    "timestamp": 1759211149626,
+    "timestamp": 1759211604279,
     "message": "Serial.print(\"sensor = 560\")"
   },
   {
@@ -175,36 +175,36 @@
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759211149627
+    "timestamp": 1759211604279
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "\". This reading is divisible by ten\""
+      ". This reading is divisible by ten"
     ],
     "data": ". This reading is divisible by ten",
-    "timestamp": 1759211149627,
+    "timestamp": 1759211604279,
     "message": "Serial.println(\". This reading is divisible by ten\")"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1759211149627,
+    "timestamp": 1759211604279,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1759211149627,
+    "timestamp": 1759211604279,
     "message": "while loop iteration 0"
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1759211149631,
+    "timestamp": 1759211604284,
     "message": "While loop limit reached: completed 1 iterations (max: 1)"
   },
   {
@@ -213,23 +213,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759211149631
+    "timestamp": 1759211604284
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759211149636,
+    "timestamp": 1759211604290,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759211149636,
+    "timestamp": 1759211604290,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759211149636,
+    "timestamp": 1759211604290,
     "message": "Program execution stopped"
   }
 ]

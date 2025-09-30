@@ -7795,7 +7795,7 @@ class ASTInterpreter {
                 this.emitCommand({
                     type: COMMAND_TYPES.FUNCTION_CALL,
                     function: 'Serial.print',
-                    arguments: [printDisplayArg],
+                    arguments: [printData],  // Fixed: Use raw data instead of display format to match C++
                     data: printData,
                     timestamp: Date.now(),
                     message: `Serial.print(${printDisplayArg})`
@@ -7826,7 +7826,7 @@ class ASTInterpreter {
                     this.emitCommand({
                         type: COMMAND_TYPES.FUNCTION_CALL,
                         function: 'Serial.println',
-                        arguments: [printlnDisplayArg],
+                        arguments: [printlnData],  // Fixed: Use raw data instead of display format to match C++
                         data: printlnData,
                         timestamp: Date.now(),
                         message: `Serial.println(${printlnDisplayArg})`

@@ -68,7 +68,8 @@
       "Bash(for i in 058 075 086 093 098)",
       "Bash(python3:*)",
       "Bash(awk:*)",
-      "Bash(./build/validate_cross_platform:*)"
+      "Bash(./build/validate_cross_platform:*)",
+      "Bash(jq:*)"
     ],
     "deny": [],
     "ask": [],
