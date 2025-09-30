@@ -20,7 +20,7 @@ String charAt() and setCharAt():)"}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: reportString.charAt","errorType":"RuntimeError"}
 {"type":"VAR_SET","timestamp":0,"variable":"mostSignificantDigit","value":null}
 {"type":"VAR_SET","timestamp":0,"variable":"message","value":{"value":"Most significant digit of the sensor reading is: ","type":"ArduinoString"}}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["0.000000"],"data":"0.000000","message":"Serial.println(0.000000)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Most significant digit of the sensor reading is: null"],"data":"Most significant digit of the sensor reading is: null","message":"Serial.println(Most significant digit of the sensor reading is: null)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[""],"data":"","message":"Serial.println()"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"reportString.setCharAt","arguments":["13.000000","61"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: reportString.setCharAt","errorType":"RuntimeError"}

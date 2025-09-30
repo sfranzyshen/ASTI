@@ -186,16 +186,27 @@ public:
     
     void setVariable(const std::string& name, const Variable& var) {
         Variable newVar = var;
-        
+
         // Mark as global if we're in global scope
         if (scopes_.size() == 1) {
             newVar.isGlobal = true;
         }
-        
+
         if (newVar.isStatic) {
             // Static variables go in special storage
             staticVariables_[name] = newVar;
         } else {
+            // CRITICAL FIX: Search parent scopes first and update if found
+            // This ensures that assignments in functions modify globals, not create locals
+            for (auto it = scopes_.rbegin(); it != scopes_.rend(); ++it) {
+                auto found = it->find(name);
+                if (found != it->end()) {
+                    // Variable exists in this scope - update it
+                    found->second = newVar;
+                    return;
+                }
+            }
+            // Variable doesn't exist anywhere - create in current scope
             scopes_.back()[name] = newVar;
         }
     }

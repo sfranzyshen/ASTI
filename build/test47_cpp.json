@@ -6,9 +6,7 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"end","iterations":0}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"String","arguments":["Sensor "]}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor "}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"String","arguments":["value"]}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"value"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["
 

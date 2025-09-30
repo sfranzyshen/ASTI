@@ -2696,8 +2696,19 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
     // ULTRATHINK FIX: Prevent segmentation faults ONLY for arithmetic operations
     // Allow comparisons with monostate/null to proceed naturally (Arduino behavior)
     if (std::holds_alternative<std::monostate>(left) || std::holds_alternative<std::monostate>(right)) {
-        // For arithmetic operations, treat monostate as 0 to prevent crashes
-        if (op == "+" || op == "-" || op == "*" || op == "/" || op == "%") {
+        // For "+" operator, check if this could be string concatenation
+        // If either operand is a string, allow it to proceed to string concatenation path
+        if (op == "+") {
+            bool leftIsString = std::holds_alternative<std::string>(left);
+            bool rightIsString = std::holds_alternative<std::string>(right);
+            if (!leftIsString && !rightIsString) {
+                // Both are non-strings (numeric or monostate), return 0.0
+                return 0.0;
+            }
+            // At least one is a string, proceed to string concatenation below
+        }
+        // For other arithmetic operations, treat monostate as 0 to prevent crashes
+        else if (op == "-" || op == "*" || op == "/" || op == "%") {
             return 0.0;
         }
         // For comparisons, let them proceed naturally below (Arduino null comparison behavior)
@@ -2997,6 +3008,16 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
     // Arduino function execution
     TRACE_ENTRY("executeArduinoFunction", "Function: " + name + ", args: " + std::to_string(args.size()));
     // Debug output removed after String method fix confirmed working
+
+    // String() constructor implementation
+    if (name == "String") {
+        // String() with no args returns empty string
+        if (args.empty()) {
+            return std::string("");
+        }
+        // String(value) returns string representation of value
+        return convertToString(args[0]);
+    }
 
     // String method implementations - HANDLE FIRST before hasSpecificHandler check
     if (name.find(".concat") != std::string::npos) {
