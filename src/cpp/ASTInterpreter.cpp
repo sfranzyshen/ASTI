@@ -2496,6 +2496,11 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         case arduino_ast::ASTNodeType::NUMBER_LITERAL:
             if (auto* numNode = dynamic_cast<arduino_ast::NumberNode*>(expr)) {
                 double value = numNode->getNumber();
+                // Preserve integer type: if value is whole number, return as int
+                // This matches Arduino/C++ literal semantics (0 is int, 0.0 is double)
+                if (value == std::floor(value) && value >= INT32_MIN && value <= INT32_MAX) {
+                    return static_cast<int32_t>(value);
+                }
                 return value;
             }
             break;
@@ -2690,27 +2695,70 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
 
 
     // Arithmetic operations
+    // Preserve integer type semantics: int op int = int, any double = double
+    // This matches Arduino/C++ behavior
     if (op == "+") {
         if (isNumeric(left) && isNumeric(right)) {
-            return convertToDouble(left) + convertToDouble(right);
+            bool leftIsInt = std::holds_alternative<int32_t>(left) || std::holds_alternative<uint32_t>(left);
+            bool rightIsInt = std::holds_alternative<int32_t>(right) || std::holds_alternative<uint32_t>(right);
+
+            if (leftIsInt && rightIsInt) {
+                // Integer addition
+                return convertToInt(left) + convertToInt(right);
+            } else {
+                // Floating-point addition
+                return convertToDouble(left) + convertToDouble(right);
+            }
         } else {
             // String concatenation
             return convertToString(left) + convertToString(right);
         }
     } else if (op == "-") {
-        return convertToDouble(left) - convertToDouble(right);
-    } else if (op == "*") {
-        double leftVal = convertToDouble(left);
-        double rightVal = convertToDouble(right);
-        double result = leftVal * rightVal;
-        return result;
-    } else if (op == "/") {
-        double rightVal = convertToDouble(right);
-        if (rightVal == 0.0) {
-            emitError("Division by zero");
-            return std::monostate{};
+        bool leftIsInt = std::holds_alternative<int32_t>(left) || std::holds_alternative<uint32_t>(left);
+        bool rightIsInt = std::holds_alternative<int32_t>(right) || std::holds_alternative<uint32_t>(right);
+
+        if (leftIsInt && rightIsInt) {
+            // Integer subtraction
+            return convertToInt(left) - convertToInt(right);
+        } else {
+            // Floating-point subtraction
+            return convertToDouble(left) - convertToDouble(right);
         }
-        return convertToDouble(left) / rightVal;
+    } else if (op == "*") {
+        bool leftIsInt = std::holds_alternative<int32_t>(left) || std::holds_alternative<uint32_t>(left);
+        bool rightIsInt = std::holds_alternative<int32_t>(right) || std::holds_alternative<uint32_t>(right);
+
+        if (leftIsInt && rightIsInt) {
+            // Integer multiplication
+            return convertToInt(left) * convertToInt(right);
+        } else {
+            // Floating-point multiplication
+            return convertToDouble(left) * convertToDouble(right);
+        }
+    } else if (op == "/") {
+        // Preserve integer division semantics (C++/Arduino behavior)
+        // int / int = int (with truncation), any double operand = double result
+        bool leftIsInt = std::holds_alternative<int32_t>(left) || std::holds_alternative<uint32_t>(left);
+        bool rightIsInt = std::holds_alternative<int32_t>(right) || std::holds_alternative<uint32_t>(right);
+
+        if (leftIsInt && rightIsInt) {
+            // Integer division: int / int = int (with truncation)
+            int32_t leftVal = convertToInt(left);
+            int32_t rightVal = convertToInt(right);
+            if (rightVal == 0) {
+                emitError("Division by zero");
+                return std::monostate{};
+            }
+            return leftVal / rightVal;  // Returns int32_t
+        } else {
+            // Floating-point division: any operand is double
+            double rightVal = convertToDouble(right);
+            if (rightVal == 0.0) {
+                emitError("Division by zero");
+                return std::monostate{};
+            }
+            return convertToDouble(left) / rightVal;  // Returns double
+        }
     } else if (op == "%") {
         int32_t leftVal = convertToInt(left);
         int32_t rightVal = convertToInt(right);

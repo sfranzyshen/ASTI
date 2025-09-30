@@ -76,9 +76,10 @@ std::string normalizeArduino(const std::string& arduino) {
     std::regex analogReadVarRegex(R"(analogRead\(\d+\))");
     normalized = std::regex_replace(normalized, analogReadVarRegex, "analogRead(A0)");
 
-    // Normalize calculated values in Serial.print/println (integers)
-    std::regex serialPrintVarRegex(R"(Serial\.println\(\d+\))");
-    normalized = std::regex_replace(normalized, serialPrintVarRegex, "Serial.println(0)");
+    // DO NOT NORMALIZE Serial.println values - we need to verify actual calculations!
+    // Previously this was normalizing ALL values to 0, causing false positives
+    // std::regex serialPrintVarRegex(R"(Serial\.println\(\d+\))");
+    // normalized = std::regex_replace(normalized, serialPrintVarRegex, "Serial.println(0)");
 
     std::regex serialPrintStringRegex(R"(Serial\.print\("[^"]*"\))");
     // Preserve literal strings, only normalize calculated values
@@ -102,92 +103,6 @@ std::string normalizeArduino(const std::string& arduino) {
     // Remove trailing semicolons and spaces for consistency
     std::regex trailingRegex(R"(\s*;\s*$)", std::regex_constants::ECMAScript);
     normalized = std::regex_replace(normalized, trailingRegex, "");
-
-    return normalized;
-}
-
-// Legacy JSON normalization (kept for reference, will be removed)
-std::string normalizeJSON(const std::string& json) {
-    std::string normalized = json;
-    
-    // Replace all timestamps with normalized value
-    std::regex timestampRegex(R"("timestamp":\s*\d+)");
-    normalized = std::regex_replace(normalized, timestampRegex, R"("timestamp": 0)");
-    
-    // Normalize pin numbers - A0 can be pin 14 or 36 depending on platform
-    std::regex pinRegex(R"("pin":\s*(?:14|36))");
-    normalized = std::regex_replace(normalized, pinRegex, R"("pin": 0)");
-    
-    // Normalize request IDs - format varies between implementations
-    std::regex requestIdRegex(R"("requestId":\s*"[^"]+")");
-    normalized = std::regex_replace(normalized, requestIdRegex, R"("requestId": "normalized")");
-    
-    // Normalize whitespace - remove extra spaces around colons and commas
-    std::regex spaceRegex(R"(\s*:\s*)");
-    normalized = std::regex_replace(normalized, spaceRegex, ": ");
-    
-    std::regex commaRegex(R"(\s*,\s*)");
-    normalized = std::regex_replace(normalized, commaRegex, ", ");
-    
-    // Remove trailing whitespace from lines
-    std::regex trailingSpaceRegex(R"(\s+$)", std::regex_constants::ECMAScript);
-    normalized = std::regex_replace(normalized, trailingSpaceRegex, "");
-    
-    // Normalize field ordering for DIGITAL_WRITE commands (common pattern)
-    std::regex digitalWriteRegex(R"("type": "DIGITAL_WRITE",\s*"timestamp": 0,\s*"pin": (\d+),\s*"value": (\d+))");
-    normalized = std::regex_replace(normalized, digitalWriteRegex, R"("type": "DIGITAL_WRITE", "pin": $1, "value": $2, "timestamp": 0)");
-
-
-
-    // LOOP_LIMIT_REACHED field reordering - C++ vs JS field order difference
-    std::string loopPattern = "\"type\": \"LOOP_LIMIT_REACHED\", \"timestamp\": 0, \"message\": \"([^\"]+)\", \"iterations\": ([0-9]+), \"phase\": \"([^\"]+)\"";
-    std::string loopReplacement = "\"type\": \"LOOP_LIMIT_REACHED\", \"phase\": \"$3\", \"iterations\": $2, \"timestamp\": 0, \"message\": \"$1\"";
-    std::regex loopPhaseRegex(loopPattern);
-    normalized = std::regex_replace(normalized, loopPhaseRegex, loopReplacement);
-    
-    // Normalize decimal number formatting - C++ outputs 5.0000000000, JS outputs 5
-    std::regex decimalNormRegex(R"((\d+)\.0+(?!\d))");  // Match integers with trailing zeros
-    normalized = std::regex_replace(normalized, decimalNormRegex, "$1");
-    
-    // Normalize mock analog/digital values that could vary between test runs
-    // These values come from MockResponseHandler and may be randomized or platform-specific
-    std::regex analogValueRegex(R"("value":\s*\d+(?:\.\d+)?)");  // Match any analog reading value
-    std::regex voltageRegex(R"("voltage":\s*\d+(?:\.\d+)?)");    // Match calculated voltage values
-    std::regex sensorValueRegex(R"("sensorValue".*"value":\s*\d+)");  // Match sensor readings
-    
-    // Normalize specific test patterns that use mock values
-    // VAR_SET for sensorValue (from analogRead)
-    std::regex sensorVarSetRegex(R"("VAR_SET",\s*"variable":\s*"sensorValue",\s*"value":\s*\d+)");
-    normalized = std::regex_replace(normalized, sensorVarSetRegex, R"("VAR_SET", "variable": "sensorValue", "value": 0)");
-
-    // VAR_SET for voltage (calculated from sensorValue)
-    std::regex voltageVarSetRegex(R"("VAR_SET",\s*"variable":\s*"voltage",\s*"value":\s*[\d.]+)");
-    normalized = std::regex_replace(normalized, voltageVarSetRegex, R"("VAR_SET", "variable": "voltage", "value": 0)");
-
-
-    // Serial.println arguments that contain calculated values
-    std::regex serialArgsRegex(R"("arguments":\s*\[\s*"[\d.]+"?\s*\])");
-    normalized = std::regex_replace(normalized, serialArgsRegex, R"("arguments": ["0"])");
-    
-    // Serial.println data field with calculated values (but preserve ASCII character values 0-127)
-    std::regex serialDataRegex(R"~("data":\s*"(?:[1-9]\d{3,}|\d*\.\d+)")~"); // Match large numbers (1000+) or decimals, but not 0-999 integers
-    normalized = std::regex_replace(normalized, serialDataRegex, R"("data": "0")");
-    
-    // Serial.println message field with calculated values
-    std::regex serialMsgRegex(R"~("message":\s*"Serial\.println\([\d.]+\)")~");
-    normalized = std::regex_replace(normalized, serialMsgRegex, R"~("message": "Serial.println(0)")~");
-
-    // Normalize SWITCH_STATEMENT field ordering - C++ vs JS field order difference
-    std::regex switchStmtRegex(R"~("type":\s*"SWITCH_STATEMENT",.*?"discriminant":\s*([^,}\n]+).*?"timestamp":\s*0.*?"message":\s*"([^"]+)")~");
-    normalized = std::regex_replace(normalized, switchStmtRegex, R"~("type": "SWITCH_STATEMENT", "discriminant": $1, "timestamp": 0, "message": "$2")~");
-
-    // Normalize SWITCH_CASE field ordering - C++ vs JS field order difference
-    std::regex switchCaseRegex(R"~("type":\s*"SWITCH_CASE",\s*"timestamp":\s*0,\s*"caseValue":\s*([^,}]+),\s*"matched":\s*(true|false))~");
-    normalized = std::regex_replace(normalized, switchCaseRegex, R"~("type": "SWITCH_CASE", "caseValue": $1, "matched": $2, "timestamp": 0)~");
-
-    // Normalize BREAK_STATEMENT presence - JavaScript may include it, C++ may not
-    std::regex breakStmtRegex(R"~(\},\s*\{\s*"type":\s*"BREAK_STATEMENT",\s*"timestamp":\s*0,\s*"action":\s*"exit_switch"\s*\}\s*,\s*)~");
-    normalized = std::regex_replace(normalized, breakStmtRegex, "}, ");
 
     return normalized;
 }
