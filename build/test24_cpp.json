@@ -9,12 +9,12 @@
 {"type":"FOR_LOOP","timestamp":0,"phase":"start"}
 {"type":"VAR_SET","timestamp":0,"variable":"note","value":30}
 {"type":"FOR_LOOP","timestamp":0,"phase":"iteration","iteration":0}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"noteOn","arguments":[144.000000,30,69.000000]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"noteOn","arguments":[144,30,69]}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[144],"data":"144","message":"Serial.write(144)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[30],"data":"30","message":"Serial.write(30)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[69],"data":"69","message":"Serial.write(69)"}
 {"type":"DELAY","timestamp":0,"duration":100,"actualDelay":100}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"noteOn","arguments":[144.000000,30,0.000000]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"noteOn","arguments":[144,30,0]}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[144],"data":"144","message":"Serial.write(144)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[30],"data":"30","message":"Serial.write(30)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[0],"data":"0","message":"Serial.write(0)"}

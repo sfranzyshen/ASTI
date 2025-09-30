@@ -11,7 +11,7 @@
 {"type":"FOR_LOOP","timestamp":0,"phase":"iteration","iteration":0}
 {"type":"ANALOG_WRITE","timestamp":0,"pin":9,"value":0}
 {"type":"DELAY","timestamp":0,"duration":30,"actualDelay":30}
-{"type":"VAR_SET","timestamp":0,"variable":"fadeValue","value":5.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"fadeValue","value":5}
 {"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":1,"maxIterations":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}

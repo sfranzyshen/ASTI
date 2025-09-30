@@ -18,7 +18,7 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["255","0","0"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50.000000]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50]}
 {"type":"FOR_LOOP","timestamp":0,"phase":"start"}
 {"type":"VAR_SET","timestamp":0,"variable":"i","value":0}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.numPixels","arguments":[]}
@@ -26,7 +26,7 @@
 {"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":0,"maxIterations":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["0","255","0"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50.000000]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50]}
 {"type":"FOR_LOOP","timestamp":0,"phase":"start"}
 {"type":"VAR_SET","timestamp":0,"variable":"i","value":0}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.numPixels","arguments":[]}
@@ -34,7 +34,7 @@
 {"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":0,"maxIterations":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["0","0","255"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50.000000]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50]}
 {"type":"FOR_LOOP","timestamp":0,"phase":"start"}
 {"type":"VAR_SET","timestamp":0,"variable":"i","value":0}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.numPixels","arguments":[]}
@@ -42,7 +42,7 @@
 {"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":0,"maxIterations":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["127","127","127"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"theaterChase","arguments":[null,50.000000]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"theaterChase","arguments":[null,50]}
 {"type":"FOR_LOOP","timestamp":0,"phase":"start"}
 {"type":"VAR_SET","timestamp":0,"variable":"a","value":0}
 {"type":"FOR_LOOP","timestamp":0,"phase":"iteration","iteration":0}

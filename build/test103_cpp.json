@@ -8,8 +8,8 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"VAR_SET","timestamp":0,"variable":"x","value":2}
 {"type":"SWITCH_STATEMENT","timestamp":0,"discriminant":2}
-{"type":"SWITCH_CASE","timestamp":0,"value":1.000000,"shouldExecute":false}
-{"type":"SWITCH_CASE","timestamp":0,"value":2.000000,"shouldExecute":true}
+{"type":"SWITCH_CASE","timestamp":0,"value":1,"shouldExecute":false}
+{"type":"SWITCH_CASE","timestamp":0,"value":2,"shouldExecute":true}
 {"type":"VAR_SET","timestamp":0,"variable":"y","value":5}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Case 2"],"data":"Case 2","message":"Serial.println("Case 2")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["y is: "],"data":"y is: ","message":"Serial.print("y is: ")"}

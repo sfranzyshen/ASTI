@@ -18,6 +18,7 @@ static bool g_resetEnumCounter = false;
 #include "ExecutionTracer.hpp"
 #include <iostream>
 #include <sstream>
+#include <bitset>
 #include <iomanip>
 #include <cmath>
 #include <algorithm>
@@ -2513,8 +2514,11 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         case arduino_ast::ASTNodeType::NUMBER_LITERAL:
             if (auto* numNode = dynamic_cast<arduino_ast::NumberNode*>(expr)) {
                 double value = numNode->getNumber();
-                // Keep all literals as double - we can't distinguish "5" from "5.0" at this level
-                // Integer type preservation happens in arithmetic operations based on operand types
+                // Check if this is an integer literal (no fractional part)
+                // This is important for String(int, base) vs String(float, decimals)
+                if (std::floor(value) == value && value >= INT32_MIN && value <= INT32_MAX) {
+                    return static_cast<int32_t>(value);
+                }
                 return value;
             }
             break;
@@ -3011,48 +3015,6 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
 CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, const std::vector<CommandValue>& args) {
     // Arduino function execution
     TRACE_ENTRY("executeArduinoFunction", "Function: " + name + ", args: " + std::to_string(args.size()));
-
-    // String() constructor implementation with decimal place support
-    if (name == "String") {
-        std::string initialValue = "";
-        if (args.size() > 0) {
-            // Check if second argument exists (decimal places for float/double)
-            int decimalPlaces = -1;
-            if (args.size() > 1) {
-                decimalPlaces = std::visit([](auto&& arg) -> int {
-                    using T = std::decay_t<decltype(arg)>;
-                    if constexpr (std::is_same_v<T, int32_t>) {
-                        return arg;
-                    } else if constexpr (std::is_same_v<T, double>) {
-                        return static_cast<int>(arg);
-                    }
-                    return -1;
-                }, args[1]);
-            }
-
-            initialValue = std::visit([decimalPlaces](auto&& arg) -> std::string {
-                using T = std::decay_t<decltype(arg)>;
-                if constexpr (std::is_same_v<T, std::string>) {
-                    return arg;
-                } else if constexpr (std::is_same_v<T, int32_t>) {
-                    return std::to_string(arg);
-                } else if constexpr (std::is_same_v<T, double>) {
-                    // Handle decimal places formatting if specified
-                    if (decimalPlaces >= 0) {
-                        std::ostringstream oss;
-                        oss << std::fixed << std::setprecision(decimalPlaces) << arg;
-                        return oss.str();
-                    }
-                    return std::to_string(arg);
-                } else if constexpr (std::is_same_v<T, bool>) {
-                    return arg ? "true" : "false";
-                } else {
-                    return "";
-                }
-            }, args[0]);
-        }
-        return initialValue;
-    }
 
     // String method implementations - HANDLE FIRST before hasSpecificHandler check
     if (name.find(".concat") != std::string::npos) {
@@ -3770,12 +3732,52 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
     // Arduino String constructor and methods
     else if (name == "String") {
         // String constructor - create new ArduinoString object
+        // Supports: String(value), String(float, decimals), String(int, base)
         std::string initialValue = "";
         if (args.size() > 0) {
-            // Check if second argument exists (decimal places for float/double)
-            int decimalPlaces = -1;
-            if (args.size() > 1) {
-                decimalPlaces = std::visit([](auto&& arg) -> int {
+            // Detect first argument type to determine second argument meaning
+            bool isInteger = std::holds_alternative<int32_t>(args[0]);
+            bool isFloat = std::holds_alternative<double>(args[0]);
+
+            if (args.size() > 1 && isInteger) {
+                // Integer with base conversion: String(int, base)
+                int32_t value = std::get<int32_t>(args[0]);
+                int base = std::visit([](auto&& arg) -> int {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, int32_t>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return static_cast<int>(arg);
+                    }
+                    return 10; // Default to decimal
+                }, args[1]);
+
+                // Convert integer to specified base
+                if (base == 2) {
+                    // Binary conversion using bitset
+                    std::bitset<32> bits(value);
+                    std::string result = bits.to_string();
+                    // Remove leading zeros
+                    size_t firstOne = result.find('1');
+                    initialValue = (firstOne != std::string::npos) ? result.substr(firstOne) : "0";
+                } else if (base == 16) {
+                    // Hexadecimal conversion
+                    std::ostringstream oss;
+                    oss << std::hex << value;
+                    initialValue = oss.str();
+                } else if (base == 8) {
+                    // Octal conversion
+                    std::ostringstream oss;
+                    oss << std::oct << value;
+                    initialValue = oss.str();
+                } else {
+                    // DEC (10) or default - standard integer conversion
+                    initialValue = std::to_string(value);
+                }
+            } else if (args.size() > 1 && isFloat) {
+                // Float with decimal places: String(float, decimals)
+                double value = std::get<double>(args[0]);
+                int decimalPlaces = std::visit([](auto&& arg) -> int {
                     using T = std::decay_t<decltype(arg)>;
                     if constexpr (std::is_same_v<T, int32_t>) {
                         return arg;
@@ -3784,29 +3786,31 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                     }
                     return -1;
                 }, args[1]);
-                std::cerr << "DEBUG: String constructor with " << args.size() << " args, decimalPlaces=" << decimalPlaces << std::endl;
-            }
 
-            initialValue = std::visit([decimalPlaces](auto&& arg) -> std::string {
-                using T = std::decay_t<decltype(arg)>;
-                if constexpr (std::is_same_v<T, std::string>) {
-                    return arg;
-                } else if constexpr (std::is_same_v<T, int32_t>) {
-                    return std::to_string(arg);
-                } else if constexpr (std::is_same_v<T, double>) {
-                    // Handle decimal places formatting if specified
-                    if (decimalPlaces >= 0) {
-                        std::ostringstream oss;
-                        oss << std::fixed << std::setprecision(decimalPlaces) << arg;
-                        return oss.str();
-                    }
-                    return std::to_string(arg);
-                } else if constexpr (std::is_same_v<T, bool>) {
-                    return arg ? "true" : "false";
+                if (decimalPlaces >= 0) {
+                    std::ostringstream oss;
+                    oss << std::fixed << std::setprecision(decimalPlaces) << value;
+                    initialValue = oss.str();
                 } else {
-                    return "";
+                    initialValue = std::to_string(value);
                 }
-            }, args[0]);
+            } else {
+                // Single argument: String(value) - simple conversion
+                initialValue = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, bool>) {
+                        return arg ? "true" : "false";
+                    } else {
+                        return "";
+                    }
+                }, args[0]);
+            }
         }
 
         auto arduinoString = createString(initialValue);

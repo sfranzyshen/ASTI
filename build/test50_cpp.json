@@ -6,7 +6,9 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"end","iterations":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"String","arguments":["this"]}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"this"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"String","arguments":["that"]}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"that"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["\n\nComparing Strings:"],"data":"\n\nComparing Strings:","message":"Serial.println("\n\nComparing Strings:")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[""],"data":"","message":"Serial.println()"}
@@ -34,6 +36,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"1"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["2 >= 1"],"data":"2 >= 1","message":"Serial.println("2 >= 1")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"String","arguments":["Brown"]}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Brown"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}

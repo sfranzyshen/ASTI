@@ -12,10 +12,10 @@
 {"type":"VAR_SET","timestamp":0,"variable":"sensorReading","value":560}
 {"type":"VAR_SET","timestamp":0,"variable":"range","value":3}
 {"type":"SWITCH_STATEMENT","timestamp":0,"discriminant":3}
-{"type":"SWITCH_CASE","timestamp":0,"value":0.000000,"shouldExecute":false}
-{"type":"SWITCH_CASE","timestamp":0,"value":1.000000,"shouldExecute":false}
-{"type":"SWITCH_CASE","timestamp":0,"value":2.000000,"shouldExecute":false}
-{"type":"SWITCH_CASE","timestamp":0,"value":3.000000,"shouldExecute":true}
+{"type":"SWITCH_CASE","timestamp":0,"value":0,"shouldExecute":false}
+{"type":"SWITCH_CASE","timestamp":0,"value":1,"shouldExecute":false}
+{"type":"SWITCH_CASE","timestamp":0,"value":2,"shouldExecute":false}
+{"type":"SWITCH_CASE","timestamp":0,"value":3,"shouldExecute":true}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["bright"],"data":"bright","message":"Serial.println("bright")"}
 {"type":"DELAY","timestamp":0,"duration":1,"actualDelay":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}

@@ -35,16 +35,16 @@
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
 {"type":"VAR_SET","timestamp":0,"variable":"pixelPrevious","value":17807}
 {"type":"SWITCH_STATEMENT","timestamp":0,"discriminant":1}
-{"type":"SWITCH_CASE","timestamp":0,"value":7.000000,"shouldExecute":false}
-{"type":"SWITCH_CASE","timestamp":0,"value":6.000000,"shouldExecute":false}
-{"type":"SWITCH_CASE","timestamp":0,"value":5.000000,"shouldExecute":false}
-{"type":"SWITCH_CASE","timestamp":0,"value":4.000000,"shouldExecute":false}
-{"type":"SWITCH_CASE","timestamp":0,"value":3.000000,"shouldExecute":false}
-{"type":"SWITCH_CASE","timestamp":0,"value":2.000000,"shouldExecute":false}
-{"type":"SWITCH_CASE","timestamp":0,"value":1.000000,"shouldExecute":true}
+{"type":"SWITCH_CASE","timestamp":0,"value":7,"shouldExecute":false}
+{"type":"SWITCH_CASE","timestamp":0,"value":6,"shouldExecute":false}
+{"type":"SWITCH_CASE","timestamp":0,"value":5,"shouldExecute":false}
+{"type":"SWITCH_CASE","timestamp":0,"value":4,"shouldExecute":false}
+{"type":"SWITCH_CASE","timestamp":0,"value":3,"shouldExecute":false}
+{"type":"SWITCH_CASE","timestamp":0,"value":2,"shouldExecute":false}
+{"type":"SWITCH_CASE","timestamp":0,"value":1,"shouldExecute":true}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["0","255","0"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50.000000]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50]}
 {"type":"VAR_SET","timestamp":0,"variable":"current_pixel","value":0,"isExtern":true}
 {"type":"VAR_SET","timestamp":0,"variable":"pixelInterval","value":50}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"strip.setPixelColor","arguments":["null","null"]}

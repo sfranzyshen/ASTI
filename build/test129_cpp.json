@@ -7,7 +7,7 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"ERROR","timestamp":0,"message":"Undefined variable: add","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"applyOperation","arguments":[null,5.000000,10.000000]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"applyOperation","arguments":[null,5,10]}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"op","arguments":["5","10"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: op","errorType":"RuntimeError"}
 {"type":"VAR_SET","timestamp":0,"variable":"result","value":null}
