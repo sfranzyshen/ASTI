@@ -3,7 +3,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"sensorValue","value":null}
 {"type":"VAR_SET","timestamp":0,"variable":"sensorLow","value":1023}
 {"type":"VAR_SET","timestamp":0,"variable":"sensorHigh","value":0}
-{"type":"VAR_SET","timestamp":0,"variable":"ledPin","value":13.000000,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"ledPin","value":13,"isConst":true}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"PIN_MODE","timestamp":0,"pin":13,"mode":1}
 {"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}

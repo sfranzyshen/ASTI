@@ -11,7 +11,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"c","value":2}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"calculate","arguments":[5,10,2]}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"add","arguments":[5,10]}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"multiply","arguments":[15.000000,2]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"multiply","arguments":[15,2]}
 {"type":"VAR_SET","timestamp":0,"variable":"finalResult","value":30}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Final result: "],"data":"Final result: ","message":"Serial.print("Final result: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["30"],"data":"30","message":"Serial.println(30)"}

@@ -25,15 +25,15 @@ Adding Strings together (concatenation):)"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
-{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":0.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"0.000000"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["0.000000"],"data":"0.000000","message":"Serial.println(0.000000)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":0.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"0.000000"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["0.000000"],"data":"0.000000","message":"Serial.println(0.000000)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":0.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"0.000000"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["0.000000"],"data":"0.000000","message":"Serial.println(0.000000)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":0.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"0.000000"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["0.000000"],"data":"0.000000","message":"Serial.println(0.000000)"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":0.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"stringThree","value":"0.000000"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["0.000000"],"data":"0.000000","message":"Serial.println(0.000000)"}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
 {"type":"VAR_SET","timestamp":0,"variable":"sensorValue","value":560}

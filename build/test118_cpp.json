@@ -6,10 +6,10 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
-{"type":"VAR_SET","timestamp":0,"variable":"myConst","value":100.000000,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"myConst","value":100,"isConst":true}
 {"type":"VAR_SET","timestamp":0,"variable":"myVolatile","value":50.000000}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["My constant: "],"data":"My constant: ","message":"Serial.print("My constant: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["100.000000"],"data":"100.000000","message":"Serial.println(100.000000)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["100"],"data":"100","message":"Serial.println(100)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["My volatile: "],"data":"My volatile: ","message":"Serial.print("My volatile: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["50.000000"],"data":"50.000000","message":"Serial.println(50.000000)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}

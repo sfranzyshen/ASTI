@@ -60,9 +60,9 @@ Comparing Strings:)"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"Sensor: "}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"Sensor: "}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":560}
+{"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"560"}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":19,"requestId":"analogRead_static_19"}
-{"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":745}
+{"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":"745"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.compareTo","arguments":["745"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.compareTo","errorType":"RuntimeError"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}

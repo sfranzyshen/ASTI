@@ -1,6 +1,6 @@
 {"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"12.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
-{"type":"VAR_SET","timestamp":0,"variable":"ledPin","value":13.000000,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"ledPin","value":13,"isConst":true}
 {"type":"VAR_SET","timestamp":0,"variable":"ledState","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"previousMillis","value":0.000000}
 {"type":"VAR_SET","timestamp":0,"variable":"interval","value":1000.000000,"isConst":true}
@@ -15,7 +15,7 @@
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
 {"type":"VAR_SET","timestamp":0,"variable":"previousMillis","value":17807}
 {"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
-{"type":"VAR_SET","timestamp":0,"variable":"ledState","value":1.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"ledState","value":1}
 {"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}

@@ -1620,41 +1620,56 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             // Simple variable assignment
             std::string varName = leftNode->getValueAs<std::string>();
             
-            // Handle different assignment operators  
+            // Handle different assignment operators
             // Note: CompactAST may not store operator correctly, treat empty as "="
             if (op == "=" || op.empty()) {
-                Variable var(rightValue);
+                // Get existing variable to preserve its type
+                Variable* existingVar = scopeManager_->getVariable(varName);
+
+                // Convert value to match variable's declared type if it exists
+                CommandValue typedValue = rightValue;
+                if (existingVar && !existingVar->type.empty() && existingVar->type != "undefined") {
+                    typedValue = convertToType(rightValue, existingVar->type);
+                }
+
+                // Create variable with proper type information
+                Variable var;
+                if (existingVar) {
+                    // Preserve existing variable's type and flags
+                    var = Variable(typedValue, existingVar->type, existingVar->isConst,
+                                  existingVar->isReference, existingVar->isStatic, existingVar->isGlobal);
+                } else {
+                    // New variable - no type information yet
+                    var = Variable(typedValue);
+                }
                 scopeManager_->setVariable(varName, var);
-                
+
                 // CROSS-PLATFORM FIX: Detect const variables during assignment
                 // Check if this is a const variable declaration/assignment
                 bool isConstVariable = false;
-                
-                // Method 1: Check if this is first assignment to an undefined variable (likely a declaration)
-                Variable* existingVar = scopeManager_->getVariable(varName);
                 if (!existingVar) {
                     // First assignment - check for common const variable patterns
-                    if (varName == "buttonPin" || varName == "ledPin" || 
+                    if (varName == "buttonPin" || varName == "ledPin" ||
                         varName.find("Pin") != std::string::npos ||
                         varName.find("pin") != std::string::npos ||
                         varName.find("const") != std::string::npos) {
                         isConstVariable = true;
                     }
                 }
-                
+
                 // Emit appropriate VAR_SET command
                 if (isConstVariable) {
-                        // Special handling for const strings to match JavaScript object wrapper format
-                    if (std::holds_alternative<std::string>(rightValue)) {
-                        std::string stringVal = std::get<std::string>(rightValue);
+                    // Special handling for const strings to match JavaScript object wrapper format
+                    if (std::holds_alternative<std::string>(typedValue)) {
+                        std::string stringVal = std::get<std::string>(typedValue);
                         emitVarSetConstString(varName, stringVal);
                     } else {
-                        emitVarSetConst(varName, commandValueToJsonString(rightValue), "");
+                        emitVarSetConst(varName, commandValueToJsonString(typedValue), "");
                     }
                 } else {
-                    emitVarSet(varName, commandValueToJsonString(rightValue));
+                    emitVarSet(varName, commandValueToJsonString(typedValue));
                 }
-                lastExpressionResult_ = rightValue;
+                lastExpressionResult_ = typedValue;
             } else if (op == "+=" || op == "-=" || op == "*=" || op == "/=" || op == "%=" || op == "&=" || op == "|=" || op == "^=") {
                 // Compound assignment - get existing value
                 Variable* existingVar = scopeManager_->getVariable(varName);
@@ -6460,40 +6475,46 @@ void ASTInterpreter::visit(arduino_ast::UnionTypeNode& node) {
 
 CommandValue ASTInterpreter::convertToType(const CommandValue& value, const std::string& typeName) {
 
+    // Strip "const " prefix if present for type checking
+    std::string baseTypeName = typeName;
+    if (baseTypeName.substr(0, 6) == "const ") {
+        baseTypeName = baseTypeName.substr(6);
+    }
+
     // Handle uninitialized variables (std::monostate) - provide default values
     if (std::holds_alternative<std::monostate>(value)) {
 
         // Provide JavaScript-compatible defaults to match cross-platform behavior
-        if (typeName == "int" || typeName == "unsigned int" || typeName == "byte") {
+        if (baseTypeName == "int" || baseTypeName == "unsigned int" || baseTypeName == "byte") {
             // JavaScript treats uninitialized variables as null, but we need integer compatibility
             // Use a sentinel value that JavaScript can handle
             return std::monostate{};  // Keep as null to match JavaScript initialization
-        } else if (typeName == "float" || typeName == "double") {
+        } else if (baseTypeName == "float" || baseTypeName == "double") {
             return std::monostate{};  // null for floating point
-        } else if (typeName == "bool") {
+        } else if (baseTypeName == "bool") {
             return std::monostate{};  // null for boolean
-        } else if (typeName == "String" || typeName == "char*") {
+        } else if (baseTypeName == "String" || baseTypeName == "char*") {
             return std::monostate{};  // null for string
         }
         return std::monostate{};  // Default to null for any type
     }
 
     // Handle conversion from any CommandValue type to the target type
-    if (typeName == "int" || typeName == "unsigned int" || typeName == "byte") {
-        // Convert to integer
+    if (baseTypeName == "int" || baseTypeName == "unsigned int" || baseTypeName == "byte") {
+        // Convert to integer (int32_t to match CommandValue variant)
         if (std::holds_alternative<double>(value)) {
-            int intValue = static_cast<int>(std::get<double>(value));
+            int32_t intValue = static_cast<int32_t>(std::get<double>(value));
             return intValue;
         } else if (std::holds_alternative<bool>(value)) {
-            int intValue = std::get<bool>(value) ? 1 : 0;
+            int32_t intValue = std::get<bool>(value) ? 1 : 0;
             return intValue;
-        } else if (std::holds_alternative<int>(value)) {
-            return value; // Already int
+        } else if (std::holds_alternative<int32_t>(value)) {
+            return value; // Already int32_t
         }
-    } else if (typeName == "float" || typeName == "double") {
+    } else if (baseTypeName == "float" || baseTypeName == "double") {
         // Convert to float/double
-        if (std::holds_alternative<int>(value)) {
-            double doubleValue = static_cast<double>(std::get<int>(value));
+        if (std::holds_alternative<int32_t>(value)) {
+            double doubleValue = static_cast<double>(std::get<int32_t>(value));
             return doubleValue;
         } else if (std::holds_alternative<bool>(value)) {
             double doubleValue = std::get<bool>(value) ? 1.0 : 0.0;
@@ -6501,10 +6522,10 @@ CommandValue ASTInterpreter::convertToType(const CommandValue& value, const std:
         } else if (std::holds_alternative<double>(value)) {
             return value; // Already double
         }
-    } else if (typeName == "bool") {
+    } else if (baseTypeName == "bool") {
         // Convert to bool
-        if (std::holds_alternative<int>(value)) {
-            bool boolValue = std::get<int>(value) != 0;
+        if (std::holds_alternative<int32_t>(value)) {
+            bool boolValue = std::get<int32_t>(value) != 0;
             return boolValue;
         } else if (std::holds_alternative<double>(value)) {
             bool boolValue = std::get<double>(value) != 0.0;
@@ -6512,12 +6533,12 @@ CommandValue ASTInterpreter::convertToType(const CommandValue& value, const std:
         } else if (std::holds_alternative<bool>(value)) {
             return value; // Already bool
         }
-    } else if (typeName == "String" || typeName == "char*") {
+    } else if (baseTypeName == "String" || baseTypeName == "char*") {
         // Convert to string
         if (std::holds_alternative<std::string>(value)) {
             return value; // Already string
-        } else if (std::holds_alternative<int>(value)) {
-            std::string stringValue = std::to_string(std::get<int>(value));
+        } else if (std::holds_alternative<int32_t>(value)) {
+            std::string stringValue = std::to_string(std::get<int32_t>(value));
             return stringValue;
         } else if (std::holds_alternative<double>(value)) {
             std::string stringValue = std::to_string(std::get<double>(value));

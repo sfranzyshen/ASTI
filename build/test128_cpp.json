@@ -12,10 +12,10 @@
 {"type":"VAR_SET","timestamp":0,"variable":"i","value":-2147483647}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["After increment (rollover): "],"data":"After increment (rollover): ","message":"Serial.print("After increment (rollover): ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["-2147483647"],"data":"-2147483647","message":"Serial.println(-2147483647)"}
-{"type":"VAR_SET","timestamp":0,"variable":"i","value":0.000000}
-{"type":"VAR_SET","timestamp":0,"variable":"i","value":-1.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"i","value":0}
+{"type":"VAR_SET","timestamp":0,"variable":"i","value":-1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["After decrement (rollover): "],"data":"After decrement (rollover): ","message":"Serial.print("After decrement (rollover): ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["-1.000000"],"data":"-1.000000","message":"Serial.println(-1.000000)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["-1"],"data":"-1","message":"Serial.println(-1)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}

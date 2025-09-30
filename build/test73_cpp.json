@@ -3,7 +3,7 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"LiquidCrystal","arguments":["12.000000","11.000000","5.000000","4.000000","3.000000","2.000000"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: LiquidCrystal","errorType":"RuntimeError"}
 {"type":"VAR_SET","timestamp":0,"variable":"lcd","value":null}
-{"type":"VAR_SET","timestamp":0,"variable":"switchPin","value":6.000000,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"switchPin","value":6,"isConst":true}
 {"type":"VAR_SET","timestamp":0,"variable":"switchState","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"prevSwitchState","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"reply","value":null}

@@ -26,14 +26,14 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.read","arguments":[]}
 {"type":"VAR_SET","timestamp":0,"variable":"inByte","value":65}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
-{"type":"VAR_SET","timestamp":0,"variable":"firstSensor","value":140.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"firstSensor","value":140}
 {"type":"DELAY","timestamp":0,"duration":10,"actualDelay":10}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":1,"requestId":"analogRead_static_1"}
-{"type":"VAR_SET","timestamp":0,"variable":"secondSensor","value":19.750000}
+{"type":"VAR_SET","timestamp":0,"variable":"secondSensor","value":19}
 {"type":"DIGITAL_READ_REQUEST","timestamp":0,"pin":2,"requestId":"digitalRead_static_2"}
 {"type":"VAR_SET","timestamp":0,"variable":"thirdSensor","value":0}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[140.000000],"data":"140.000000","message":"Serial.write(140.000000)"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[19.750000],"data":"19.750000","message":"Serial.write(19.750000)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[140],"data":"140","message":"Serial.write(140)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[19],"data":"19","message":"Serial.write(19)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[0],"data":"0","message":"Serial.write(0)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}

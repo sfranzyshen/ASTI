@@ -1,6 +1,6 @@
 {"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"12.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
-{"type":"VAR_SET","timestamp":0,"variable":"switchPin","value":8.000000,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"switchPin","value":8,"isConst":true}
 {"type":"VAR_SET","timestamp":0,"variable":"previousTime","value":0.000000}
 {"type":"VAR_SET","timestamp":0,"variable":"switchState","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"prevSwitchState","value":0}

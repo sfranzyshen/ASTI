@@ -9,15 +9,15 @@
 {"type":"VAR_SET","timestamp":0,"variable":"a","value":null}
 {"type":"VAR_SET","timestamp":0,"variable":"b","value":null}
 {"type":"VAR_SET","timestamp":0,"variable":"c","value":null}
-{"type":"VAR_SET","timestamp":0,"variable":"c","value":5.000000}
-{"type":"VAR_SET","timestamp":0,"variable":"b","value":5.000000}
-{"type":"VAR_SET","timestamp":0,"variable":"a","value":5.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"c","value":5}
+{"type":"VAR_SET","timestamp":0,"variable":"b","value":5}
+{"type":"VAR_SET","timestamp":0,"variable":"a","value":5}
 {"type":"VAR_SET","timestamp":0,"variable":"x","value":10}
 {"type":"ERROR","timestamp":0,"message":"Increment/decrement operators require variable context","errorType":"RuntimeError"}
 {"type":"VAR_SET","timestamp":0,"variable":"y","value":null}
 {"type":"VAR_SET","timestamp":0,"variable":"z","value":null}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["a: "],"data":"a: ","message":"Serial.print("a: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["5.000000"],"data":"5.000000","message":"Serial.println(5.000000)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["5"],"data":"5","message":"Serial.println(5)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["x: "],"data":"x: ","message":"Serial.print("x: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["10"],"data":"10","message":"Serial.println(10)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["y: "],"data":"y: ","message":"Serial.print("y: ")"}

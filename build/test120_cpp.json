@@ -10,11 +10,11 @@
 {"type":"FOR_LOOP","timestamp":0,"phase":"start"}
 {"type":"VAR_SET","timestamp":0,"variable":"i","value":0}
 {"type":"FOR_LOOP","timestamp":0,"phase":"iteration","iteration":0}
-{"type":"VAR_SET","timestamp":0,"variable":"x","value":1.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"x","value":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["For i="],"data":"For i=","message":"Serial.print("For i=")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[0],"data":"0","message":"Serial.print(0)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":[", x is: "],"data":", x is: ","message":"Serial.print(", x is: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["1.000000"],"data":"1.000000","message":"Serial.println(1.000000)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["1"],"data":"1","message":"Serial.println(1)"}
 {"type":"VAR_SET","timestamp":0,"variable":"i","value":1}
 {"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":1,"maxIterations":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}

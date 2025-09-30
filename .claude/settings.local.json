@@ -62,7 +62,11 @@
       "Bash(cmake:*)",
       "Bash(git stash:*)",
       "Bash(git commit:*)",
-      "Bash(xxd:*)"
+      "Bash(xxd:*)",
+      "Bash(for i in 58 75 86 93 98)",
+      "Bash(do echo \"=== TEST $i ===\")",
+      "Bash(for i in 058 075 086 093 098)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": [],

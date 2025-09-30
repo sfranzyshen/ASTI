@@ -2,14 +2,14 @@
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"VAR_SET","timestamp":0,"variable":"myServo","value":null}
 {"type":"VAR_SET","timestamp":0,"variable":"piezo","value":14,"isConst":true}
-{"type":"VAR_SET","timestamp":0,"variable":"switchPin","value":2.000000,"isConst":true}
-{"type":"VAR_SET","timestamp":0,"variable":"yellowLed","value":3.000000,"isConst":true}
-{"type":"VAR_SET","timestamp":0,"variable":"greenLed","value":4.000000,"isConst":true}
-{"type":"VAR_SET","timestamp":0,"variable":"redLed","value":5.000000,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"switchPin","value":2,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"yellowLed","value":3,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"greenLed","value":4,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"redLed","value":5,"isConst":true}
 {"type":"VAR_SET","timestamp":0,"variable":"knockVal","value":null}
 {"type":"VAR_SET","timestamp":0,"variable":"switchVal","value":null}
-{"type":"VAR_SET","timestamp":0,"variable":"quietKnock","value":10.000000,"isConst":true}
-{"type":"VAR_SET","timestamp":0,"variable":"loudKnock","value":100.000000,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"quietKnock","value":10,"isConst":true}
+{"type":"VAR_SET","timestamp":0,"variable":"loudKnock","value":100,"isConst":true}
 {"type":"VAR_SET","timestamp":0,"variable":"locked","value":false}
 {"type":"VAR_SET","timestamp":0,"variable":"numberOfKnocks","value":0}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}

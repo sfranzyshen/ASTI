@@ -32,7 +32,7 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"readSensors","arguments":[]}
 {"type":"VAR_SET","timestamp":0,"variable":"pixels","value":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
-{"type":"VAR_SET","timestamp":0,"variable":"x","value":3.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"x","value":3}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":15,"requestId":"analogRead_static_15"}
 {"type":"VAR_SET","timestamp":0,"variable":"y","value":4}
 {"type":"VAR_SET","timestamp":0,"variable":"pixels","value":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}

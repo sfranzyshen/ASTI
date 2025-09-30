@@ -10,7 +10,7 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"ANALOG_WRITE","timestamp":0,"pin":9,"value":0}
-{"type":"VAR_SET","timestamp":0,"variable":"brightness","value":5.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"brightness","value":5}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"DELAY","timestamp":0,"duration":30,"actualDelay":30}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}

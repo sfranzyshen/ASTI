@@ -8,9 +8,9 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
-{"type":"VAR_SET","timestamp":0,"variable":"externalVariable","value":10.000000}
+{"type":"VAR_SET","timestamp":0,"variable":"externalVariable","value":10}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["External variable value: "],"data":"External variable value: ","message":"Serial.print("External variable value: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["10.000000"],"data":"10.000000","message":"Serial.println(10.000000)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["10"],"data":"10","message":"Serial.println(10)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}
