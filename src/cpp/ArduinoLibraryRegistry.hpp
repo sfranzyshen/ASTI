@@ -46,6 +46,15 @@ struct ExternalMethodInfo {
  */
 using StaticMethod = std::function<CommandValue(const std::vector<CommandValue>&)>;
 
+/**
+ * Library object metadata for emission
+ */
+struct LibraryObjectMetadata {
+    std::string libraryName;
+    std::vector<CommandValue> constructorArgs;
+    std::string objectId;
+};
+
 // =============================================================================
 // LIBRARY DEFINITION STRUCTURE
 // =============================================================================
@@ -131,14 +140,22 @@ public:
      * Create a library object instance
      */
     std::shared_ptr<ArduinoLibraryObject> createLibraryObject(const std::string& libraryName,
-                                                             const std::vector<CommandValue>& args);
+                                                             const std::vector<CommandValue>& args,
+                                                             const std::string& objectId);
     
     /**
      * Call a static method on a library class
      */
     CommandValue callStaticMethod(const std::string& libraryName, const std::string& methodName,
                                  const std::vector<CommandValue>& args);
-    
+
+    /**
+     * Call a method on a library object instance
+     */
+    CommandValue callObjectMethod(const std::string& objectId,
+                                  const std::string& methodName,
+                                  const std::vector<CommandValue>& args);
+
     /**
      * Check if a library is registered
      */
@@ -153,13 +170,19 @@ public:
      * Get library definition for debugging
      */
     const LibraryDefinition* getLibraryDefinition(const std::string& libraryName) const;
-    
+
+    /**
+     * Get library object metadata for command emission
+     */
+    LibraryObjectMetadata getLibraryObjectMetadata(const std::string& objectId) const;
+
 private:
     /**
      * Register individual libraries
      */
     void registerAdafruitNeoPixelLibrary();
     void registerServoLibrary();
+    void registerCapacitiveSensorLibrary();
     void registerLiquidCrystalLibrary();
     void registerSPILibrary();
     void registerWireLibrary();

@@ -55,12 +55,48 @@ void ArduinoLibraryObject::initializeLibraryProperties() {
         properties["cols"] = CommandValue(16);
         properties["rows"] = CommandValue(2);
     }
+    else if (libraryName == "CapacitiveSensor") {
+        properties["sendPin"] = constructorArgs.size() > 0 ? constructorArgs[0] : CommandValue(4);
+        properties["receivePin"] = constructorArgs.size() > 1 ? constructorArgs[1] : CommandValue(2);
+        properties["timeout"] = CommandValue(2000);
+    }
 }
 
-CommandValue ArduinoLibraryObject::callMethod(const std::string& methodName, 
+CommandValue ArduinoLibraryObject::callMethod(const std::string& methodName,
                                              const std::vector<CommandValue>& args,
                                              ASTInterpreter* interpreter) {
-    // This will be handled by the registry - for now, return undefined
+    // Get the library definition from registry
+    if (!interpreter) {
+        return std::monostate{};
+    }
+
+    auto registry = interpreter->getLibraryRegistry();
+    if (!registry) {
+        return std::monostate{};
+    }
+
+    const LibraryDefinition* libDef = registry->getLibraryDefinition(libraryName);
+    if (!libDef) {
+        return std::monostate{};
+    }
+
+    // Check if this is an INTERNAL method (executed locally, returns value immediately)
+    auto internalIt = libDef->internalMethods.find(methodName);
+    if (internalIt != libDef->internalMethods.end()) {
+        // Call the internal method lambda and return result directly
+        // No command emission for internal methods!
+        return internalIt->second(args);
+    }
+
+    // Check if this is an EXTERNAL method (emits command to hardware)
+    if (libDef->externalMethods.find(methodName) != libDef->externalMethods.end()) {
+        // External methods emit commands but don't return values immediately
+        // TODO: Implement external method command emission when needed
+        // For now, return undefined
+        return std::monostate{};
+    }
+
+    // Method not found in library definition
     return std::monostate{};
 }
 
@@ -76,6 +112,7 @@ ArduinoLibraryRegistry::ArduinoLibraryRegistry(ASTInterpreter* interpreter)
 void ArduinoLibraryRegistry::registerStandardLibraries() {
     registerAdafruitNeoPixelLibrary();
     registerServoLibrary();
+    registerCapacitiveSensorLibrary();
     registerLiquidCrystalLibrary();
     registerSPILibrary();
     registerWireLibrary();
@@ -196,6 +233,27 @@ void ArduinoLibraryRegistry::registerServoLibrary() {
     registerLibrary(servo);
 }
 
+void ArduinoLibraryRegistry::registerCapacitiveSensorLibrary() {
+    LibraryDefinition capSensor;
+    capSensor.libraryName = "CapacitiveSensor";
+
+    // Internal methods - return mock sensor values
+    capSensor.internalMethods["capacitiveSensor"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+        // Simulate sensor reading (matches JavaScript: random 100-2100)
+        return static_cast<int32_t>(rand() % 2000 + 100);
+    };
+
+    capSensor.internalMethods["capacitiveSensorRaw"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+        // Raw reading simulation
+        return static_cast<int32_t>(rand() % 2000 + 100);
+    };
+
+    // Constructor parameters
+    capSensor.constructorArgs = {"sendPin", "receivePin"};
+
+    registerLibrary(capSensor);
+}
+
 void ArduinoLibraryRegistry::registerLiquidCrystalLibrary() {
     LibraryDefinition lcd;
     lcd.libraryName = "LiquidCrystal";
@@ -271,18 +329,18 @@ void ArduinoLibraryRegistry::registerLibrary(const LibraryDefinition& library) {
 }
 
 std::shared_ptr<ArduinoLibraryObject> ArduinoLibraryRegistry::createLibraryObject(
-    const std::string& libraryName, const std::vector<CommandValue>& args) {
-    
+    const std::string& libraryName, const std::vector<CommandValue>& args,
+    const std::string& objectId) {
+
     if (!hasLibrary(libraryName)) {
         return nullptr;
     }
-    
+
     auto object = std::make_shared<ArduinoLibraryObject>(libraryName, args);
-    
-    // Store object with unique ID for external command reference
-    std::string objectId = libraryName + "_" + std::to_string(libraryObjects_.size());
+
+    // Store object with provided unique ID (NOT generated - must match ASTInterpreter's ID!)
     libraryObjects_[objectId] = object;
-    
+
     return object;
 }
 
@@ -302,6 +360,24 @@ CommandValue ArduinoLibraryRegistry::callStaticMethod(const std::string& library
     return methodIt->second(args);
 }
 
+CommandValue ArduinoLibraryRegistry::callObjectMethod(const std::string& objectId,
+                                                      const std::string& methodName,
+                                                      const std::vector<CommandValue>& args) {
+    // Find the library object by ID
+    auto it = libraryObjects_.find(objectId);
+    if (it == libraryObjects_.end()) {
+        return std::monostate{};  // Object not found
+    }
+
+    auto libraryObject = it->second;
+    if (!libraryObject) {
+        return std::monostate{};
+    }
+
+    // Delegate to the object's callMethod
+    return libraryObject->callMethod(methodName, args, interpreter_);
+}
+
 bool ArduinoLibraryRegistry::hasLibrary(const std::string& libraryName) const {
     return libraries_.find(libraryName) != libraries_.end();
 }
@@ -319,6 +395,20 @@ bool ArduinoLibraryRegistry::hasStaticMethod(const std::string& libraryName,
 const LibraryDefinition* ArduinoLibraryRegistry::getLibraryDefinition(const std::string& libraryName) const {
     auto it = libraries_.find(libraryName);
     return (it != libraries_.end()) ? &it->second : nullptr;
+}
+
+LibraryObjectMetadata ArduinoLibraryRegistry::getLibraryObjectMetadata(const std::string& objectId) const {
+    auto it = libraryObjects_.find(objectId);
+    if (it == libraryObjects_.end()) {
+        return LibraryObjectMetadata{"", {}, ""};
+    }
+
+    auto obj = it->second;
+    return LibraryObjectMetadata{
+        obj->libraryName,
+        obj->constructorArgs,
+        objectId
+    };
 }
 
 void ArduinoLibraryRegistry::emitExternalCommand(const std::string& libraryName, 

@@ -626,12 +626,22 @@ public:
      * Check if interpreter is waiting for response
      */
     bool isWaitingForResponse() const;
-    
+
+    /**
+     * Get the request ID we're currently waiting for (for testing)
+     */
+    std::string getWaitingRequestId() const { return waitingForRequestId_; }
+
     /**
      * Get current execution state
      */
     ExecutionState getState() const { return state_; }
-    
+
+    /**
+     * Get library registry for library object method calls
+     */
+    ArduinoLibraryRegistry* getLibraryRegistry() const { return libraryRegistry_.get(); }
+
     // =============================================================================
     // EVENT HANDLERS
     // =============================================================================
@@ -962,6 +972,9 @@ private:
     void emitSerialPrint(const std::string& data, const std::string& format);  // Overload
     void emitSerialPrintln(const std::string& data);
     void emitSerialWrite(const std::string& data);  // Changed from int to string
+    void emitArduinoLibraryInstantiation(const std::string& libraryName,
+                                        const std::vector<CommandValue>& args,
+                                        const std::string& objectId);
     void emitSerialFlush();
     void emitSerialRequest(const std::string& type, const std::string& requestId);  // Added type parameter
     void emitSerialTimeout(int timeout);

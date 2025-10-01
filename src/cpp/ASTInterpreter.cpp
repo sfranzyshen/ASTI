@@ -1034,6 +1034,27 @@ void ASTInterpreter::visit(arduino_ast::ConstructorCallNode& node) {
         return;
     }
 
+    // Check if this is an Arduino library constructor
+    if (libraryRegistry_->hasLibrary(constructorName)) {
+        // This is a library instantiation
+        // Generate unique object ID
+        auto now = std::chrono::steady_clock::now();
+        auto timestamp = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
+        std::string objectId = constructorName + "_" + std::to_string(timestamp);
+
+        // Emit ARDUINO_LIBRARY_INSTANTIATION command
+        emitArduinoLibraryInstantiation(constructorName, args, objectId);
+
+        // Create library object (PASS objectId to maintain consistency!)
+        auto libraryObject = libraryRegistry_->createLibraryObject(constructorName, args, objectId);
+
+        // Store library object information in lastExpressionResult_
+        // For now, we'll use a placeholder mechanism to pass library object info
+        // The actual library object will be stored in the variable by VarDeclNode
+        lastExpressionResult_ = std::string("__library_object_" + objectId + "__");
+        return;
+    }
+
     // Handle actual constructor calls as library function calls
     // Arduino constructors are typically handled by the library system
 
@@ -3075,6 +3096,62 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
 CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, const std::vector<CommandValue>& args) {
     // Arduino function execution
     TRACE_ENTRY("executeArduinoFunction", "Function: " + name + ", args: " + std::to_string(args.size()));
+
+    // LIBRARY CONSTRUCTOR DETECTION - Handle Arduino library constructors like CapacitiveSensor
+    // Check if this is an Arduino library constructor (matches JavaScript isArduinoLibraryConstructor)
+    if (libraryRegistry_->hasLibrary(name)) {
+        // This is a library instantiation
+        // Generate unique object ID
+        auto now = std::chrono::steady_clock::now();
+        auto timestamp = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
+        std::string objectId = name + "_" + std::to_string(timestamp);
+
+        // Emit ARDUINO_LIBRARY_INSTANTIATION command
+        emitArduinoLibraryInstantiation(name, args, objectId);
+
+        // Create library object (PASS objectId to maintain consistency!)
+        auto libraryObject = libraryRegistry_->createLibraryObject(name, args, objectId);
+
+        // Return a placeholder string that indicates this is a library object
+        // The variable system will store this value, which can be used for method calls
+        return std::string("__library_object_" + objectId + "__");
+    }
+
+    // LIBRARY METHOD CALL DETECTION - Handle library object method calls (e.g., capSensor.capacitiveSensor)
+    // This must come BEFORE String method handling but AFTER library constructor detection
+    if (name.find(".") != std::string::npos) {
+        size_t dotPos = name.find(".");
+        std::string objectName = name.substr(0, dotPos);
+        std::string methodName = name.substr(dotPos + 1);
+
+        // Check if object exists in variable system
+        if (scopeManager_->hasVariable(objectName)) {
+            Variable* var = scopeManager_->getVariable(objectName);
+            if (var && std::holds_alternative<std::string>(var->value)) {
+                std::string objValue = std::get<std::string>(var->value);
+
+                // Check if this is a library object
+                // Format: __library_object_{ObjectID}__
+                if (objValue.find("__library_object_") == 0) {
+                    // Extract objectId from value string
+                    // Remove prefix and suffix: __library_object_ and __
+                    size_t prefixLen = std::string("__library_object_").length();
+                    size_t suffixLen = 2;  // "__"
+                    std::string extractedObjectId = objValue.substr(prefixLen, objValue.length() - prefixLen - suffixLen);
+
+                    // Call the method through library registry
+                    CommandValue result = libraryRegistry_->callObjectMethod(extractedObjectId, methodName, args);
+
+                    // Store result for expression evaluation
+                    lastExpressionResult_ = result;
+                    return result;
+                }
+            }
+        }
+
+        // Not a library object method, continue with normal processing
+        // (will fall through to String methods, Serial methods, etc.)
+    }
 
     // String method implementations - HANDLE FIRST before hasSpecificHandler check
     if (name.find(".concat") != std::string::npos) {
@@ -5387,8 +5464,54 @@ void ASTInterpreter::emitKeyboardPrintln(const std::string& text) {
 
 void ASTInterpreter::emitVarSet(const std::string& variable, const std::string& value) {
     std::ostringstream json;
-    json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << variable
-         << "\",\"value\":" << value << "}";
+    json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << variable << "\"";
+
+    // CHECK FOR LIBRARY OBJECT PLACEHOLDER
+    // Value comes in as JSON-formatted string, e.g., "\"__library_object_CapacitiveSensor_123__\""
+    // Need to detect and emit full object structure
+    if (value.find("__library_object_") != std::string::npos) {
+        // Extract the placeholder string (strip JSON quotes)
+        std::string placeholder = value;
+        // Remove leading and trailing quotes if present
+        if (placeholder.front() == '"' && placeholder.back() == '"') {
+            placeholder = placeholder.substr(1, placeholder.length() - 2);
+        }
+
+        // Extract objectId from placeholder: __library_object_{ObjectID}__
+        size_t prefixLen = std::string("__library_object_").length();
+        size_t suffixLen = 2;  // "__"
+        std::string objectId = placeholder.substr(prefixLen, placeholder.length() - prefixLen - suffixLen);
+
+        // Get library object metadata from registry
+        auto metadata = libraryRegistry_->getLibraryObjectMetadata(objectId);
+
+        // Emit full library object structure (matching JavaScript format)
+        json << ",\"value\":{";
+        json << "\"libraryName\":\"" << metadata.libraryName << "\"";
+        json << ",\"constructorArgs\":[";
+        for (size_t i = 0; i < metadata.constructorArgs.size(); ++i) {
+            if (i > 0) json << ",";
+            // Emit as integers, not floats
+            if (std::holds_alternative<double>(metadata.constructorArgs[i])) {
+                json << static_cast<int32_t>(std::get<double>(metadata.constructorArgs[i]));
+            } else if (std::holds_alternative<int>(metadata.constructorArgs[i])) {
+                json << std::get<int>(metadata.constructorArgs[i]);
+            } else {
+                json << commandValueToJsonString(metadata.constructorArgs[i]);
+            }
+        }
+        json << "]";
+        json << ",\"type\":\"library_object\"";
+        json << ",\"objectId\":\"" << objectId << "\"";
+        json << ",\"initialized\":true";
+        json << ",\"properties\":{}";
+        json << "}";
+    } else {
+        // Normal value emission
+        json << ",\"value\":" << value;
+    }
+
+    json << "}";
     emitJSON(json.str());
 }
 
@@ -5540,6 +5663,40 @@ void ASTInterpreter::emitSerialWrite(const std::string& data) {
          << ",\"arguments\":[" << data << "],\"data\":\"" << data
          << "\",\"message\":\"Serial.write(" << data << ")\"}";
     emitJSON(json.str());
+}
+
+void ASTInterpreter::emitArduinoLibraryInstantiation(const std::string& libraryName,
+                                                     const std::vector<CommandValue>& args,
+                                                     const std::string& objectId) {
+    std::ostringstream oss;
+    oss << "{\"type\":\"ARDUINO_LIBRARY_INSTANTIATION\"";
+    oss << ",\"library\":\"" << libraryName << "\"";
+    oss << ",\"constructorArgs\":[";
+    for (size_t i = 0; i < args.size(); ++i) {
+        if (i > 0) oss << ",";
+        // Emit as integers, not floating point (to match JavaScript)
+        if (std::holds_alternative<double>(args[i])) {
+            oss << static_cast<int32_t>(std::get<double>(args[i]));
+        } else if (std::holds_alternative<int>(args[i])) {
+            oss << std::get<int>(args[i]);
+        } else {
+            oss << commandValueToJsonString(args[i]);
+        }
+    }
+    oss << "]";
+    oss << ",\"objectId\":\"" << objectId << "\"";
+    oss << ",\"timestamp\":0";
+
+    // Add message
+    oss << ",\"message\":\"" << libraryName << "(";
+    for (size_t i = 0; i < args.size(); ++i) {
+        if (i > 0) oss << ", ";
+        oss << convertToString(args[i]);
+    }
+    oss << ")\"";
+
+    oss << "}";
+    emitJSON(oss.str());
 }
 
 void ASTInterpreter::emitSerialTimeout(int timeout) {
