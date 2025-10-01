@@ -917,7 +917,8 @@ private:
     static void resetStaticTimingCounters();
     CommandValue handleSerialOperation(const std::string& function, const std::vector<CommandValue>& args);
     CommandValue handleMultipleSerialOperation(const std::string& portName, const std::string& methodName, const std::vector<CommandValue>& args);
-    
+    CommandValue handleKeyboardOperation(const std::string& function, const std::vector<CommandValue>& args);
+
     // Helper methods for Serial system
     std::string generateRequestId(const std::string& prefix);
     
@@ -965,6 +966,15 @@ private:
     void emitSerialRequest(const std::string& type, const std::string& requestId);  // Added type parameter
     void emitSerialTimeout(int timeout);
     void emitSerialEvent(const std::string& message);
+
+    // Keyboard USB HID communication
+    void emitKeyboardBegin();
+    void emitKeyboardPress(const std::string& key);
+    void emitKeyboardWrite(const std::string& key);
+    void emitKeyboardReleaseAll();
+    void emitKeyboardRelease(const std::string& key);
+    void emitKeyboardPrint(const std::string& text);
+    void emitKeyboardPrintln(const std::string& text);
 
     // Variable operations
     void emitVarSet(const std::string& variable, const std::string& value);

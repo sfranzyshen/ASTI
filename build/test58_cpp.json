@@ -3,8 +3,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"platform","value":0}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"PIN_MODE","timestamp":0,"pin":2,"mode":2}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.begin","arguments":[]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: Keyboard.begin","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.begin","arguments":[],"message":"Keyboard.begin()"}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
@@ -15,15 +14,9 @@
 {"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
 {"type":"SWITCH_STATEMENT","timestamp":0,"discriminant":0}
 {"type":"SWITCH_CASE","timestamp":0,"value":0.000000,"shouldExecute":true}
-{"type":"ERROR","timestamp":0,"message":"Undefined variable: KEY_LEFT_GUI","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.press","arguments":["null"]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: Keyboard.press","errorType":"RuntimeError"}
-{"type":"ERROR","timestamp":0,"message":"Undefined variable: KEY_LEFT_CTRL","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.press","arguments":["null"]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: Keyboard.press","errorType":"RuntimeError"}
-{"type":"ERROR","timestamp":0,"message":"Undefined variable: KEY_LEFT_CTRL","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.press","arguments":["null"]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: Keyboard.press","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.press","arguments":["131"],"message":"Keyboard.press(131)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.press","arguments":["128"],"message":"Keyboard.press(128)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.press","arguments":["128"],"message":"Keyboard.press(128)"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}
 {"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"While loop limit reached: completed 1 iterations (max: 1)"}

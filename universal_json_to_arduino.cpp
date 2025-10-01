@@ -213,6 +213,36 @@ private:
                 return;
             }
 
+            // Keyboard.begin
+            if (function == "Keyboard.begin") {
+                commandStream.push_back("Keyboard.begin()");
+                return;
+            }
+
+            // Keyboard.press
+            if (function == "Keyboard.press") {
+                std::string arg = extractFirstArrayString(jsonObj, "arguments");
+                if (!arg.empty()) {
+                    commandStream.push_back("Keyboard.press(" + arg + ")");
+                }
+                return;
+            }
+
+            // Keyboard.write
+            if (function == "Keyboard.write") {
+                std::string arg = extractFirstArrayString(jsonObj, "arguments");
+                if (!arg.empty()) {
+                    commandStream.push_back("Keyboard.write(" + arg + ")");
+                }
+                return;
+            }
+
+            // Keyboard.releaseAll
+            if (function == "Keyboard.releaseAll") {
+                commandStream.push_back("Keyboard.releaseAll()");
+                return;
+            }
+
             // pinMode
             if (function == "pinMode") {
                 std::vector<int> args = extractIntArray(jsonObj, "arguments");

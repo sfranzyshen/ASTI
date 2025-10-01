@@ -62,7 +62,7 @@ EnhancedCommandValue MemberAccessHelper::getMemberValue(EnhancedScopeManager* sc
         }
     }
     
-    // Special case: handle built-in objects like Serial
+    // Special case: handle built-in objects like Serial and Keyboard
     if (objectName == "Serial") {
         if (memberName == "available") {
             return int32_t(0);  // Mock value for available bytes
@@ -80,7 +80,20 @@ EnhancedCommandValue MemberAccessHelper::getMemberValue(EnhancedScopeManager* sc
         // Default return for unknown Serial members
         return std::monostate{};
     }
-    
+
+    // Special case: handle Keyboard USB HID object
+    if (objectName == "Keyboard") {
+        if (memberName == "begin" || memberName == "press" || memberName == "write" ||
+            memberName == "releaseAll" || memberName == "release" ||
+            memberName == "print" || memberName == "println") {
+            // These are function calls, not property access
+            // Return a callable placeholder
+            return std::string("KeyboardMethod");
+        }
+        // Default return for unknown Keyboard members
+        return std::monostate{};
+    }
+
     // Fall back to composite variable name simulation for compatibility
     std::string compositeName = objectName + "_" + memberName;
     EnhancedVariable* compositeVar = scopeManager->getVariable(compositeName);

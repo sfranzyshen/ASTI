@@ -12,10 +12,10 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":{"value":"Content-Type: text/html","type":"ArduinoString"}}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Content-Type: text/html"],"data":"Content-Type: text/html","message":"Serial.println("Content-Type: text/html")"}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.substring","errorType":"RuntimeError"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.substring","errorType":"RuntimeError"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["It's an html file"],"data":"It's an html file","message":"Serial.println("It's an html file")"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":true,"conditionDisplay":"true","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["It's a text-based file"],"data":"It's a text-based file","message":"Serial.println("It's a text-based file")"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}
 {"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"While loop limit reached: completed 1 iterations (max: 1)"}

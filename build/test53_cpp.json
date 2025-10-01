@@ -14,11 +14,9 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Hello!       "],"data":"Hello!       ","message":"Serial.print("Hello!       ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["<--- end of string. Length: "],"data":"<--- end of string. Length: ","message":"Serial.print("<--- end of string. Length: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["13"],"data":"13","message":"Serial.println(13)"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.trim","arguments":[]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.trim","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Hello!       "],"data":"Hello!       ","message":"Serial.print("Hello!       ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Hello!"],"data":"Hello!","message":"Serial.print("Hello!")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["<--- end of trimmed string. Length: "],"data":"<--- end of trimmed string. Length: ","message":"Serial.print("<--- end of trimmed string. Length: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["13"],"data":"13","message":"Serial.println(13)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["6"],"data":"6","message":"Serial.println(6)"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}
 {"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"While loop limit reached: completed 1 iterations (max: 1)"}

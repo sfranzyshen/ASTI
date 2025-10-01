@@ -13,14 +13,11 @@
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":{"value":"<html><head><body>","type":"ArduinoString"}}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["<html><head><body>"],"data":"<html><head><body>","message":"Serial.println("<html><head><body>")"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringTwo","value":{"value":"<html><head><body>","type":"ArduinoString"}}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: stringTwo.replace","errorType":"RuntimeError"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Original string: <html><head><body>"],"data":"Original string: <html><head><body>","message":"Serial.println("Original string: <html><head><body>")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Modified string: <html><head><body>"],"data":"Modified string: <html><head><body>","message":"Serial.println("Modified string: <html><head><body>")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Modified string: </html></head></body>"],"data":"Modified string: </html></head></body>","message":"Serial.println("Modified string: </html></head></body>")"}
 {"type":"VAR_SET","timestamp":0,"variable":"normalString","value":{"value":"bookkeeper","type":"ArduinoString"}}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["normal: bookkeeper"],"data":"normal: bookkeeper","message":"Serial.println("normal: bookkeeper")"}
 {"type":"VAR_SET","timestamp":0,"variable":"leetString","value":{"value":"bookkeeper","type":"ArduinoString"}}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: leetString.replace","errorType":"RuntimeError"}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: leetString.replace","errorType":"RuntimeError"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["l33tspeak: bookkeeper"],"data":"l33tspeak: bookkeeper","message":"Serial.println("l33tspeak: bookkeeper")"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}

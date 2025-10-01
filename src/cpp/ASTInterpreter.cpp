@@ -213,7 +213,44 @@ void ASTInterpreter::initializeInterpreter() {
     scopeManager_->setVariable("OUTPUT", Variable(static_cast<int32_t>(1), "int", true));
     scopeManager_->setVariable("INPUT_PULLUP", Variable(static_cast<int32_t>(2), "int", true));
     scopeManager_->setVariable("LED_BUILTIN", Variable(static_cast<int32_t>(2), "int", true)); // ESP32 built-in LED
-    
+
+    // Initialize Keyboard USB HID key constants (matching Arduino Keyboard.h)
+    scopeManager_->setVariable("KEY_LEFT_CTRL", Variable(static_cast<int32_t>(0x80), "int", true));
+    scopeManager_->setVariable("KEY_LEFT_SHIFT", Variable(static_cast<int32_t>(0x81), "int", true));
+    scopeManager_->setVariable("KEY_LEFT_ALT", Variable(static_cast<int32_t>(0x82), "int", true));
+    scopeManager_->setVariable("KEY_LEFT_GUI", Variable(static_cast<int32_t>(0x83), "int", true));
+    scopeManager_->setVariable("KEY_RIGHT_CTRL", Variable(static_cast<int32_t>(0x84), "int", true));
+    scopeManager_->setVariable("KEY_RIGHT_SHIFT", Variable(static_cast<int32_t>(0x85), "int", true));
+    scopeManager_->setVariable("KEY_RIGHT_ALT", Variable(static_cast<int32_t>(0x86), "int", true));
+    scopeManager_->setVariable("KEY_RIGHT_GUI", Variable(static_cast<int32_t>(0x87), "int", true));
+    scopeManager_->setVariable("KEY_UP_ARROW", Variable(static_cast<int32_t>(0xDA), "int", true));
+    scopeManager_->setVariable("KEY_DOWN_ARROW", Variable(static_cast<int32_t>(0xD9), "int", true));
+    scopeManager_->setVariable("KEY_LEFT_ARROW", Variable(static_cast<int32_t>(0xD8), "int", true));
+    scopeManager_->setVariable("KEY_RIGHT_ARROW", Variable(static_cast<int32_t>(0xD7), "int", true));
+    scopeManager_->setVariable("KEY_BACKSPACE", Variable(static_cast<int32_t>(0xB2), "int", true));
+    scopeManager_->setVariable("KEY_TAB", Variable(static_cast<int32_t>(0xB3), "int", true));
+    scopeManager_->setVariable("KEY_RETURN", Variable(static_cast<int32_t>(0xB0), "int", true));
+    scopeManager_->setVariable("KEY_ESC", Variable(static_cast<int32_t>(0xB1), "int", true));
+    scopeManager_->setVariable("KEY_INSERT", Variable(static_cast<int32_t>(0xD1), "int", true));
+    scopeManager_->setVariable("KEY_DELETE", Variable(static_cast<int32_t>(0xD4), "int", true));
+    scopeManager_->setVariable("KEY_PAGE_UP", Variable(static_cast<int32_t>(0xD3), "int", true));
+    scopeManager_->setVariable("KEY_PAGE_DOWN", Variable(static_cast<int32_t>(0xD6), "int", true));
+    scopeManager_->setVariable("KEY_HOME", Variable(static_cast<int32_t>(0xD2), "int", true));
+    scopeManager_->setVariable("KEY_END", Variable(static_cast<int32_t>(0xD5), "int", true));
+    scopeManager_->setVariable("KEY_CAPS_LOCK", Variable(static_cast<int32_t>(0xC1), "int", true));
+    scopeManager_->setVariable("KEY_F1", Variable(static_cast<int32_t>(0xC2), "int", true));
+    scopeManager_->setVariable("KEY_F2", Variable(static_cast<int32_t>(0xC3), "int", true));
+    scopeManager_->setVariable("KEY_F3", Variable(static_cast<int32_t>(0xC4), "int", true));
+    scopeManager_->setVariable("KEY_F4", Variable(static_cast<int32_t>(0xC5), "int", true));
+    scopeManager_->setVariable("KEY_F5", Variable(static_cast<int32_t>(0xC6), "int", true));
+    scopeManager_->setVariable("KEY_F6", Variable(static_cast<int32_t>(0xC7), "int", true));
+    scopeManager_->setVariable("KEY_F7", Variable(static_cast<int32_t>(0xC8), "int", true));
+    scopeManager_->setVariable("KEY_F8", Variable(static_cast<int32_t>(0xC9), "int", true));
+    scopeManager_->setVariable("KEY_F9", Variable(static_cast<int32_t>(0xCA), "int", true));
+    scopeManager_->setVariable("KEY_F10", Variable(static_cast<int32_t>(0xCB), "int", true));
+    scopeManager_->setVariable("KEY_F11", Variable(static_cast<int32_t>(0xCC), "int", true));
+    scopeManager_->setVariable("KEY_F12", Variable(static_cast<int32_t>(0xCD), "int", true));
+
     // Initialize analog pin constants (ESP32 Nano pin mappings - aligned with JavaScript ArduinoParser)
     scopeManager_->setVariable("A0", Variable(static_cast<int32_t>(14), "int", true));
     scopeManager_->setVariable("A1", Variable(static_cast<int32_t>(15), "int", true));
@@ -1029,10 +1066,13 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
             // Simple identifier: obj.member
             objectName = identifier->getName();
 
-            // Special handling for built-in objects like Serial
+            // Special handling for built-in objects like Serial and Keyboard
             if (objectName == "Serial") {
                 // Serial is a built-in object, create a placeholder value for processing
                 objectValue = std::string("SerialObject");
+            } else if (objectName == "Keyboard") {
+                // Keyboard is a built-in USB HID object, create a placeholder value for processing
+                objectValue = std::string("KeyboardObject");
             } else {
                 Variable* objectVar = scopeManager_->getVariable(objectName);
                 if (objectVar) {
@@ -3705,7 +3745,10 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                                name.find(".toUpperCase") != std::string::npos || name.find(".toLowerCase") != std::string::npos ||
                                name.find(".trim") != std::string::npos ||
                                name.find(".startsWith") != std::string::npos || name.find(".endsWith") != std::string::npos ||
-                               name.find(".compareTo") != std::string::npos || name.find(".equalsIgnoreCase") != std::string::npos);
+                               name.find(".compareTo") != std::string::npos || name.find(".equalsIgnoreCase") != std::string::npos ||
+                               name == "Keyboard.begin" || name == "Keyboard.press" || name == "Keyboard.write" ||
+                               name == "Keyboard.releaseAll" || name == "Keyboard.release" ||
+                               name == "Keyboard.print" || name == "Keyboard.println");
     
     if (!hasSpecificHandler) {
         std::vector<std::string> argStrings;
@@ -3931,7 +3974,18 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         functionExecutionTimes_[name] += duration;
         return result;
     }
-    
+
+    // Keyboard USB HID operations
+    else if (name == "Keyboard.begin" || name == "Keyboard.press" || name == "Keyboard.write" ||
+             name == "Keyboard.releaseAll" || name == "Keyboard.release" ||
+             name == "Keyboard.print" || name == "Keyboard.println") {
+        auto result = handleKeyboardOperation(name, args);
+        auto functionEnd = std::chrono::steady_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(functionEnd - functionStart);
+        functionExecutionTimes_[name] += duration;
+        return result;
+    }
+
     // Character classification functions (Arduino ctype.h equivalents)
     else if (name == "isDigit" && args.size() >= 1) {
         char c = static_cast<char>(convertToInt(args[0]));
@@ -4800,6 +4854,72 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
     return std::monostate{};
 }
 
+CommandValue ASTInterpreter::handleKeyboardOperation(const std::string& function, const std::vector<CommandValue>& args) {
+    // Extract method name from full function name (e.g., "Keyboard.begin" -> "begin")
+    std::string methodName = function;
+    size_t dotPos = function.find_last_of('.');
+    if (dotPos != std::string::npos) {
+        methodName = function.substr(dotPos + 1);
+    }
+
+    // Handle different Keyboard USB HID methods
+    if (methodName == "begin") {
+        // Keyboard.begin() - Initialize USB HID keyboard
+        emitKeyboardBegin();
+        return std::monostate{};
+    }
+
+    else if (methodName == "press") {
+        // Keyboard.press(key) - Press and hold a key
+        if (args.size() > 0) {
+            std::string key = commandValueToString(args[0]);
+            emitKeyboardPress(key);
+        }
+        return std::monostate{};
+    }
+
+    else if (methodName == "write") {
+        // Keyboard.write(key) - Press and release a key
+        if (args.size() > 0) {
+            std::string key = commandValueToString(args[0]);
+            emitKeyboardWrite(key);
+        }
+        return std::monostate{};
+    }
+
+    else if (methodName == "releaseAll") {
+        // Keyboard.releaseAll() - Release all pressed keys
+        emitKeyboardReleaseAll();
+        return std::monostate{};
+    }
+
+    else if (methodName == "release") {
+        // Keyboard.release([key]) - Release specific key or all if no argument
+        std::string key = args.size() > 0 ? commandValueToString(args[0]) : "all";
+        emitKeyboardRelease(key);
+        return std::monostate{};
+    }
+
+    else if (methodName == "print") {
+        // Keyboard.print(text) - Type text string
+        if (args.size() > 0) {
+            std::string text = commandValueToString(args[0]);
+            emitKeyboardPrint(text);
+        }
+        return std::monostate{};
+    }
+
+    else if (methodName == "println") {
+        // Keyboard.println([text]) - Type text string with newline
+        std::string text = args.size() > 0 ? commandValueToString(args[0]) : "";
+        emitKeyboardPrintln(text);
+        return std::monostate{};
+    }
+
+    // Default: unknown Keyboard method
+    return std::monostate{};
+}
+
 CommandValue ASTInterpreter::handleMultipleSerialOperation(const std::string& portName, const std::string& methodName, const std::vector<CommandValue>& args) {
     
     // Handle multiple serial ports (Serial1, Serial2, Serial3)
@@ -5199,6 +5319,66 @@ void ASTInterpreter::emitSerialPrintln(const std::string& data) {
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.println\""
          << ",\"arguments\":[\"" << escapedData << "\"],\"data\":\"" << escapedData
          << "\",\"message\":\"Serial.println(" << formatArgumentForDisplay(escapedData) << ")\"}";
+    emitJSON(json.str());
+}
+
+// Keyboard USB HID communication
+void ASTInterpreter::emitKeyboardBegin() {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.begin\""
+         << ",\"arguments\":[],\"message\":\"Keyboard.begin()\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitKeyboardPress(const std::string& key) {
+    std::string escapedKey = escapeJsonString(key);
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.press\""
+         << ",\"arguments\":[\"" << escapedKey << "\"]"
+         << ",\"message\":\"Keyboard.press(" << key << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitKeyboardWrite(const std::string& key) {
+    std::string escapedKey = escapeJsonString(key);
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.write\""
+         << ",\"arguments\":[\"" << escapedKey << "\"]"
+         << ",\"message\":\"Keyboard.write(" << key << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitKeyboardReleaseAll() {
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.releaseAll\""
+         << ",\"arguments\":[],\"message\":\"Keyboard.releaseAll()\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitKeyboardRelease(const std::string& key) {
+    std::string escapedKey = escapeJsonString(key);
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.release\""
+         << ",\"arguments\":[\"" << escapedKey << "\"]"
+         << ",\"message\":\"Keyboard.release(" << key << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitKeyboardPrint(const std::string& text) {
+    std::string escapedText = escapeJsonString(text);
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.print\""
+         << ",\"arguments\":[\"" << escapedText << "\"]"
+         << ",\"message\":\"Keyboard.print(" << formatArgumentForDisplay(text) << ")\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitKeyboardPrintln(const std::string& text) {
+    std::string escapedText = escapeJsonString(text);
+    std::ostringstream json;
+    json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.println\""
+         << ",\"arguments\":[\"" << escapedText << "\"]"
+         << ",\"message\":\"Keyboard.println(" << formatArgumentForDisplay(text) << ")\"}";
     emitJSON(json.str());
 }
 

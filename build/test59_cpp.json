@@ -5,8 +5,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"counter","value":0}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"PIN_MODE","timestamp":0,"pin":4,"mode":0}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.begin","arguments":[]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: Keyboard.begin","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.begin","arguments":[],"message":"Keyboard.begin()"}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}

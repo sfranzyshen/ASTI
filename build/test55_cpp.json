@@ -12,21 +12,17 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":{"value":"HTTP/1.1 200 OK","type":"ArduinoString"}}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["HTTP/1.1 200 OK"],"data":"HTTP/1.1 200 OK","message":"Serial.println("HTTP/1.1 200 OK")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.startsWith","arguments":["HTTP/1.1"]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.startsWith","errorType":"RuntimeError"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":null,"conditionDisplay":"null","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":1,"conditionDisplay":"1","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Server's using http version 1.1"],"data":"Server's using http version 1.1","message":"Serial.println("Server's using http version 1.1")"}
 {"type":"VAR_SET","timestamp":0,"variable":"stringOne","value":"HTTP/1.1 200 OK"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"stringOne.startsWith","arguments":["200 OK","9"]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: stringOne.startsWith","errorType":"RuntimeError"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":null,"conditionDisplay":"null","branch":"else"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":1,"conditionDisplay":"1","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["Got an OK from the server"],"data":"Got an OK from the server","message":"Serial.println("Got an OK from the server")"}
 {"type":"VAR_SET","timestamp":0,"variable":"sensorReading","value":{"value":"sensor = ","type":"ArduinoString"}}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
 {"type":"VAR_SET","timestamp":0,"variable":"sensorReading","value":"sensor = 560"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["sensor = 560"],"data":"sensor = 560","message":"Serial.print("sensor = 560")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"sensorReading.endsWith","arguments":["0"]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: sensorReading.endsWith","errorType":"RuntimeError"}
-{"type":"IF_STATEMENT","timestamp":0,"condition":null,"conditionDisplay":"null","branch":"else"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[". This reading is not divisible by ten"],"data":". This reading is not divisible by ten","message":"Serial.println(". This reading is not divisible by ten")"}
+{"type":"IF_STATEMENT","timestamp":0,"condition":1,"conditionDisplay":"1","branch":"then"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":[". This reading is divisible by ten"],"data":". This reading is divisible by ten","message":"Serial.println(". This reading is divisible by ten")"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"start"}
 {"type":"WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}
 {"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"While loop limit reached: completed 1 iterations (max: 1)"}
