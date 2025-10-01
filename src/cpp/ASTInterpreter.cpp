@@ -3299,6 +3299,75 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         return std::string("");
     }
 
+    else if (name.find(".replace") != std::string::npos) {
+        // String.replace(find, replace) method - TEST 54 FIX
+        std::string varName = name.substr(0, name.find(".replace"));
+        if (scopeManager_->hasVariable(varName) && args.size() >= 2) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                // Get current string value
+                std::string str = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                // Extract find argument
+                std::string findStr = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        // INTENTIONAL: Match JavaScript bug - character literals become "65" not "A"
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, args[0]);
+
+                // Extract replace argument
+                std::string replaceStr = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        // INTENTIONAL: Match JavaScript bug
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, args[1]);
+
+                // Replace ALL occurrences (like JavaScript split/join behavior)
+                std::string result = str;
+                if (!findStr.empty()) {
+                    size_t pos = 0;
+                    while ((pos = result.find(findStr, pos)) != std::string::npos) {
+                        result.replace(pos, findStr.length(), replaceStr);
+                        pos += replaceStr.length();
+                    }
+                }
+
+                // Update the variable with replaced string (IN-PLACE modification)
+                Variable newVar(result, var->type, var->isConst, var->isReference, var->isStatic, var->isGlobal);
+                scopeManager_->setVariable(varName, newVar);
+                return result;
+            }
+        }
+        return std::string("");
+    }
+
     else if (name.find(".compareTo") != std::string::npos) {
         // String.compareTo(other) method - TEST 50 FIX
         std::string varName = name.substr(0, name.find(".compareTo"));

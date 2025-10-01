@@ -811,7 +811,12 @@ class ArduinoString {
         // This is a no-op in JavaScript but needed for Arduino compatibility
         return;
     }
-    
+
+    // Clone string (for assignment) - TEST 54 FIX
+    clone() {
+        return new ArduinoString(this.value);
+    }
+
     // Static constructor method
     static create(value, format = null) {
         if (typeof value === 'number' && format !== null) {
@@ -3342,7 +3347,10 @@ class ASTInterpreter {
                     } else if (declType === 'String') {
                         if (typeof value === 'string') {
                             value = new ArduinoString(value);
-                        } else if (!(value instanceof ArduinoString) && value !== null) {
+                        } else if (value instanceof ArduinoString) {
+                            // Clone to avoid shallow copy issues - TEST 54 FIX
+                            value = value.clone();
+                        } else if (value !== null) {
                             // Convert other types to String
                             value = new ArduinoString(String(value));
                         }
