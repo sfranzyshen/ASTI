@@ -1,7 +1,7 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"14.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"15.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
-{"type":"ARDUINO_LIBRARY_INSTANTIATION","library":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"objectId":"Adafruit_NeoPixel_84249043805832","timestamp":0,"message":"Adafruit_NeoPixel(60, 6, 82)"}
-{"type":"VAR_SET","timestamp":0,"variable":"strip","value":{"libraryName":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"type":"library_object","objectId":"Adafruit_NeoPixel_84249043805832","initialized":true,"properties":{}}}
+{"type":"ARDUINO_LIBRARY_INSTANTIATION","library":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"objectId":"Adafruit_NeoPixel_87505031071223","timestamp":0,"message":"Adafruit_NeoPixel(60, 6, 82)"}
+{"type":"VAR_SET","timestamp":0,"variable":"strip","value":{"libraryName":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"type":"library_object","objectId":"Adafruit_NeoPixel_87505031071223","initialized":true,"properties":{}}}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"clock_prescale_set","arguments":["0"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: clock_prescale_set","errorType":"RuntimeError"}

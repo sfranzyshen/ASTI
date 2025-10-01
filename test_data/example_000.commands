@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759349940138,
+    "timestamp": 1759352084880,
     "component": "interpreter",
-    "version": "14.0.0",
+    "version": "15.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759349940138,
+    "timestamp": 1759352084880,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759349940140,
+    "timestamp": 1759352084882,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759349940142,
+    "timestamp": 1759352084885,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759349940142,
+    "timestamp": 1759352084885,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759349940142,
+    "timestamp": 1759352084885,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759349940142,
+    "timestamp": 1759352084885,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,19 +46,19 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759349940142
+    "timestamp": 1759352084885
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
     "requestId": "analogRead_000001",
-    "timestamp": 1759349940143
+    "timestamp": 1759352084886
   },
   {
     "type": "VAR_SET",
     "variable": "sensorValue",
     "value": 560,
-    "timestamp": 1759349940150
+    "timestamp": 1759352084893
   },
   {
     "type": "FUNCTION_CALL",
@@ -67,14 +67,14 @@
       "560"
     ],
     "data": "560",
-    "timestamp": 1759349940150,
+    "timestamp": 1759352084893,
     "message": "Serial.println(560)"
   },
   {
     "type": "DELAY",
     "duration": 1,
     "actualDelay": 1,
-    "timestamp": 1759349940150
+    "timestamp": 1759352084893
   },
   {
     "type": "FUNCTION_CALL",
@@ -82,23 +82,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759349940150
+    "timestamp": 1759352084893
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759349940156,
+    "timestamp": 1759352084898,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759349940157,
+    "timestamp": 1759352084899,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759349940157,
+    "timestamp": 1759352084899,
     "message": "Program execution stopped"
   }
 ]

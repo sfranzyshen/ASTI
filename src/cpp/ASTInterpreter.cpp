@@ -285,7 +285,7 @@ bool ASTInterpreter::start() {
     totalExecutionStart_ = std::chrono::steady_clock::now();
     
     // Emit VERSION_INFO first, then PROGRAM_START (matches JavaScript order)
-    emitVersionInfo("interpreter", "14.0.0", "started");
+    emitVersionInfo("interpreter", "15.0.0", "started");
     emitProgramStart();
     
     try {
