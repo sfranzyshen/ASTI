@@ -9,7 +9,7 @@
  */
 
 #include "ASTNodes.hpp"
-#include <sstream>
+#include "PlatformAbstraction.hpp"
 
 namespace arduino_ast {
 
@@ -18,7 +18,7 @@ namespace arduino_ast {
 // =============================================================================
 
 std::string ASTNode::toString() const {
-    std::ostringstream oss;
+    StringBuildStream oss;
     oss << nodeTypeToString(nodeType_);
     
     if (hasFlag(ASTNodeFlags::HAS_VALUE)) {

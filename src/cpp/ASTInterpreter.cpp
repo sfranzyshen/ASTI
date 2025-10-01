@@ -16,7 +16,6 @@ static bool g_resetEnumCounter = false;
 
 // Includes
 #include "ExecutionTracer.hpp"
-#include <sstream>
 #include <bitset>
 #include <iomanip>
 #include <cmath>
@@ -718,7 +717,7 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
         // Emit LOOP_LIMIT_REACHED instead of WHILE_LOOP end (matches JavaScript exactly)
         std::string message = "While loop limit reached: completed " + std::to_string(iteration) +
                              " iterations (max: " + std::to_string(maxLoopIterations_) + ")";
-        std::ostringstream json;
+        StringBuildStream json;
         json << "{\"type\":\"LOOP_LIMIT_REACHED\",\"timestamp\":0,\"phase\":\"end\""
              << ",\"iterations\":" << iteration << ",\"message\":\"" << message << "\"}";
         emitJSON(json.str());
@@ -4034,7 +4033,7 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         int32_t timeout = args.size() > 2 ? convertToInt(args[2]) : 1000000;
 
         // Create FUNCTION_CALL command to match JavaScript implementation
-        std::ostringstream json;
+        StringBuildStream json;
         json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"pulseIn\""
              << ",\"arguments\":[" << pin << "," << value << "," << timeout << "]"
              << ",\"pin\":" << pin << ",\"value\":" << value << ",\"timeout\":" << timeout
@@ -4238,12 +4237,12 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                     initialValue = (firstOne != std::string::npos) ? result.substr(firstOne) : "0";
                 } else if (base == 16) {
                     // Hexadecimal conversion
-                    std::ostringstream oss;
+                    StringBuildStream oss;
                     oss << std::hex << value;
                     initialValue = oss.str();
                 } else if (base == 8) {
                     // Octal conversion
-                    std::ostringstream oss;
+                    StringBuildStream oss;
                     oss << std::oct << value;
                     initialValue = oss.str();
                 } else {
@@ -4264,7 +4263,7 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                 }, args[1]);
 
                 if (decimalPlaces >= 0) {
-                    std::ostringstream oss;
+                    StringBuildStream oss;
                     oss << std::fixed << std::setprecision(decimalPlaces) << value;
                     initialValue = oss.str();
                 } else {
@@ -4835,7 +4834,7 @@ CommandValue ASTInterpreter::handleSerialOperation(const std::string& function, 
             double value = std::get<double>(data);
             int32_t places = args.size() > 2 ? convertToInt(args[2]) : 2; // Default 2 decimal places
             // Use high precision formatting to match JavaScript
-            std::ostringstream oss;
+            StringBuildStream oss;
             oss << std::fixed << std::setprecision(15) << value;
             output = oss.str();
             // Remove trailing zeros after decimal point
@@ -5194,7 +5193,7 @@ void ASTInterpreter::emitJSON(const std::string& jsonString) {
 }
 
 void ASTInterpreter::emitVersionInfo(const std::string& component, const std::string& version, const std::string& status) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"VERSION_INFO\",\"timestamp\":0,\"component\":\"" << component
          << "\",\"version\":\"" << version << "\",\"status\":\"" << status << "\"}";
     emitJSON(json.str());
@@ -5205,7 +5204,7 @@ void ASTInterpreter::emitProgramStart() {
 }
 
 void ASTInterpreter::emitProgramEnd(const std::string& message) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"PROGRAM_END\",\"timestamp\":0,\"message\":\"" << message << "\"}";
     emitJSON(json.str());
 }
@@ -5219,7 +5218,7 @@ void ASTInterpreter::emitSetupEnd() {
 }
 
 void ASTInterpreter::emitLoopStart(const std::string& type, int iteration) {
-    std::ostringstream json;
+    StringBuildStream json;
     if (type == "main") {
         json << "{\"type\":\"LOOP_START\",\"timestamp\":0,\"message\":\"Starting loop() execution\"}";
     } else {
@@ -5229,7 +5228,7 @@ void ASTInterpreter::emitLoopStart(const std::string& type, int iteration) {
 }
 
 void ASTInterpreter::emitFunctionCall(const std::string& function, const std::string& message, int iteration, bool completed) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"function\":\"" << function << "\",\"message\":\"" << message << "\"";
     if (iteration > 0) {
         json << ",\"iteration\":" << iteration;
@@ -5242,7 +5241,7 @@ void ASTInterpreter::emitFunctionCall(const std::string& function, const std::st
 }
 
 void ASTInterpreter::emitFunctionCall(const std::string& function, const std::vector<std::string>& arguments) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << function << "\",\"arguments\":[";
     for (size_t i = 0; i < arguments.size(); i++) {
         if (i > 0) json << ",";
@@ -5253,7 +5252,7 @@ void ASTInterpreter::emitFunctionCall(const std::string& function, const std::ve
 }
 
 void ASTInterpreter::emitFunctionCall(const std::string& function, const std::vector<CommandValue>& arguments) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << function << "\",\"arguments\":[";
     for (size_t i = 0; i < arguments.size(); i++) {
         if (i > 0) json << ",";
@@ -5264,14 +5263,14 @@ void ASTInterpreter::emitFunctionCall(const std::string& function, const std::ve
 }
 
 void ASTInterpreter::emitSerialRequest(const std::string& type, const std::string& requestId) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"Serial." << type
          << "\",\"requestType\":\"" << type << "\",\"requestId\":\"" << requestId << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitError(const std::string& message, const std::string& type) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"ERROR\",\"timestamp\":0,\"message\":\"" << message
          << "\",\"errorType\":\"" << type << "\"}";
     emitJSON(json.str());
@@ -5282,49 +5281,49 @@ void ASTInterpreter::emitError(const std::string& message, const std::string& ty
 
 // Arduino hardware commands
 void ASTInterpreter::emitAnalogReadRequest(int pin, const std::string& requestId) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"ANALOG_READ_REQUEST\",\"timestamp\":0,\"pin\":" << pin
          << ",\"requestId\":\"" << requestId << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitDigitalReadRequest(int pin, const std::string& requestId) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"DIGITAL_READ_REQUEST\",\"timestamp\":0,\"pin\":" << pin
          << ",\"requestId\":\"" << requestId << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitDigitalWrite(int pin, int value) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"DIGITAL_WRITE\",\"timestamp\":0,\"pin\":" << pin
          << ",\"value\":" << value << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitAnalogWrite(int pin, int value) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"ANALOG_WRITE\",\"timestamp\":0,\"pin\":" << pin
          << ",\"value\":" << value << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitPinMode(int pin, int mode) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"PIN_MODE\",\"timestamp\":0,\"pin\":" << pin
          << ",\"mode\":" << mode << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitDelay(int duration) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"DELAY\",\"timestamp\":0,\"duration\":" << duration
          << ",\"actualDelay\":" << duration << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitDelayMicroseconds(int duration) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"DELAY_MICROSECONDS\",\"timestamp\":0,\"duration\":" << duration
          << ",\"actualDelay\":" << duration << "}";
     emitJSON(json.str());
@@ -5332,7 +5331,7 @@ void ASTInterpreter::emitDelayMicroseconds(int duration) {
 
 // Serial communication
 void ASTInterpreter::emitSerialBegin(int baudRate) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.begin\""
          << ",\"arguments\":[" << baudRate << "],\"baudRate\":" << baudRate
          << ",\"message\":\"Serial.begin(" << baudRate << ")\"}";
@@ -5380,7 +5379,7 @@ std::string formatArgumentForDisplay(const std::string& data) {
     return data;
 }
 void ASTInterpreter::emitSerialPrint(const std::string& data) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.print\""
          << ",\"arguments\":[\"" << data << "\"],\"data\":\"" << data
          << ",\"message\":\"Serial.print(" << formatArgumentForDisplay(data) << ")\"}";
@@ -5390,7 +5389,7 @@ void ASTInterpreter::emitSerialPrint(const std::string& data) {
 // Helper function to escape strings for JSON output
 // Converts special characters to their JSON escape sequences
 std::string escapeJsonString(const std::string& str) {
-    std::ostringstream escaped;
+    StringBuildStream escaped;
     for (char c : str) {
         switch (c) {
             case '\\': escaped << "\\\\"; break;  // Backslash
@@ -5435,7 +5434,7 @@ void ASTInterpreter::emitSerialPrint(const std::string& data, const std::string&
         dataField = data.substr(1, data.length() - 2);
     }
 
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.print\""
          << ",\"arguments\":[" << displayArg << "],\"data\":\"" << escapeJsonString(dataField)
          << "\",\"message\":\"Serial.print(" << displayArg << ")\"}";
@@ -5444,7 +5443,7 @@ void ASTInterpreter::emitSerialPrint(const std::string& data, const std::string&
 
 void ASTInterpreter::emitSerialPrintln(const std::string& data) {
     std::string escapedData = escapeJsonString(data);
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.println\""
          << ",\"arguments\":[\"" << escapedData << "\"],\"data\":\"" << escapedData
          << "\",\"message\":\"Serial.println(" << formatArgumentForDisplay(escapedData) << ")\"}";
@@ -5453,7 +5452,7 @@ void ASTInterpreter::emitSerialPrintln(const std::string& data) {
 
 // Keyboard USB HID communication
 void ASTInterpreter::emitKeyboardBegin() {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.begin\""
          << ",\"arguments\":[],\"message\":\"Keyboard.begin()\"}";
     emitJSON(json.str());
@@ -5461,7 +5460,7 @@ void ASTInterpreter::emitKeyboardBegin() {
 
 void ASTInterpreter::emitKeyboardPress(const std::string& key) {
     std::string escapedKey = escapeJsonString(key);
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.press\""
          << ",\"arguments\":[\"" << escapedKey << "\"]"
          << ",\"message\":\"Keyboard.press(" << key << ")\"}";
@@ -5470,7 +5469,7 @@ void ASTInterpreter::emitKeyboardPress(const std::string& key) {
 
 void ASTInterpreter::emitKeyboardWrite(const std::string& key) {
     std::string escapedKey = escapeJsonString(key);
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.write\""
          << ",\"arguments\":[\"" << escapedKey << "\"]"
          << ",\"message\":\"Keyboard.write(" << key << ")\"}";
@@ -5478,7 +5477,7 @@ void ASTInterpreter::emitKeyboardWrite(const std::string& key) {
 }
 
 void ASTInterpreter::emitKeyboardReleaseAll() {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.releaseAll\""
          << ",\"arguments\":[],\"message\":\"Keyboard.releaseAll()\"}";
     emitJSON(json.str());
@@ -5486,7 +5485,7 @@ void ASTInterpreter::emitKeyboardReleaseAll() {
 
 void ASTInterpreter::emitKeyboardRelease(const std::string& key) {
     std::string escapedKey = escapeJsonString(key);
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.release\""
          << ",\"arguments\":[\"" << escapedKey << "\"]"
          << ",\"message\":\"Keyboard.release(" << key << ")\"}";
@@ -5495,7 +5494,7 @@ void ASTInterpreter::emitKeyboardRelease(const std::string& key) {
 
 void ASTInterpreter::emitKeyboardPrint(const std::string& text) {
     std::string escapedText = escapeJsonString(text);
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.print\""
          << ",\"arguments\":[\"" << escapedText << "\"]"
          << ",\"message\":\"Keyboard.print(" << formatArgumentForDisplay(text) << ")\"}";
@@ -5504,7 +5503,7 @@ void ASTInterpreter::emitKeyboardPrint(const std::string& text) {
 
 void ASTInterpreter::emitKeyboardPrintln(const std::string& text) {
     std::string escapedText = escapeJsonString(text);
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Keyboard.println\""
          << ",\"arguments\":[\"" << escapedText << "\"]"
          << ",\"message\":\"Keyboard.println(" << formatArgumentForDisplay(text) << ")\"}";
@@ -5512,7 +5511,7 @@ void ASTInterpreter::emitKeyboardPrintln(const std::string& text) {
 }
 
 void ASTInterpreter::emitVarSet(const std::string& variable, const std::string& value) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << variable << "\"";
 
     // CHECK FOR LIBRARY OBJECT PLACEHOLDER
@@ -5565,28 +5564,28 @@ void ASTInterpreter::emitVarSet(const std::string& variable, const std::string& 
 }
 
 void ASTInterpreter::emitVarSetConst(const std::string& variable, const std::string& value, const std::string& type) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << variable
          << "\",\"value\":" << value << ",\"isConst\":true}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitVarSetConstString(const std::string& varName, const std::string& stringVal) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << varName
          << "\",\"value\":{\"value\":\"" << stringVal << "\"},\"isConst\":true}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitVarSetArduinoString(const std::string& varName, const std::string& stringVal) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << varName
          << "\",\"value\":{\"value\":\"" << stringVal << "\",\"type\":\"ArduinoString\"}}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitTone(int pin, int frequency) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"tone\""
          << ",\"arguments\":[" << pin << "," << frequency << "]"
          << ",\"pin\":" << pin << ",\"frequency\":" << frequency
@@ -5595,7 +5594,7 @@ void ASTInterpreter::emitTone(int pin, int frequency) {
 }
 
 void ASTInterpreter::emitToneWithDuration(int pin, int frequency, int duration) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"tone\""
          << ",\"arguments\":[" << pin << "," << frequency << "," << duration << "]"
          << ",\"pin\":" << pin << ",\"frequency\":" << frequency << ",\"duration\":" << duration
@@ -5604,7 +5603,7 @@ void ASTInterpreter::emitToneWithDuration(int pin, int frequency, int duration) 
 }
 
 void ASTInterpreter::emitNoTone(int pin) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"noTone\""
          << ",\"arguments\":[" << pin << "]"
          << ",\"pin\":" << pin
@@ -5613,101 +5612,101 @@ void ASTInterpreter::emitNoTone(int pin) {
 }
 
 void ASTInterpreter::emitWhileLoopStart() {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"WHILE_LOOP\",\"timestamp\":0,\"phase\":\"start\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitWhileLoopIteration(int iteration) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"WHILE_LOOP\",\"timestamp\":0,\"phase\":\"iteration\",\"iteration\":" << iteration << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitWhileLoopEnd(int iteration) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"WHILE_LOOP\",\"timestamp\":0,\"phase\":\"end\",\"iterations\":" << iteration << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitForLoopStart() {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FOR_LOOP\",\"timestamp\":0,\"phase\":\"start\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitForLoopIteration(int iteration) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FOR_LOOP\",\"timestamp\":0,\"phase\":\"iteration\",\"iteration\":" << iteration << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitForLoopEnd(int iteration, int maxIterations) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FOR_LOOP\",\"timestamp\":0,\"phase\":\"end\",\"iterations\":" << iteration
          << ",\"maxIterations\":" << maxIterations << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitDoWhileLoopStart() {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"DO_WHILE_LOOP\",\"timestamp\":0,\"phase\":\"start\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitDoWhileLoopIteration(int iteration) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"DO_WHILE_LOOP\",\"timestamp\":0,\"phase\":\"iteration\",\"iteration\":" << iteration << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitDoWhileLoopEnd(int iteration) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"DO_WHILE_LOOP\",\"timestamp\":0,\"phase\":\"end\",\"iterations\":" << iteration << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitBreakStatement() {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"BREAK_STATEMENT\",\"timestamp\":0}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitContinueStatement() {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"CONTINUE_STATEMENT\",\"timestamp\":0}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitIfStatement(const std::string& condition, const std::string& conditionDisplay, const std::string& branch) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"IF_STATEMENT\",\"timestamp\":0,\"condition\":" << condition
          << ",\"conditionDisplay\":\"" << conditionDisplay << "\",\"branch\":\"" << branch << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitVarSetExtern(const std::string& variable, const std::string& value) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << variable
          << "\",\"value\":" << value << ",\"isExtern\":true}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitSwitchStatement(const std::string& discriminant) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"SWITCH_STATEMENT\",\"timestamp\":0,\"discriminant\":" << discriminant << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitSwitchCase(const std::string& value, bool shouldExecute) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"SWITCH_CASE\",\"timestamp\":0,\"value\":" << value
          << ",\"shouldExecute\":" << (shouldExecute ? "true" : "false") << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitSerialWrite(const std::string& data) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.write\""
          << ",\"arguments\":[" << data << "],\"data\":\"" << data
          << "\",\"message\":\"Serial.write(" << data << ")\"}";
@@ -5717,7 +5716,7 @@ void ASTInterpreter::emitSerialWrite(const std::string& data) {
 void ASTInterpreter::emitArduinoLibraryInstantiation(const std::string& libraryName,
                                                      const std::vector<CommandValue>& args,
                                                      const std::string& objectId) {
-    std::ostringstream oss;
+    StringBuildStream oss;
     oss << "{\"type\":\"ARDUINO_LIBRARY_INSTANTIATION\"";
     oss << ",\"library\":\"" << libraryName << "\"";
     oss << ",\"constructorArgs\":[";
@@ -5749,7 +5748,7 @@ void ASTInterpreter::emitArduinoLibraryInstantiation(const std::string& libraryN
 }
 
 void ASTInterpreter::emitSerialTimeout(int timeout) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.setTimeout\""
          << ",\"arguments\":[" << timeout << "],\"timeout\":" << timeout
          << ",\"message\":\"Serial.setTimeout(" << timeout << ")\"}";
@@ -5757,21 +5756,21 @@ void ASTInterpreter::emitSerialTimeout(int timeout) {
 }
 
 void ASTInterpreter::emitSerialFlush() {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"Serial.flush\""
          << ",\"arguments\":[],\"message\":\"Serial.flush()\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitSerialEvent(const std::string& message) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"serialEvent\""
          << ",\"message\":\"" << message << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitMultiSerialBegin(const std::string& portName, int baudRate) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << portName << ".begin\""
          << ",\"arguments\":[" << baudRate << "],\"baudRate\":" << baudRate
          << ",\"message\":\"" << portName << ".begin(" << baudRate << ")\"}";
@@ -5779,7 +5778,7 @@ void ASTInterpreter::emitMultiSerialBegin(const std::string& portName, int baudR
 }
 
 void ASTInterpreter::emitMultiSerialPrint(const std::string& portName, const std::string& output, const std::string& format) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << portName << ".print\""
          << ",\"arguments\":[\"" << output << "\"],\"data\":\"" << output
          << "\",\"format\":\"" << format << "\",\"message\":\"" << portName << ".print(\\\"" << output << "\\\")\"}";
@@ -5787,7 +5786,7 @@ void ASTInterpreter::emitMultiSerialPrint(const std::string& portName, const std
 }
 
 void ASTInterpreter::emitMultiSerialPrintln(const std::string& portName, const std::string& data, const std::string& format) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << portName << ".println\""
          << ",\"arguments\":[],\"data\":\"" << data << "\",\"format\":\"" << format
          << "\",\"message\":\"" << portName << ".println()\"}";
@@ -5795,21 +5794,21 @@ void ASTInterpreter::emitMultiSerialPrintln(const std::string& portName, const s
 }
 
 void ASTInterpreter::emitMultiSerialRequest(const std::string& portName, const std::string& method, const std::string& requestId) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"" << portName << "." << method
          << "\",\"requestType\":\"" << method << "\",\"requestId\":\"" << requestId << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitMultiSerialCommand(const std::string& portName, const std::string& methodName) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"" << portName << "." << methodName
          << "\",\"arguments\":[],\"message\":\"" << portName << "." << methodName << "()\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitPulseInRequest(int pin, int value, int timeout, const std::string& requestId) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"pulseIn\""
          << ",\"requestType\":\"pulseIn\",\"requestId\":\"" << requestId
          << "\",\"pin\":" << pin << ",\"value\":" << value << ",\"timeout\":" << timeout << "}";
@@ -5817,19 +5816,19 @@ void ASTInterpreter::emitPulseInRequest(int pin, int value, int timeout, const s
 }
 
 void ASTInterpreter::emitMillisRequest() {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"millis\",\"requestType\":\"millis\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitMicrosRequest() {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"micros\",\"requestType\":\"micros\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitSerialRequestWithChar(const std::string& type, char terminator, const std::string& requestId) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"EXTERNAL_REQUEST\",\"timestamp\":0,\"function\":\"Serial." << type
          << "\",\"requestType\":\"" << type << "\",\"terminator\":\"" << terminator
          << "\",\"requestId\":\"" << requestId << "\"}";
@@ -5837,87 +5836,87 @@ void ASTInterpreter::emitSerialRequestWithChar(const std::string& type, char ter
 }
 
 void ASTInterpreter::emitConstructorRegistered(const std::string& constructorName) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"CONSTRUCTOR_REGISTERED\",\"timestamp\":0,\"name\":\"" << constructorName << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitEnumMember(const std::string& memberName, int memberValue) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"ENUM_MEMBER\",\"timestamp\":0,\"name\":\"" << memberName << "\",\"value\":" << memberValue << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitEnumTypeRef(const std::string& enumName) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"ENUM_TYPE_REF\",\"timestamp\":0,\"name\":\"" << enumName << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitLambdaFunction(const std::string& captures, const std::string& parameters, const std::string& body) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"LAMBDA_FUNCTION\",\"timestamp\":0,\"captures\":\"" << captures
          << "\",\"parameters\":\"" << parameters << "\",\"body\":\"" << body << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitMemberFunctionRegistered(const std::string& className, const std::string& functionName) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"MEMBER_FUNCTION_REGISTERED\",\"timestamp\":0,\"class\":\"" << className
          << "\",\"function\":\"" << functionName << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitMultipleStructMembers(const std::string& memberNames, const std::string& typeName) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"MULTIPLE_STRUCT_MEMBERS\",\"timestamp\":0,\"members\":\"" << memberNames
          << "\",\"type\":\"" << typeName << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitObjectInstance(const std::string& typeName, const std::string& args) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"OBJECT_INSTANCE\",\"timestamp\":0,\"typeName\":\"" << typeName
          << "\",\"arguments\":\"" << args << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitPreprocessorError(const std::string& directive, const std::string& errorMessage) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"PREPROCESSOR_ERROR\",\"timestamp\":0,\"directive\":\"" << directive
          << "\",\"error\":\"" << errorMessage << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitRangeExpression(const std::string& start, const std::string& end) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"RANGE_EXPRESSION\",\"timestamp\":0,\"start\":" << start << ",\"end\":" << end << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitStructMember(const std::string& memberName, const std::string& typeName, int size) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"STRUCT_MEMBER\",\"timestamp\":0,\"name\":\"" << memberName
          << "\",\"typeName\":\"" << typeName << "\",\"size\":" << size << "}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitTemplateTypeParam(const std::string& parameterName, const std::string& constraint) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"TEMPLATE_TYPE_PARAM\",\"timestamp\":0,\"parameter\":\"" << parameterName
          << "\",\"constraint\":\"" << constraint << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitUnionDefinition(const std::string& unionName, const std::string& members, const std::string& variables) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"UNION_DEFINITION\",\"timestamp\":0,\"name\":\"" << unionName
          << "\",\"members\":\"" << members << "\",\"variables\":\"" << variables << "\"}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitUnionTypeRef(const std::string& typeName, int defaultSize) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"UNION_TYPE_REF\",\"timestamp\":0,\"name\":\"" << typeName
          << "\",\"size\":" << defaultSize << "}";
     emitJSON(json.str());
@@ -5940,7 +5939,7 @@ std::string commandValueToJsonString(const CommandValue& value) {
         } else if constexpr (std::is_same_v<T, std::string>) {
             return "\"" + v + "\"";
         } else if constexpr (std::is_same_v<T, std::vector<int32_t>>) {
-            std::ostringstream json;
+            StringBuildStream json;
             json << "[";
             for (size_t i = 0; i < v.size(); i++) {
                 if (i > 0) json << ",";
@@ -5949,7 +5948,7 @@ std::string commandValueToJsonString(const CommandValue& value) {
             json << "]";
             return json.str();
         } else if constexpr (std::is_same_v<T, std::vector<double>>) {
-            std::ostringstream json;
+            StringBuildStream json;
             json << "[";
             for (size_t i = 0; i < v.size(); i++) {
                 if (i > 0) json << ",";
@@ -5958,7 +5957,7 @@ std::string commandValueToJsonString(const CommandValue& value) {
             json << "]";
             return json.str();
         } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
-            std::ostringstream json;
+            StringBuildStream json;
             json << "[";
             for (size_t i = 0; i < v.size(); i++) {
                 if (i > 0) json << ",";
@@ -5989,7 +5988,7 @@ std::string commandValueToString(const CommandValue& value) {
             // This matches JavaScript behavior for string concatenation
             if (std::floor(v) == v && std::isfinite(v)) {
                 // Whole number - format as integer to match Arduino/JS behavior
-                std::ostringstream os;
+                StringBuildStream os;
                 os << std::fixed << std::setprecision(0) << v;
                 return os.str();
             }
@@ -5997,7 +5996,7 @@ std::string commandValueToString(const CommandValue& value) {
         } else if constexpr (std::is_same_v<T, std::string>) {
             return v;
         } else if constexpr (std::is_same_v<T, std::vector<int32_t>>) {
-            std::ostringstream os;
+            StringBuildStream os;
             os << "[";
             for (size_t i = 0; i < v.size(); i++) {
                 if (i > 0) os << ",";
@@ -6006,7 +6005,7 @@ std::string commandValueToString(const CommandValue& value) {
             os << "]";
             return os.str();
         } else if constexpr (std::is_same_v<T, std::vector<double>>) {
-            std::ostringstream os;
+            StringBuildStream os;
             os << "[";
             for (size_t i = 0; i < v.size(); i++) {
                 if (i > 0) os << ",";
@@ -6015,7 +6014,7 @@ std::string commandValueToString(const CommandValue& value) {
             os << "]";
             return os.str();
         } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
-            std::ostringstream os;
+            StringBuildStream os;
             os << "[";
             for (size_t i = 0; i < v.size(); i++) {
                 if (i > 0) os << ",";
@@ -6104,14 +6103,14 @@ bool commandValuesEqual(const CommandValue& a, const CommandValue& b) {
 }
 
 void ASTInterpreter::emitLoopEnd(const std::string& message, int iterations) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"LOOP_END\",\"timestamp\":0,\"message\":\"" << message
          << "\",\"iterations\":" << iterations << ",\"limitReached\":true}";
     emitJSON(json.str());
 }
 
 void ASTInterpreter::emitFunctionCallLoop(int iteration, bool completed) {
-    std::ostringstream json;
+    StringBuildStream json;
     json << "{\"type\":\"FUNCTION_CALL\",\"timestamp\":0,\"function\":\"loop\""
          << ",\"message\":\"" << (completed ? "Completed" : "Executing") << " loop() iteration " << iteration << "\""
          << ",\"iteration\":" << iteration;
@@ -7199,7 +7198,7 @@ void ASTInterpreter::visit(arduino_ast::NewExpressionNode& node) {
     
     // Generate FlexibleCommand matching JavaScript: {type: 'object_instance', className, arguments, isHeapAllocated: true}
     // Convert vector to JSON array string
-    std::ostringstream argsJson;
+    StringBuildStream argsJson;
     argsJson << "[";
     for (size_t i = 0; i < args.size(); i++) {
         if (i > 0) argsJson << ",";

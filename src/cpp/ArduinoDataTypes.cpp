@@ -1,5 +1,5 @@
 #include "ArduinoDataTypes.hpp"
-#include <sstream>
+#include "PlatformAbstraction.hpp"
 #include <stdexcept>
 
 namespace arduino_interpreter {
@@ -28,7 +28,7 @@ void ArduinoStruct::setMember(const std::string& name, const EnhancedCommandValu
 }
 
 std::string ArduinoStruct::toString() const {
-    std::ostringstream oss;
+    StringBuildStream oss;
     oss << typeName_ << " { ";
     bool first = true;
     for (const auto& [name, value] : members_) {
@@ -72,7 +72,7 @@ ArduinoPointer ArduinoPointer::operator-(int offset) const {
 }
 
 std::string ArduinoPointer::toString() const {
-    std::ostringstream oss;
+    StringBuildStream oss;
     oss << targetType_;
     for (size_t i = 0; i < pointerLevel_; ++i) {
         oss << "*";
@@ -213,7 +213,7 @@ std::vector<size_t> ArduinoArray::calculateMultiDimensionalIndex(size_t flatInde
 }
 
 std::string ArduinoArray::toString() const {
-    std::ostringstream oss;
+    StringBuildStream oss;
     oss << elementType_ << "[";
     for (size_t i = 0; i < dimensions_.size(); ++i) {
         if (i > 0) oss << "][";

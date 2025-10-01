@@ -202,8 +202,10 @@
     #define OPTIMIZE_SIZE 0  // Default: use sstream where available
 #endif
 
-#if HAS_SSTREAM && !OPTIMIZE_SIZE
+#if HAS_SSTREAM
     // Use ostringstream for efficient string building
+    // Note: Even with OPTIMIZE_SIZE=ON, we still use sstream if available
+    // because the manual approach can't handle iomanip manipulators properly
     #include <sstream>
 
     #define STRING_BUILD_START(name) std::ostringstream name
@@ -224,19 +226,73 @@
         inline std::string toString(const std::string& s) { return s; }
         inline std::string toString(const char* s) { return std::string(s); }
         inline std::string toString(int32_t v) { return std::to_string(v); }
+        inline std::string toString(uint32_t v) { return std::to_string(v); }
+        inline std::string toString(int64_t v) { return std::to_string(v); }
+        inline std::string toString(uint64_t v) { return std::to_string(v); }
         inline std::string toString(double v) { return std::to_string(v); }
+        inline std::string toString(float v) { return std::to_string(v); }
         inline std::string toString(bool v) { return v ? "true" : "false"; }
     }
+
+    // Forward declare for iomanip support
+    #include <iosfwd>
 
     // Stream-compatible class for code that uses << operator
     class StringBuildStream {
         std::string data_;
+        int precision_ = 6;  // Default precision for floating-point
+        bool useFixed_ = false;
     public:
         template<typename T>
         StringBuildStream& operator<<(const T& val) {
+            // Special handling for floating-point with precision
+            if constexpr (std::is_same_v<T, double> || std::is_same_v<T, float>) {
+                if (useFixed_) {
+                    // Format with specified precision using snprintf
+                    char buffer[64];
+                    snprintf(buffer, sizeof(buffer), "%.*f", precision_, static_cast<double>(val));
+                    data_ += buffer;
+                    return *this;
+                }
+            }
             data_ += platform_helpers::toString(val);
             return *this;
         }
+
+        // Support for std::endl and other stream manipulators
+        StringBuildStream& operator<<(std::ostream& (*manip)(std::ostream&)) {
+            // Handle common manipulators
+            if (manip == static_cast<std::ostream& (*)(std::ostream&)>(std::endl)) {
+                data_ += '\n';
+            }
+            // Other manipulators (std::flush, etc.) are no-ops for string building
+            return *this;
+        }
+
+        // Support for std::ios_base manipulators (std::fixed, std::scientific)
+        StringBuildStream& operator<<(std::ios_base& (*manip)(std::ios_base&)) {
+            // Track fixed-point mode
+            useFixed_ = true;  // Assume std::fixed (most common case)
+            return *this;
+        }
+
+        // Support for std::setprecision - platform-specific type
+        template<typename Manip>
+        auto operator<<(const Manip& manip) -> typename std::enable_if<
+            std::is_same<Manip, decltype(std::setprecision(0))>::value,
+            StringBuildStream&
+        >::type {
+            // Unfortunately we can't extract the precision value from the manipulator
+            // in a portable way. This is a limitation of the manual string building approach.
+            // For now, we'll just ignore it and use the default precision.
+            return *this;
+        }
+
+        // Alternative: provide setPrecision method for manual control
+        void setPrecision(int prec) {
+            precision_ = prec;
+        }
+
         std::string str() const { return data_; }
     };
 #endif

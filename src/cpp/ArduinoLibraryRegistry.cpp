@@ -9,7 +9,7 @@
 
 #include "ArduinoLibraryRegistry.hpp"
 #include "ASTInterpreter.hpp"
-#include <sstream>
+#include "PlatformAbstraction.hpp"
 #include <cmath>
 
 namespace arduino_interpreter {
@@ -441,7 +441,7 @@ void ArduinoLibraryRegistry::emitExternalCommand(const std::string& libraryName,
                                                 const std::string& objectId) {
     // For now, emit a simple system command with library method information
     // TODO: Implement proper LibraryCommand when command system is complete
-    std::ostringstream oss;
+    StringBuildStream oss;
     oss << libraryName << "." << methodName << "(";
     for (size_t i = 0; i < args.size(); ++i) {
         if (i > 0) oss << ", ";
