@@ -1,10 +1,10 @@
 /**
  * ASTInterpreter.cpp - C++ Arduino AST Interpreter Implementation
- * 
+ *
  * Core interpreter implementation that executes AST nodes and generates
  * command streams matching JavaScript ASTInterpreter.js exactly.
- * 
- * Version: 13.0.0
+ *
+ * Version: 14.0.0
  */
 
 #include "ASTInterpreter.hpp"
@@ -283,7 +283,7 @@ bool ASTInterpreter::start() {
     totalExecutionStart_ = std::chrono::steady_clock::now();
     
     // Emit VERSION_INFO first, then PROGRAM_START (matches JavaScript order)
-    emitVersionInfo("interpreter", "13.0.0", "started");
+    emitVersionInfo("interpreter", "14.0.0", "started");
     emitProgramStart();
     
     try {
