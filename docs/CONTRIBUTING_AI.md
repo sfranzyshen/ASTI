@@ -15,8 +15,9 @@ Adherence to these rules is not optional. They prevent common failures like infi
 5.  **NEVER** invent new testing patterns. Use the proven templates provided in this guide.
 6.  **NEVER** run tests in parallel. All test harnesses must execute sequentially.
 7.  **NEVER** use `rm` commands. Move unnecessary files to the `trash/` directory instead.
-8.  **NEVER** modify the hybrid state machine without understanding both async/await and state machine patterns.
-9.  **NEVER** break the step/resume workflow - always preserve `previousExecutionState` tracking.
+8.  **NEVER** modify JavaScript async patterns without understanding Promise-based execution and parent app response protocol (`handleResponse()`).
+9.  **NEVER** modify C++ SyncDataProvider without understanding the synchronous blocking contract.
+10. **NEVER** break the step/resume workflow in JavaScript - always preserve `previousExecutionState` tracking.
 
 ### **✅ ALWAYS Follow These Procedures**
 

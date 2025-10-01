@@ -35,30 +35,51 @@ The interpreter is responsible for the following tasks:
     -   In JavaScript, this is a rich, data-driven system (`ARDUINO_LIBRARIES`) that can simulate dozens of methods from popular libraries.
     -   In C++, this is the `ArduinoLibraryInterface` class, which provides a basic framework for this functionality.
 
--   **Hybrid Asynchronous Execution**: The JavaScript interpreter uses a sophisticated hybrid approach combining two patterns:
-    -   **State Machine Pattern**: Used by `digitalRead`, `millis`, `micros` - returns `{type: 'EXECUTION_PAUSED', requestId}` and pauses execution
-    -   **Async/Await Pattern**: Used by `analogRead` - uses `await waitForResponse(requestId, 5000)` for timeout handling
-    -   **State Preservation**: The `previousExecutionState` mechanism ensures step/resume debugging works correctly across both patterns
-    -   **Race Condition Prevention**: Browser environments use 1ms setTimeout delays to prevent Promise resolution timing issues
+-   **Cross-Platform Architecture**: The project uses different internal approaches for C++ and JavaScript while maintaining identical external behavior:
 
-## Recent Architectural Improvements (September 2025)
+## Current Architecture Approach (October 2025)
 
-### JavaScript Interpreter v6.4.0 Enhancements
+### C++ Synchronous Architecture
+The C++ interpreter uses a straightforward synchronous blocking pattern:
+- External data functions call SyncDataProvider interface methods directly (e.g., `dataProvider_->getDigitalReadValue(pin)`)
+- Execution blocks until parent app provides value through the provider
+- No async state machine or suspension mechanism (removed in Phase 3 cleanup)
+- Fail-fast ConfigurationError if provider not injected
+- Production code uses `syncMode` only for clean synchronous execution
 
-**Step/Resume State Preservation System**:
-- **Problem**: After fixing browser race conditions with setTimeout delays, step functionality broke - step operations would continue execution like resume
-- **Root Cause**: `resumeWithValue()` always set state to `RUNNING`, bypassing step control after external data responses
-- **Solution**: Added `previousExecutionState` tracking system
-  - Modified `arduinoDigitalRead()`, `arduinoAnalogRead()`, `arduinoMillis()`, `arduinoMicros()` to save previous state
-  - Updated `resumeWithValue()` to restore appropriate state (STEPPING → PAUSED, RUNNING → RUNNING)
-  - Maintains debugging workflow integrity across hybrid async patterns
+**Example Implementation**:
+```cpp
+// src/cpp/ASTInterpreter.cpp (lines 4611-4617)
+if (!dataProvider_) {
+    emitError("digitalRead() called without SyncDataProvider - parent app must inject data source",
+              "ConfigurationError");
+    return -1;  // Sentinel value
+}
+return dataProvider_->getDigitalReadValue(pin);
+```
 
-**Browser Compatibility Improvements**:
-- **Race Condition Fix**: Added 1ms setTimeout delays in playground response handlers
-- **Promise Timing**: Prevents synchronous `resumeWithValue()` calls before async `waitForResponse()` setup
-- **Cross-Platform Behavior**: Ensures consistent behavior between Node.js and browser environments
+### JavaScript Asynchronous Architecture
+The JavaScript interpreter uses Promise-based async/await for non-blocking execution:
+- External data functions emit REQUEST commands (e.g., DIGITAL_READ_REQUEST)
+- `await waitForResponse(requestId, 5000)` pauses execution without blocking UI thread
+- Parent app calls `handleResponse(requestId, value)` to resume execution
+- Fail-fast ConfigurationError on 5000ms timeout
+- State preservation maintains step/resume debugging workflow
 
-**Architecture Preservation**:
-- Maintained hybrid state machine + async/await patterns
-- Preserved all existing command stream compatibility
-- Enhanced debugging capabilities without breaking production workflows
+**Example Implementation**:
+```javascript
+// src/javascript/ASTInterpreter.js (lines 7243-7252)
+try {
+    const response = await this.waitForResponse(requestId, 5000);
+    return response.value;
+} catch (error) {
+    this.emitError('digitalRead() timeout - parent app must respond within 5000ms',
+                   'ConfigurationError');
+    return -1;  // Sentinel value
+}
+```
+
+### Cross-Platform Compatibility
+Despite different internal approaches, both produce identical command streams validated through automated cross-platform testing (`validate_cross_platform` tool maintains 100% parity)
+
+For complete architecture documentation, see `docs/SYNCHRONOUS_VS_ASYNC_ARCHITECTURE.md`

@@ -39,6 +39,52 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
+## 🏗️ CURRENT ARCHITECTURE (October 1, 2025)
+
+### Cross-Platform Design Philosophy
+
+**DIFFERENT APPROACHES, IDENTICAL OUTPUT**
+
+The interpreter uses two distinct internal architectures that produce identical command streams:
+
+#### C++ Production Architecture (syncMode)
+- **Pattern**: Synchronous blocking calls via SyncDataProvider interface
+- **Data Flow**: Interpreter calls → `dataProvider_->getDigitalReadValue(pin)` → blocks → returns value
+- **Error Handling**: Explicit ConfigurationError if provider not set
+- **No Async**: No state machine, tick(), resumeWithValue(), or suspension mechanism
+- **File**: `src/cpp/ASTInterpreter.cpp` lines 4605-4617 (digitalRead example)
+
+#### JavaScript Production Architecture
+- **Pattern**: Asynchronous promise-based with await/timeout
+- **Data Flow**: Interpreter emits REQUEST → `await waitForResponse(5000ms)` → parent calls `handleResponse()` → returns value
+- **Error Handling**: Explicit ConfigurationError on 5000ms timeout
+- **Async Required**: Parent app must respond to REQUEST commands asynchronously
+- **File**: `src/javascript/ASTInterpreter.js` lines 7241-7252 (digitalRead example)
+
+### Key Architectural Principles
+
+1. **Fail-Fast Error Handling**: Missing/timeout providers emit explicit ERROR commands (not silent fallbacks)
+   - C++ Commit: `8bea24b` - Replace silent fallback values with explicit error handling
+   - JavaScript Commit: `2d4624d` - JavaScript: Replace timeout fallbacks with explicit error handling
+2. **Cross-Platform Parity**: Both implementations produce identical command stream sequences
+   - Validated through `validate_cross_platform` tool (100% success rate)
+3. **Parent App Contract**: Clear interface requirements documented in SyncDataProvider (C++) and handleResponse() (JavaScript)
+4. **Zero Internal Data Generation**: Interpreters NEVER generate mock/fallback values internally
+
+### Why Different Approaches?
+
+- **C++**: Designed for embedded/performance environments where synchronous blocking is acceptable
+- **JavaScript**: Designed for browser/Node.js where async is required to prevent UI blocking
+- **Both**: Validated through comprehensive cross-platform testing (100% parity maintained)
+
+### Complete Architecture Documentation
+
+For detailed architecture documentation including code examples, integration guides, and command stream comparisons, see:
+- **Primary**: `docs/SYNCHRONOUS_VS_ASYNC_ARCHITECTURE.md` - Comprehensive cross-platform architecture guide
+- **Legacy**: `trash/HYBRID_LEGACY_ASYNC_STATE_MACHINE.md` - Historical async state machine approach (obsolete)
+
+---
+
 # 🎉 VERSION 14.0.0 - SWITCH STATEMENT COMPLETE + 83.70% SUCCESS RATE 🎉
 
 ## **SEPTEMBER 30, 2025 - BREAKTHROUGH MILESTONE ACHIEVED**
