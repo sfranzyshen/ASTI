@@ -8,7 +8,7 @@
  */
 
 #include "test_utils.hpp"
-#include "../src/cpp/DeterministicMockProvider.hpp"
+#include "DeterministicDataProvider.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -66,9 +66,9 @@ int main(int argc, char* argv[]) {
         auto interpreter = std::make_unique<ASTInterpreter>(compactAST.data(), compactAST.size(), options);
         interpreter->setResponseHandler(&responseHandler);
 
-        // Inject deterministic mock provider (parent app provides all mock values)
-        auto mockProvider = std::make_unique<DeterministicMockProvider>();
-        interpreter->setSyncMockProvider(mockProvider.get());
+        // Inject deterministic data provider (parent app provides all external values)
+        auto dataProvider = std::make_unique<DeterministicDataProvider>();
+        interpreter->setSyncDataProvider(dataProvider.get());
 
         // Capture stdout to collect JSON AND let it flow to pipe
         std::ostringstream jsonBuffer;

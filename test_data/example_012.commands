@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759328799998,
+    "timestamp": 1759338399581,
     "component": "interpreter",
     "version": "14.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759328799998,
+    "timestamp": 1759338399581,
     "message": "Program execution started"
   },
   {
@@ -24,7 +24,7 @@
       247,
       262
     ],
-    "timestamp": 1759328799998
+    "timestamp": 1759338399583
   },
   {
     "type": "VAR_SET",
@@ -39,37 +39,37 @@
       4,
       4
     ],
-    "timestamp": 1759328799998
+    "timestamp": 1759338399583
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759328799998,
+    "timestamp": 1759338399584,
     "message": "Executing setup() function"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1759328799998,
+    "timestamp": 1759338399584,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "thisNote",
     "value": 0,
-    "timestamp": 1759328799998
+    "timestamp": 1759338399584
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1759328799998,
+    "timestamp": 1759338399584,
     "message": "for loop iteration 0"
   },
   {
     "type": "VAR_SET",
     "variable": "noteDuration",
     "value": 250,
-    "timestamp": 1759328799998
+    "timestamp": 1759338399584
   },
   {
     "type": "FUNCTION_CALL",
@@ -82,20 +82,20 @@
     "pin": 8,
     "frequency": 262,
     "duration": 250,
-    "timestamp": 1759328799999,
+    "timestamp": 1759338399584,
     "message": "tone(8, 262, 250)"
   },
   {
     "type": "VAR_SET",
     "variable": "pauseBetweenNotes",
     "value": 325,
-    "timestamp": 1759328799999
+    "timestamp": 1759338399584
   },
   {
     "type": "DELAY",
     "duration": 325,
     "actualDelay": 325,
-    "timestamp": 1759328799999
+    "timestamp": 1759338399584
   },
   {
     "type": "FUNCTION_CALL",
@@ -104,35 +104,35 @@
       8
     ],
     "pin": 8,
-    "timestamp": 1759328799999,
+    "timestamp": 1759338399584,
     "message": "noTone(8)"
   },
   {
     "type": "VAR_SET",
     "variable": "thisNote",
     "value": 1,
-    "timestamp": 1759328799999
+    "timestamp": 1759338399584
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1759328800005,
+    "timestamp": 1759338399590,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759328800005,
+    "timestamp": 1759338399590,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759328800005,
+    "timestamp": 1759338399590,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759328800005,
+    "timestamp": 1759338399590,
     "message": "Starting loop iteration 1"
   },
   {
@@ -140,7 +140,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759328800005
+    "timestamp": 1759338399590
   },
   {
     "type": "FUNCTION_CALL",
@@ -148,23 +148,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759328800005
+    "timestamp": 1759338399590
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759328800009,
+    "timestamp": 1759338399596,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759328800009,
+    "timestamp": 1759338399596,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759328800009,
+    "timestamp": 1759338399596,
     "message": "Program execution stopped"
   }
 ]

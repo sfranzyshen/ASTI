@@ -1039,8 +1039,9 @@ class ArduinoLibraryObject {
             case 'capacitiveSensor':
             case 'capacitiveSensorRaw':
                 const samples = args[0] || 30;
-                // Simulate sensor reading
-                return Math.floor(Math.random() * 2000) + 100;
+                // Deterministic formula matching C++ DeterministicDataProvider
+                // Formula: (arg * 13 + 477) % 2000 + 100
+                return ((samples * 13 + 477) % 2000) + 100;
             case 'set_CS_Timeout_Millis':
                 this.properties.set('timeout', args[0] || 2000);
                 return;

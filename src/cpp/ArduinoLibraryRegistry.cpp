@@ -237,7 +237,7 @@ void ArduinoLibraryRegistry::registerCapacitiveSensorLibrary() {
     LibraryDefinition capSensor;
     capSensor.libraryName = "CapacitiveSensor";
 
-    // Internal methods - get mock values from parent app provider
+    // Internal methods - get external values from parent app provider
     capSensor.internalMethods["capacitiveSensor"] = [](const std::vector<CommandValue>& args, ASTInterpreter* interpreter) -> CommandValue {
         // Get sample count argument (default 30)
         int32_t sampleCount = 30;
@@ -245,9 +245,9 @@ void ArduinoLibraryRegistry::registerCapacitiveSensorLibrary() {
             sampleCount = std::get<int>(args[0]);
         }
 
-        // Get mock value from parent app provider
-        if (interpreter && interpreter->getSyncMockProvider()) {
-            return interpreter->getSyncMockProvider()->getLibrarySensorValue("CapacitiveSensor", "capacitiveSensor", sampleCount);
+        // Get external value from parent app provider
+        if (interpreter && interpreter->getSyncDataProvider()) {
+            return interpreter->getSyncDataProvider()->getLibrarySensorValue("CapacitiveSensor", "capacitiveSensor", sampleCount);
         }
         // Fallback if no provider
         return static_cast<int32_t>(0);
@@ -260,9 +260,9 @@ void ArduinoLibraryRegistry::registerCapacitiveSensorLibrary() {
             sampleCount = std::get<int>(args[0]);
         }
 
-        // Get mock value from parent app provider
-        if (interpreter && interpreter->getSyncMockProvider()) {
-            return interpreter->getSyncMockProvider()->getLibrarySensorValue("CapacitiveSensor", "capacitiveSensorRaw", sampleCount);
+        // Get external value from parent app provider
+        if (interpreter && interpreter->getSyncDataProvider()) {
+            return interpreter->getSyncDataProvider()->getLibrarySensorValue("CapacitiveSensor", "capacitiveSensorRaw", sampleCount);
         }
         // Fallback if no provider
         return static_cast<int32_t>(0);

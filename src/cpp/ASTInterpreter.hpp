@@ -17,7 +17,7 @@
 #include "EnhancedInterpreter.hpp"
 #include "ArduinoLibraryRegistry.hpp"
 #include "InterpreterConfig.hpp"
-#include "SyncMockProvider.hpp"
+#include "SyncDataProvider.hpp"
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
@@ -376,7 +376,7 @@ private:
     
     // Command handling
     ResponseHandler* responseHandler_;
-    SyncMockProvider* mockProvider_;  // Parent app provides mock values
+    SyncDataProvider* dataProvider_;  // Parent app provides external data (hardware, test data, etc.)
 
     // ULTRATHINK FIX: Context-Aware Execution Control Stack
     class ExecutionControlStack {
@@ -656,18 +656,23 @@ public:
     void setResponseHandler(ResponseHandler* handler) { responseHandler_ = handler; }
 
     /**
-     * Set synchronous mock provider for hardware/sensor values
+     * Set synchronous data provider for external hardware/sensor values
      *
-     * Parent app implements SyncMockProvider to provide mock values.
+     * Parent app implements SyncDataProvider to provide values from any source:
+     * - Real hardware (production)
+     * - Test data (validation)
+     * - Remote APIs (cloud integration)
+     * - Databases (historical data)
+     *
      * Interpreter calls provider synchronously (blocking) when executing
      * operations like analogRead(), digitalRead(), etc.
      */
-    void setSyncMockProvider(SyncMockProvider* provider) { mockProvider_ = provider; }
+    void setSyncDataProvider(SyncDataProvider* provider) { dataProvider_ = provider; }
 
     /**
-     * Get synchronous mock provider (for library registry access)
+     * Get synchronous data provider (for library registry access)
      */
-    SyncMockProvider* getSyncMockProvider() const { return mockProvider_; }
+    SyncDataProvider* getSyncDataProvider() const { return dataProvider_; }
 
     /**
      * Handle response from external system

@@ -65,7 +65,7 @@ namespace arduino_interpreter {
 
 ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOptions& options)
     : ast_(std::move(ast)), options_(options), state_(ExecutionState::IDLE),
-      responseHandler_(nullptr), mockProvider_(nullptr),
+      responseHandler_(nullptr), dataProvider_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
       maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
@@ -103,7 +103,7 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
 
 ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const InterpreterOptions& options)
     : options_(options), state_(ExecutionState::IDLE),
-      responseHandler_(nullptr), mockProvider_(nullptr),
+      responseHandler_(nullptr), dataProvider_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
       maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
@@ -4608,8 +4608,8 @@ CommandValue ASTInterpreter::handlePinOperation(const std::string& function, con
 
             // Get mock value from parent app provider
             // Parent app provides deterministic or random values as needed
-            if (mockProvider_) {
-                int32_t mockValue = mockProvider_->getDigitalReadValue(pin);
+            if (dataProvider_) {
+                int32_t mockValue = dataProvider_->getDigitalReadValue(pin);
                 return mockValue;
             }
             // Fallback if no provider (shouldn't happen in normal usage)
@@ -4650,8 +4650,8 @@ CommandValue ASTInterpreter::handlePinOperation(const std::string& function, con
 
             // Get mock value from parent app provider
             // Parent app provides deterministic or random values as needed
-            if (mockProvider_) {
-                int32_t mockValue = mockProvider_->getAnalogReadValue(pin);
+            if (dataProvider_) {
+                int32_t mockValue = dataProvider_->getAnalogReadValue(pin);
                 return mockValue;
             }
             // Fallback if no provider (shouldn't happen in normal usage)
@@ -4696,8 +4696,8 @@ CommandValue ASTInterpreter::handleTimingOperation(const std::string& function, 
             emitMillisRequest();
 
             // Get mock value from parent app provider
-            if (mockProvider_) {
-                uint32_t mockValue = mockProvider_->getMillisValue();
+            if (dataProvider_) {
+                uint32_t mockValue = dataProvider_->getMillisValue();
                 return static_cast<int32_t>(mockValue);
             }
             // Fallback if no provider
@@ -4725,8 +4725,8 @@ CommandValue ASTInterpreter::handleTimingOperation(const std::string& function, 
             emitMicrosRequest();
 
             // Get mock value from parent app provider
-            if (mockProvider_) {
-                uint32_t mockValue = mockProvider_->getMicrosValue();
+            if (dataProvider_) {
+                uint32_t mockValue = dataProvider_->getMicrosValue();
                 return static_cast<int32_t>(mockValue);
             }
             // Fallback if no provider
