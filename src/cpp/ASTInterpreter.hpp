@@ -54,7 +54,7 @@ struct InterpreterOptions {
     bool enableSerial = true;       // Enable Serial commands
     bool enablePins = true;         // Enable pin operations
     bool syncMode = false;          // Test mode: immediate sync responses for digitalRead/analogRead
-    std::string version = "13.0.0";  // Interpreter version
+    std::string version = "14.0.0";  // Interpreter version
 };
 
 /**

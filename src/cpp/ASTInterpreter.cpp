@@ -548,24 +548,25 @@ void ASTInterpreter::visit(arduino_ast::CommentNode& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::CompoundStmtNode& node) {
-    
+
     const auto& children = node.getChildren();
     DEBUG_OUT << "CompoundStmtNode has " << children.size() << " children" << std::endl;
     TRACE("visit(CompoundStmtNode)", "children=" + std::to_string(children.size()));
-    
+
     // CRITICAL FIX: Check if we're resuming from a suspended state for this specific node
     size_t startIndex = 0;
     if (suspendedNode_ == &node && suspendedChildIndex_ >= 0) {
         // Resume from the statement AFTER the one that caused suspension
         startIndex = static_cast<size_t>(suspendedChildIndex_ + 1);
         TRACE("visit(CompoundStmtNode)", "Resuming from suspended index: " + std::to_string(startIndex));
-        
+
         // Clear suspension state since we're resuming
         suspendedNode_ = nullptr;
         suspendedChildIndex_ = -1;
     }
-    
+
     for (size_t i = startIndex; i < children.size(); ++i) {
+
         // CRITICAL FIX: Only break for control flow changes within loops or functions
         // Don't break for normal execution state changes that happen during statement execution
         if (shouldBreak_ || shouldContinue_ || shouldReturn_) {
@@ -584,7 +585,7 @@ void ASTInterpreter::visit(arduino_ast::CompoundStmtNode& node) {
             TRACE("visit(CompoundStmtNode)", "Stopping execution due to non-running state");
             break;
         }
-        
+
         const auto& child = children[i];
         std::string childType = child ? arduino_ast::nodeTypeToString(child->getType()) : "null";
         DEBUG_OUT << "Processing compound child " << i << ": " << childType << std::endl;
@@ -2090,8 +2091,10 @@ void ASTInterpreter::visit(arduino_ast::CaseStatement& node) {
         
         // Execute case body if this case matches or we're in fall-through
         if (shouldExecute && node.getBody()) {
-            const_cast<arduino_ast::ASTNode*>(node.getBody())->accept(*this);
-            
+            auto* body = const_cast<arduino_ast::ASTNode*>(node.getBody());
+            // Execute the case body
+            body->accept(*this);
+
             // If break was encountered, exit fall-through mode
             if (shouldBreak_) {
                 inSwitchFallthrough_ = false;

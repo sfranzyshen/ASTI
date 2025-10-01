@@ -821,13 +821,25 @@ void CompactASTReader::linkNodeChildren() {
             } else if (parentNode->getType() == ASTNodeType::CASE_STMT) {
                 auto* caseStmtNode = dynamic_cast<arduino_ast::CaseStatement*>(parentNode.get());
                 if (caseStmtNode) {
-                    // Case statements expect: label (case value), body (statements)
+                    // ULTRATHINK FIX: Case statements have consequent as array in JavaScript
+                    // First child is label, remaining children are consequent statements
+                    // Wrap all consequent statements in CompoundStmtNode
                     if (!caseStmtNode->getLabel()) {
+                        // First child is the label (case value)
                         caseStmtNode->setLabel(std::move(nodes_[childIndex]));
-                    } else if (!caseStmtNode->getBody()) {
-                        caseStmtNode->setBody(std::move(nodes_[childIndex]));
                     } else {
-                        parentNode->addChild(std::move(nodes_[childIndex]));
+                        // All remaining children are consequent statements
+                        // On first consequent child, create CompoundStmtNode wrapper
+                        if (!caseStmtNode->getBody()) {
+                            auto compoundNode = std::make_unique<CompoundStmtNode>();
+                            caseStmtNode->setBody(std::move(compoundNode));
+                        }
+
+                        // Add this child to the CompoundStmtNode body
+                        auto* bodyNode = const_cast<arduino_ast::ASTNode*>(caseStmtNode->getBody());
+                        if (bodyNode && nodes_[childIndex]) {
+                            bodyNode->addChild(std::move(nodes_[childIndex]));
+                        }
                     }
                 } else {
                     parentNode->addChild(std::move(nodes_[childIndex]));

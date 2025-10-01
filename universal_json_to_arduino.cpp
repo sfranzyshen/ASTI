@@ -221,18 +221,18 @@ private:
 
             // Keyboard.press
             if (function == "Keyboard.press") {
-                std::string arg = extractFirstArrayString(jsonObj, "arguments");
-                if (!arg.empty()) {
-                    commandStream.push_back("Keyboard.press(" + arg + ")");
+                int arg = extractFirstArrayInt(jsonObj, "arguments");
+                if (arg > 0) {
+                    commandStream.push_back("Keyboard.press(" + std::to_string(arg) + ")");
                 }
                 return;
             }
 
             // Keyboard.write
             if (function == "Keyboard.write") {
-                std::string arg = extractFirstArrayString(jsonObj, "arguments");
-                if (!arg.empty()) {
-                    commandStream.push_back("Keyboard.write(" + arg + ")");
+                int arg = extractFirstArrayInt(jsonObj, "arguments");
+                if (arg > 0) {
+                    commandStream.push_back("Keyboard.write(" + std::to_string(arg) + ")");
                 }
                 return;
             }
@@ -240,6 +240,37 @@ private:
             // Keyboard.releaseAll
             if (function == "Keyboard.releaseAll") {
                 commandStream.push_back("Keyboard.releaseAll()");
+                return;
+            }
+
+            // Keyboard.release
+            if (function == "Keyboard.release") {
+                int arg = extractFirstArrayInt(jsonObj, "arguments");
+                if (arg > 0) {
+                    commandStream.push_back("Keyboard.release(" + std::to_string(arg) + ")");
+                } else {
+                    commandStream.push_back("Keyboard.release()");
+                }
+                return;
+            }
+
+            // Keyboard.println
+            if (function == "Keyboard.println") {
+                std::string arg = extractFirstArrayStringOrObject(jsonObj, "arguments");
+                if (!arg.empty()) {
+                    commandStream.push_back("Keyboard.println(" + arg + ")");
+                } else {
+                    commandStream.push_back("Keyboard.println()");
+                }
+                return;
+            }
+
+            // Keyboard.print
+            if (function == "Keyboard.print") {
+                std::string arg = extractFirstArrayStringOrObject(jsonObj, "arguments");
+                if (!arg.empty()) {
+                    commandStream.push_back("Keyboard.print(" + arg + ")");
+                }
                 return;
             }
 
@@ -337,7 +368,8 @@ private:
     }
 
     int extractFirstArrayInt(const std::string& jsonObj, const std::string& arrayName) {
-        std::string pattern = "\"" + arrayName + "\"\\s*:\\s*\\[\\s*(\\d+)";
+        // Updated regex to handle both quoted and unquoted integers: ["131"] or [131]
+        std::string pattern = "\"" + arrayName + "\"\\s*:\\s*\\[\\s*\"?(\\d+)\"?";
         std::regex arrayRegex(pattern);
         std::smatch match;
 
@@ -375,6 +407,35 @@ private:
             }
         }
         return result;
+    }
+
+    std::string extractFirstArrayStringOrObject(const std::string& jsonObj, const std::string& arrayName) {
+        // Try object with "value" field first (for Arduino String objects)
+        std::string objectPattern = "\"" + arrayName + "\"\\s*:\\s*\\[\\s*\\{[^}]*\"value\"\\s*:\\s*\"([^\"]+)\"";
+        std::regex objectRegex(objectPattern);
+        std::smatch objectMatch;
+
+        if (std::regex_search(jsonObj, objectMatch, objectRegex)) {
+            return "\"" + objectMatch[1].str() + "\"";
+        }
+
+        // Try simple string
+        std::string stringPattern = "\"" + arrayName + "\"\\s*:\\s*\\[\\s*\"([^\"]+)\"";
+        std::regex stringRegex(stringPattern);
+        std::smatch stringMatch;
+
+        if (std::regex_search(jsonObj, stringMatch, stringRegex)) {
+            return "\"" + stringMatch[1].str() + "\"";
+        }
+
+        // Check for empty array
+        std::string emptyPattern = "\"" + arrayName + "\"\\s*:\\s*\\[\\s*\\]";
+        std::regex emptyRegex(emptyPattern);
+        if (std::regex_search(jsonObj, emptyRegex)) {
+            return "";  // Empty arguments
+        }
+
+        return "";
     }
 
     std::string generateCommandStream() {
