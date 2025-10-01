@@ -72,8 +72,9 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
       currentSwitchValue_(std::monostate{}), inSwitchFallthrough_(false),
       suspendedNode_(nullptr), suspendedChildIndex_(-1), currentCompoundNode_(nullptr), currentChildIndex_(-1),
       lastExpressionResult_(std::monostate{}),
+      previousExecutionState_(ExecutionState::IDLE), waitingForRequestId_(""), suspendedFunction_(""),
       // Initialize converted static variables
-      inTick_(false), requestIdCounter_(0), allocationCounter_(1000), mallocCounter_(2000),
+      requestIdCounter_(0), allocationCounter_(1000), mallocCounter_(2000),
       // Initialize performance tracking variables
       totalExecutionTime_(0), functionExecutionTime_(0),
       commandsGenerated_(0), errorsGenerated_(0), functionsExecuted_(0),
@@ -110,8 +111,9 @@ ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const Int
       currentSwitchValue_(std::monostate{}), inSwitchFallthrough_(false),
       suspendedNode_(nullptr), suspendedChildIndex_(-1), currentCompoundNode_(nullptr), currentChildIndex_(-1),
       lastExpressionResult_(std::monostate{}),
+      previousExecutionState_(ExecutionState::IDLE), waitingForRequestId_(""), suspendedFunction_(""),
       // Initialize converted static variables
-      inTick_(false), requestIdCounter_(0), allocationCounter_(1000), mallocCounter_(2000),
+      requestIdCounter_(0), allocationCounter_(1000), mallocCounter_(2000),
       // Initialize performance tracking variables
       totalExecutionTime_(0), functionExecutionTime_(0),
       commandsGenerated_(0), errorsGenerated_(0), functionsExecuted_(0),
@@ -6117,24 +6119,9 @@ void ASTInterpreter::resetControlFlow() {
     inSwitchFallthrough_ = false;
 }
 
-void ASTInterpreter::processResponseQueue() {
-    // Process all queued responses
-    while (!responseQueue_.empty()) {
-        auto [requestId, value] = responseQueue_.front();
-        responseQueue_.pop();
-        
-        // Store the response value for consumption
-        pendingResponseValues_[requestId] = value;
-        
-    }
-}
-
-void ASTInterpreter::queueResponse(const std::string& requestId, const CommandValue& value) {
-    responseQueue_.push({requestId, value});
-}
 
 bool ASTInterpreter::isWaitingForResponse() const {
-    return state_ == ExecutionState::WAITING_FOR_RESPONSE && !waitingForRequestId_.empty();
+    return state_ == ExecutionState::WAITING_FOR_RESPONSE;
 }
 
 bool ASTInterpreter::hasResponse(const std::string& requestId) const {
@@ -6589,186 +6576,20 @@ CommandValue ASTInterpreter::evaluateUnaryOperation(const std::string& op, const
 // STATE MACHINE EXECUTION METHODS
 // =============================================================================
 
-void ASTInterpreter::tick() {
-    // Only proceed if we're in RUNNING or WAITING_FOR_RESPONSE state
-    if (state_ != ExecutionState::RUNNING && state_ != ExecutionState::WAITING_FOR_RESPONSE) {
-        return;
-    }
-    
-    // Prevent re-entry
-    if (inTick_) {
-        return;
-    }
-    inTick_ = true;
-    
-    try {
-        // Process any queued responses first
-        processResponseQueue();
-        
-        // CONTINUATION PATTERN: Handle resumption from WAITING_FOR_RESPONSE state
-        if (state_ == ExecutionState::WAITING_FOR_RESPONSE && !waitingForRequestId_.empty()) {
-            // Check if we have the response we're waiting for
-            if (hasResponse(waitingForRequestId_)) {
-                
-                // Consume the response and store for the function to use
-                lastExpressionResult_ = consumeResponse(waitingForRequestId_);
-                
-                // Restore previous execution state
-                state_ = previousExecutionState_;
-                previousExecutionState_ = ExecutionState::IDLE;
-                
-                // Clear suspension context - the function can now return the result
-                waitingForRequestId_.clear();
-                suspendedNode_ = nullptr;
-                suspendedChildIndex_ = -1;
-                currentCompoundNode_ = nullptr;
-                currentChildIndex_ = -1;
-                suspendedFunction_.clear();
-                
-            } else {
-                // Still waiting for response, cannot proceed
-                inTick_ = false;
-                return;
-            }
-        }
-        
-        // Normal execution flow - this mimics the JavaScript executeControlledProgram
-        if (!setupCalled_) {
-            // Execute setup() function if we haven't already - MEMORY SAFE
-            if (userFunctionNames_.count("setup") > 0) {
-                auto* setupFunc = findFunctionInAST("setup");
-                if (setupFunc) {
-                    emitSetupStart();
-                    
-                    scopeManager_->pushScope();
-                    currentFunction_ = setupFunc;
-                    
-                    try {
-                        // Execute the function BODY, not the function definition
-                        if (auto* funcDef = dynamic_cast<const arduino_ast::FuncDefNode*>(setupFunc)) {
-                            const auto* body = funcDef->getBody();
-                            if (body) {
-                                const_cast<arduino_ast::ASTNode*>(body)->accept(*this);
-                            } else {
-                            }
-                        } else {
-                        }
-                } catch (const std::exception& e) {
-                    emitError("Error in setup(): " + std::string(e.what()));
-                    state_ = ExecutionState::ERROR;
-                    inTick_ = false;
-                    return;
-                }
-                
-                currentFunction_ = nullptr;
-                scopeManager_->popScope();
-                setupCalled_ = true;
-                
-                emitSetupEnd();
-            } else {
-                setupCalled_ = true; // Mark as called even if not found
-            }
-        } else {
-            // Execute loop() function iterations - MEMORY SAFE
-            if (userFunctionNames_.count("loop") > 0 && currentLoopIteration_ < maxLoopIterations_) {
-                auto* loopFunc = findFunctionInAST("loop");
-                if (loopFunc) {
-                    // CROSS-PLATFORM FIX: Emit general loop start on first iteration only
-                    if (currentLoopIteration_ == 0) {
-                        emitLoopStart("main", 0);
-                    }
-                    
-                    
-                    // Increment iteration counter BEFORE processing (to match JS 1-based counting)
-                    currentLoopIteration_++;
-                    
-                    // Emit loop iteration start command
-                    emitLoopStart("loop", currentLoopIteration_);
-                    
-                    // Emit function call start command
-                    emitFunctionCallLoop(currentLoopIteration_, false);
-                    
-                    scopeManager_->pushScope();
-                    currentFunction_ = loopFunc;
-                
-                    try {
-                        // Execute the function BODY, not the function definition
-                        if (auto* funcDef = dynamic_cast<const arduino_ast::FuncDefNode*>(loopFunc)) {
-                            const auto* body = funcDef->getBody();
-                            if (body) {
-                                const_cast<arduino_ast::ASTNode*>(body)->accept(*this);
-                            } else {
-                            }
-                        } else {
-                        }
-                } catch (const std::exception& e) {
-                    emitError("Error in loop(): " + std::string(e.what()));
-                    state_ = ExecutionState::ERROR;
-                    inTick_ = false;
-                    return;
-                }
-                
-                currentFunction_ = nullptr;
-                scopeManager_->popScope();
-                
-                // CROSS-PLATFORM FIX: Emit function completion command
-                emitFunctionCallLoop(currentLoopIteration_, true);
-                
-                // Handle step delay - for Arduino, delays should be handled by parent application
-                // The tick() method should return quickly and let the parent handle timing
-                // Note: stepDelay is available in options_ if parent needs it
-                
-                // Process any pending requests
-                processResponseQueue();
-                }
-            } else if (currentLoopIteration_ >= maxLoopIterations_) {
-                // Loop limit reached
-                
-                // CROSS-PLATFORM FIX: JavaScript doesn't emit termination commands at loop limit
-                // emitCommand(FlexibleCommandFactory::createLoopEndComplete(currentLoopIteration_, true));
+void ASTInterpreter::processResponseQueue() {
+    // Process all queued responses
+    while (!responseQueue_.empty()) {
+        auto [requestId, value] = responseQueue_.front();
+        responseQueue_.pop();
 
-                state_ = ExecutionState::COMPLETE;
+        // Store the response value for consumption
+        pendingResponseValues_[requestId] = value;
 
-                // CROSS-PLATFORM FIX: JavaScript doesn't emit PROGRAM_END commands at loop limit
-                // emitCommand(FlexibleCommandFactory::createProgramEnd("Program completed after " + std::to_string(currentLoopIteration_) + " loop iterations (limit reached)"));
-                // emitCommand(FlexibleCommandFactory::createProgramEnd("Program execution stopped"));
-            }
-        }
     }
-    } catch (const std::exception& e) {
-        emitError("Tick execution error: " + std::string(e.what()));
-        state_ = ExecutionState::ERROR;
-    }
-    
-    inTick_ = false;
 }
 
-bool ASTInterpreter::resumeWithValue(const std::string& requestId, const CommandValue& value) {
-    // Check if this is the response we are waiting for
-    if (state_ != ExecutionState::WAITING_FOR_RESPONSE || 
-        requestId != waitingForRequestId_) {
-        return false; // Not the response we need
-    }
-    
-    
-    // Store the value as the result of the suspended operation
-    lastExpressionResult_ = value;
-    
-    // Clear the waiting state
-    waitingForRequestId_.clear();
-    suspendedNode_ = nullptr;
-    suspendedChildIndex_ = -1;
-    currentCompoundNode_ = nullptr;
-    currentChildIndex_ = -1;
-    suspendedFunction_.clear();
-    
-    // Resume execution
-    state_ = ExecutionState::RUNNING;
-    
-    // Note: Don't call tick() here - let the external caller handle execution continuation
-    // This prevents double execution that was happening in the JavaScript version
-    
-    return true;
+void ASTInterpreter::queueResponse(const std::string& requestId, const CommandValue& value) {
+    responseQueue_.push({requestId, value});
 }
 
 // =============================================================================

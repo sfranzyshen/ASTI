@@ -206,11 +206,9 @@ TestResult executeWithTimeout(ASTInterpreter& interpreter, uint32_t timeoutMs = 
             return result;
         }
         
-        // Wait for completion or timeout
+        // Wait for completion or timeout (uses start() which runs in own thread, not tick())
         auto deadline = startTime + std::chrono::milliseconds(timeoutMs);
-        while ((interpreter.isRunning() || interpreter.isWaitingForResponse()) && std::chrono::steady_clock::now() < deadline) {
-            // CRITICAL FIX: Drive the interpreter with tick() calls
-            interpreter.tick();
+        while (interpreter.isRunning() && std::chrono::steady_clock::now() < deadline) {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
         

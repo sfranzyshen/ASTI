@@ -464,25 +464,24 @@ private:
     // Switch statement state management
     CommandValue currentSwitchValue_;
     bool inSwitchFallthrough_ = false;
-    
-    // Continuation-based execution system for non-blocking operations
+
+    // Continuation-based execution system (unused in syncMode, but kept for architecture compatibility)
     arduino_ast::ASTNode* suspendedNode_;
-    int suspendedChildIndex_;                  // Track child index in CompoundStmtNode for resumption
-    arduino_ast::ASTNode* currentCompoundNode_; // Track current compound statement being executed
-    int currentChildIndex_;                    // Track current child index being executed
+    int suspendedChildIndex_;
+    arduino_ast::ASTNode* currentCompoundNode_;
+    int currentChildIndex_;
     std::string waitingForRequestId_;
     std::string suspendedFunction_;
     CommandValue lastExpressionResult_;
     ExecutionState previousExecutionState_;
-    
+
     // Request-response system
     std::unordered_map<std::string, CommandValue> pendingResponseValues_;
     std::queue<std::pair<std::string, CommandValue>> responseQueue_;
     
     // =============================================================================
-    // INSTANCE VARIABLES (converted from problematic static variables)  
+    // INSTANCE VARIABLES (converted from problematic static variables)
     // =============================================================================
-    bool inTick_;                          // Prevent re-entry in tick()
     uint32_t requestIdCounter_;            // For generateRequestId()
     std::vector<std::string> callStack_;   // Function call stack tracking
     int allocationCounter_;                // malloc allocation counter
@@ -607,19 +606,6 @@ public:
     bool step();
     
     /**
-     * State machine execution loop
-     */
-    void tick();
-    
-    /**
-     * Resume execution with external data response
-     * @param requestId The request ID that this response is for
-     * @param value The value to resume execution with
-     * @return true if the response was accepted
-     */
-    bool resumeWithValue(const std::string& requestId, const CommandValue& value);
-    
-    /**
      * Check if interpreter is running
      */
     bool isRunning() const { return state_ == ExecutionState::RUNNING; }
@@ -628,11 +614,6 @@ public:
      * Check if interpreter is waiting for response
      */
     bool isWaitingForResponse() const;
-
-    /**
-     * Get the request ID we're currently waiting for (for testing)
-     */
-    std::string getWaitingRequestId() const { return waitingForRequestId_; }
 
     /**
      * Get current execution state
@@ -678,17 +659,17 @@ public:
      * Handle response from external system
      */
     bool handleResponse(const std::string& requestId, const CommandValue& value);
-    
+
     /**
      * Queue a response for later processing (thread-safe)
      */
     void queueResponse(const std::string& requestId, const CommandValue& value);
-    
+
     /**
-     * Process queued responses (called by tick())
+     * Process queued responses (called by executeLoop())
      */
     void processResponseQueue();
-    
+
     // =============================================================================
     // VISITOR PATTERN IMPLEMENTATION
     // =============================================================================
