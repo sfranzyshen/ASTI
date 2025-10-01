@@ -14,11 +14,11 @@
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[19200],"baudRate":19200,"message":"Serial.begin(19200)"}
 {"type":"PIN_MODE","timestamp":0,"pin":5,"mode":1}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"pulse","arguments":[5,2]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"pulse","arguments":[5.000000,2.000000]}
 {"type":"PIN_MODE","timestamp":0,"pin":6,"mode":1}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"pulse","arguments":[6,2]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"pulse","arguments":[6.000000,2.000000]}
 {"type":"PIN_MODE","timestamp":0,"pin":7,"mode":1}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"pulse","arguments":[7,2]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"pulse","arguments":[7.000000,2.000000]}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}

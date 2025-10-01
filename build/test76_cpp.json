@@ -7,7 +7,7 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[140],"data":"140","message":"Serial.write(140)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.write","arguments":[140.000000],"data":"140.000000","message":"Serial.write(140.000000)"}
 {"type":"DELAY","timestamp":0,"duration":1,"actualDelay":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}

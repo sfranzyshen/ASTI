@@ -14,7 +14,7 @@
 {"type":"WHILE_LOOP","timestamp":0,"phase":"end","iterations":0}
 {"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
 {"type":"SWITCH_STATEMENT","timestamp":0,"discriminant":0}
-{"type":"SWITCH_CASE","timestamp":0,"value":0,"shouldExecute":true}
+{"type":"SWITCH_CASE","timestamp":0,"value":0.000000,"shouldExecute":true}
 {"type":"ERROR","timestamp":0,"message":"Undefined variable: KEY_LEFT_GUI","errorType":"RuntimeError"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Keyboard.press","arguments":["null"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: Keyboard.press","errorType":"RuntimeError"}

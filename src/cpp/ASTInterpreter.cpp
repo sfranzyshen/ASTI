@@ -2514,11 +2514,8 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         case arduino_ast::ASTNodeType::NUMBER_LITERAL:
             if (auto* numNode = dynamic_cast<arduino_ast::NumberNode*>(expr)) {
                 double value = numNode->getNumber();
-                // Check if this is an integer literal (no fractional part)
-                // This is important for String(int, base) vs String(float, decimals)
-                if (std::floor(value) == value && value >= INT32_MIN && value <= INT32_MAX) {
-                    return static_cast<int32_t>(value);
-                }
+                // Keep all literals as double to preserve floating-point arithmetic
+                // Type detection happens in specific contexts (e.g., String constructor)
                 return value;
             }
             break;
@@ -3735,13 +3732,19 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         // Supports: String(value), String(float, decimals), String(int, base)
         std::string initialValue = "";
         if (args.size() > 0) {
-            // Detect first argument type to determine second argument meaning
-            bool isInteger = std::holds_alternative<int32_t>(args[0]);
-            bool isFloat = std::holds_alternative<double>(args[0]);
+            // All numbers are now doubles, detect if value is integer-like
+            bool isIntegerValue = false;
+            double firstArgValue = 0;
 
-            if (args.size() > 1 && isInteger) {
-                // Integer with base conversion: String(int, base)
-                int32_t value = std::get<int32_t>(args[0]);
+            if (std::holds_alternative<double>(args[0])) {
+                firstArgValue = std::get<double>(args[0]);
+                // Check if double has no fractional part
+                isIntegerValue = (std::floor(firstArgValue) == firstArgValue);
+            }
+
+            if (args.size() > 1 && isIntegerValue) {
+                // Integer-like value with base conversion: String(int, base)
+                int32_t value = static_cast<int32_t>(firstArgValue);
                 int base = std::visit([](auto&& arg) -> int {
                     using T = std::decay_t<decltype(arg)>;
                     if constexpr (std::is_same_v<T, int32_t>) {
@@ -3774,7 +3777,7 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                     // DEC (10) or default - standard integer conversion
                     initialValue = std::to_string(value);
                 }
-            } else if (args.size() > 1 && isFloat) {
+            } else if (args.size() > 1 && std::holds_alternative<double>(args[0])) {
                 // Float with decimal places: String(float, decimals)
                 double value = std::get<double>(args[0]);
                 int decimalPlaces = std::visit([](auto&& arg) -> int {
@@ -3803,6 +3806,10 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                     } else if constexpr (std::is_same_v<T, int32_t>) {
                         return std::to_string(arg);
                     } else if constexpr (std::is_same_v<T, double>) {
+                        // Check if double is integer-like to avoid ".000000" suffix
+                        if (std::floor(arg) == arg) {
+                            return std::to_string(static_cast<int32_t>(arg));
+                        }
                         return std::to_string(arg);
                     } else if constexpr (std::is_same_v<T, bool>) {
                         return arg ? "true" : "false";

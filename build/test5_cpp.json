@@ -8,8 +8,8 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"ANALOG_READ_REQUEST","timestamp":0,"pin":14,"requestId":"analogRead_static_14"}
 {"type":"VAR_SET","timestamp":0,"variable":"sensorValue","value":560}
-{"type":"VAR_SET","timestamp":0,"variable":"voltage","value":0.000000}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["0"],"data":"0","message":"Serial.println(0)"}
+{"type":"VAR_SET","timestamp":0,"variable":"voltage","value":2.737048}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["2.737048"],"data":"2.737048","message":"Serial.println(2.737048)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}
