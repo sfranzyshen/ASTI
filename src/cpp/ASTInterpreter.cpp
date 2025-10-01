@@ -3368,6 +3368,114 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         return std::string("");
     }
 
+    else if (name.find(".startsWith") != std::string::npos) {
+        // String.startsWith(prefix, [offset]) method - TEST 55 FIX
+        std::string varName = name.substr(0, name.find(".startsWith"));
+        if (scopeManager_->hasVariable(varName) && args.size() >= 1) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                // Get current string value
+                std::string str = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                // Extract prefix argument
+                std::string prefix = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, args[0]);
+
+                // Extract optional offset parameter (default = 0)
+                size_t offset = 0;
+                if (args.size() >= 2) {
+                    offset = static_cast<size_t>(std::visit([](auto&& arg) -> int32_t {
+                        using T = std::decay_t<decltype(arg)>;
+                        if constexpr (std::is_same_v<T, int32_t>) {
+                            return arg;
+                        } else if constexpr (std::is_same_v<T, double>) {
+                            return static_cast<int32_t>(arg);
+                        } else {
+                            return 0;
+                        }
+                    }, args[1]));
+                }
+
+                // Check if string starts with prefix at given offset
+                if (offset > str.length()) {
+                    return static_cast<int32_t>(0);  // false
+                }
+
+                std::string substr = str.substr(offset);
+                bool result = (substr.find(prefix) == 0);
+                return static_cast<int32_t>(result ? 1 : 0);
+            }
+        }
+        return static_cast<int32_t>(0);  // false
+    }
+
+    else if (name.find(".endsWith") != std::string::npos) {
+        // String.endsWith(suffix) method - TEST 55 FIX
+        std::string varName = name.substr(0, name.find(".endsWith"));
+        if (scopeManager_->hasVariable(varName) && args.size() >= 1) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                // Get current string value
+                std::string str = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                // Extract suffix argument
+                std::string suffix = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, args[0]);
+
+                // Check if string ends with suffix
+                if (suffix.length() > str.length()) {
+                    return static_cast<int32_t>(0);  // false
+                }
+
+                bool result = (str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0);
+                return static_cast<int32_t>(result ? 1 : 0);
+            }
+        }
+        return static_cast<int32_t>(0);  // false
+    }
+
     else if (name.find(".compareTo") != std::string::npos) {
         // String.compareTo(other) method - TEST 50 FIX
         std::string varName = name.substr(0, name.find(".compareTo"));
@@ -3529,6 +3637,7 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                                name.find(".replace") != std::string::npos || name.find(".reserve") != std::string::npos ||
                                name.find(".toUpperCase") != std::string::npos || name.find(".toLowerCase") != std::string::npos ||
                                name.find(".trim") != std::string::npos ||
+                               name.find(".startsWith") != std::string::npos || name.find(".endsWith") != std::string::npos ||
                                name.find(".compareTo") != std::string::npos || name.find(".equalsIgnoreCase") != std::string::npos);
     
     if (!hasSpecificHandler) {
