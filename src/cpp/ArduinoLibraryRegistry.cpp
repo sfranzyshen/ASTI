@@ -246,11 +246,13 @@ void ArduinoLibraryRegistry::registerCapacitiveSensorLibrary() {
         }
 
         // Get external value from parent app provider
-        if (interpreter && interpreter->getSyncDataProvider()) {
-            return interpreter->getSyncDataProvider()->getLibrarySensorValue("CapacitiveSensor", "capacitiveSensor", sampleCount);
+        // Parent app MUST provide SyncDataProvider implementation
+        if (!interpreter || !interpreter->getSyncDataProvider()) {
+            // Configuration error: missing provider
+            // Return -1 as sentinel value indicating error
+            return static_cast<int32_t>(-1);
         }
-        // Fallback if no provider
-        return static_cast<int32_t>(0);
+        return interpreter->getSyncDataProvider()->getLibrarySensorValue("CapacitiveSensor", "capacitiveSensor", sampleCount);
     };
 
     capSensor.internalMethods["capacitiveSensorRaw"] = [](const std::vector<CommandValue>& args, ASTInterpreter* interpreter) -> CommandValue {
@@ -261,11 +263,13 @@ void ArduinoLibraryRegistry::registerCapacitiveSensorLibrary() {
         }
 
         // Get external value from parent app provider
-        if (interpreter && interpreter->getSyncDataProvider()) {
-            return interpreter->getSyncDataProvider()->getLibrarySensorValue("CapacitiveSensor", "capacitiveSensorRaw", sampleCount);
+        // Parent app MUST provide SyncDataProvider implementation
+        if (!interpreter || !interpreter->getSyncDataProvider()) {
+            // Configuration error: missing provider
+            // Return -1 as sentinel value indicating error
+            return static_cast<int32_t>(-1);
         }
-        // Fallback if no provider
-        return static_cast<int32_t>(0);
+        return interpreter->getSyncDataProvider()->getLibrarySensorValue("CapacitiveSensor", "capacitiveSensorRaw", sampleCount);
     };
 
     // Constructor parameters

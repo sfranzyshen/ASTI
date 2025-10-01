@@ -4608,14 +4608,13 @@ CommandValue ASTInterpreter::handlePinOperation(const std::string& function, con
 
             emitDigitalReadRequest(pin, requestId);
 
-            // Get mock value from parent app provider
-            // Parent app provides deterministic or random values as needed
-            if (dataProvider_) {
-                int32_t mockValue = dataProvider_->getDigitalReadValue(pin);
-                return mockValue;
+            // Get external value from parent app provider
+            // Parent app MUST provide SyncDataProvider implementation
+            if (!dataProvider_) {
+                emitError("digitalRead() called without SyncDataProvider - parent app must inject data source", "ConfigurationError");
+                return -1;  // Sentinel value indicating configuration error
             }
-            // Fallback if no provider (shouldn't happen in normal usage)
-            return 0;
+            return dataProvider_->getDigitalReadValue(pin);
         }
         
         // CONTINUATION PATTERN: Check if we're returning a cached response
@@ -4650,14 +4649,13 @@ CommandValue ASTInterpreter::handlePinOperation(const std::string& function, con
 
             emitAnalogReadRequest(pin, requestId);
 
-            // Get mock value from parent app provider
-            // Parent app provides deterministic or random values as needed
-            if (dataProvider_) {
-                int32_t mockValue = dataProvider_->getAnalogReadValue(pin);
-                return mockValue;
+            // Get external value from parent app provider
+            // Parent app MUST provide SyncDataProvider implementation
+            if (!dataProvider_) {
+                emitError("analogRead() called without SyncDataProvider - parent app must inject data source", "ConfigurationError");
+                return -1;  // Sentinel value indicating configuration error
             }
-            // Fallback if no provider (shouldn't happen in normal usage)
-            return 0;
+            return dataProvider_->getAnalogReadValue(pin);
         }
         
         // CONTINUATION PATTERN: Check if we're returning a cached response
@@ -4697,13 +4695,13 @@ CommandValue ASTInterpreter::handleTimingOperation(const std::string& function, 
             // Emit the request command for consistency with JavaScript
             emitMillisRequest();
 
-            // Get mock value from parent app provider
-            if (dataProvider_) {
-                uint32_t mockValue = dataProvider_->getMillisValue();
-                return static_cast<int32_t>(mockValue);
+            // Get external value from parent app provider
+            // Parent app MUST provide SyncDataProvider implementation
+            if (!dataProvider_) {
+                emitError("millis() called without SyncDataProvider - parent app must inject data source", "ConfigurationError");
+                return -1;  // Sentinel value indicating configuration error
             }
-            // Fallback if no provider
-            return 0;
+            return static_cast<int32_t>(dataProvider_->getMillisValue());
         }
         
         // CONTINUATION PATTERN: Check if we're returning a cached response
@@ -4726,13 +4724,13 @@ CommandValue ASTInterpreter::handleTimingOperation(const std::string& function, 
             // Emit the request command for consistency with JavaScript
             emitMicrosRequest();
 
-            // Get mock value from parent app provider
-            if (dataProvider_) {
-                uint32_t mockValue = dataProvider_->getMicrosValue();
-                return static_cast<int32_t>(mockValue);
+            // Get external value from parent app provider
+            // Parent app MUST provide SyncDataProvider implementation
+            if (!dataProvider_) {
+                emitError("micros() called without SyncDataProvider - parent app must inject data source", "ConfigurationError");
+                return -1;  // Sentinel value indicating configuration error
             }
-            // Fallback if no provider
-            return 0;
+            return static_cast<int32_t>(dataProvider_->getMicrosValue());
         }
 
         // CONTINUATION PATTERN: Check if we're returning a cached response
