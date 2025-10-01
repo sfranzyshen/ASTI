@@ -3261,6 +3261,44 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         return std::string("");
     }
 
+    else if (name.find(".trim") != std::string::npos) {
+        // String.trim() method - TEST 53 FIX
+        std::string varName = name.substr(0, name.find(".trim"));
+        if (scopeManager_->hasVariable(varName)) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                std::string str = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                // Trim leading whitespace
+                size_t start = str.find_first_not_of(" \t\n\r\f\v");
+                if (start == std::string::npos) {
+                    str = "";  // String is all whitespace
+                } else {
+                    // Trim trailing whitespace
+                    size_t end = str.find_last_not_of(" \t\n\r\f\v");
+                    str = str.substr(start, end - start + 1);
+                }
+
+                // Update the variable with trimmed string (IN-PLACE modification)
+                Variable newVar(str, var->type, var->isConst, var->isReference, var->isStatic, var->isGlobal);
+                scopeManager_->setVariable(varName, newVar);
+                return str;
+            }
+        }
+        return std::string("");
+    }
+
     else if (name.find(".compareTo") != std::string::npos) {
         // String.compareTo(other) method - TEST 50 FIX
         std::string varName = name.substr(0, name.find(".compareTo"));
@@ -3421,6 +3459,7 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
                                name.find(".charAt") != std::string::npos || name.find(".setCharAt") != std::string::npos ||
                                name.find(".replace") != std::string::npos || name.find(".reserve") != std::string::npos ||
                                name.find(".toUpperCase") != std::string::npos || name.find(".toLowerCase") != std::string::npos ||
+                               name.find(".trim") != std::string::npos ||
                                name.find(".compareTo") != std::string::npos || name.find(".equalsIgnoreCase") != std::string::npos);
     
     if (!hasSpecificHandler) {
