@@ -3476,6 +3476,73 @@ CommandValue ASTInterpreter::executeArduinoFunction(const std::string& name, con
         return static_cast<int32_t>(0);  // false
     }
 
+    else if (name.find(".substring") != std::string::npos) {
+        // String.substring(start, [end]) method - TEST 56 FIX
+        std::string varName = name.substr(0, name.find(".substring"));
+        if (scopeManager_->hasVariable(varName) && args.size() >= 1) {
+            auto var = scopeManager_->getVariable(varName);
+            if (var) {
+                // Get current string value
+                std::string str = std::visit([](auto&& arg) -> std::string {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, std::string>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, int32_t>) {
+                        return std::to_string(arg);
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return std::to_string(arg);
+                    } else {
+                        return "";
+                    }
+                }, var->value);
+
+                // Extract start index
+                size_t start = static_cast<size_t>(std::visit([](auto&& arg) -> int32_t {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, int32_t>) {
+                        return arg;
+                    } else if constexpr (std::is_same_v<T, double>) {
+                        return static_cast<int32_t>(arg);
+                    } else {
+                        return 0;
+                    }
+                }, args[0]));
+
+                // Extract optional end index (if not provided, goes to end of string)
+                size_t end = str.length();  // Default: end of string
+                if (args.size() >= 2) {
+                    end = static_cast<size_t>(std::visit([](auto&& arg) -> int32_t {
+                        using T = std::decay_t<decltype(arg)>;
+                        if constexpr (std::is_same_v<T, int32_t>) {
+                            return arg;
+                        } else if constexpr (std::is_same_v<T, double>) {
+                            return static_cast<int32_t>(arg);
+                        } else {
+                            return 0;
+                        }
+                    }, args[1]));
+                }
+
+                // Bounds checking
+                if (start > str.length()) {
+                    return std::string("");  // Start beyond string length
+                }
+                if (end > str.length()) {
+                    end = str.length();  // Clamp end to string length
+                }
+                if (end < start) {
+                    return std::string("");  // Invalid range
+                }
+
+                // Return substring - CRITICAL: Return std::string for direct comparison
+                // Arduino String.substring(start, end) → C++ str.substr(start, length)
+                std::string result = str.substr(start, end - start);
+                return result;
+            }
+        }
+        return std::string("");  // Error case
+    }
+
     else if (name.find(".compareTo") != std::string::npos) {
         // String.compareTo(other) method - TEST 50 FIX
         std::string varName = name.substr(0, name.find(".compareTo"));
