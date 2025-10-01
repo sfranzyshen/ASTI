@@ -153,6 +153,64 @@ elseif(UNIX AND NOT APPLE)
 endif()
 
 # =============================================================================
+# CROSS-PLATFORM BUILD OPTIONS
+# =============================================================================
+
+# Platform targeting options
+option(BUILD_FOR_WASM "Build for WebAssembly/Emscripten" OFF)
+option(BUILD_FOR_ESP32 "Build for ESP32 (Arduino framework simulation on host)" OFF)
+
+# Feature control options
+option(ENABLE_DEBUG_OUTPUT "Enable debug output (cout/Serial)" ON)
+option(ENABLE_FILE_TRACING "Enable ExecutionTracer file output" ON)
+option(OPTIMIZE_SIZE "Optimize for code size (disable sstream, use manual string building)" OFF)
+
+# Apply platform-specific definitions
+if(BUILD_FOR_WASM)
+    message(STATUS "Configuring for WebAssembly/Emscripten")
+    target_compile_definitions(arduino_ast_interpreter PUBLIC
+        PLATFORM_WASM
+        __EMSCRIPTEN__
+    )
+
+    # Emscripten-specific flags (will be set when using emcmake)
+    if(EMSCRIPTEN)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s WASM=1 -s ALLOW_MEMORY_GROWTH=1")
+    endif()
+endif()
+
+if(BUILD_FOR_ESP32)
+    message(STATUS "Configuring for ESP32 (simulated on host)")
+    target_compile_definitions(arduino_ast_interpreter PUBLIC
+        PLATFORM_ESP32
+        ARDUINO_ARCH_ESP32
+        ESP32
+    )
+endif()
+
+# Apply feature flags
+if(NOT ENABLE_DEBUG_OUTPUT)
+    message(STATUS "Debug output disabled")
+    target_compile_definitions(arduino_ast_interpreter PUBLIC ENABLE_DEBUG_OUTPUT=0)
+else()
+    target_compile_definitions(arduino_ast_interpreter PUBLIC ENABLE_DEBUG_OUTPUT=1)
+endif()
+
+if(NOT ENABLE_FILE_TRACING)
+    message(STATUS "File tracing disabled")
+    target_compile_definitions(arduino_ast_interpreter PUBLIC ENABLE_FILE_TRACING=0)
+else()
+    target_compile_definitions(arduino_ast_interpreter PUBLIC ENABLE_FILE_TRACING=1)
+endif()
+
+if(OPTIMIZE_SIZE)
+    message(STATUS "Size optimization enabled")
+    target_compile_definitions(arduino_ast_interpreter PUBLIC OPTIMIZE_SIZE=1)
+else()
+    target_compile_definitions(arduino_ast_interpreter PUBLIC OPTIMIZE_SIZE=0)
+endif()
+
+# =============================================================================
 # EXECUTABLE TARGETS
 # =============================================================================
 
@@ -375,4 +433,12 @@ message(STATUS "Enable coverage: ${ENABLE_COVERAGE}")
 message(STATUS "Target ESP32: ${TARGET_ESP32}")
 message(STATUS "Use Arduino framework: ${USE_ARDUINO_FRAMEWORK}")
 message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "================================================")
+message(STATUS "=== Cross-Platform Configuration ===")
+message(STATUS "Platform: " ${PLATFORM_NAME})
+message(STATUS "WASM build: ${BUILD_FOR_WASM}")
+message(STATUS "ESP32 simulation: ${BUILD_FOR_ESP32}")
+message(STATUS "Debug output: ${ENABLE_DEBUG_OUTPUT}")
+message(STATUS "File tracing: ${ENABLE_FILE_TRACING}")
+message(STATUS "Size optimization: ${OPTIMIZE_SIZE}")
 message(STATUS "================================================")
