@@ -29,8 +29,9 @@ class ASTInterpreter;
 
 /**
  * Internal method function signature - calculated locally, returns value immediately
+ * Parameters: args, interpreter pointer (for accessing mock provider)
  */
-using InternalMethod = std::function<CommandValue(const std::vector<CommandValue>&)>;
+using InternalMethod = std::function<CommandValue(const std::vector<CommandValue>&, class ASTInterpreter*)>;
 
 /**
  * External method information - emits command to parent application
@@ -43,8 +44,9 @@ struct ExternalMethodInfo {
 
 /**
  * Static method function signature - class-level methods
+ * Parameters: args, interpreter pointer (for accessing mock provider)
  */
-using StaticMethod = std::function<CommandValue(const std::vector<CommandValue>&)>;
+using StaticMethod = std::function<CommandValue(const std::vector<CommandValue>&, class ASTInterpreter*)>;
 
 /**
  * Library object metadata for emission

@@ -1,33 +1,33 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759290564501,
+    "timestamp": 1759328801974,
     "component": "interpreter",
     "version": "14.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759290564501,
+    "timestamp": 1759328801974,
     "message": "Program execution started"
   },
   {
     "type": "VAR_SET",
     "variable": "ISPError",
     "value": 0,
-    "timestamp": 1759290564501
+    "timestamp": 1759328801975
   },
   {
     "type": "VAR_SET",
     "variable": "pmode",
     "value": 0,
-    "timestamp": 1759290564501
+    "timestamp": 1759328801975
   },
   {
     "type": "VAR_SET",
     "variable": "here",
     "value": null,
-    "timestamp": 1759290564501
+    "timestamp": 1759328801975
   },
   {
     "type": "VAR_SET",
@@ -290,7 +290,7 @@
       0,
       0
     ],
-    "timestamp": 1759290564502
+    "timestamp": 1759328801975
   },
   {
     "type": "VAR_SET",
@@ -299,31 +299,31 @@
       "structName": "parameter",
       "fields": {},
       "type": "struct",
-      "structId": "struct_1759290564502_og4zf"
+      "structId": "struct_1759328801976_83awz"
     },
-    "timestamp": 1759290564502
+    "timestamp": 1759328801976
   },
   {
     "type": "VAR_SET",
     "variable": "hbval",
     "value": 128,
-    "timestamp": 1759290564502
+    "timestamp": 1759328801976
   },
   {
     "type": "VAR_SET",
     "variable": "hbdelta",
     "value": 8,
-    "timestamp": 1759290564502
+    "timestamp": 1759328801976
   },
   {
     "type": "VAR_SET",
     "variable": "current_page",
     "value": 0,
-    "timestamp": 1759290564503
+    "timestamp": 1759328801976
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759290564503,
+    "timestamp": 1759328801977,
     "message": "Executing setup() function"
   },
   {
@@ -333,14 +333,14 @@
       19200
     ],
     "baudRate": 19200,
-    "timestamp": 1759290564503,
+    "timestamp": 1759328801977,
     "message": "Serial.begin(19200)"
   },
   {
     "type": "PIN_MODE",
     "pin": 5,
     "mode": 1,
-    "timestamp": 1759290564503
+    "timestamp": 1759328801977
   },
   {
     "type": "FUNCTION_CALL",
@@ -349,62 +349,62 @@
       5,
       2
     ],
-    "timestamp": 1759290564503,
+    "timestamp": 1759328801977,
     "message": "pulse(5, 2)"
   },
   {
     "type": "DO_WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1759290564504,
+    "timestamp": 1759328801977,
     "message": "do-while loop started"
   },
   {
     "type": "DO_WHILE_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1759290564504,
+    "timestamp": 1759328801978,
     "message": "do-while loop iteration 0"
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 5,
     "value": 1,
-    "timestamp": 1759290564504
+    "timestamp": 1759328801978
   },
   {
     "type": "DELAY",
     "duration": 30,
     "actualDelay": 30,
-    "timestamp": 1759290564504
+    "timestamp": 1759328801978
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 5,
     "value": 0,
-    "timestamp": 1759290564504
+    "timestamp": 1759328801978
   },
   {
     "type": "DELAY",
     "duration": 30,
     "actualDelay": 30,
-    "timestamp": 1759290564504
+    "timestamp": 1759328801978
   },
   {
     "type": "VAR_SET",
     "variable": "times",
     "value": 1,
-    "timestamp": 1759290564510
+    "timestamp": 1759328801983
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1759290564510,
+    "timestamp": 1759328801983,
     "message": "Do-while loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759290564515,
+    "timestamp": 1759328801988,
     "message": "Completed setup() function"
   }
 ]

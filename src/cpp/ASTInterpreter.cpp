@@ -65,7 +65,7 @@ namespace arduino_interpreter {
 
 ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOptions& options)
     : ast_(std::move(ast)), options_(options), state_(ExecutionState::IDLE),
-      responseHandler_(nullptr),
+      responseHandler_(nullptr), mockProvider_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
       maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
@@ -103,7 +103,7 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
 
 ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const InterpreterOptions& options)
     : options_(options), state_(ExecutionState::IDLE),
-      responseHandler_(nullptr),
+      responseHandler_(nullptr), mockProvider_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
       maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
@@ -4606,10 +4606,14 @@ CommandValue ASTInterpreter::handlePinOperation(const std::string& function, con
 
             emitDigitalReadRequest(pin, requestId);
 
-            // Return deterministic mock response based on pin number
-            // This ensures identical behavior across platforms and runs
-            int32_t mockValue = getDeterministicDigitalReadValue(pin);
-            return mockValue;
+            // Get mock value from parent app provider
+            // Parent app provides deterministic or random values as needed
+            if (mockProvider_) {
+                int32_t mockValue = mockProvider_->getDigitalReadValue(pin);
+                return mockValue;
+            }
+            // Fallback if no provider (shouldn't happen in normal usage)
+            return 0;
         }
         
         // CONTINUATION PATTERN: Check if we're returning a cached response
@@ -4644,10 +4648,14 @@ CommandValue ASTInterpreter::handlePinOperation(const std::string& function, con
 
             emitAnalogReadRequest(pin, requestId);
 
-            // Return deterministic mock response based on pin number
-            // This ensures identical behavior across platforms and runs
-            int32_t mockValue = getDeterministicAnalogReadValue(pin);
-            return mockValue;
+            // Get mock value from parent app provider
+            // Parent app provides deterministic or random values as needed
+            if (mockProvider_) {
+                int32_t mockValue = mockProvider_->getAnalogReadValue(pin);
+                return mockValue;
+            }
+            // Fallback if no provider (shouldn't happen in normal usage)
+            return 0;
         }
         
         // CONTINUATION PATTERN: Check if we're returning a cached response
@@ -4687,9 +4695,13 @@ CommandValue ASTInterpreter::handleTimingOperation(const std::string& function, 
             // Emit the request command for consistency with JavaScript
             emitMillisRequest();
 
-            // Return deterministic mock response for cross-platform consistency
-            uint32_t mockValue = getDeterministicMillisValue();
-            return static_cast<int32_t>(mockValue);
+            // Get mock value from parent app provider
+            if (mockProvider_) {
+                uint32_t mockValue = mockProvider_->getMillisValue();
+                return static_cast<int32_t>(mockValue);
+            }
+            // Fallback if no provider
+            return 0;
         }
         
         // CONTINUATION PATTERN: Check if we're returning a cached response
@@ -4712,9 +4724,13 @@ CommandValue ASTInterpreter::handleTimingOperation(const std::string& function, 
             // Emit the request command for consistency with JavaScript
             emitMicrosRequest();
 
-            // Return deterministic mock response for cross-platform consistency
-            uint32_t mockValue = getDeterministicMicrosValue();
-            return static_cast<int32_t>(mockValue);
+            // Get mock value from parent app provider
+            if (mockProvider_) {
+                uint32_t mockValue = mockProvider_->getMicrosValue();
+                return static_cast<int32_t>(mockValue);
+            }
+            // Fallback if no provider
+            return 0;
         }
 
         // CONTINUATION PATTERN: Check if we're returning a cached response
@@ -7859,67 +7875,12 @@ void ASTInterpreter::enterSafeMode(const std::string& reason) {
     }
 }
 
-// =============================================================================
-// DETERMINISTIC MOCK VALUE GENERATION
-// =============================================================================
-
-int32_t ASTInterpreter::getDeterministicDigitalReadValue(int32_t pin) {
-    // Return consistent values based on pin number for cross-platform determinism
-    // Use odd/even pattern to match JavaScript behavior exactly
-    return (pin % 2) == 1 ? 1 : 0;  // Odd pins = 1, even pins = 0
-}
-
-int32_t ASTInterpreter::getDeterministicAnalogReadValue(int32_t pin) {
-    // Return consistent values based on pin number for cross-platform determinism
-    // Use pin number to generate predictable analog values (0-1023 range)
-    return (pin * 37 + 42) % 1024;  // Simple deterministic formula
-}
-
 // Static reset function for all static state variables
 void ASTInterpreter::resetStaticTimingCounters() {
     // Set global reset flags - the functions will reset on next call
     g_resetTimingCounters = true;
     g_resetSerialPortCounters = true;
     g_resetEnumCounter = true;
-}
-
-uint32_t ASTInterpreter::getDeterministicMillisValue() {
-    // Incremental millis value matching JavaScript MockDataManager behavior
-    // Start at 17807, increment by 100ms per call for time progression
-    static uint32_t millisCounter = 17807;
-    static uint32_t callCount = 0;
-
-    // Check for reset request
-    if (g_resetTimingCounters) {
-        millisCounter = 17807;
-        callCount = 0;
-    }
-
-    uint32_t currentValue = millisCounter;
-    callCount++;
-    millisCounter += 100;  // Increment by 100ms per call to match JavaScript
-
-    return currentValue;
-}
-
-uint32_t ASTInterpreter::getDeterministicMicrosValue() {
-    // Incremental micros value matching JavaScript MockDataManager behavior
-    // Start at 17807000, increment by 100000µs (100ms) per call, synchronized with millis
-    static uint32_t microsCounter = 17807000;
-    static uint32_t callCount = 0;
-
-    // Check for reset request
-    if (g_resetTimingCounters) {
-        microsCounter = 17807000;
-        callCount = 0;
-        g_resetTimingCounters = false; // Clear flag after both functions have been reset
-    }
-
-    uint32_t currentValue = microsCounter;
-    callCount++;
-    microsCounter += 100000;  // Increment by 100000µs (100ms) per call to match JavaScript
-
-    return currentValue;
 }
 
 } // namespace arduino_interpreter

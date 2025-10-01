@@ -17,6 +17,7 @@
 #include "EnhancedInterpreter.hpp"
 #include "ArduinoLibraryRegistry.hpp"
 #include "InterpreterConfig.hpp"
+#include "SyncMockProvider.hpp"
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
@@ -375,7 +376,8 @@ private:
     
     // Command handling
     ResponseHandler* responseHandler_;
-    
+    SyncMockProvider* mockProvider_;  // Parent app provides mock values
+
     // ULTRATHINK FIX: Context-Aware Execution Control Stack
     class ExecutionControlStack {
     public:
@@ -652,7 +654,21 @@ public:
      * Set response handler for request-response operations
      */
     void setResponseHandler(ResponseHandler* handler) { responseHandler_ = handler; }
-    
+
+    /**
+     * Set synchronous mock provider for hardware/sensor values
+     *
+     * Parent app implements SyncMockProvider to provide mock values.
+     * Interpreter calls provider synchronously (blocking) when executing
+     * operations like analogRead(), digitalRead(), etc.
+     */
+    void setSyncMockProvider(SyncMockProvider* provider) { mockProvider_ = provider; }
+
+    /**
+     * Get synchronous mock provider (for library registry access)
+     */
+    SyncMockProvider* getSyncMockProvider() const { return mockProvider_; }
+
     /**
      * Handle response from external system
      */
@@ -919,11 +935,6 @@ private:
     CommandValue handlePinOperation(const std::string& function, const std::vector<CommandValue>& args);
     CommandValue handleTimingOperation(const std::string& function, const std::vector<CommandValue>& args);
 
-    // Deterministic mock value generation for cross-platform consistency
-    int32_t getDeterministicDigitalReadValue(int32_t pin);
-    int32_t getDeterministicAnalogReadValue(int32_t pin);
-    uint32_t getDeterministicMillisValue();
-    uint32_t getDeterministicMicrosValue();
     static void resetStaticTimingCounters();
     CommandValue handleSerialOperation(const std::string& function, const std::vector<CommandValue>& args);
     CommandValue handleMultipleSerialOperation(const std::string& portName, const std::string& methodName, const std::vector<CommandValue>& args);

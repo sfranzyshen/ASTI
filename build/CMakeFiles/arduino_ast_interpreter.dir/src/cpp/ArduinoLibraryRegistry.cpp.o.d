@@ -192,6 +192,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.o: \
  /mnt/d/Devel/ASTInterpreter/libs/CompactAST/src/CompactAST.hpp \
  /mnt/d/Devel/ASTInterpreter/src/cpp/EnhancedInterpreter.hpp \
  /mnt/d/Devel/ASTInterpreter/src/cpp/InterpreterConfig.hpp \
+ /mnt/d/Devel/ASTInterpreter/src/cpp/SyncMockProvider.hpp \
  /usr/include/c++/11/stack /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_stack.h /usr/include/c++/11/chrono \

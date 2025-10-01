@@ -84,8 +84,8 @@ CommandValue ArduinoLibraryObject::callMethod(const std::string& methodName,
     auto internalIt = libDef->internalMethods.find(methodName);
     if (internalIt != libDef->internalMethods.end()) {
         // Call the internal method lambda and return result directly
-        // No command emission for internal methods!
-        return internalIt->second(args);
+        // Pass interpreter so lambda can access mock provider
+        return internalIt->second(args, interpreter);
     }
 
     // Check if this is an EXTERNAL method (emits command to hardware)
@@ -124,30 +124,30 @@ void ArduinoLibraryRegistry::registerAdafruitNeoPixelLibrary() {
     neoPixel.libraryName = "Adafruit_NeoPixel";
     
     // Internal methods - calculated by interpreter, return values immediately
-    neoPixel.internalMethods["numPixels"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    neoPixel.internalMethods["numPixels"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         // Return number of pixels (first constructor arg, default 60)
         return static_cast<int32_t>(60);  // Default value
     };
     
-    neoPixel.internalMethods["getBrightness"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    neoPixel.internalMethods["getBrightness"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         return static_cast<int32_t>(255);  // Default brightness
     };
     
-    neoPixel.internalMethods["getPixelColor"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    neoPixel.internalMethods["getPixelColor"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         // Return stored pixel color or 0 (simplified)
         return static_cast<int32_t>(0);  // Default: no color
     };
     
-    neoPixel.internalMethods["canShow"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    neoPixel.internalMethods["canShow"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         return true;  // Always return true for simulation
     };
     
-    neoPixel.internalMethods["getPin"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    neoPixel.internalMethods["getPin"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         // Return pin number (second constructor arg, default 6)
         return static_cast<int32_t>(6);  // Default pin
     };
     
-    neoPixel.internalMethods["attached"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    neoPixel.internalMethods["attached"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         return true;  // Assume always attached for simulation
     };
     
@@ -158,7 +158,7 @@ void ArduinoLibraryRegistry::registerAdafruitNeoPixelLibrary() {
     };
     
     // Static methods - class-level methods
-    neoPixel.staticMethods["Color"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    neoPixel.staticMethods["Color"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         // Convert RGB to 32-bit color value: 0xRRGGBB
         int32_t r = args.size() > 0 ? convertToInt(args[0]) : 0;
         int32_t g = args.size() > 1 ? convertToInt(args[1]) : 0;  
@@ -167,7 +167,7 @@ void ArduinoLibraryRegistry::registerAdafruitNeoPixelLibrary() {
         return ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
     };
     
-    neoPixel.staticMethods["ColorHSV"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    neoPixel.staticMethods["ColorHSV"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         // Simplified HSV to RGB conversion
         int32_t hue = args.size() > 0 ? convertToInt(args[0]) : 0;
         int32_t sat = args.size() > 1 ? convertToInt(args[1]) : 255;
@@ -193,12 +193,12 @@ void ArduinoLibraryRegistry::registerAdafruitNeoPixelLibrary() {
         return ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
     };
     
-    neoPixel.staticMethods["sine8"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    neoPixel.staticMethods["sine8"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         int32_t x = args.size() > 0 ? convertToInt(args[0]) : 0;
         return static_cast<int32_t>(std::sin(x * M_PI / 128) * 127 + 128);
     };
     
-    neoPixel.staticMethods["gamma8"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    neoPixel.staticMethods["gamma8"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         int32_t x = args.size() > 0 ? convertToInt(args[0]) : 0;
         return static_cast<int32_t>(std::pow(x / 255.0, 2.8) * 255);
     };
@@ -213,15 +213,15 @@ void ArduinoLibraryRegistry::registerServoLibrary() {
     servo.libraryName = "Servo";
     
     // Internal methods - calculated by interpreter
-    servo.internalMethods["read"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    servo.internalMethods["read"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         return static_cast<int32_t>(90);  // Default servo position
     };
     
-    servo.internalMethods["readMicroseconds"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    servo.internalMethods["readMicroseconds"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         return static_cast<int32_t>(1500);  // 90 degrees = 1500 microseconds
     };
     
-    servo.internalMethods["attached"] = [](const std::vector<CommandValue>& args) -> CommandValue {
+    servo.internalMethods["attached"] = [](const std::vector<CommandValue>& args, ASTInterpreter*) -> CommandValue {
         return false;  // Default: not attached
     };
     
@@ -237,15 +237,35 @@ void ArduinoLibraryRegistry::registerCapacitiveSensorLibrary() {
     LibraryDefinition capSensor;
     capSensor.libraryName = "CapacitiveSensor";
 
-    // Internal methods - return mock sensor values
-    capSensor.internalMethods["capacitiveSensor"] = [](const std::vector<CommandValue>& args) -> CommandValue {
-        // Simulate sensor reading (matches JavaScript: random 100-2100)
-        return static_cast<int32_t>(rand() % 2000 + 100);
+    // Internal methods - get mock values from parent app provider
+    capSensor.internalMethods["capacitiveSensor"] = [](const std::vector<CommandValue>& args, ASTInterpreter* interpreter) -> CommandValue {
+        // Get sample count argument (default 30)
+        int32_t sampleCount = 30;
+        if (!args.empty() && std::holds_alternative<int>(args[0])) {
+            sampleCount = std::get<int>(args[0]);
+        }
+
+        // Get mock value from parent app provider
+        if (interpreter && interpreter->getSyncMockProvider()) {
+            return interpreter->getSyncMockProvider()->getLibrarySensorValue("CapacitiveSensor", "capacitiveSensor", sampleCount);
+        }
+        // Fallback if no provider
+        return static_cast<int32_t>(0);
     };
 
-    capSensor.internalMethods["capacitiveSensorRaw"] = [](const std::vector<CommandValue>& args) -> CommandValue {
-        // Raw reading simulation
-        return static_cast<int32_t>(rand() % 2000 + 100);
+    capSensor.internalMethods["capacitiveSensorRaw"] = [](const std::vector<CommandValue>& args, ASTInterpreter* interpreter) -> CommandValue {
+        // Get sample count argument (default 30)
+        int32_t sampleCount = 30;
+        if (!args.empty() && std::holds_alternative<int>(args[0])) {
+            sampleCount = std::get<int>(args[0]);
+        }
+
+        // Get mock value from parent app provider
+        if (interpreter && interpreter->getSyncMockProvider()) {
+            return interpreter->getSyncMockProvider()->getLibrarySensorValue("CapacitiveSensor", "capacitiveSensorRaw", sampleCount);
+        }
+        // Fallback if no provider
+        return static_cast<int32_t>(0);
     };
 
     // Constructor parameters
@@ -356,8 +376,9 @@ CommandValue ArduinoLibraryRegistry::callStaticMethod(const std::string& library
     if (methodIt == it->second.staticMethods.end()) {
         return std::monostate{};  // Method not found
     }
-    
-    return methodIt->second(args);
+
+    // Static methods have access to interpreter (for consistency with internal methods)
+    return methodIt->second(args, interpreter_);
 }
 
 CommandValue ArduinoLibraryRegistry::callObjectMethod(const std::string& objectId,

@@ -195,6 +195,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ASTInterpreter.cpp.o: \
  /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/uniform_int_dist.h \
  /mnt/d/Devel/ASTInterpreter/src/cpp/InterpreterConfig.hpp \
+ /mnt/d/Devel/ASTInterpreter/src/cpp/SyncMockProvider.hpp \
  /usr/include/c++/11/stack /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_stack.h /usr/include/c++/11/chrono \

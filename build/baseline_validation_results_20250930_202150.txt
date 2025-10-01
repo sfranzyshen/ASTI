@@ -1,0 +1,21 @@
+Arduino AST Interpreter - Baseline Validation Results
+Date: 2025-09-30 20:21:50
+Test Range: 58 to 61
+
+SUMMARY:
+Total Tests: 4
+Passing Tests: 1
+Failing Tests: 3
+Success Rate: 25.00%
+
+PASSING TESTS (1 total):
+59
+
+FAILING TESTS (3 total):
+58 60 61
+
+DOCUMENTATION FORMAT:
+**BASELINE ESTABLISHED** (September 30, 2025):
+- **Success Rate**: 25.00% (1/4 tests)
+- **Passing Tests**: 59
+- **Failing Tests**: 58,60,61
