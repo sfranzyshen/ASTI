@@ -9,7 +9,6 @@
 
 #include "ArduinoLibraryRegistry.hpp"
 #include "ASTInterpreter.hpp"
-#include <iostream>
 #include <sstream>
 #include <cmath>
 

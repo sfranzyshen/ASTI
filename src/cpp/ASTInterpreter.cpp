@@ -16,7 +16,6 @@ static bool g_resetEnumCounter = false;
 
 // Includes
 #include "ExecutionTracer.hpp"
-#include <iostream>
 #include <sstream>
 #include <bitset>
 #include <iomanip>
@@ -1006,7 +1005,9 @@ void ASTInterpreter::visit(arduino_ast::ConstructorCallNode& node) {
     }
 
     if (constructorName == "String") {
-        std::cerr << "DEBUG ConstructorCallNode: String constructor called with " << node.getArguments().size() << " AST arguments (evaluated to " << args.size() << " values)" << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+        DEBUG_STREAM << "DEBUG ConstructorCallNode: String constructor called with " << node.getArguments().size() << " AST arguments (evaluated to " << args.size() << " values)" << std::endl;
+#endif
     }
 
     // CROSS-PLATFORM FIX: Handle primitive type initialization vs library constructor calls
@@ -1269,18 +1270,26 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             CommandValue initialValue;
             // In the CompactAST format, initializers should be stored as the first child
             if (!children.empty()) {
-                std::cerr << "DEBUG VarDecl: Variable '" << varName << "' has " << children.size() << " children" << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+                DEBUG_STREAM << "DEBUG VarDecl: Variable '" << varName << "' has " << children.size() << " children" << std::endl;
                 for (size_t idx = 0; idx < children.size(); ++idx) {
                     if (children[idx]) {
-                        std::cerr << "  Child " << idx << ": type = " << static_cast<int>(children[idx]->getType()) << std::endl;
+                        DEBUG_STREAM << "  Child " << idx << ": type = " << static_cast<int>(children[idx]->getType()) << std::endl;
                     }
                 }
+#endif
                 // Variable has initializer - evaluate it
-                std::cerr << "DEBUG VarDecl: Evaluating child[0] as initializer for '" << varName << "'" << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+                DEBUG_STREAM << "DEBUG VarDecl: Evaluating child[0] as initializer for '" << varName << "'" << std::endl;
+#endif
                 initialValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(children[0].get()));
-                std::cerr << "DEBUG VarDecl: After evaluation, initialValue = " << commandValueToString(initialValue) << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+                DEBUG_STREAM << "DEBUG VarDecl: After evaluation, initialValue = " << commandValueToString(initialValue) << std::endl;
+#endif
             } else {
-                std::cerr << "DEBUG VarDecl: Variable '" << varName << "' has NO children (no initializer)" << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+                DEBUG_STREAM << "DEBUG VarDecl: Variable '" << varName << "' has NO children (no initializer)" << std::endl;
+#endif
                 // Variable has no initializer - leave as null to match JavaScript behavior
                 initialValue = std::monostate{};  // Uninitialized variable = null
             }
@@ -2303,38 +2312,54 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
             // For 2D arrays like pixels[8][8], convert [x][y] to flat index
             // Assuming 8x8 array: finalIndex = x * 8 + y
             finalIndex = firstIndex * 8 + secondIndex;
-            std::cerr << "DEBUG ArrayAccess: 2D array " << arrayName << "[" << firstIndex << "][" << secondIndex << "] => flat index " << finalIndex << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+            DEBUG_STREAM << "DEBUG ArrayAccess: 2D array " << arrayName << "[" << firstIndex << "][" << secondIndex << "] => flat index " << finalIndex << std::endl;
+#endif
         } else {
             // For 1D arrays, use the index directly
             finalIndex = secondIndex;
-            std::cerr << "DEBUG ArrayAccess: 1D array " << arrayName << "[" << secondIndex << "]" << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+            DEBUG_STREAM << "DEBUG ArrayAccess: 1D array " << arrayName << "[" << secondIndex << "]" << std::endl;
+#endif
         }
 
         // CRITICAL FIX: Use enhanced scope manager for consistency with array assignments
         // Array assignments use enhancedScopeManager_, so reads must too
-        std::cerr << "DEBUG ArrayAccess: Trying enhancedScopeManager_ for " << arrayName << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+        DEBUG_STREAM << "DEBUG ArrayAccess: Trying enhancedScopeManager_ for " << arrayName << std::endl;
+#endif
         EnhancedCommandValue enhancedValue = MemberAccessHelper::getArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(finalIndex));
 
         // Check if enhanced value is valid (not std::monostate)
         if (!std::holds_alternative<std::monostate>(enhancedValue)) {
             // Convert enhanced value back to regular CommandValue
             lastExpressionResult_ = downgradeExtendedCommandValue(enhancedValue);
-            std::cerr << "DEBUG ArrayAccess: Found in enhancedScopeManager_, value = " << commandValueToString(lastExpressionResult_) << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+            DEBUG_STREAM << "DEBUG ArrayAccess: Found in enhancedScopeManager_, value = " << commandValueToString(lastExpressionResult_) << std::endl;
+#endif
             return;
         }
-        std::cerr << "DEBUG ArrayAccess: NOT found in enhancedScopeManager_" << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+        DEBUG_STREAM << "DEBUG ArrayAccess: NOT found in enhancedScopeManager_" << std::endl;
+#endif
 
         // Fall back to basic scope manager if enhanced fails
-        std::cerr << "DEBUG ArrayAccess: Trying basic scopeManager_ for " << arrayName << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+        DEBUG_STREAM << "DEBUG ArrayAccess: Trying basic scopeManager_ for " << arrayName << std::endl;
+#endif
         Variable* arrayVar = scopeManager_->getVariable(arrayName);
 
         if (!arrayVar) {
-            std::cerr << "DEBUG ArrayAccess: NOT found in basic scopeManager_ either!" << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+            DEBUG_STREAM << "DEBUG ArrayAccess: NOT found in basic scopeManager_ either!" << std::endl;
+#endif
             emitError("Array variable '" + arrayName + "' not found in either scope manager");
             lastExpressionResult_ = std::monostate{};
             return;
         }
-        std::cerr << "DEBUG ArrayAccess: Found in basic scopeManager_" << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+        DEBUG_STREAM << "DEBUG ArrayAccess: Found in basic scopeManager_" << std::endl;
+#endif
 
         // Check array type and access element
         size_t idx = static_cast<size_t>(finalIndex);
@@ -2350,12 +2375,14 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
             // CROSS-PLATFORM FIX: Check if this array represents undefined preprocessor constants
             // Arrays with undefined constants (like {NOTE_A4, NOTE_B4, NOTE_C3}) are stored as all 0s
             // but should return null when accessed to match JavaScript behavior
-            std::cerr << "DEBUG ArrayAccess: Array size = " << arrayVector.size() << ", accessing index " << idx << std::endl;
-            std::cerr << "DEBUG ArrayAccess: First 10 elements: ";
+#ifdef ENABLE_DEBUG_OUTPUT
+            DEBUG_STREAM << "DEBUG ArrayAccess: Array size = " << arrayVector.size() << ", accessing index " << idx << std::endl;
+            DEBUG_STREAM << "DEBUG ArrayAccess: First 10 elements: ";
             for (size_t i = 0; i < std::min(size_t(10), arrayVector.size()); ++i) {
-                std::cerr << arrayVector[i] << " ";
+                DEBUG_STREAM << arrayVector[i] << " ";
             }
-            std::cerr << std::endl;
+            DEBUG_STREAM << std::endl;
+#endif
 
             bool allElementsZero = true;
             for (const auto& elem : arrayVector) {
@@ -2364,15 +2391,21 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
                     break;
                 }
             }
-            std::cerr << "DEBUG ArrayAccess: allElementsZero = " << (allElementsZero ? "true" : "false") << std::endl;
-            std::cerr << "DEBUG ArrayAccess: arrayVector[" << idx << "] = " << arrayVector[idx] << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+            DEBUG_STREAM << "DEBUG ArrayAccess: allElementsZero = " << (allElementsZero ? "true" : "false") << std::endl;
+            DEBUG_STREAM << "DEBUG ArrayAccess: arrayVector[" << idx << "] = " << arrayVector[idx] << std::endl;
+#endif
 
             if (allElementsZero && arrayVector[idx] == 0) {
                 // This array contains only 0s (undefined constants), return null
-                std::cerr << "DEBUG ArrayAccess: Returning null because array is all zeros" << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+                DEBUG_STREAM << "DEBUG ArrayAccess: Returning null because array is all zeros" << std::endl;
+#endif
                 lastExpressionResult_ = std::monostate{};
             } else {
-                std::cerr << "DEBUG ArrayAccess: Returning value " << arrayVector[idx] << std::endl;
+#ifdef ENABLE_DEBUG_OUTPUT
+                DEBUG_STREAM << "DEBUG ArrayAccess: Returning value " << arrayVector[idx] << std::endl;
+#endif
                 lastExpressionResult_ = arrayVector[idx];
             }
 
@@ -5157,7 +5190,7 @@ void ASTInterpreter::emitJSON(const std::string& jsonString) {
     }
 
     // Direct output for extract_cpp_commands
-    std::cout << jsonString << std::endl;
+    OUTPUT_STREAM << jsonString << std::endl;
 }
 
 void ASTInterpreter::emitVersionInfo(const std::string& component, const std::string& version, const std::string& status) {

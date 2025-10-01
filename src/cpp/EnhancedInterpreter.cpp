@@ -1,5 +1,5 @@
 #include "EnhancedInterpreter.hpp"
-#include <iostream>
+#include <stdexcept>
 
 namespace arduino_interpreter {
 
@@ -33,17 +33,17 @@ namespace arduino_interpreter {
 // =============================================================================
 
 void EnhancedScopeManager::debugPrintScopes() const {
-#ifdef DEBUG_ENHANCED_SCOPE
-    std::cout << "=== Enhanced Scope Debug ===" << std::endl;
+#if defined(DEBUG_ENHANCED_SCOPE) && defined(ENABLE_DEBUG_OUTPUT)
+    DEBUG_STREAM << "=== Enhanced Scope Debug ===" << std::endl;
     for (size_t i = 0; i < scopes_.size(); ++i) {
-        std::cout << "Scope " << i << ": ";
+        DEBUG_STREAM << "Scope " << i << ": ";
         for (const auto& [name, var] : scopes_[i]) {
-            std::cout << name << "(" << var.type << ") ";
+            DEBUG_STREAM << name << "(" << var.type << ") ";
         }
-        std::cout << std::endl;
+        DEBUG_STREAM << std::endl;
     }
-    std::cout << "=========================" << std::endl;
-#endif // DEBUG_ENHANCED_SCOPE
+    DEBUG_STREAM << "=========================" << std::endl;
+#endif // DEBUG_ENHANCED_SCOPE && ENABLE_DEBUG_OUTPUT
 }
 
 // =============================================================================

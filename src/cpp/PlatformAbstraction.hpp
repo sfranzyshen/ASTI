@@ -167,6 +167,33 @@
 #endif
 
 // =============================================================================
+// COMMAND OUTPUT ABSTRACTION (always enabled, for emitJSON)
+// =============================================================================
+
+#ifdef PLATFORM_ESP32
+    #define OUTPUT_STREAM Serial
+#elif defined(PLATFORM_WASM)
+    // WASM: Output to JavaScript callback or memory buffer
+    // External callback function provided by WASM integration layer
+    extern void jsOutputCallback(const char*);
+
+    class WASMOutputStream {
+    public:
+        template<typename T>
+        WASMOutputStream& operator<<(const T& value) {
+            // For now, stub - will be implemented in WASM integration
+            return *this;
+        }
+        WASMOutputStream& operator<<(std::ostream& (*)(std::ostream&)) {
+            return *this; // Handle std::endl
+        }
+    };
+    #define OUTPUT_STREAM (WASMOutputStream())
+#else // PLATFORM_LINUX
+    #define OUTPUT_STREAM std::cout
+#endif
+
+// =============================================================================
 // STRING BUILDING ABSTRACTION
 // =============================================================================
 
