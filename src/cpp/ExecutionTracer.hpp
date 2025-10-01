@@ -15,12 +15,16 @@
 
 #include <vector>
 #include <string>
-#include <fstream>
 #include <chrono>
-#include <sstream>
-#include <iostream>
+#include "PlatformAbstraction.hpp"
 
 namespace arduino_interpreter {
+
+#ifdef ENABLE_FILE_TRACING
+
+// ============================================================================
+// FULL EXECUTION TRACER (FILE TRACING ENABLED)
+// ============================================================================
 
 class ExecutionTracer {
 private:
@@ -98,83 +102,82 @@ public:
     size_t size() const { return trace_.size(); }
     
     void saveToFile(const std::string& filename) const {
-        std::ofstream file(filename);
-        if (!file.is_open()) return;
-        
-        file << "# C++ Execution Trace\n";
-        file << "# Total entries: " << trace_.size() << "\n";
-        file << "# Context: " << currentContext_ << "\n\n";
+        PlatformFile file;
+        if (!file.open(filename.c_str())) return;
+
+        file.write("# C++ Execution Trace\n");
+        file.write("# Total entries: " + std::to_string(trace_.size()) + "\n");
+        file.write("# Context: " + currentContext_ + "\n\n");
         
         for (const auto& entry : trace_) {
-            file << "[" << entry.timestamp << "] " 
-                 << entry.event;
-            
+            std::string line = "[" + entry.timestamp + "] " + entry.event;
+
             if (!entry.detail.empty()) {
-                file << " | " << entry.detail;
+                line += " | " + entry.detail;
             }
-            
+
             if (!entry.context.empty() && entry.context != currentContext_) {
-                file << " (" << entry.context << ")";
+                line += " (" + entry.context + ")";
             }
-            
-            file << "\n";
+
+            file.write(line + "\n");
         }
         
         file.close();
     }
     
     void compareWithJS(const std::vector<std::string>& jsTrace) const {
-        std::ofstream file("execution_comparison.txt");
-        if (!file.is_open()) return;
-        
-        file << "# Execution Comparison: C++ vs JavaScript\n\n";
-        
+        PlatformFile file;
+        if (!file.open("execution_comparison.txt")) return;
+
+        file.write("# Execution Comparison: C++ vs JavaScript\n\n");
+
         size_t maxLen = std::max(trace_.size(), jsTrace.size());
-        
-        file << "C++ Events: " << trace_.size() << "\n";
-        file << "JS Events: " << jsTrace.size() << "\n\n";
-        
+
+        file.write("C++ Events: " + std::to_string(trace_.size()) + "\n");
+        file.write("JS Events: " + std::to_string(jsTrace.size()) + "\n\n");
+
         for (size_t i = 0; i < maxLen; i++) {
-            file << "--- Line " << (i + 1) << " ---\n";
-            
+            file.write("--- Line " + std::to_string(i + 1) + " ---\n");
+
             if (i < trace_.size()) {
-                file << "C++: " << trace_[i].event;
+                std::string line = "C++: " + trace_[i].event;
                 if (!trace_[i].detail.empty()) {
-                    file << " | " << trace_[i].detail;
+                    line += " | " + trace_[i].detail;
                 }
-                file << "\n";
+                file.write(line + "\n");
             } else {
-                file << "C++: <MISSING>\n";
+                file.write("C++: <MISSING>\n");
             }
-            
+
             if (i < jsTrace.size()) {
-                file << "JS:  " << jsTrace[i] << "\n";
+                file.write("JS:  " + jsTrace[i] + "\n");
             } else {
-                file << "JS:  <MISSING>\n";
+                file.write("JS:  <MISSING>\n");
             }
-            
+
             // Mark differences
             if (i < trace_.size() && i < jsTrace.size()) {
                 std::string cppEvent = trace_[i].event;
                 std::string jsEvent = jsTrace[i];
-                
-                if (cppEvent.find(jsEvent) == std::string::npos && 
+
+                if (cppEvent.find(jsEvent) == std::string::npos &&
                     jsEvent.find(cppEvent) == std::string::npos) {
-                    file << "*** DIFFERENCE DETECTED ***\n";
+                    file.write("*** DIFFERENCE DETECTED ***\n");
                 }
             }
-            
-            file << "\n";
+
+            file.write("\n");
         }
-        
+
         file.close();
     }
     
     void printSummary() const {
 #ifdef DEBUG_EXECUTION_TRACER
-        std::cout << "\n=== Execution Trace Summary ===\n";
-        std::cout << "Total events: " << trace_.size() << "\n";
-        std::cout << "Context: " << currentContext_ << "\n";
+        DEBUG_STREAM << "\n=== Execution Trace Summary ===\n";
+        DEBUG_STREAM << "Total events: " << trace_.size() << "\n";
+        DEBUG_STREAM << "Context: " << currentContext_ << "\n";
 
         // Count event types
         int visitors = 0, expressions = 0, commands = 0;
@@ -184,10 +187,10 @@ public:
             else if (entry.event.find("CMD:") != std::string::npos) commands++;
         }
 
-        std::cout << "Visitor calls: " << visitors << "\n";
-        std::cout << "Expression evaluations: " << expressions << "\n";
-        std::cout << "Commands generated: " << commands << "\n";
-        std::cout << "===============================\n\n";
+        DEBUG_STREAM << "Visitor calls: " << visitors << "\n";
+        DEBUG_STREAM << "Expression evaluations: " << expressions << "\n";
+        DEBUG_STREAM << "Commands generated: " << commands << "\n";
+        DEBUG_STREAM << "===============================\n\n";
 #endif // DEBUG_EXECUTION_TRACER
     }
 };
@@ -223,5 +226,67 @@ public:
 };
 
 #define TRACE_SCOPE(event, detail) TraceScope _trace_scope(event, detail)
+
+#else // !ENABLE_FILE_TRACING
+
+// ============================================================================
+// STUB EXECUTION TRACER (FILE TRACING DISABLED)
+// ============================================================================
+//
+// When ENABLE_FILE_TRACING=OFF, ExecutionTracer becomes a zero-overhead stub.
+// All methods are inlined no-ops. This completely eliminates file I/O
+// dependencies (fstream, iostream) while maintaining API compatibility.
+
+class ExecutionTracer {
+public:
+    // Control methods (no-ops)
+    void enable() {}
+    void disable() {}
+    bool isEnabled() const { return false; }
+    void setContext(const std::string&) {}
+
+    // Logging methods (no-ops)
+    void log(const std::string&, const std::string& = "") {}
+    void logEntry(const std::string&, const std::string& = "") {}
+    void logExit(const std::string&, const std::string& = "") {}
+    void logCommand(const std::string&, const std::string& = "") {}
+    void logExpression(const std::string&, const std::string& = "") {}
+
+    // State methods (no-ops)
+    void clear() {}
+    size_t size() const { return 0; }
+
+    // File output methods (no-ops)
+    void saveToFile(const std::string&) const {}
+    void compareWithJS(const std::vector<std::string>&) const {}
+    void printSummary() const {}
+};
+
+// Global tracer instance (stub version)
+extern ExecutionTracer g_tracer;
+
+// Convenience macros (become no-ops)
+#define TRACE_ENABLE()
+#define TRACE_DISABLE()
+#define TRACE_CONTEXT(ctx)
+#define TRACE(event, detail)
+#define TRACE_ENTRY(event, detail)
+#define TRACE_EXIT(event, detail)
+#define TRACE_COMMAND(type, details)
+#define TRACE_EXPR(type, details)
+#define TRACE_SAVE(filename)
+#define TRACE_SUMMARY()
+#define TRACE_CLEAR()
+
+// RAII helper (stub version - does nothing)
+class TraceScope {
+public:
+    TraceScope(const std::string&, const std::string& = "") {}
+    ~TraceScope() {}
+};
+
+#define TRACE_SCOPE(event, detail)
+
+#endif // ENABLE_FILE_TRACING
 
 } // namespace arduino_interpreter
