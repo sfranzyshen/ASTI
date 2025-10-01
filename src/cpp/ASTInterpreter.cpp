@@ -2776,6 +2776,26 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
                 return std::monostate{};
             }
             return leftVal / rightVal;  // Returns int32_t
+        } else if (leftIsInt && std::holds_alternative<double>(right)) {
+            // Special case: int / double where double is integer-valued (e.g., 560 / 1024.0)
+            // Match JavaScript's behavior: does INTEGER division when right is integer-valued
+            double rightDouble = std::get<double>(right);
+            if (std::floor(rightDouble) == rightDouble) {
+                // Right operand has no fractional part - do integer division
+                int32_t leftVal = convertToInt(left);
+                int32_t rightVal = static_cast<int32_t>(rightDouble);
+                if (rightVal == 0) {
+                    emitError("Division by zero");
+                    return std::monostate{};
+                }
+                return leftVal / rightVal;  // INTEGER division to match JavaScript
+            }
+            // Right operand has fractional part - do normal float division
+            if (rightDouble == 0.0) {
+                emitError("Division by zero");
+                return std::monostate{};
+            }
+            return convertToDouble(left) / rightDouble;
         } else {
             // Floating-point division: any operand is double
             double rightVal = convertToDouble(right);
