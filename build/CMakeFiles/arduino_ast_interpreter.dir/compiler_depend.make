@@ -487,7 +487,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ASTInterpreter.cpp.o: ../src/cpp/
   /usr/include/c++/11/bits/stl_heap.h \
   /usr/include/c++/11/bits/uniform_int_dist.h \
   ../src/cpp/InterpreterConfig.hpp \
-  ../src/cpp/SyncMockProvider.hpp \
+  ../src/cpp/SyncDataProvider.hpp \
   /usr/include/c++/11/stack \
   /usr/include/c++/11/deque \
   /usr/include/c++/11/bits/stl_deque.h \
@@ -1234,7 +1234,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.o: ../
   ../libs/CompactAST/src/CompactAST.hpp \
   ../src/cpp/EnhancedInterpreter.hpp \
   ../src/cpp/InterpreterConfig.hpp \
-  ../src/cpp/SyncMockProvider.hpp \
+  ../src/cpp/SyncDataProvider.hpp \
   /usr/include/c++/11/stack \
   /usr/include/c++/11/deque \
   /usr/include/c++/11/bits/stl_deque.h \
@@ -1754,6 +1754,8 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ExecutionTracer.cpp.o: ../src/cpp
 
 /usr/include/c++/11/fstream:
 
+../src/cpp/ExecutionTracer.hpp:
+
 /usr/include/c++/11/limits:
 
 /usr/include/c++/11/ratio:
@@ -2096,10 +2098,6 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ExecutionTracer.cpp.o: ../src/cpp
 
 /usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
-../src/cpp/ExecutionTracer.hpp:
-
-../src/cpp/SyncMockProvider.hpp:
-
 /usr/include/c++/11/bits/std_function.h:
 
 /usr/include/c++/11/bits/stl_tempbuf.h:
@@ -2317,3 +2315,5 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ExecutionTracer.cpp.o: ../src/cpp
 ../src/cpp/EnhancedInterpreter.hpp:
 
 /usr/include/c++/11/bits/unordered_set.h:
+
+../src/cpp/SyncDataProvider.hpp:

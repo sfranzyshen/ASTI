@@ -489,7 +489,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ASTInterpreter.cpp.o
  /usr/include/c++/11/bits/stl_heap.h
  /usr/include/c++/11/bits/uniform_int_dist.h
  /mnt/d/Devel/ASTInterpreter/src/cpp/InterpreterConfig.hpp
- /mnt/d/Devel/ASTInterpreter/src/cpp/SyncMockProvider.hpp
+ /mnt/d/Devel/ASTInterpreter/src/cpp/SyncDataProvider.hpp
  /usr/include/c++/11/stack
  /usr/include/c++/11/deque
  /usr/include/c++/11/bits/stl_deque.h
@@ -1239,7 +1239,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.o
  /mnt/d/Devel/ASTInterpreter/libs/CompactAST/src/CompactAST.hpp
  /mnt/d/Devel/ASTInterpreter/src/cpp/EnhancedInterpreter.hpp
  /mnt/d/Devel/ASTInterpreter/src/cpp/InterpreterConfig.hpp
- /mnt/d/Devel/ASTInterpreter/src/cpp/SyncMockProvider.hpp
+ /mnt/d/Devel/ASTInterpreter/src/cpp/SyncDataProvider.hpp
  /usr/include/c++/11/stack
  /usr/include/c++/11/deque
  /usr/include/c++/11/bits/stl_deque.h

@@ -196,7 +196,7 @@ CMakeFiles/extract_cpp_commands.dir/tests/extract_cpp_commands.cpp.o: \
  /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/uniform_int_dist.h \
  /mnt/d/Devel/ASTInterpreter/tests/../src/cpp/InterpreterConfig.hpp \
- /mnt/d/Devel/ASTInterpreter/tests/../src/cpp/SyncMockProvider.hpp \
+ /mnt/d/Devel/ASTInterpreter/tests/../src/cpp/SyncDataProvider.hpp \
  /usr/include/c++/11/stack /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_stack.h /usr/include/c++/11/chrono \
@@ -206,7 +206,7 @@ CMakeFiles/extract_cpp_commands.dir/tests/extract_cpp_commands.cpp.o: \
  /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/sstream \
  /usr/include/c++/11/bits/sstream.tcc \
- /mnt/d/Devel/ASTInterpreter/tests/../src/cpp/DeterministicMockProvider.hpp \
+ /mnt/d/Devel/ASTInterpreter/tests/DeterministicDataProvider.hpp \
  /usr/include/c++/11/fstream /usr/include/c++/11/bits/codecvt.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \

@@ -6184,61 +6184,75 @@ class ASTInterpreter {
                     return;
                 }
                 if (property === 'print' && node.arguments && node.arguments.length > 0) {
+                    const originalArgs = node.arguments;
                     const text = await this.evaluateExpression(node.arguments[0]);
+                    const displayArg = this.formatArgumentForDisplay(text, originalArgs[0]);
                     this.emitCommand({
                         type: COMMAND_TYPES.FUNCTION_CALL,
                         function: 'Keyboard.print',
                         arguments: [text],
                         timestamp: Date.now(),
-                        message: `Keyboard.print(${text})`
+                        message: `Keyboard.print(${displayArg})`
                     });
                     return;
                 }
                 if (property === 'println') {
-                    const text = node.arguments && node.arguments.length > 0 
-                        ? await this.evaluateExpression(node.arguments[0]) 
+                    const originalArgs = node.arguments;
+                    const text = node.arguments && node.arguments.length > 0
+                        ? await this.evaluateExpression(node.arguments[0])
+                        : '';
+                    const displayArg = originalArgs && originalArgs.length > 0
+                        ? this.formatArgumentForDisplay(text, originalArgs[0])
                         : '';
                     this.emitCommand({
                         type: COMMAND_TYPES.FUNCTION_CALL,
                         function: 'Keyboard.println',
                         arguments: [text],
                         timestamp: Date.now(),
-                        message: `Keyboard.println(${text})`
+                        message: `Keyboard.println(${displayArg})`
                     });
                     return;
                 }
                 if (property === 'write' && node.arguments && node.arguments.length > 0) {
+                    const originalArgs = node.arguments;
                     const key = await this.evaluateExpression(node.arguments[0]);
+                    const displayArg = this.formatArgumentForDisplay(key, originalArgs[0]);
                     this.emitCommand({
                         type: COMMAND_TYPES.FUNCTION_CALL,
                         function: 'Keyboard.write',
                         arguments: [key],
                         timestamp: Date.now(),
-                        message: `Keyboard.write(${key})`
+                        message: `Keyboard.write(${displayArg})`
                     });
                     return;
                 }
                 if (property === 'press' && node.arguments && node.arguments.length > 0) {
+                    const originalArgs = node.arguments;
                     const key = await this.evaluateExpression(node.arguments[0]);
+                    const displayArg = this.formatArgumentForDisplay(key, originalArgs[0]);
                     this.emitCommand({
                         type: COMMAND_TYPES.FUNCTION_CALL,
                         function: 'Keyboard.press',
                         arguments: [key],
                         timestamp: Date.now(),
-                        message: `Keyboard.press(${key})`
+                        message: `Keyboard.press(${displayArg})`
                     });
                     return;
                 }
                 if (property === 'release') {
-                    const key = node.arguments && node.arguments.length > 0 
-                        ? await this.evaluateExpression(node.arguments[0]) 
+                    const originalArgs = node.arguments;
+                    const key = node.arguments && node.arguments.length > 0
+                        ? await this.evaluateExpression(node.arguments[0])
+                        : 'all';
+                    const displayArg = originalArgs && originalArgs.length > 0
+                        ? this.formatArgumentForDisplay(key, originalArgs[0])
                         : 'all';
                     this.emitCommand({
                         type: COMMAND_TYPES.FUNCTION_CALL,
                         function: 'Keyboard.release',
                         arguments: [key],
                         timestamp: Date.now(),
-                        message: `Keyboard.release(${key})`
+                        message: `Keyboard.release(${displayArg})`
                     });
                     return;
                 }
