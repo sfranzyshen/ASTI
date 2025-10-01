@@ -300,19 +300,18 @@ class ArduinoObject {
             timestamp: Date.now()
         });
         
-        // Wait for response
+        // Wait for response from parent app
+        // Parent app MUST respond to LIBRARY_METHOD_REQUEST within 5000ms
         try {
             const response = await this.interpreter.waitForResponse(requestId, 5000);
             return response.value;
         } catch (error) {
-            // Fallback values for testing/simulation
-            switch (methodName) {
-                case 'numPixels': return this.constructorArgs[0] || 60;
-                case 'getBrightness': return 255;
-                case 'getPixelColor': return 0;
-                case 'canShow': return true;
-                default: return 0;
-            }
+            // Configuration error: parent app failed to respond
+            this.interpreter.emitError(
+                `${this.className}.${methodName}() timeout - parent app must respond to LIBRARY_METHOD_REQUEST within 5000ms`,
+                'ConfigurationError'
+            );
+            return -1; // Sentinel value indicating configuration error
         }
     }
 
@@ -7240,12 +7239,16 @@ class ASTInterpreter {
         });
         
         // Use async response mechanism like analogRead
+        // Parent app MUST respond to DIGITAL_READ_REQUEST within 5000ms
         try {
             const response = await this.waitForResponse(requestId, 5000);
             return response.value;
         } catch (error) {
-            this.emitError(`digitalRead timeout: ${error.message}`);
-            return Math.random() > 0.5 ? 1 : 0; // Fallback value
+            this.emitError(
+                'digitalRead() timeout - parent app must respond to DIGITAL_READ_REQUEST within 5000ms',
+                'ConfigurationError'
+            );
+            return -1; // Sentinel value indicating configuration error
         }
     }
     
@@ -7316,12 +7319,16 @@ class ASTInterpreter {
         });
         
         // Use hybrid async response mechanism
+        // Parent app MUST respond to ANALOG_READ_REQUEST within 5000ms
         try {
             const response = await this.waitForResponse(requestId, 5000);
             return response.value;
         } catch (error) {
-            this.emitError(`analogRead timeout: ${error.message}`);
-            return Math.floor(Math.random() * 1024); // Fallback value
+            this.emitError(
+                'analogRead() timeout - parent app must respond to ANALOG_READ_REQUEST within 5000ms',
+                'ConfigurationError'
+            );
+            return -1; // Sentinel value indicating configuration error
         }
     }
     
@@ -7362,12 +7369,16 @@ class ASTInterpreter {
         });
         
         // Use async response mechanism like analogRead
+        // Parent app MUST respond to MILLIS_REQUEST within 5000ms
         try {
             const response = await this.waitForResponse(requestId, 5000);
             return response.value;
         } catch (error) {
-            this.emitError(`millis timeout: ${error.message}`);
-            return Date.now() % 100000; // Fallback value
+            this.emitError(
+                'millis() timeout - parent app must respond to MILLIS_REQUEST within 5000ms',
+                'ConfigurationError'
+            );
+            return -1; // Sentinel value indicating configuration error
         }
     }
     
@@ -7391,12 +7402,16 @@ class ASTInterpreter {
         this.suspendedNode = node;
         
         // Use Promise-based approach like analogRead
+        // Parent app MUST respond to MICROS_REQUEST within 5000ms
         try {
             const response = await this.waitForResponse(requestId, 5000);
             return response;
         } catch (error) {
-            this.emitError(`micros timeout: ${error.message}`);
-            return Date.now() * 1000 % 1000000; // Fallback microsecond value
+            this.emitError(
+                'micros() timeout - parent app must respond to MICROS_REQUEST within 5000ms',
+                'ConfigurationError'
+            );
+            return -1; // Sentinel value indicating configuration error
         }
     }
     

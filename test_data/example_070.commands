@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759340085911,
+    "timestamp": 1759344277917,
     "component": "interpreter",
     "version": "14.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759340085911,
+    "timestamp": 1759344277917,
     "message": "Program execution started"
   },
   {
@@ -16,100 +16,100 @@
     "variable": "switchPin",
     "value": 8,
     "isConst": true,
-    "timestamp": 1759340085911
+    "timestamp": 1759344277917
   },
   {
     "type": "VAR_SET",
     "variable": "previousTime",
     "value": 0,
-    "timestamp": 1759340085911
+    "timestamp": 1759344277917
   },
   {
     "type": "VAR_SET",
     "variable": "switchState",
     "value": 0,
-    "timestamp": 1759340085911
+    "timestamp": 1759344277917
   },
   {
     "type": "VAR_SET",
     "variable": "prevSwitchState",
     "value": 0,
-    "timestamp": 1759340085911
+    "timestamp": 1759344277917
   },
   {
     "type": "VAR_SET",
     "variable": "led",
     "value": 2,
-    "timestamp": 1759340085911
+    "timestamp": 1759344277917
   },
   {
     "type": "VAR_SET",
     "variable": "interval",
     "value": 600000,
-    "timestamp": 1759340085911
+    "timestamp": 1759344277917
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759340085911,
+    "timestamp": 1759344277917,
     "message": "Executing setup() function"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1759340085911,
+    "timestamp": 1759344277917,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "x",
     "value": 2,
-    "timestamp": 1759340085911
+    "timestamp": 1759344277917
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1759340085911,
+    "timestamp": 1759344277917,
     "message": "for loop iteration 0"
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 1,
-    "timestamp": 1759340085911
+    "timestamp": 1759344277917
   },
   {
     "type": "VAR_SET",
     "variable": "x",
     "value": 3,
-    "timestamp": 1759340085912
+    "timestamp": 1759344277917
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1759340085916,
+    "timestamp": 1759344277922,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "PIN_MODE",
     "pin": 8,
     "mode": 0,
-    "timestamp": 1759340085916
+    "timestamp": 1759344277922
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759340085916,
+    "timestamp": 1759344277922,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759340085916,
+    "timestamp": 1759344277922,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759340085916,
+    "timestamp": 1759344277922,
     "message": "Starting loop iteration 1"
   },
   {
@@ -117,50 +117,50 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759340085916
+    "timestamp": 1759344277922
   },
   {
     "type": "MILLIS_REQUEST",
     "requestId": "millis_000001",
-    "timestamp": 1759340085917
+    "timestamp": 1759344277922
   },
   {
     "type": "VAR_SET",
     "variable": "currentTime",
     "value": 17807,
-    "timestamp": 1759340085921
+    "timestamp": 1759344277928
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1759340085921
+    "timestamp": 1759344277928
   },
   {
     "type": "DIGITAL_READ_REQUEST",
     "pin": 8,
     "requestId": "digitalRead_000002",
-    "timestamp": 1759340085921
+    "timestamp": 1759344277928
   },
   {
     "type": "VAR_SET",
     "variable": "switchState",
     "value": 0,
-    "timestamp": 1759340085926
+    "timestamp": 1759344277934
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1759340085926
+    "timestamp": 1759344277934
   },
   {
     "type": "VAR_SET",
     "variable": "prevSwitchState",
     "value": 0,
-    "timestamp": 1759340085926
+    "timestamp": 1759344277934
   },
   {
     "type": "FUNCTION_CALL",
@@ -168,23 +168,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759340085926
+    "timestamp": 1759344277934
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759340085932,
+    "timestamp": 1759344277938,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759340085932,
+    "timestamp": 1759344277938,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759340085932,
+    "timestamp": 1759344277938,
     "message": "Program execution stopped"
   }
 ]
