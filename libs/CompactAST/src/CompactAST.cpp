@@ -693,12 +693,27 @@ void CompactASTReader::linkNodeChildren() {
             } else if (parentNode->getType() == ASTNodeType::WHILE_STMT) {
                 auto* whileStmtNode = dynamic_cast<arduino_ast::WhileStatement*>(parentNode.get());
                 if (whileStmtNode) {
-                    
+
                     // While statements expect: condition, body
                     if (!whileStmtNode->getCondition()) {
                         whileStmtNode->setCondition(std::move(nodes_[childIndex]));
                     } else if (!whileStmtNode->getBody()) {
                         whileStmtNode->setBody(std::move(nodes_[childIndex]));
+                    } else {
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
+            } else if (parentNode->getType() == ASTNodeType::DO_WHILE_STMT) {
+                auto* doWhileStmtNode = dynamic_cast<arduino_ast::DoWhileStatement*>(parentNode.get());
+                if (doWhileStmtNode) {
+
+                    // Do-while statements expect: body, condition
+                    if (!doWhileStmtNode->getBody()) {
+                        doWhileStmtNode->setBody(std::move(nodes_[childIndex]));
+                    } else if (!doWhileStmtNode->getCondition()) {
+                        doWhileStmtNode->setCondition(std::move(nodes_[childIndex]));
                     } else {
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }

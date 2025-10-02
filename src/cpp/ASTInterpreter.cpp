@@ -740,20 +740,19 @@ void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
 
     } while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING && iteration < maxLoopIterations_);
 
-    // CROSS-PLATFORM FIX: Emit single DO_WHILE_LOOP end event to match JavaScript
-    emitDoWhileLoopEnd(iteration);
-
-    // ULTRATHINK: Always stop execution when loop limit reached (like JavaScript)
-    // Set context-aware execution control instead of global flag
-    if (iteration >= maxLoopIterations_) {
-        shouldContinueExecution_ = false;  // Keep for backward compatibility
-
-        // CRITICAL: Test 43 needs individual loop completion in setup() to continue to next statement
-        bool continueInParent = (executionControl_.getCurrentScope() == ExecutionControlStack::ScopeType::SETUP);
-        executionControl_.setStopReason(ExecutionControlStack::StopReason::ITERATION_LIMIT, continueInParent);
-        if (currentLoopIteration_ > 0) {
-        } else {
-        }
+    // CROSS-PLATFORM FIX: Emit LOOP_LIMIT_REACHED when limit hit, otherwise DO_WHILE_LOOP end
+    bool limitReached = (iteration >= maxLoopIterations_);
+    if (limitReached) {
+        // Match JavaScript: emit LOOP_LIMIT_REACHED and stop execution
+        StringBuildStream json;
+        json << "{\"type\":\"LOOP_LIMIT_REACHED\",\"timestamp\":0,\"phase\":\"end\",\"iterations\":"
+             << iteration << ",\"message\":\"Do-while loop limit reached: completed "
+             << iteration << " iterations (max: " << maxLoopIterations_ << ")\"}";
+        emitJSON(json.str());
+        shouldContinueExecution_ = false;
+        executionControl_.setStopReason(ExecutionControlStack::StopReason::ITERATION_LIMIT, false);
+    } else {
+        emitDoWhileLoopEnd(iteration);
     }
 }
 
