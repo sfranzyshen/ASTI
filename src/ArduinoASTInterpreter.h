@@ -34,8 +34,8 @@ using arduino_interpreter::SyncDataProvider;
 using arduino_interpreter::CommandValue;
 
 // Version information
-#define ARDUINO_AST_INTERPRETER_VERSION "15.0.0"
-#define ARDUINO_AST_INTERPRETER_VERSION_MAJOR 15
+#define ARDUINO_AST_INTERPRETER_VERSION "16.0.0"
+#define ARDUINO_AST_INTERPRETER_VERSION_MAJOR 16
 #define ARDUINO_AST_INTERPRETER_VERSION_MINOR 0
 #define ARDUINO_AST_INTERPRETER_VERSION_PATCH 0
 

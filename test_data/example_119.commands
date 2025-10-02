@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759352088055,
+    "timestamp": 1759382847854,
     "component": "interpreter",
-    "version": "15.0.0",
+    "version": "16.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759352088055,
+    "timestamp": 1759382847854,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759352088055,
+    "timestamp": 1759382847854,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759352088055,
+    "timestamp": 1759382847854,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759352088055,
+    "timestamp": 1759382847854,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759352088055,
+    "timestamp": 1759382847854,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759352088055,
+    "timestamp": 1759382847854,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,25 +46,25 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759352088055
+    "timestamp": 1759382847854
   },
   {
     "type": "VAR_SET",
     "variable": "x",
     "value": 0,
-    "timestamp": 1759352088055
+    "timestamp": 1759382847854
   },
   {
     "type": "VAR_SET",
     "variable": "y",
     "value": 5,
-    "timestamp": 1759352088055
+    "timestamp": 1759382847854
   },
   {
     "type": "FUNCTION_CALL",
     "function": "myFunc",
     "arguments": [],
-    "timestamp": 1759352088055,
+    "timestamp": 1759382847855,
     "message": "myFunc()"
   },
   {
@@ -74,7 +74,7 @@
       "myFunc() was called."
     ],
     "data": "myFunc() was called.",
-    "timestamp": 1759352088055,
+    "timestamp": 1759382847855,
     "message": "Serial.println(\"myFunc() was called.\")"
   },
   {
@@ -82,7 +82,7 @@
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759352088061
+    "timestamp": 1759382847859
   },
   {
     "type": "FUNCTION_CALL",
@@ -91,14 +91,14 @@
       "Condition 1 is true."
     ],
     "data": "Condition 1 is true.",
-    "timestamp": 1759352088061,
+    "timestamp": 1759382847859,
     "message": "Serial.println(\"Condition 1 is true.\")"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "myFunc",
     "arguments": [],
-    "timestamp": 1759352088061,
+    "timestamp": 1759382847859,
     "message": "myFunc()"
   },
   {
@@ -108,7 +108,7 @@
       "myFunc() was called."
     ],
     "data": "myFunc() was called.",
-    "timestamp": 1759352088061,
+    "timestamp": 1759382847859,
     "message": "Serial.println(\"myFunc() was called.\")"
   },
   {
@@ -116,7 +116,7 @@
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1759352088067
+    "timestamp": 1759382847864
   },
   {
     "type": "FUNCTION_CALL",
@@ -124,23 +124,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759352088067
+    "timestamp": 1759382847864
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759352088071,
+    "timestamp": 1759382847870,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759352088071,
+    "timestamp": 1759382847870,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759352088071,
+    "timestamp": 1759382847870,
     "message": "Program execution stopped"
   }
 ]
