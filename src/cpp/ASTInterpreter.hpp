@@ -1108,9 +1108,6 @@ public:
     
 private:
     void registerStandardFunctions();
-    void registerArduinoCoreFunctions();
-    void registerMathFunctions();
-    void registerStringFunctions();
 };
 
 // =============================================================================
@@ -1128,22 +1125,5 @@ std::string commandValueToJsonString(const CommandValue& value);
 std::unique_ptr<ASTInterpreter> createInterpreterFromCompactAST(
     const uint8_t* data, size_t size, 
     const InterpreterOptions& options = InterpreterOptions{});
-
-/**
- * Cross-platform compatibility helpers
- */
-namespace compat {
-    /**
-     * Convert JavaScript number to appropriate C++ type
-     */
-    CommandValue convertJSNumber(double jsNumber);
-    
-    /**
-     * Handle JavaScript-style type coercion
-     */
-    bool jsTypeCoercionToBool(const CommandValue& value);
-    double jsTypeCoercionToNumber(const CommandValue& value);
-    std::string jsTypeCoercionToString(const CommandValue& value);
-}
 
 } // namespace arduino_interpreter

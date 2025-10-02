@@ -39,22 +39,6 @@ using ::EnhancedCommandValue;
 using arduino_interpreter::EnhancedScopeManager;
 using arduino_interpreter::MemberAccessHelper;
 
-// Disable debug output for command stream parity testing
-class NullStream {
-public:
-    template<typename T>
-    NullStream& operator<<(const T&) { return *this; }
-    NullStream& operator<<(std::ostream& (*)(std::ostream&)) { return *this; }
-    // Handle manipulators
-    NullStream& operator<<(NullStream& (*)(NullStream&)) { return *this; }
-    // Handle std::endl, std::flush, etc.
-    NullStream& operator<<(std::ios_base& (*)(std::ios_base&)) { return *this; }
-};
-
-static NullStream nullStream;
-
-#define DEBUG_OUT nullStream  // Disable debug for cross-platform validation
-
 namespace arduino_interpreter {
 
 // =============================================================================
@@ -133,20 +117,14 @@ ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const Int
     // Reset static timing counters for fresh state in each interpreter instance
     resetStaticTimingCounters();
 
-    DEBUG_OUT << "ASTInterpreter constructor: Creating CompactASTReader..." << std::endl;
-
     // Parse compact AST
     arduino_ast::CompactASTReader reader(compactAST, size);
-    DEBUG_OUT << "ASTInterpreter constructor: Parsing AST..." << std::endl;
     ast_ = reader.parse();
-    
-    DEBUG_OUT << "ASTInterpreter constructor: AST parsed, initializing interpreter..." << std::endl;
 
     // ULTRATHINK: Initialize execution control stack
     executionControl_.clear();
 
     initializeInterpreter();
-    DEBUG_OUT << "ASTInterpreter constructor: Initialization complete" << std::endl;
 }
 
 ASTInterpreter::~ASTInterpreter() {
@@ -371,17 +349,12 @@ void ASTInterpreter::executeProgram() {
 }
 
 void ASTInterpreter::executeFunctions() {
-    DEBUG_OUT << "executeFunctions: Starting to collect function definitions..." << std::endl;
     if (!ast_) {
-        DEBUG_OUT << "executeFunctions: ERROR - ast_ is null!" << std::endl;
         return;
     }
-    DEBUG_OUT << "executeFunctions: AST is valid, calling accept..." << std::endl;
-    
+
     // Visit AST to collect function definitions
     ast_->accept(*this);
-    
-    DEBUG_OUT << "executeFunctions: accept() completed successfully" << std::endl;
 }
 
 void ASTInterpreter::executeSetup() {
@@ -512,31 +485,22 @@ void ASTInterpreter::executeLoop() {
 // =============================================================================
 
 void ASTInterpreter::visit(arduino_ast::ProgramNode& node) {
-    DEBUG_OUT << "visit(ProgramNode): Starting to visit ProgramNode" << std::endl;
     
-    DEBUG_OUT << "visit(ProgramNode): Getting children..." << std::endl;
     const auto& children = node.getChildren();
-    DEBUG_OUT << "visit(ProgramNode): Found " << children.size() << " children" << std::endl;
     
     for (size_t i = 0; i < children.size(); ++i) {
-        DEBUG_OUT << "visit(ProgramNode): Processing child " << i << std::endl;
         if (state_ != ExecutionState::RUNNING) {
-            DEBUG_OUT << "visit(ProgramNode): State changed, breaking" << std::endl;
             break;
         }
         
         const auto& child = children[i];
         if (!child) {
-            DEBUG_OUT << "visit(ProgramNode): ERROR - child " << i << " is null!" << std::endl;
             continue;
         }
         
-        DEBUG_OUT << "visit(ProgramNode): Calling accept on child " << i << std::endl;
         child->accept(*this);
-        DEBUG_OUT << "visit(ProgramNode): Child " << i << " accept completed" << std::endl;
     }
     
-    DEBUG_OUT << "visit(ProgramNode): All children processed" << std::endl;
 }
 
 void ASTInterpreter::visit(arduino_ast::ErrorNode& node) {
@@ -550,7 +514,6 @@ void ASTInterpreter::visit(arduino_ast::CommentNode& node) {
 void ASTInterpreter::visit(arduino_ast::CompoundStmtNode& node) {
 
     const auto& children = node.getChildren();
-    DEBUG_OUT << "CompoundStmtNode has " << children.size() << " children" << std::endl;
     TRACE("visit(CompoundStmtNode)", "children=" + std::to_string(children.size()));
 
     // CRITICAL FIX: Check if we're resuming from a suspended state for this specific node
@@ -588,7 +551,6 @@ void ASTInterpreter::visit(arduino_ast::CompoundStmtNode& node) {
 
         const auto& child = children[i];
         std::string childType = child ? arduino_ast::nodeTypeToString(child->getType()) : "null";
-        DEBUG_OUT << "Processing compound child " << i << ": " << childType << std::endl;
         TRACE("visit(CompoundStmtNode)", "Processing child " + std::to_string(i) + ": " + childType);
         
         
@@ -1638,13 +1600,10 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::FuncDefNode& node) {
-    DEBUG_OUT << "visit(FuncDefNode): Starting to visit FuncDefNode" << std::endl;
     
     auto declarator = node.getDeclarator();
-    DEBUG_OUT << "visit(FuncDefNode): Declarator pointer: " << (declarator ? "valid" : "null") << std::endl;
     
     if (!declarator) {
-        DEBUG_OUT << "visit(FuncDefNode): No declarator found, returning" << std::endl;
         return;
     }
     
@@ -1654,22 +1613,17 @@ void ASTInterpreter::visit(arduino_ast::FuncDefNode& node) {
     // Try DeclaratorNode first (more likely)
     if (const auto* declNode = dynamic_cast<const arduino_ast::DeclaratorNode*>(declarator)) {
         functionName = declNode->getName();
-        DEBUG_OUT << "visit(FuncDefNode): Found DeclaratorNode with name: " << functionName << std::endl;
     }
     // Fallback to IdentifierNode
     else if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(declarator)) {
         functionName = identifier->getName();
-        DEBUG_OUT << "visit(FuncDefNode): Found IdentifierNode with name: " << functionName << std::endl;
     } else {
-        DEBUG_OUT << "visit(FuncDefNode): Declarator is not DeclaratorNode or IdentifierNode" << std::endl;
     }
     
     if (!functionName.empty()) {
         // MEMORY SAFE: Store function name instead of raw pointer
         userFunctionNames_.insert(functionName);
-        DEBUG_OUT << "visit(FuncDefNode): Registered function: " << functionName << std::endl;
     } else {
-        DEBUG_OUT << "visit(FuncDefNode): Function name is empty" << std::endl;
     }
 }
 
@@ -6250,19 +6204,16 @@ bool ASTInterpreter::handleResponse(const std::string& requestId, const CommandV
 
 void ASTInterpreter::debugLog(const std::string& message) {
     if (options_.debug) {
-        DEBUG_OUT << "[DEBUG] " << message << std::endl;
     }
 }
 
 void ASTInterpreter::verboseLog(const std::string& message) {
     if (options_.verbose) {
-        DEBUG_OUT << "[VERBOSE] " << message << std::endl;
     }
 }
 
 void ASTInterpreter::logExecutionState(const std::string& context) {
     if (options_.debug) {
-        DEBUG_OUT << "[STATE] " << context << " - State: " << static_cast<int>(state_) << std::endl;
     }
 }
 
@@ -6751,7 +6702,6 @@ void ASTInterpreter::visit(arduino_ast::NamespaceAccessNode& node) {
         lastExpressionResult_ = CommandValue(namespaceName + "::" + memberName);
     }
     
-    DEBUG_OUT << "NamespaceAccessNode result: " << namespaceName << "::" << memberName << std::endl;
 }
 
 void ASTInterpreter::visit(arduino_ast::CppCastNode& node) {
@@ -6794,7 +6744,6 @@ void ASTInterpreter::visit(arduino_ast::CppCastNode& node) {
     // Perform the cast using existing conversion utilities
     lastExpressionResult_ = convertToType(sourceValue, targetTypeName);
     
-    DEBUG_OUT << "CppCastNode: " << castType << " to " << targetTypeName << std::endl;
 }
 
 void ASTInterpreter::visit(arduino_ast::FunctionStyleCastNode& node) {
@@ -6828,7 +6777,6 @@ void ASTInterpreter::visit(arduino_ast::FunctionStyleCastNode& node) {
     // Perform the cast using existing conversion utilities
     lastExpressionResult_ = convertToType(sourceValue, targetTypeName);
     
-    DEBUG_OUT << "FunctionStyleCastNode: " << targetTypeName << "(...)" << std::endl;
 }
 
 void ASTInterpreter::visit(arduino_ast::WideCharLiteralNode& node) {
@@ -6836,12 +6784,7 @@ void ASTInterpreter::visit(arduino_ast::WideCharLiteralNode& node) {
     
     std::string value = node.getValue();
     bool isString = node.isString();
-    
-    if (options_.verbose) {
-        DEBUG_OUT << "Wide char literal: L" << (isString ? "\"" : "'") 
-                 << value << (isString ? "\"" : "'") << std::endl;
-    }
-    
+
     // In Arduino context, wide characters are not commonly used
     // but we handle them as regular string/char values for compatibility
     if (isString) {
@@ -6855,7 +6798,6 @@ void ASTInterpreter::visit(arduino_ast::WideCharLiteralNode& node) {
         }
     }
     
-    DEBUG_OUT << "WideCharLiteralNode result: " << value << std::endl;
 }
 
 void ASTInterpreter::visit(arduino_ast::DesignatedInitializerNode& node) {
@@ -6888,13 +6830,9 @@ void ASTInterpreter::visit(arduino_ast::DesignatedInitializerNode& node) {
     // In Arduino context, this is mainly used for struct initialization
     // We store the field assignment for later processing
     if (options_.verbose) {
-        DEBUG_OUT << "Designated initializer: ." << fieldName << " = ";
         if (std::holds_alternative<double>(fieldValue)) {
-            DEBUG_OUT << std::get<double>(fieldValue);
         } else if (std::holds_alternative<std::string>(fieldValue)) {
-            DEBUG_OUT << std::get<std::string>(fieldValue);
         }
-        DEBUG_OUT << std::endl;
     }
     
     // The result is the field value itself
@@ -6907,7 +6845,6 @@ void ASTInterpreter::visit(arduino_ast::FuncDeclNode& node) {
     const auto* declarator = node.getDeclarator();
     if (!declarator) {
         if (options_.verbose) {
-            DEBUG_OUT << "Function declaration missing declarator" << std::endl;
         }
         return;
     }
@@ -6920,7 +6857,6 @@ void ASTInterpreter::visit(arduino_ast::FuncDeclNode& node) {
     
     if (funcName.empty()) {
         if (options_.verbose) {
-            DEBUG_OUT << "Function declaration missing name" << std::endl;
         }
         return;
     }
@@ -6935,7 +6871,6 @@ void ASTInterpreter::visit(arduino_ast::FuncDeclNode& node) {
     // Function declarations (forward declarations) don't contain implementation
     // Just record the function signature for type checking
     if (options_.verbose) {
-        DEBUG_OUT << "Function declaration: " << returnType << " " << funcName << "(...)" << std::endl;
     }
     
     // Store function declaration info (similar to function definitions but without body)
@@ -6968,7 +6903,6 @@ void ASTInterpreter::visit(arduino_ast::ConstructorDeclarationNode& node) {
     emitConstructorRegistered(constructorName);
     
     if (options_.verbose) {
-        DEBUG_OUT << "Constructor declaration: " << constructorName << std::endl;
     }
 }
 
@@ -7028,11 +6962,8 @@ void ASTInterpreter::visit(arduino_ast::EnumMemberNode& node) {
     }, memberValue);
     
     if (options_.verbose) {
-        DEBUG_OUT << "Enum member: " << memberName << " = ";
         std::visit([](auto&& arg) {
-            DEBUG_OUT << arg;
         }, memberValue);
-        DEBUG_OUT << std::endl;
     }
 }
 
@@ -7052,7 +6983,6 @@ void ASTInterpreter::visit(arduino_ast::EnumTypeNode& node) {
     emitEnumTypeRef(enumName.empty() ? "anonymous" : enumName);
     
     if (options_.verbose) {
-        DEBUG_OUT << "Enum type: " << enumName << " with " << node.getMembers().size() << " members" << std::endl;
     }
 }
 
@@ -7104,7 +7034,6 @@ void ASTInterpreter::visit(arduino_ast::LambdaExpressionNode& node) {
     lastExpressionResult_ = std::string("lambda_function");
     
     if (options_.verbose) {
-        DEBUG_OUT << "Lambda expression with " << captures.size() << " captures, " << parameters.size() << " parameters" << std::endl;
     }
 }
 
@@ -7138,10 +7067,6 @@ void ASTInterpreter::visit(arduino_ast::MemberFunctionDeclarationNode& node) {
     emitMemberFunctionRegistered("UnknownClass", functionName);
     
     if (options_.verbose) {
-        DEBUG_OUT << "Member function: " << returnTypeName << " " << functionName << "(...)";
-        if (node.isConst()) DEBUG_OUT << " const";
-        if (node.isVirtual()) DEBUG_OUT << " virtual";
-        DEBUG_OUT << std::endl;
     }
 }
 
@@ -7169,7 +7094,6 @@ void ASTInterpreter::visit(arduino_ast::MultipleStructMembersNode& node) {
     emitMultipleStructMembers(memberNamesStr, "unknown");
     
     if (options_.verbose) {
-        DEBUG_OUT << "Multiple struct members: " << node.getMembers().size() << " members" << std::endl;
     }
 }
 
@@ -7218,7 +7142,6 @@ void ASTInterpreter::visit(arduino_ast::NewExpressionNode& node) {
     lastExpressionResult_ = std::string("new_" + typeName);
     
     if (options_.verbose) {
-        DEBUG_OUT << "New expression: new " << typeName << "(...)" << std::endl;
     }
 }
 
@@ -7239,7 +7162,6 @@ void ASTInterpreter::visit(arduino_ast::PreprocessorDirectiveNode& node) {
     emitError("Unexpected PreprocessorDirective AST node: " + directive + ". " + errorMessage, "PreprocessorError");
     
     if (options_.verbose) {
-        DEBUG_OUT << "❌ PreprocessorDirective error: #" << directive << " " << content << std::endl;
     }
 }
 
@@ -7282,7 +7204,6 @@ void ASTInterpreter::visit(arduino_ast::RangeExpressionNode& node) {
     lastExpressionResult_ = rangeStr;
     
     if (options_.verbose) {
-        DEBUG_OUT << "Range expression: " << rangeStr << std::endl;
     }
 }
 
@@ -7305,17 +7226,12 @@ void ASTInterpreter::visit(arduino_ast::StructMemberNode& node) {
         CommandValue initValue = lastExpressionResult_;
         
         if (options_.verbose) {
-            DEBUG_OUT << "Struct member: " << typeName << " " << memberName << " = ";
             if (std::holds_alternative<int>(initValue)) {
-                DEBUG_OUT << std::get<int>(initValue);
             } else if (std::holds_alternative<std::string>(initValue)) {
-                DEBUG_OUT << "\"" << std::get<std::string>(initValue) << "\"";
             }
-            DEBUG_OUT << std::endl;
         }
     } else {
         if (options_.verbose) {
-            DEBUG_OUT << "Struct member: " << typeName << " " << memberName << std::endl;
         }
     }
     
@@ -7341,11 +7257,8 @@ void ASTInterpreter::visit(arduino_ast::TemplateTypeParameterNode& node) {
     emitTemplateTypeParam(parameterName, constraint);
     
     if (options_.verbose) {
-        DEBUG_OUT << "Template type parameter: " << parameterName;
         if (defaultType) {
-            DEBUG_OUT << " = (default type)";
         }
-        DEBUG_OUT << std::endl;
     }
 }
 
@@ -7370,7 +7283,6 @@ void ASTInterpreter::visit(arduino_ast::UnionDeclarationNode& node) {
     emitUnionDefinition(unionName, membersStr, variablesStr);
     
     if (options_.verbose) {
-        DEBUG_OUT << "Union declaration: " << unionName << " with " << node.getMembers().size() << " members" << std::endl;
     }
 }
 
@@ -7391,7 +7303,6 @@ void ASTInterpreter::visit(arduino_ast::UnionTypeNode& node) {
     emitUnionTypeRef(typeName.empty() ? "anonymous" : typeName, defaultSize);
     
     if (options_.verbose) {
-        DEBUG_OUT << "Union type: " << typeName << " with " << node.getTypes().size() << " alternative types" << std::endl;
     }
 }
 
