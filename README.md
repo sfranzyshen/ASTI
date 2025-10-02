@@ -393,6 +393,65 @@ interpreter.resume();   // Resume normal execution
 - **Platform Defines**: ESP32, ARDUINO, WIFI_SUPPORT, BLUETOOTH_SUPPORT
 
 
+## 📦 Arduino Library Usage (ESP32-S3)
+
+The ASTInterpreter is available as an Arduino library for ESP32-S3 hardware deployment.
+
+### Installation
+
+**Arduino IDE:**
+```
+Library Manager → Search "ArduinoASTInterpreter" → Install
+```
+
+**PlatformIO:**
+```ini
+lib_deps = https://github.com/sfranzyshen/ASTInterpreter.git
+```
+
+### Quick Start
+
+```cpp
+#include <ArduinoASTInterpreter.h>
+
+// Embedded CompactAST binary (generated from your Arduino code)
+const uint8_t PROGMEM astBinary[] = { /* ... */ };
+
+class MyDataProvider : public SyncDataProvider {
+    int32_t getAnalogReadValue(int32_t pin) override {
+        return analogRead(pin == 14 ? 36 : pin); // Map A0 to GPIO36
+    }
+    // ... implement getDigitalReadValue, getMillisValue, etc.
+};
+
+MyDataProvider provider;
+
+void setup() {
+    Serial.begin(115200);
+
+    InterpreterOptions opts;
+    opts.syncMode = true;
+
+    auto* interpreter = new ASTInterpreter(astBinary, sizeof(astBinary), opts);
+    interpreter->setSyncDataProvider(&provider);
+    interpreter->start();
+}
+```
+
+### Features
+
+- **Size Optimized**: 1.6MB library (20% of ESP32-S3's 8MB flash)
+- **Memory Efficient**: ~50-100 KB RAM depending on AST size
+- **Production Ready**: 100% cross-platform parity with JavaScript implementation
+- **Hardware Integration**: SyncDataProvider interface for real ESP32 pins
+- **Examples Included**: BasicInterpreter and AnalogReadExample sketches
+
+### Documentation
+
+- **Full Guide**: `docs/ESP32_DEPLOYMENT_GUIDE.md`
+- **Examples**: `examples/BasicInterpreter/` and `examples/AnalogReadExample/`
+- **Binary Conversion**: `tools/ast_to_c_array.sh`
+
 ## 🏆 Project Success & Positioning
 
 ### **Production-Ready Educational Platform**
