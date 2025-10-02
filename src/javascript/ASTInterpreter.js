@@ -7883,7 +7883,19 @@ class ASTInterpreter {
                 // First call returns 0 (allow loop iteration), second call returns 1 (terminate loop)
                 if (!this.serialPortCounters) this.serialPortCounters = {};
                 if (!this.serialPortCounters[serialPort]) this.serialPortCounters[serialPort] = 0;
-                const availableBytes = (this.serialPortCounters[serialPort] === 0) ? 0 : 1;
+
+                // SAFETY: Global counter to prevent infinite loops in complex tests (e.g. ArduinoISP)
+                if (!this.serialAvailableCallCount) this.serialAvailableCallCount = 0;
+                this.serialAvailableCallCount++;
+
+                // After 100 total calls, always return 1 to break any while(!Serial.available()) loops
+                let availableBytes;
+                if (this.serialAvailableCallCount > 100) {
+                    availableBytes = 1;  // Force data available to prevent infinite loops
+                } else {
+                    availableBytes = (this.serialPortCounters[serialPort] === 0) ? 0 : 1;
+                }
+
                 this.serialPortCounters[serialPort]++;
                 this.emitCommand({
                     type: COMMAND_TYPES.FUNCTION_CALL,

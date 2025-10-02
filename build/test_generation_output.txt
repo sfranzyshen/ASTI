@@ -1,0 +1,11 @@
+Arduino Test Data Generation - OPTIMIZED
+
+⚠️  WARNING: ArduinoISP.ino - TIMEOUT: Test did not complete 1 iteration within 3000ms - inconsistent data rejected
+❌ FAILED: ArduinoISP.ino - Assignment to constant variable.
+
+FATAL ERROR: Cannot generate placeholder data
+REQUIREMENT: ALL tests must have full command streams
+Failed at test 79/135: ArduinoISP.ino
+FATAL ERROR: TypeError: Assignment to constant variable.
+    at generateFullTestData (/mnt/d/Devel/ASTInterpreter/src/javascript/generate_test_data.js:509:35)
+    at async main (/mnt/d/Devel/ASTInterpreter/src/javascript/generate_test_data.js:590:14)

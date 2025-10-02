@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759124398962,
+    "timestamp": 1759441479534,
     "component": "interpreter",
-    "version": "11.0.0",
+    "version": "16.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759124398962,
+    "timestamp": 1759441479534,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759124398962,
+    "timestamp": 1759441479534,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759124398962,
+    "timestamp": 1759441479534,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759124398962,
+    "timestamp": 1759441479534,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759124398962,
+    "timestamp": 1759441479534,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759124398962,
+    "timestamp": 1759441479534,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,34 +46,34 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759124398962
+    "timestamp": 1759441479534
   },
   {
     "type": "VAR_SET",
     "variable": "a",
     "value": 10,
-    "timestamp": 1759124398962
+    "timestamp": 1759441479534
   },
   {
     "type": "VAR_SET",
     "variable": "b",
     "value": 20,
-    "timestamp": 1759124398962
+    "timestamp": 1759441479534
   },
   {
     "type": "VAR_SET",
     "variable": "maxVal",
     "value": 20,
-    "timestamp": 1759124398962
+    "timestamp": 1759441479534
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "\"Max value: \""
+      "Max value: "
     ],
     "data": "Max value: ",
-    "timestamp": 1759124398962,
+    "timestamp": 1759441479534,
     "message": "Serial.print(\"Max value: \")"
   },
   {
@@ -83,53 +83,53 @@
       "20"
     ],
     "data": "20",
-    "timestamp": 1759124398962,
+    "timestamp": 1759441479534,
     "message": "Serial.println(20)"
   },
   {
     "type": "VAR_SET",
     "variable": "c",
     "value": 10,
-    "timestamp": 1759124398962
+    "timestamp": 1759441479534
   },
   {
     "type": "VAR_SET",
     "variable": "d",
     "value": 6,
-    "timestamp": 1759124398962
+    "timestamp": 1759441479534
   },
   {
     "type": "VAR_SET",
     "variable": "andResult",
     "value": 2,
-    "timestamp": 1759124398962
+    "timestamp": 1759441479534
   },
   {
     "type": "VAR_SET",
     "variable": "orResult",
     "value": 14,
-    "timestamp": 1759124398962
+    "timestamp": 1759441479534
   },
   {
     "type": "VAR_SET",
     "variable": "xorResult",
     "value": 12,
-    "timestamp": 1759124398963
+    "timestamp": 1759441479534
   },
   {
     "type": "VAR_SET",
     "variable": "shiftResult",
     "value": 20,
-    "timestamp": 1759124398963
+    "timestamp": 1759441479534
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "\"AND result: \""
+      "AND result: "
     ],
     "data": "AND result: ",
-    "timestamp": 1759124398963,
+    "timestamp": 1759441479534,
     "message": "Serial.print(\"AND result: \")"
   },
   {
@@ -139,17 +139,17 @@
       "2"
     ],
     "data": "2",
-    "timestamp": 1759124398963,
+    "timestamp": 1759441479534,
     "message": "Serial.println(2)"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "\"OR result: \""
+      "OR result: "
     ],
     "data": "OR result: ",
-    "timestamp": 1759124398963,
+    "timestamp": 1759441479534,
     "message": "Serial.print(\"OR result: \")"
   },
   {
@@ -159,17 +159,17 @@
       "14"
     ],
     "data": "14",
-    "timestamp": 1759124398963,
+    "timestamp": 1759441479534,
     "message": "Serial.println(14)"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "\"XOR result: \""
+      "XOR result: "
     ],
     "data": "XOR result: ",
-    "timestamp": 1759124398963,
+    "timestamp": 1759441479534,
     "message": "Serial.print(\"XOR result: \")"
   },
   {
@@ -179,17 +179,17 @@
       "12"
     ],
     "data": "12",
-    "timestamp": 1759124398963,
+    "timestamp": 1759441479534,
     "message": "Serial.println(12)"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "\"Shift result: \""
+      "Shift result: "
     ],
     "data": "Shift result: ",
-    "timestamp": 1759124398963,
+    "timestamp": 1759441479534,
     "message": "Serial.print(\"Shift result: \")"
   },
   {
@@ -199,7 +199,7 @@
       "20"
     ],
     "data": "20",
-    "timestamp": 1759124398963,
+    "timestamp": 1759441479534,
     "message": "Serial.println(20)"
   },
   {
@@ -208,23 +208,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759124398963
+    "timestamp": 1759441479534
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759124398967,
+    "timestamp": 1759441479540,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759124398967,
+    "timestamp": 1759441479540,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759124398967,
+    "timestamp": 1759441479540,
     "message": "Program execution stopped"
   }
 ]
