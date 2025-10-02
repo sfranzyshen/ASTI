@@ -27,13 +27,38 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-# Compiler flags
+# Compiler flags with size optimization support
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    # Debug: Full symbols, no optimization
     set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -Wall -Wextra -Wpedantic")
-    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+
+    # Release: Speed optimization with dead code elimination
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -ffunction-sections -fdata-sections")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-Wl,--gc-sections -s")
+
+    # MinSizeRel: Aggressive size optimization (for ESP32/WASM)
+    # Note: Cannot use -fno-rtti as interpreter uses dynamic_cast for AST node types
+    set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG -ffunction-sections -fdata-sections")
+    set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL "-Wl,--gc-sections -s")
+
+    # RelWithDebInfo: Optimized with debug symbols
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -DNDEBUG -ffunction-sections -fdata-sections")
+    set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "-Wl,--gc-sections")
+
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    # Debug: Full symbols, no optimization
     set(CMAKE_CXX_FLAGS_DEBUG "/Zi /Od /Wall")
-    set(CMAKE_CXX_FLAGS_RELEASE "/O2 /DNDEBUG")
+
+    # Release: Speed optimization with link-time code generation
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2 /DNDEBUG /GL")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/LTCG /OPT:REF /OPT:ICF")
+
+    # MinSizeRel: Size optimization
+    set(CMAKE_CXX_FLAGS_MINSIZEREL "/O1 /DNDEBUG /GL")
+    set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL "/LTCG /OPT:REF /OPT:ICF")
+
+    # RelWithDebInfo: Optimized with debug symbols
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/O2 /Zi /DNDEBUG")
 endif()
 
 # =============================================================================
@@ -81,33 +106,36 @@ add_library(arduino_ast_interpreter
     # AST Node definitions
     src/cpp/ASTNodes.cpp
     src/cpp/ASTNodes.hpp
-    
+
     # Compact AST binary format (now in libs)
     libs/CompactAST/src/CompactAST.cpp
     libs/CompactAST/src/CompactAST.hpp
-    
+
     # Ultra-minimal JSON command system (no command protocol needed)
     # FlexibleCommand infrastructure completely removed
 
     # Main interpreter
     src/cpp/ASTInterpreter.cpp
     src/cpp/ASTInterpreter.hpp
-    
+
     # Execution diagnostics
     src/cpp/ExecutionTracer.cpp
     src/cpp/ExecutionTracer.hpp
-    
+
     # Data model classes
     src/cpp/ArduinoDataTypes.cpp
     src/cpp/ArduinoDataTypes.hpp
-    
+
     # Enhanced interpreter
     src/cpp/EnhancedInterpreter.cpp
     src/cpp/EnhancedInterpreter.hpp
-    
+
     # Arduino library registry
     src/cpp/ArduinoLibraryRegistry.cpp
     src/cpp/ArduinoLibraryRegistry.hpp
+
+    # Template instantiations (MinSizeRel only - reduces template bloat)
+    $<$<CONFIG:MinSizeRel>:src/cpp/TemplateInstantiations.cpp>
 )
 
 # Include directories
@@ -416,6 +444,41 @@ if(CPPCHECK)
         COMMENT "Running static analysis with cppcheck"
     )
 endif()
+
+# =============================================================================
+# SIZE OPTIMIZATION UTILITIES
+# =============================================================================
+
+# Custom target for stripping symbols (further size reduction)
+find_program(STRIP_TOOL strip)
+if(STRIP_TOOL)
+    add_custom_target(strip_library
+        COMMAND ${STRIP_TOOL} --strip-all ${CMAKE_CURRENT_BINARY_DIR}/libarduino_ast_interpreter.a
+        DEPENDS arduino_ast_interpreter
+        COMMENT "Stripping symbols from library for minimal size"
+    )
+
+    add_custom_target(strip_tools
+        COMMAND ${STRIP_TOOL} --strip-all ${CMAKE_CURRENT_BINARY_DIR}/extract_cpp_commands
+        COMMAND ${STRIP_TOOL} --strip-all ${CMAKE_CURRENT_BINARY_DIR}/validate_cross_platform
+        DEPENDS extract_cpp_commands validate_cross_platform
+        COMMENT "Stripping symbols from executable tools"
+    )
+
+    add_custom_target(strip_all
+        DEPENDS strip_library strip_tools
+        COMMENT "Strip all binaries for minimal deployment size"
+    )
+endif()
+
+# Size reporting target
+add_custom_target(size_report
+    COMMAND ${CMAKE_COMMAND} -E echo "=== Size Report ==="
+    COMMAND ls -lh ${CMAKE_CURRENT_BINARY_DIR}/libarduino_ast_interpreter.a
+    COMMAND ls -lh ${CMAKE_CURRENT_BINARY_DIR}/extract_cpp_commands 2>/dev/null || true
+    COMMAND ls -lh ${CMAKE_CURRENT_BINARY_DIR}/validate_cross_platform 2>/dev/null || true
+    COMMENT "Reporting build artifact sizes"
+)
 
 # =============================================================================
 # BUILD INFORMATION
