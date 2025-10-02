@@ -1964,15 +1964,15 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
     try {
         const auto* operand = node.getOperand();
         std::string op = node.getOperator();
-        
+
         if (operand && operand->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
             std::string varName = operand->getValueAs<std::string>();
             Variable* var = scopeManager_->getVariable(varName);
-            
+
             if (var) {
                 CommandValue currentValue = var->value;
                 CommandValue newValue = currentValue;
-                
+
                 // Apply postfix operation
                 if (op == "++") {
                     if (std::holds_alternative<int32_t>(currentValue)) {
@@ -1995,8 +1995,9 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
                 // JavaScript emits VAR_SET for postfix increment/decrement operations
                 emitVarSet(varName, commandValueToJsonString(newValue));
 
-                // For postfix, return the original value (though in visitor pattern, this is contextual)
-                // The original value was in currentValue
+                // POSTFIX SEMANTICS: Return the original value (before increment/decrement)
+                // This is critical for conditions like "while(times--)" which test the OLD value
+                lastExpressionResult_ = currentValue;
             }
         }
     } catch (const std::exception& e) {
@@ -2591,7 +2592,6 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                 if (var) {
                     return var->value;
                 } else {
-                    // Add scope debug info
                     emitError("Undefined variable: " + name);
                     return std::monostate{};
                 }
@@ -2612,13 +2612,18 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         case arduino_ast::ASTNodeType::UNARY_OP:
             if (auto* unaryNode = dynamic_cast<arduino_ast::UnaryOpNode*>(expr)) {
                 std::string op = unaryNode->getOperator();
-                
-                
+
+
                 CommandValue operand = evaluateExpression(const_cast<arduino_ast::ASTNode*>(unaryNode->getOperand()));
                 return evaluateUnaryOperation(op, operand);
             }
             break;
-            
+
+        case arduino_ast::ASTNodeType::POSTFIX_EXPRESSION:
+            // Handle postfix operations (++, --) by calling visitor and returning result
+            expr->accept(*this);
+            return lastExpressionResult_;
+
         case arduino_ast::ASTNodeType::FUNC_CALL:
             if (auto* funcNode = dynamic_cast<arduino_ast::FuncCallNode*>(expr)) {
                 std::string functionName;
@@ -2985,7 +2990,7 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
                 const auto* declarator = paramNode->getDeclarator();
                 if (const auto* declNode = dynamic_cast<const arduino_ast::DeclaratorNode*>(declarator)) {
                     std::string paramName = declNode->getName();
-                    
+
                     // Get parameter type from ParamNode
                     std::string paramType = "auto";
                     const auto* typeNode = paramNode->getParamType();
@@ -2996,13 +3001,14 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
                             paramType = "auto"; // Fallback
                         }
                     }
-                    
+
                     CommandValue paramValue;
-                    
+
                     // Use provided argument or default value
                     if (i < args.size()) {
                         // Use provided argument
                         paramValue = args[i];
+
                         if (paramType != "auto") {
                             paramValue = convertToType(args[i], paramType);
                         }
@@ -3031,7 +3037,7 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
                     // Create parameter variable
                     Variable paramVar(paramValue, paramType);
                     scopeManager_->setVariable(paramName, paramVar);
-                    
+
                 } else {
                 }
             } else {
