@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759441479667,
+    "timestamp": 1759442202639,
     "component": "interpreter",
     "version": "16.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759441479667,
+    "timestamp": 1759442202639,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759441479667,
+    "timestamp": 1759442202639,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759441479667,
+    "timestamp": 1759442202639,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759441479667,
+    "timestamp": 1759442202639,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759441479667,
+    "timestamp": 1759442202639,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759441479667,
+    "timestamp": 1759442202639,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,13 +46,13 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759441479667
+    "timestamp": 1759442202639
   },
   {
     "type": "VAR_SET",
     "variable": "ptr",
     "value": null,
-    "timestamp": 1759441479667
+    "timestamp": 1759442202639
   },
   {
     "type": "VAR_SET",
@@ -61,9 +61,9 @@
       "functionName": "myFunc",
       "interpreter": "[Circular Reference Removed]",
       "type": "function_pointer",
-      "pointerId": "fptr_1759441479667_ftx2x"
+      "pointerId": "fptr_1759442202639_0f13l"
     },
-    "timestamp": 1759441479668
+    "timestamp": 1759442202639
   },
   {
     "type": "FUNCTION_CALL",
@@ -73,11 +73,11 @@
         "functionName": "myFunc",
         "interpreter": "[Circular Reference Removed]",
         "type": "function_pointer",
-        "pointerId": "fptr_1759441479667_ftx2x"
+        "pointerId": "fptr_1759442202639_0f13l"
       }
     ],
-    "timestamp": 1759441479668,
-    "message": "callFunc(ArduinoFunctionPointer(fptr_1759441479667_ftx2x -> myFunc))"
+    "timestamp": 1759442202639,
+    "message": "callFunc(ArduinoFunctionPointer(fptr_1759442202639_0f13l -> myFunc))"
   },
   {
     "type": "FUNCTION_CALL",
@@ -86,7 +86,7 @@
       "Result: "
     ],
     "data": "Result: ",
-    "timestamp": 1759441479668,
+    "timestamp": 1759442202639,
     "message": "Serial.print(\"Result: \")"
   },
   {
@@ -96,7 +96,7 @@
       10,
       20
     ],
-    "timestamp": 1759441479673,
+    "timestamp": 1759442202645,
     "message": "myFunc(10, 20)"
   },
   {
@@ -106,7 +106,7 @@
       "30"
     ],
     "data": "30",
-    "timestamp": 1759441479673,
+    "timestamp": 1759442202645,
     "message": "Serial.println(30)"
   },
   {
@@ -115,23 +115,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759441479677
+    "timestamp": 1759442202650
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759441479682,
+    "timestamp": 1759442202656,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759441479682,
+    "timestamp": 1759442202656,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759441479682,
+    "timestamp": 1759442202656,
     "message": "Program execution stopped"
   }
 ]
