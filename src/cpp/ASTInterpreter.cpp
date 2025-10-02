@@ -2892,7 +2892,30 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
     } else if (op == "||") {
         return convertToBool(left) || convertToBool(right);
     }
-    
+
+    // Bitwise operations
+    else if (op == "&") {
+        int32_t leftVal = convertToInt(left);
+        int32_t rightVal = convertToInt(right);
+        return leftVal & rightVal;
+    } else if (op == "|") {
+        int32_t leftVal = convertToInt(left);
+        int32_t rightVal = convertToInt(right);
+        return leftVal | rightVal;
+    } else if (op == "^") {
+        int32_t leftVal = convertToInt(left);
+        int32_t rightVal = convertToInt(right);
+        return leftVal ^ rightVal;
+    } else if (op == "<<") {
+        int32_t leftVal = convertToInt(left);
+        int32_t rightVal = convertToInt(right);
+        return leftVal << rightVal;
+    } else if (op == ">>") {
+        int32_t leftVal = convertToInt(left);
+        int32_t rightVal = convertToInt(right);
+        return leftVal >> rightVal;
+    }
+
     // Assignment operations
     else if (op == "=") {
         // Assignment would be handled differently in a full implementation
