@@ -70,7 +70,12 @@
       "Bash(awk:*)",
       "Bash(./build/validate_cross_platform:*)",
       "Bash(jq:*)",
-      "Bash(1)"
+      "Bash(1)",
+      "Bash(find:*)",
+      "Bash(for:*)",
+      "Bash(do echo \"$file:\")",
+      "Bash(do echo \"=== $file.cpp ===\")",
+      "Bash(do echo \"=== $file ===\")"
     ],
     "deny": [],
     "ask": [],

@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759382846633,
+    "timestamp": 1759124396899,
     "component": "interpreter",
-    "version": "16.0.0",
+    "version": "11.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759382846633,
+    "timestamp": 1759124396899,
     "message": "Program execution started"
   },
   {
@@ -16,18 +16,18 @@
     "variable": "sensorPin",
     "value": 14,
     "isConst": true,
-    "timestamp": 1759382846633
+    "timestamp": 1759124396899
   },
   {
     "type": "VAR_SET",
     "variable": "baselineTemp",
     "value": 20,
     "isConst": true,
-    "timestamp": 1759382846633
+    "timestamp": 1759124396899
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759382846633,
+    "timestamp": 1759124396899,
     "message": "Executing setup() function"
   },
   {
@@ -37,66 +37,66 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759382846633,
+    "timestamp": 1759124396899,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1759382846633,
+    "timestamp": 1759124396899,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "pinNumber",
     "value": 2,
-    "timestamp": 1759382846633
+    "timestamp": 1759124396899
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1759382846633,
+    "timestamp": 1759124396899,
     "message": "for loop iteration 0"
   },
   {
     "type": "PIN_MODE",
     "pin": 2,
     "mode": 1,
-    "timestamp": 1759382846633
+    "timestamp": 1759124396899
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 2,
     "value": 0,
-    "timestamp": 1759382846633
+    "timestamp": 1759124396899
   },
   {
     "type": "VAR_SET",
     "variable": "pinNumber",
     "value": 3,
-    "timestamp": 1759382846633
+    "timestamp": 1759124396899
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1759382846638,
+    "timestamp": 1759124396905,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759382846638,
+    "timestamp": 1759124396905,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759382846638,
+    "timestamp": 1759124396905,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759382846638,
+    "timestamp": 1759124396905,
     "message": "Starting loop iteration 1"
   },
   {
@@ -104,28 +104,28 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759382846638
+    "timestamp": 1759124396905
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
     "requestId": "analogRead_000001",
-    "timestamp": 1759382846638
+    "timestamp": 1759124396905
   },
   {
     "type": "VAR_SET",
     "variable": "sensorVal",
     "value": 560,
-    "timestamp": 1759382846644
+    "timestamp": 1759124396910
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "sensor Value: "
+      "\"sensor Value: \""
     ],
     "data": "sensor Value: ",
-    "timestamp": 1759382846644,
+    "timestamp": 1759124396910,
     "message": "Serial.print(\"sensor Value: \")"
   },
   {
@@ -135,91 +135,112 @@
       "560"
     ],
     "data": "560",
-    "timestamp": 1759382846644,
+    "timestamp": 1759124396910,
     "message": "Serial.print(560)"
   },
   {
     "type": "VAR_SET",
     "variable": "voltage",
-    "value": 0,
-    "timestamp": 1759382846644
+    "value": 2.734375,
+    "timestamp": 1759124396910
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      ", Volts: "
+      "\", Volts: \""
     ],
     "data": ", Volts: ",
-    "timestamp": 1759382846644,
+    "timestamp": 1759124396910,
     "message": "Serial.print(\", Volts: \")"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "0"
+      "2.734375"
     ],
-    "data": "0",
-    "timestamp": 1759382846644,
-    "message": "Serial.print(0)"
+    "data": "2.734375",
+    "timestamp": 1759124396910,
+    "message": "Serial.print(2.734375)"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      ", degrees C: "
+      "\", degrees C: \""
     ],
     "data": ", degrees C: ",
-    "timestamp": 1759382846644,
+    "timestamp": 1759124396910,
     "message": "Serial.print(\", degrees C: \")"
   },
   {
     "type": "VAR_SET",
     "variable": "temperature",
-    "value": -50,
-    "timestamp": 1759382846644
+    "value": 223.4375,
+    "timestamp": 1759124396910
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [
-      "-50"
+      "223.4375"
     ],
-    "data": "-50",
-    "timestamp": 1759382846644,
-    "message": "Serial.println(-50)"
+    "data": "223.4375",
+    "timestamp": 1759124396910,
+    "message": "Serial.println(223.4375)"
+  },
+  {
+    "type": "IF_STATEMENT",
+    "condition": false,
+    "result": false,
+    "branch": "else",
+    "timestamp": 1759124396910
+  },
+  {
+    "type": "IF_STATEMENT",
+    "condition": false,
+    "result": false,
+    "branch": "else",
+    "timestamp": 1759124396910
+  },
+  {
+    "type": "IF_STATEMENT",
+    "condition": false,
+    "result": false,
+    "branch": "else",
+    "timestamp": 1759124396910
   },
   {
     "type": "IF_STATEMENT",
     "condition": true,
     "result": true,
     "branch": "then",
-    "timestamp": 1759382846644
+    "timestamp": 1759124396910
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 2,
-    "value": 0,
-    "timestamp": 1759382846644
+    "value": 1,
+    "timestamp": 1759124396910
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 3,
-    "value": 0,
-    "timestamp": 1759382846644
+    "value": 1,
+    "timestamp": 1759124396910
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 4,
-    "value": 0,
-    "timestamp": 1759382846644
+    "value": 1,
+    "timestamp": 1759124396910
   },
   {
     "type": "DELAY",
     "duration": 1,
     "actualDelay": 1,
-    "timestamp": 1759382846644
+    "timestamp": 1759124396910
   },
   {
     "type": "FUNCTION_CALL",
@@ -227,23 +248,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759382846644
+    "timestamp": 1759124396910
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759382846649,
+    "timestamp": 1759124396916,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759382846649,
+    "timestamp": 1759124396916,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759382846649,
+    "timestamp": 1759124396916,
     "message": "Program execution stopped"
   }
 ]

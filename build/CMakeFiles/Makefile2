@@ -76,6 +76,10 @@ preinstall:
 clean: CMakeFiles/arduino_ast_interpreter.dir/clean
 clean: CMakeFiles/extract_cpp_commands.dir/clean
 clean: CMakeFiles/validate_cross_platform.dir/clean
+clean: CMakeFiles/strip_library.dir/clean
+clean: CMakeFiles/strip_tools.dir/clean
+clean: CMakeFiles/strip_all.dir/clean
+clean: CMakeFiles/size_report.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -137,7 +141,7 @@ CMakeFiles/extract_cpp_commands.dir/clean:
 CMakeFiles/validate_cross_platform.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=11,12 "Built target validate_cross_platform"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=15,16 "Built target validate_cross_platform"
 .PHONY : CMakeFiles/validate_cross_platform.dir/all
 
 # Build rule for subdir invocation for target.
@@ -155,6 +159,112 @@ validate_cross_platform: CMakeFiles/validate_cross_platform.dir/rule
 CMakeFiles/validate_cross_platform.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/clean
 .PHONY : CMakeFiles/validate_cross_platform.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/strip_library.dir
+
+# All Build rule for target.
+CMakeFiles/strip_library.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_library.dir/build.make CMakeFiles/strip_library.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_library.dir/build.make CMakeFiles/strip_library.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=13 "Built target strip_library"
+.PHONY : CMakeFiles/strip_library.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/strip_library.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 9
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/strip_library.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
+.PHONY : CMakeFiles/strip_library.dir/rule
+
+# Convenience name for target.
+strip_library: CMakeFiles/strip_library.dir/rule
+.PHONY : strip_library
+
+# clean rule for target.
+CMakeFiles/strip_library.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_library.dir/build.make CMakeFiles/strip_library.dir/clean
+.PHONY : CMakeFiles/strip_library.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/strip_tools.dir
+
+# All Build rule for target.
+CMakeFiles/strip_tools.dir/all: CMakeFiles/validate_cross_platform.dir/all
+CMakeFiles/strip_tools.dir/all: CMakeFiles/extract_cpp_commands.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_tools.dir/build.make CMakeFiles/strip_tools.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_tools.dir/build.make CMakeFiles/strip_tools.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=14 "Built target strip_tools"
+.PHONY : CMakeFiles/strip_tools.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/strip_tools.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 13
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/strip_tools.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
+.PHONY : CMakeFiles/strip_tools.dir/rule
+
+# Convenience name for target.
+strip_tools: CMakeFiles/strip_tools.dir/rule
+.PHONY : strip_tools
+
+# clean rule for target.
+CMakeFiles/strip_tools.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_tools.dir/build.make CMakeFiles/strip_tools.dir/clean
+.PHONY : CMakeFiles/strip_tools.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/strip_all.dir
+
+# All Build rule for target.
+CMakeFiles/strip_all.dir/all: CMakeFiles/strip_library.dir/all
+CMakeFiles/strip_all.dir/all: CMakeFiles/strip_tools.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_all.dir/build.make CMakeFiles/strip_all.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_all.dir/build.make CMakeFiles/strip_all.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=12 "Built target strip_all"
+.PHONY : CMakeFiles/strip_all.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/strip_all.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 15
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/strip_all.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
+.PHONY : CMakeFiles/strip_all.dir/rule
+
+# Convenience name for target.
+strip_all: CMakeFiles/strip_all.dir/rule
+.PHONY : strip_all
+
+# clean rule for target.
+CMakeFiles/strip_all.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_all.dir/build.make CMakeFiles/strip_all.dir/clean
+.PHONY : CMakeFiles/strip_all.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/size_report.dir
+
+# All Build rule for target.
+CMakeFiles/size_report.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/size_report.dir/build.make CMakeFiles/size_report.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/size_report.dir/build.make CMakeFiles/size_report.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=11 "Built target size_report"
+.PHONY : CMakeFiles/size_report.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/size_report.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 1
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/size_report.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
+.PHONY : CMakeFiles/size_report.dir/rule
+
+# Convenience name for target.
+size_report: CMakeFiles/size_report.dir/rule
+.PHONY : size_report
+
+# clean rule for target.
+CMakeFiles/size_report.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/size_report.dir/build.make CMakeFiles/size_report.dir/clean
+.PHONY : CMakeFiles/size_report.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

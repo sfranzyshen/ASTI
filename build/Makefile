@@ -230,6 +230,58 @@ validate_cross_platform/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/build
 .PHONY : validate_cross_platform/fast
 
+#=============================================================================
+# Target rules for targets named strip_library
+
+# Build rule for target.
+strip_library: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 strip_library
+.PHONY : strip_library
+
+# fast build rule for target.
+strip_library/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_library.dir/build.make CMakeFiles/strip_library.dir/build
+.PHONY : strip_library/fast
+
+#=============================================================================
+# Target rules for targets named strip_tools
+
+# Build rule for target.
+strip_tools: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 strip_tools
+.PHONY : strip_tools
+
+# fast build rule for target.
+strip_tools/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_tools.dir/build.make CMakeFiles/strip_tools.dir/build
+.PHONY : strip_tools/fast
+
+#=============================================================================
+# Target rules for targets named strip_all
+
+# Build rule for target.
+strip_all: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 strip_all
+.PHONY : strip_all
+
+# fast build rule for target.
+strip_all/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_all.dir/build.make CMakeFiles/strip_all.dir/build
+.PHONY : strip_all/fast
+
+#=============================================================================
+# Target rules for targets named size_report
+
+# Build rule for target.
+size_report: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 size_report
+.PHONY : size_report
+
+# fast build rule for target.
+size_report/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/size_report.dir/build.make CMakeFiles/size_report.dir/build
+.PHONY : size_report/fast
+
 libs/CompactAST/src/CompactAST.o: libs/CompactAST/src/CompactAST.cpp.o
 .PHONY : libs/CompactAST/src/CompactAST.o
 
@@ -461,6 +513,10 @@ help:
 	@echo "... package_source"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... size_report"
+	@echo "... strip_all"
+	@echo "... strip_library"
+	@echo "... strip_tools"
 	@echo "... arduino_ast_interpreter"
 	@echo "... extract_cpp_commands"
 	@echo "... validate_cross_platform"

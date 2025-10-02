@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -O0 -Wall -Wextra -Wpedantic CMakeFiles/test_ast_nodes.dir/tests/test_ast_nodes.cpp.o -o test_ast_nodes  libarduino_ast_interpreter.a -ldl 

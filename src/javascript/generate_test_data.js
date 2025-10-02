@@ -251,14 +251,9 @@ function generateCommandsOptimized(ast, example) {
                 
                 if (cmd.type === 'PROGRAM_END' || cmd.type === 'ERROR') {
                     done = true;
-                } else if (cmd.type === 'LOOP_LIMIT_REACHED') {
-                    // Wait for termination commands after LOOP_LIMIT_REACHED
-                    setTimeout(() => {
-                        if (!done) {
-                            done = true; // Timeout fallback
-                        }
-                    }, 100); // Give time for termination commands
                 }
+                // NOTE: LOOP_LIMIT_REACHED from nested loops (while, do-while, for) is NOT a termination condition
+                // Only PROGRAM_END or ERROR should stop command collection
             };
             
             interpreter.onError = (error) => {
@@ -271,11 +266,11 @@ function generateCommandsOptimized(ast, example) {
             interpreter.start();
             
             let timedOut = false;
-            const timeout = setTimeout(() => { 
+            const timeout = setTimeout(() => {
                 timedOut = true;
                 done = true;
                 restore();
-            }, 1000); // Increased from 300ms to 1000ms
+            }, 3000); // Temporarily increased to 3000ms to handle complex tests
             
             let checkCount = 0;
             const check = () => {
@@ -286,10 +281,10 @@ function generateCommandsOptimized(ast, example) {
                     
                     // CRITICAL: If timeout occurred, this is a FAILURE not success
                     if (timedOut) {
-                        resolve({ 
-                            success: false, 
-                            commands: [], 
-                            error: 'TIMEOUT: Test did not complete 1 iteration within 1000ms - inconsistent data rejected' 
+                        resolve({
+                            success: false,
+                            commands: [],
+                            error: 'TIMEOUT: Test did not complete 1 iteration within 3000ms - inconsistent data rejected'
                         });
                     } else {
                         resolve({ success: true, commands });

@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -O0 -Wall -Wextra -Wpedantic CMakeFiles/test_command_protocol.dir/tests/test_command_protocol.cpp.o -o test_command_protocol  libarduino_ast_interpreter.a -ldl 

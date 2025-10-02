@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -O0 -Wall -Wextra -Wpedantic CMakeFiles/test_cross_platform_validation.dir/tests/test_cross_platform_validation.cpp.o -o test_cross_platform_validation  libarduino_ast_interpreter.a -ldl 

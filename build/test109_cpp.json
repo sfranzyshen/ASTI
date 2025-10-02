@@ -1,4 +1,4 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"15.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"16.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
@@ -8,6 +8,14 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"VAR_SET","timestamp":0,"variable":"count","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"val","value":10}
+{"type":"DO_WHILE_LOOP","timestamp":0,"phase":"start"}
+{"type":"DO_WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}
+{"type":"VAR_SET","timestamp":0,"variable":"count","value":1}
+{"type":"VAR_SET","timestamp":0,"variable":"val","value":9}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Count: "],"data":"Count: ","message":"Serial.print("Count: ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["1"],"data":"1","message":"Serial.println(1)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"checkCondition","arguments":[9]}
+{"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"Do-while loop limit reached: completed 1 iterations (max: 1)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}

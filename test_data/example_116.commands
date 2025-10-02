@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759382847782,
+    "timestamp": 1759124399978,
     "component": "interpreter",
-    "version": "16.0.0",
+    "version": "11.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759382847782,
+    "timestamp": 1759124399978,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759382847782,
+    "timestamp": 1759124399978,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759382847782,
+    "timestamp": 1759124399979,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759382847782,
+    "timestamp": 1759124399979,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399979,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399979,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,7 +46,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759382847783
+    "timestamp": 1759124399979
   },
   {
     "type": "VAR_SET",
@@ -55,22 +55,22 @@
       "structName": "MyPoint",
       "fields": {},
       "type": "struct",
-      "structId": "struct_1759382847783_tf0lc"
+      "structId": "struct_1759124399979_kpwxw"
     },
-    "timestamp": 1759382847783
+    "timestamp": 1759124399979
   },
   {
     "type": "VAR_SET",
     "variable": "p2",
     "value": null,
-    "timestamp": 1759382847783
+    "timestamp": 1759124399979
   },
   {
     "type": "STRUCT_FIELD_SET",
     "struct": "MyPoint",
     "field": "x",
     "value": 10,
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399979,
     "message": "MyPoint.x = 10"
   },
   {
@@ -78,7 +78,7 @@
     "struct": "MyPoint",
     "field": "y",
     "value": 20,
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399979,
     "message": "MyPoint.y = 20"
   },
   {
@@ -89,16 +89,16 @@
       "address": 0,
       "pointsTo": "undefined"
     },
-    "timestamp": 1759382847783
+    "timestamp": 1759124399980
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "Value of x using pointer: "
+      "\"Value of x using pointer: \""
     ],
     "data": "Value of x using pointer: ",
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399980,
     "message": "Serial.print(\"Value of x using pointer: \")"
   },
   {
@@ -106,7 +106,7 @@
     "struct": "MyPoint",
     "field": "x",
     "value": 10,
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399980,
     "message": "MyPoint.x = 10"
   },
   {
@@ -116,7 +116,7 @@
       "10"
     ],
     "data": "10",
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399980,
     "message": "Serial.println(10)"
   },
   {
@@ -124,17 +124,17 @@
     "struct": "MyPoint",
     "field": "y",
     "value": 30,
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399981,
     "message": "MyPoint.y = 30"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.print",
     "arguments": [
-      "Modified value of y: "
+      "\"Modified value of y: \""
     ],
     "data": "Modified value of y: ",
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399981,
     "message": "Serial.print(\"Modified value of y: \")"
   },
   {
@@ -142,7 +142,7 @@
     "struct": "MyPoint",
     "field": "y",
     "value": 30,
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399981,
     "message": "MyPoint.y = 30"
   },
   {
@@ -152,7 +152,7 @@
       "30"
     ],
     "data": "30",
-    "timestamp": 1759382847783,
+    "timestamp": 1759124399981,
     "message": "Serial.println(30)"
   },
   {
@@ -161,23 +161,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759382847783
+    "timestamp": 1759124399981
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759382847789,
+    "timestamp": 1759124399985,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759382847789,
+    "timestamp": 1759124399985,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759382847789,
+    "timestamp": 1759124399985,
     "message": "Program execution stopped"
   }
 ]

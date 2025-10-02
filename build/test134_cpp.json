@@ -1,7 +1,7 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"15.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"16.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
-{"type":"ARDUINO_LIBRARY_INSTANTIATION","library":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"objectId":"Adafruit_NeoPixel_87505169468414","timestamp":0,"message":"Adafruit_NeoPixel(60, 6, 82)"}
-{"type":"VAR_SET","timestamp":0,"variable":"strip","value":{"libraryName":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"type":"library_object","objectId":"Adafruit_NeoPixel_87505169468414","initialized":true,"properties":{}}}
+{"type":"ARDUINO_LIBRARY_INSTANTIATION","library":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"objectId":"Adafruit_NeoPixel_173322779785854","timestamp":0,"message":"Adafruit_NeoPixel(60, 6, 82)"}
+{"type":"VAR_SET","timestamp":0,"variable":"strip","value":{"libraryName":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"type":"library_object","objectId":"Adafruit_NeoPixel_173322779785854","initialized":true,"properties":{}}}
 {"type":"VAR_SET","timestamp":0,"variable":"pixelPrevious","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"patternPrevious","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"patternCurrent","value":0}
@@ -38,6 +38,7 @@
 {"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50.000000]}
 {"type":"VAR_SET","timestamp":0,"variable":"current_pixel","value":0,"isExtern":true}
 {"type":"VAR_SET","timestamp":0,"variable":"pixelInterval","value":50}
+{"type":"VAR_SET","timestamp":0,"variable":"current_pixel","value":1}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"BREAK_STATEMENT","timestamp":0}
 {"type":"SWITCH_CASE","timestamp":0,"value":null,"shouldExecute":false}

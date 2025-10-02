@@ -26,6 +26,12 @@ ArduinoASTInterpreter_SOURCE_DIR:STATIC=/mnt/d/Devel/ASTInterpreter
 //Build example executables
 BUILD_EXAMPLES:BOOL=ON
 
+//Build for ESP32 (Arduino framework simulation on host)
+BUILD_FOR_ESP32:BOOL=OFF
+
+//Build for WebAssembly/Emscripten
+BUILD_FOR_WASM:BOOL=OFF
+
 //Build shared libraries
 BUILD_SHARED_LIBS:BOOL=OFF
 
@@ -143,10 +149,10 @@ CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 CMAKE_PROJECT_NAME:STATIC=ArduinoASTInterpreter
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION:STATIC=15.0.0
+CMAKE_PROJECT_VERSION:STATIC=16.0.0
 
 //Value Computed by CMake
-CMAKE_PROJECT_VERSION_MAJOR:STATIC=15
+CMAKE_PROJECT_VERSION_MAJOR:STATIC=16
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION_MINOR:STATIC=0
@@ -273,8 +279,20 @@ CPPCHECK:FILEPATH=CPPCHECK-NOTFOUND
 //Enable code coverage
 ENABLE_COVERAGE:BOOL=OFF
 
+//Enable debug output (cout/Serial)
+ENABLE_DEBUG_OUTPUT:BOOL=OFF
+
+//Enable ExecutionTracer file output
+ENABLE_FILE_TRACING:BOOL=ON
+
 //Enable memory and performance profiling
 ENABLE_PROFILING:BOOL=OFF
+
+//Optimize for code size (disable sstream, use manual string building)
+OPTIMIZE_SIZE:BOOL=OFF
+
+//Path to a program.
+STRIP_TOOL:FILEPATH=/usr/bin/strip
 
 //Target ESP32 platform
 TARGET_ESP32:BOOL=OFF
