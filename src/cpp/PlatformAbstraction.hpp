@@ -93,7 +93,7 @@
 
 // Conditional debug output based on ENABLE_DEBUG_OUTPUT flag
 #ifndef ENABLE_DEBUG_OUTPUT
-    #define ENABLE_DEBUG_OUTPUT 1  // Enabled by default
+    #define ENABLE_DEBUG_OUTPUT 0  // Disabled for clean JSON output
 #endif
 
 #if ENABLE_DEBUG_OUTPUT

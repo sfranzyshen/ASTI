@@ -189,7 +189,7 @@ option(BUILD_FOR_WASM "Build for WebAssembly/Emscripten" OFF)
 option(BUILD_FOR_ESP32 "Build for ESP32 (Arduino framework simulation on host)" OFF)
 
 # Feature control options
-option(ENABLE_DEBUG_OUTPUT "Enable debug output (cout/Serial)" ON)
+option(ENABLE_DEBUG_OUTPUT "Enable debug output (cout/Serial)" OFF)
 option(ENABLE_FILE_TRACING "Enable ExecutionTracer file output" ON)
 option(OPTIMIZE_SIZE "Optimize for code size (disable sstream, use manual string building)" OFF)
 
