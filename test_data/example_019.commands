@@ -1,40 +1,40 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759460735045,
+    "timestamp": 1759511660254,
     "component": "interpreter",
     "version": "17.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759460735045,
+    "timestamp": 1759511660254,
     "message": "Program execution started"
   },
   {
     "type": "VAR_SET",
     "variable": "ledPin",
     "value": 9,
-    "timestamp": 1759460735045
+    "timestamp": 1759511660254
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759460735045,
+    "timestamp": 1759511660254,
     "message": "Executing setup() function"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759460735045,
+    "timestamp": 1759511660254,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759460735045,
+    "timestamp": 1759511660254,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759460735045,
+    "timestamp": 1759511660254,
     "message": "Starting loop iteration 1"
   },
   {
@@ -42,50 +42,50 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759460735045
+    "timestamp": 1759511660254
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1759460735045,
+    "timestamp": 1759511660254,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "fadeValue",
     "value": 0,
-    "timestamp": 1759460735045
+    "timestamp": 1759511660255
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1759460735045,
+    "timestamp": 1759511660255,
     "message": "for loop iteration 0"
   },
   {
     "type": "ANALOG_WRITE",
     "pin": 9,
     "value": 0,
-    "timestamp": 1759460735045
+    "timestamp": 1759511660255
   },
   {
     "type": "DELAY",
     "duration": 30,
     "actualDelay": 30,
-    "timestamp": 1759460735045
+    "timestamp": 1759511660255
   },
   {
     "type": "VAR_SET",
     "variable": "fadeValue",
     "value": 5,
-    "timestamp": 1759460735046
+    "timestamp": 1759511660255
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1759460735052,
+    "timestamp": 1759511660260,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
@@ -94,23 +94,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759460735052
+    "timestamp": 1759511660260
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759460735056,
+    "timestamp": 1759511660265,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759460735056,
+    "timestamp": 1759511660265,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759460735056,
+    "timestamp": 1759511660265,
     "message": "Program execution stopped"
   }
 ]

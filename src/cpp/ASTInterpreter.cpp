@@ -1549,13 +1549,38 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                     arrayValue = defaultArray;
                 }
             } else if (dimensions.size() == 2) {
-                // 2D array: for now create flattened array - proper nested structure needs FlexibleCommand enhancement
-                std::vector<int32_t> flattenedArray;
-                int totalSize = dimensions[0] * dimensions[1];
-                for (int i = 0; i < totalSize; i++) {
-                    flattenedArray.push_back(0); // Initialize with 0
+                // 2D array: evaluate initializer to get nested structure
+                if (foundInitializer) {
+                    // Found an ArrayInitializerNode - evaluate it to get nested structure
+                    // The ArrayInitializerNode visitor will create std::vector<std::vector<int32_t>>
+                    for (size_t i = 0; i < allChildren.size(); ++i) {
+                        if (allChildren[i] && allChildren[i]->getType() == arduino_ast::ASTNodeType::ARRAY_INIT) {
+                            CommandValue initValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(allChildren[i].get()));
+
+                            // Should be std::vector<std::vector<int32_t>> or std::vector<std::vector<double>> from ArrayInitializerNode
+                            if (std::holds_alternative<std::vector<std::vector<int32_t>>>(initValue)) {
+                                arrayValue = initValue;  // Store nested structure directly
+                            } else if (std::holds_alternative<std::vector<std::vector<double>>>(initValue)) {
+                                arrayValue = initValue;  // Store nested double array
+                            } else {
+                                // Fallback: create empty 2D array
+                                std::vector<std::vector<int32_t>> emptyNested(dimensions[0]);
+                                for (auto& row : emptyNested) {
+                                    row.resize(dimensions[1], 0);
+                                }
+                                arrayValue = emptyNested;
+                            }
+                            break;
+                        }
+                    }
+                } else {
+                    // No initializer: create empty 2D array
+                    std::vector<std::vector<int32_t>> emptyNested(dimensions[0]);
+                    for (auto& row : emptyNested) {
+                        row.resize(dimensions[1], 0);
+                    }
+                    arrayValue = emptyNested;
                 }
-                arrayValue = flattenedArray;
             } else {
                 // Fallback for higher dimensions or malformed - create 1D array
                 std::vector<int32_t> defaultArray;
@@ -1791,12 +1816,24 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             // CRITICAL FIX: Emit VAR_SET command after array assignment to match JavaScript behavior
             // Use the EXISTING array from basic scope and just emit it
 
-            // Get the EXISTING array from basic scope manager (this should be 64 elements for 8x8)
+            // Get the EXISTING array from basic scope manager
             Variable* existingArrayVar = scopeManager_->getVariable(arrayName);
             if (existingArrayVar) {
 
-                // Check if it's an array and what size
-                if (std::holds_alternative<std::vector<int32_t>>(existingArrayVar->value)) {
+                // Check if it's a 2D nested array (std::vector<std::vector<int32_t>>)
+                if (is2DArray && std::holds_alternative<std::vector<std::vector<int32_t>>>(existingArrayVar->value)) {
+                    auto& array2D = std::get<std::vector<std::vector<int32_t>>>(existingArrayVar->value);
+
+                    // Update the specific element in the 2D array: array[firstIndex][secondIndex]
+                    if (firstIndex >= 0 && static_cast<size_t>(firstIndex) < array2D.size() &&
+                        secondIndex >= 0 && static_cast<size_t>(secondIndex) < array2D[firstIndex].size()) {
+                        array2D[static_cast<size_t>(firstIndex)][static_cast<size_t>(secondIndex)] = convertToInt(rightValue);
+
+                        // Emit VAR_SET with the FULL 2D array
+                        emitVarSet(arrayName, commandValueToJsonString(existingArrayVar->value));
+                    }
+                } else if (std::holds_alternative<std::vector<int32_t>>(existingArrayVar->value)) {
+                    // 1D array
                     auto& arrayVec = std::get<std::vector<int32_t>>(existingArrayVar->value);
 
                     // Update the specific element in the basic scope array
@@ -1805,11 +1842,8 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
 
                         // Now emit VAR_SET with the FULL existing array
                         emitVarSet(arrayName, commandValueToJsonString(existingArrayVar->value));
-                    } else {
                     }
-                } else {
                 }
-            } else {
             }
             
         } else if (leftNode && leftNode->getType() == arduino_ast::ASTNodeType::MEMBER_ACCESS) {
@@ -2217,174 +2251,171 @@ void ASTInterpreter::visit(arduino_ast::RangeBasedForStatement& node) {
 void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
 
     try {
-        // SIMPLIFIED ARRAY ACCESS: Focus on basic functionality
-
         if (!node.getIdentifier() || !node.getIndex()) {
-            // TEMPORARY WORKAROUND: CompactAST export is broken for ArrayAccessNode, return null for undefined array elements
             lastExpressionResult_ = std::monostate{};
             return;
         }
 
-        // Get array name (support both 1D and 2D arrays)
-        std::string arrayName;
-        int32_t firstIndex = -1;
-        bool is2DArray = false;
+        // Check if this is nested access: arr[x][y]
+        if (const auto* nestedAccess = dynamic_cast<const arduino_ast::ArrayAccessNode*>(node.getIdentifier())) {
+            // This is arr[x][y] - evaluate arr[x] first
+            CommandValue firstAccess = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getIdentifier()));
 
-        if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(node.getIdentifier())) {
-            // Simple 1D array: arr[index]
-            arrayName = identifier->getName();
-        } else if (const auto* nestedAccess = dynamic_cast<const arduino_ast::ArrayAccessNode*>(node.getIdentifier())) {
-            // 2D array: arr[x][y] - node.getIdentifier() is arr[x]
-            if (const auto* baseIdentifier = dynamic_cast<const arduino_ast::IdentifierNode*>(nestedAccess->getIdentifier())) {
-                arrayName = baseIdentifier->getName();
-                is2DArray = true;
-                // Evaluate the first index (x in arr[x][y])
-                CommandValue firstIndexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(nestedAccess->getIndex()));
-                firstIndex = convertToInt(firstIndexValue);
+            // firstAccess should be a row (std::vector<int32_t> or std::vector<double>)
+            if (std::holds_alternative<std::vector<int32_t>>(firstAccess)) {
+                auto& row = std::get<std::vector<int32_t>>(firstAccess);
+
+                // Now evaluate the second index [y]
+                CommandValue indexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getIndex()));
+                int32_t secondIndex = convertToInt(indexValue);
+
+                // Bounds check
+                if (secondIndex < 0 || static_cast<size_t>(secondIndex) >= row.size()) {
+                    emitError("Array index " + std::to_string(secondIndex) + " out of bounds (size: " + std::to_string(row.size()) + ")");
+                    lastExpressionResult_ = std::monostate{};
+                    return;
+                }
+
+                // Return the element - natural access!
+                lastExpressionResult_ = row[secondIndex];
+                return;
+
+            } else if (std::holds_alternative<std::vector<double>>(firstAccess)) {
+                auto& row = std::get<std::vector<double>>(firstAccess);
+
+                CommandValue indexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getIndex()));
+                int32_t secondIndex = convertToInt(indexValue);
+
+                if (secondIndex < 0 || static_cast<size_t>(secondIndex) >= row.size()) {
+                    emitError("Array index " + std::to_string(secondIndex) + " out of bounds (size: " + std::to_string(row.size()) + ")");
+                    lastExpressionResult_ = std::monostate{};
+                    return;
+                }
+
+                lastExpressionResult_ = row[secondIndex];
+                return;
             } else {
-                emitError("Complex nested array expressions not supported in access");
+                emitError("Nested array access: first access did not return an array");
                 lastExpressionResult_ = std::monostate{};
                 return;
             }
-        } else {
-            emitError("Complex array expressions not yet supported");
-            lastExpressionResult_ = std::monostate{};
-            return;
         }
 
-        // Evaluate second index expression (y in arr[x][y])
-        CommandValue indexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getIndex()));
+        // Handle 1D array or first access of 2D array: arr[index]
+        if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(node.getIdentifier())) {
+            std::string arrayName = identifier->getName();
 
-        // Convert index to integer (handles int32_t, double, etc.)
-        int32_t secondIndex = convertToInt(indexValue);
+            // Check basic scope manager first for 2D arrays
+            // (Enhanced scope manager doesn't support returning rows from 2D arrays)
+            Variable* arrayVar = scopeManager_->getVariable(arrayName);
 
+            if (arrayVar) {
+                // Evaluate index once for all array types
+                CommandValue indexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getIndex()));
+                int32_t index = convertToInt(indexValue);
 
-        // Calculate final index based on array type
-        int32_t finalIndex;
-        if (is2DArray) {
-            // For 2D arrays like pixels[8][8], convert [x][y] to flat index
-            // Assuming 8x8 array: finalIndex = x * 8 + y
-            finalIndex = firstIndex * 8 + secondIndex;
-#ifdef ENABLE_DEBUG_OUTPUT
-            DEBUG_STREAM << "DEBUG ArrayAccess: 2D array " << arrayName << "[" << firstIndex << "][" << secondIndex << "] => flat index " << finalIndex << std::endl;
-#endif
-        } else {
-            // For 1D arrays, use the index directly
-            finalIndex = secondIndex;
-#ifdef ENABLE_DEBUG_OUTPUT
-            DEBUG_STREAM << "DEBUG ArrayAccess: 1D array " << arrayName << "[" << secondIndex << "]" << std::endl;
-#endif
-        }
+                // If it's a 2D array in basic scope, handle it here
+                if (std::holds_alternative<std::vector<std::vector<int32_t>>>(arrayVar->value)) {
+                    auto& matrix = std::get<std::vector<std::vector<int32_t>>>(arrayVar->value);
 
-        // CRITICAL FIX: Use enhanced scope manager for consistency with array assignments
-        // Array assignments use enhancedScopeManager_, so reads must too
-#ifdef ENABLE_DEBUG_OUTPUT
-        DEBUG_STREAM << "DEBUG ArrayAccess: Trying enhancedScopeManager_ for " << arrayName << std::endl;
-#endif
-        EnhancedCommandValue enhancedValue = MemberAccessHelper::getArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(finalIndex));
+                    if (index < 0 || static_cast<size_t>(index) >= matrix.size()) {
+                        emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(matrix.size()) + ")");
+                        lastExpressionResult_ = std::monostate{};
+                        return;
+                    }
 
-        // Check if enhanced value is valid (not std::monostate)
-        if (!std::holds_alternative<std::monostate>(enhancedValue)) {
-            // Convert enhanced value back to regular CommandValue
-            lastExpressionResult_ = downgradeExtendedCommandValue(enhancedValue);
-#ifdef ENABLE_DEBUG_OUTPUT
-            DEBUG_STREAM << "DEBUG ArrayAccess: Found in enhancedScopeManager_, value = " << commandValueToString(lastExpressionResult_) << std::endl;
-#endif
-            return;
-        }
-#ifdef ENABLE_DEBUG_OUTPUT
-        DEBUG_STREAM << "DEBUG ArrayAccess: NOT found in enhancedScopeManager_" << std::endl;
-#endif
+                    // Return the row (will be accessed again for [y])
+                    lastExpressionResult_ = matrix[index];
+                    return;
 
-        // Fall back to basic scope manager if enhanced fails
-#ifdef ENABLE_DEBUG_OUTPUT
-        DEBUG_STREAM << "DEBUG ArrayAccess: Trying basic scopeManager_ for " << arrayName << std::endl;
-#endif
-        Variable* arrayVar = scopeManager_->getVariable(arrayName);
+                } else if (std::holds_alternative<std::vector<std::vector<double>>>(arrayVar->value)) {
+                    auto& matrix = std::get<std::vector<std::vector<double>>>(arrayVar->value);
 
-        if (!arrayVar) {
-#ifdef ENABLE_DEBUG_OUTPUT
-            DEBUG_STREAM << "DEBUG ArrayAccess: NOT found in basic scopeManager_ either!" << std::endl;
-#endif
-            emitError("Array variable '" + arrayName + "' not found in either scope manager");
-            lastExpressionResult_ = std::monostate{};
-            return;
-        }
-#ifdef ENABLE_DEBUG_OUTPUT
-        DEBUG_STREAM << "DEBUG ArrayAccess: Found in basic scopeManager_" << std::endl;
-#endif
+                    if (index < 0 || static_cast<size_t>(index) >= matrix.size()) {
+                    emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(matrix.size()) + ")");
+                    lastExpressionResult_ = std::monostate{};
+                    return;
+                }
 
-        // Check array type and access element
-        size_t idx = static_cast<size_t>(finalIndex);
-
-        if (std::holds_alternative<std::vector<int32_t>>(arrayVar->value)) {
-            auto& arrayVector = std::get<std::vector<int32_t>>(arrayVar->value);
-            if (finalIndex < 0 || idx >= arrayVector.size()) {
-                emitError("Array index " + std::to_string(finalIndex) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
-                lastExpressionResult_ = std::monostate{};
+                lastExpressionResult_ = matrix[index];
                 return;
-            }
 
-            // CROSS-PLATFORM FIX: Check if this array represents undefined preprocessor constants
-            // Arrays with undefined constants (like {NOTE_A4, NOTE_B4, NOTE_C3}) are stored as all 0s
-            // but should return null when accessed to match JavaScript behavior
-#ifdef ENABLE_DEBUG_OUTPUT
-            DEBUG_STREAM << "DEBUG ArrayAccess: Array size = " << arrayVector.size() << ", accessing index " << idx << std::endl;
-            DEBUG_STREAM << "DEBUG ArrayAccess: First 10 elements: ";
-            for (size_t i = 0; i < std::min(size_t(10), arrayVector.size()); ++i) {
-                DEBUG_STREAM << arrayVector[i] << " ";
-            }
-            DEBUG_STREAM << std::endl;
-#endif
+            // Handle 1D arrays
+            } else if (std::holds_alternative<std::vector<int32_t>>(arrayVar->value)) {
+                auto& arr = std::get<std::vector<int32_t>>(arrayVar->value);
 
-            bool allElementsZero = true;
-            for (const auto& elem : arrayVector) {
-                if (elem != 0) {
-                    allElementsZero = false;
-                    break;
+                if (index < 0 || static_cast<size_t>(index) >= arr.size()) {
+                    emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(arr.size()) + ")");
+                    lastExpressionResult_ = std::monostate{};
+                    return;
+                }
+
+                // Check for all-zeros (undefined preprocessor constants)
+                bool allZeros = true;
+                for (const auto& elem : arr) {
+                    if (elem != 0) {
+                        allZeros = false;
+                        break;
+                    }
+                }
+
+                if (allZeros && arr[index] == 0) {
+                    lastExpressionResult_ = std::monostate{}; // Return null for undefined constants
+                } else {
+                    lastExpressionResult_ = arr[index];
+                }
+                return;
+
+            } else if (std::holds_alternative<std::vector<double>>(arrayVar->value)) {
+                auto& arr = std::get<std::vector<double>>(arrayVar->value);
+
+                if (index < 0 || static_cast<size_t>(index) >= arr.size()) {
+                    emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(arr.size()) + ")");
+                    lastExpressionResult_ = std::monostate{};
+                    return;
+                }
+
+                lastExpressionResult_ = arr[index];
+                return;
+
+            } else if (std::holds_alternative<std::vector<std::string>>(arrayVar->value)) {
+                auto& arr = std::get<std::vector<std::string>>(arrayVar->value);
+
+                if (index < 0 || static_cast<size_t>(index) >= arr.size()) {
+                    emitError("Array index " + std::to_string(index) + " out of bounds (size: " + std::to_string(arr.size()) + ")");
+                    lastExpressionResult_ = std::monostate{};
+                    return;
+                }
+
+                lastExpressionResult_ = arr[index];
+                return;
+
+                } else {
+                    emitError("Variable '" + arrayName + "' is not an array");
+                    lastExpressionResult_ = std::monostate{};
+                    return;
+                }
+            } else {
+                // Variable not found in basic scope - try enhanced scope manager
+                EnhancedCommandValue enhancedValue = MemberAccessHelper::getArrayElement(enhancedScopeManager_.get(), arrayName, 0);
+                if (!std::holds_alternative<std::monostate>(enhancedValue)) {
+                    // Found in enhanced scope - handle it there
+                    CommandValue indexValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getIndex()));
+                    int32_t index = convertToInt(indexValue);
+                    enhancedValue = MemberAccessHelper::getArrayElement(enhancedScopeManager_.get(), arrayName, static_cast<size_t>(index));
+                    lastExpressionResult_ = downgradeExtendedCommandValue(enhancedValue);
+                    return;
+                } else {
+                    emitError("Array variable '" + arrayName + "' not found");
+                    lastExpressionResult_ = std::monostate{};
+                    return;
                 }
             }
-#ifdef ENABLE_DEBUG_OUTPUT
-            DEBUG_STREAM << "DEBUG ArrayAccess: allElementsZero = " << (allElementsZero ? "true" : "false") << std::endl;
-            DEBUG_STREAM << "DEBUG ArrayAccess: arrayVector[" << idx << "] = " << arrayVector[idx] << std::endl;
-#endif
-
-            if (allElementsZero && arrayVector[idx] == 0) {
-                // This array contains only 0s (undefined constants), return null
-#ifdef ENABLE_DEBUG_OUTPUT
-                DEBUG_STREAM << "DEBUG ArrayAccess: Returning null because array is all zeros" << std::endl;
-#endif
-                lastExpressionResult_ = std::monostate{};
-            } else {
-#ifdef ENABLE_DEBUG_OUTPUT
-                DEBUG_STREAM << "DEBUG ArrayAccess: Returning value " << arrayVector[idx] << std::endl;
-#endif
-                lastExpressionResult_ = arrayVector[idx];
-            }
-
-        } else if (std::holds_alternative<std::vector<double>>(arrayVar->value)) {
-            auto& arrayVector = std::get<std::vector<double>>(arrayVar->value);
-            if (finalIndex < 0 || finalIndex >= arrayVector.size()) {
-                emitError("Array index " + std::to_string(finalIndex) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
-                lastExpressionResult_ = std::monostate{};
-                return;
-            }
-            lastExpressionResult_ = arrayVector[finalIndex];
-
-        } else if (std::holds_alternative<std::vector<std::string>>(arrayVar->value)) {
-            auto& arrayVector = std::get<std::vector<std::string>>(arrayVar->value);
-            if (finalIndex < 0 || finalIndex >= arrayVector.size()) {
-                emitError("Array index " + std::to_string(finalIndex) + " out of bounds (size: " + std::to_string(arrayVector.size()) + ")");
-                lastExpressionResult_ = std::monostate{};
-                return;
-            }
-            lastExpressionResult_ = arrayVector[finalIndex];
-
-        } else {
-            emitError("Variable '" + arrayName + "' is not an array (type: " + commandValueToString(arrayVar->value) + ")");
-            lastExpressionResult_ = std::monostate{};
-            return;
         }
+
+        emitError("Unsupported array access expression");
+        lastExpressionResult_ = std::monostate{};
+        return;
         
     } catch (const std::exception& e) {
         emitError("Array access error: " + std::string(e.what()));
@@ -2455,6 +2486,8 @@ void ASTInterpreter::visit(arduino_ast::ArrayInitializerNode& node) {
         bool allInts = true;
         bool allDoubles = true;
         bool allStrings = true;
+        bool hasNestedIntArrays = false;
+        bool hasNestedDoubleArrays = false;
 
         for (size_t i = 0; i < node.getChildren().size(); ++i) {
             const auto& child = node.getChildren()[i];
@@ -2466,6 +2499,16 @@ void ASTInterpreter::visit(arduino_ast::ArrayInitializerNode& node) {
                 if (!std::holds_alternative<int32_t>(elementValue)) allInts = false;
                 if (!std::holds_alternative<double>(elementValue)) allDoubles = false;
                 if (!std::holds_alternative<std::string>(elementValue)) allStrings = false;
+
+                // Check for nested arrays (2D array support)
+                if (std::holds_alternative<std::vector<int32_t>>(elementValue)) {
+                    hasNestedIntArrays = true;
+                    allInts = false; // Not a flat int array
+                }
+                if (std::holds_alternative<std::vector<double>>(elementValue)) {
+                    hasNestedDoubleArrays = true;
+                    allDoubles = false; // Not a flat double array
+                }
             } else {
                 tempElements.push_back(0); // Default for null elements
                 allDoubles = false;
@@ -2473,8 +2516,33 @@ void ASTInterpreter::visit(arduino_ast::ArrayInitializerNode& node) {
             }
         }
 
-        // Create typed array based on element types
-        if (allInts) {
+        // Create 2D arrays if nested arrays detected
+        if (hasNestedIntArrays) {
+            std::vector<std::vector<int32_t>> nestedArray;
+            for (const auto& elem : tempElements) {
+                if (std::holds_alternative<std::vector<int32_t>>(elem)) {
+                    // It's already a 1D array - add it as a row
+                    nestedArray.push_back(std::get<std::vector<int32_t>>(elem));
+                } else if (std::holds_alternative<int32_t>(elem)) {
+                    // Scalar in nested context - wrap in single-element array
+                    nestedArray.push_back({std::get<int32_t>(elem)});
+                }
+            }
+            lastExpressionResult_ = nestedArray;
+        } else if (hasNestedDoubleArrays) {
+            std::vector<std::vector<double>> nestedArray;
+            for (const auto& elem : tempElements) {
+                if (std::holds_alternative<std::vector<double>>(elem)) {
+                    // It's already a 1D array - add it as a row
+                    nestedArray.push_back(std::get<std::vector<double>>(elem));
+                } else if (std::holds_alternative<double>(elem)) {
+                    // Scalar in nested context - wrap in single-element array
+                    nestedArray.push_back({std::get<double>(elem)});
+                }
+            }
+            lastExpressionResult_ = nestedArray;
+        // Create typed 1D array based on element types
+        } else if (allInts) {
             std::vector<int32_t> intArray;
             for (const auto& elem : tempElements) {
                 intArray.push_back(std::get<int32_t>(elem));
@@ -2746,10 +2814,15 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             expr->accept(*this);
             return lastExpressionResult_;
 
+        case arduino_ast::ASTNodeType::ARRAY_INIT:
+            // Handle array initializers by calling visitor
+            expr->accept(*this);
+            return lastExpressionResult_;
+
         default:
             break;
     }
-    
+
     return std::monostate{};
 }
 
@@ -5952,6 +6025,36 @@ std::string commandValueToJsonString(const CommandValue& value) {
             }
             json << "]";
             return json.str();
+        } else if constexpr (std::is_same_v<T, std::vector<std::vector<int32_t>>>) {
+            // 2D integer array - serialize as nested JSON array [[1,2,3],[4,5,6]]
+            StringBuildStream json;
+            json << "[";
+            for (size_t i = 0; i < v.size(); i++) {
+                if (i > 0) json << ",";
+                json << "[";
+                for (size_t j = 0; j < v[i].size(); j++) {
+                    if (j > 0) json << ",";
+                    json << v[i][j];
+                }
+                json << "]";
+            }
+            json << "]";
+            return json.str();
+        } else if constexpr (std::is_same_v<T, std::vector<std::vector<double>>>) {
+            // 2D double array - serialize as nested JSON array
+            StringBuildStream json;
+            json << "[";
+            for (size_t i = 0; i < v.size(); i++) {
+                if (i > 0) json << ",";
+                json << "[";
+                for (size_t j = 0; j < v[i].size(); j++) {
+                    if (j > 0) json << ",";
+                    json << v[i][j];
+                }
+                json << "]";
+            }
+            json << "]";
+            return json.str();
         } else {
             return "null";
         }
@@ -6006,6 +6109,36 @@ std::string commandValueToString(const CommandValue& value) {
             for (size_t i = 0; i < v.size(); i++) {
                 if (i > 0) os << ",";
                 os << v[i];
+            }
+            os << "]";
+            return os.str();
+        } else if constexpr (std::is_same_v<T, std::vector<std::vector<int32_t>>>) {
+            // 2D integer array - serialize as nested JSON array [[1,2,3],[4,5,6]]
+            StringBuildStream os;
+            os << "[";
+            for (size_t i = 0; i < v.size(); i++) {
+                if (i > 0) os << ",";
+                os << "[";
+                for (size_t j = 0; j < v[i].size(); j++) {
+                    if (j > 0) os << ",";
+                    os << v[i][j];
+                }
+                os << "]";
+            }
+            os << "]";
+            return os.str();
+        } else if constexpr (std::is_same_v<T, std::vector<std::vector<double>>>) {
+            // 2D double array - serialize as nested JSON array
+            StringBuildStream os;
+            os << "[";
+            for (size_t i = 0; i < v.size(); i++) {
+                if (i > 0) os << ",";
+                os << "[";
+                for (size_t j = 0; j < v[i].size(); j++) {
+                    if (j > 0) os << ",";
+                    os << v[i][j];
+                }
+                os << "]";
             }
             os << "]";
             return os.str();
@@ -6083,6 +6216,12 @@ bool commandValuesEqual(const CommandValue& a, const CommandValue& b) {
             return bVal && (*bVal == aVal);
         } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
             auto bVal = std::get_if<std::vector<std::string>>(&b);
+            return bVal && (*bVal == aVal);
+        } else if constexpr (std::is_same_v<T, std::vector<std::vector<int32_t>>>) {
+            auto bVal = std::get_if<std::vector<std::vector<int32_t>>>(&b);
+            return bVal && (*bVal == aVal);
+        } else if constexpr (std::is_same_v<T, std::vector<std::vector<double>>>) {
+            auto bVal = std::get_if<std::vector<std::vector<double>>>(&b);
             return bVal && (*bVal == aVal);
         }
         return false;

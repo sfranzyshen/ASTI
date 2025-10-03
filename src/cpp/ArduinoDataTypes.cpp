@@ -536,6 +536,28 @@ EnhancedCommandValue upgradeExtendedCommandValue(const CommandValue& extended) {
             }
 
             return arduinoArray;
+        } else if constexpr (std::is_same_v<T, std::vector<std::vector<int32_t>>> ||
+                             std::is_same_v<T, std::vector<std::vector<double>>>) {
+            // Convert 2D arrays to nested ArduinoArray
+            auto outerArray = std::make_shared<ArduinoArray>("auto");
+            outerArray->resize(arg.size());
+
+            for (size_t i = 0; i < arg.size(); ++i) {
+                auto innerArray = std::make_shared<ArduinoArray>("auto");
+                innerArray->resize(arg[i].size());
+
+                for (size_t j = 0; j < arg[i].size(); ++j) {
+                    if constexpr (std::is_same_v<T, std::vector<std::vector<int32_t>>>) {
+                        innerArray->setElement(j, EnhancedCommandValue(arg[i][j]));
+                    } else {
+                        innerArray->setElement(j, EnhancedCommandValue(arg[i][j]));
+                    }
+                }
+
+                outerArray->setElement(i, innerArray);
+            }
+
+            return outerArray;
         } else if constexpr (std::is_same_v<T, uint32_t>) {
             // Convert uint32_t to int32_t for EnhancedCommandValue compatibility
             return static_cast<int32_t>(arg);

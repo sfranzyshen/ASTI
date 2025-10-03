@@ -14,9 +14,11 @@ using CommandValue = std::variant<
     uint32_t,                                // unsigned integer (compatibility)
     double,                                  // floating point numbers
     std::string,                             // strings and identifiers
-    std::vector<int32_t>,                    // simple integer arrays (most common)
-    std::vector<double>,                     // double arrays
-    std::vector<std::string>                 // string arrays
+    std::vector<int32_t>,                    // 1D integer arrays
+    std::vector<double>,                     // 1D double arrays
+    std::vector<std::string>,                // 1D string arrays
+    std::vector<std::vector<int32_t>>,       // 2D integer arrays (NEW for Test 105)
+    std::vector<std::vector<double>>         // 2D double arrays (NEW for Test 105)
 >;
 
 /**
@@ -337,6 +339,24 @@ inline FlexibleCommandValue convertCommandValue(const OldCommandValue& oldValue)
                 mixedArray.emplace_back(elem);
             }
             return mixedArray;
+        } else if constexpr (std::is_same_v<T, std::vector<std::vector<int32_t>>>) {
+            // Convert 2D int array to flat mixed array (FlexibleCommandValue doesn't support nesting)
+            std::vector<std::variant<bool, int32_t, double, std::string>> flatArray;
+            for (const auto& row : arg) {
+                for (const auto& elem : row) {
+                    flatArray.emplace_back(elem);
+                }
+            }
+            return flatArray;
+        } else if constexpr (std::is_same_v<T, std::vector<std::vector<double>>>) {
+            // Convert 2D double array to flat mixed array (FlexibleCommandValue doesn't support nesting)
+            std::vector<std::variant<bool, int32_t, double, std::string>> flatArray;
+            for (const auto& row : arg) {
+                for (const auto& elem : row) {
+                    flatArray.emplace_back(elem);
+                }
+            }
+            return flatArray;
         } else if constexpr (std::is_same_v<T, uint32_t>) {
             // Convert uint32_t to int64_t for FlexibleCommandValue
             return static_cast<int64_t>(arg);
