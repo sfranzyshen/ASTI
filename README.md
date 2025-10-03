@@ -14,7 +14,7 @@ The project is organized into three independent, reusable modules:
 └── src/javascript/           # ASTInterpreter execution engine
 ```
 
-### **CompactAST Library** (v2.3.0)
+### **CompactAST Library** (v3.0.0)
 - **Purpose**: Binary AST serialization with 12.5x compression ratio
 - **Dual Implementation**: JavaScript + C++ with identical binary format
 - **ESP32 Ready**: Optimized for embedded deployment (512KB RAM + 8MB PSRAM)
@@ -26,7 +26,7 @@ The project is organized into three independent, reusable modules:
 - **Achievement**: Production-ready parser with 100% Arduino language support
 - **Output**: Clean Abstract Syntax Tree + CompactAST binary serialization
 
-### **ASTInterpreter Core** (v16.0.0)
+### **ASTInterpreter Core** (v17.0.0)
 - **Purpose**: AST execution engine with Arduino hardware simulation
 - **Recent Victories**: Architectural cleanup complete, fail-fast error handling, Keyboard.print message formatting
 - **Architecture**: Direct JSON emission, synchronous C++ + async JavaScript, systematic cross-platform parity
@@ -134,9 +134,9 @@ Commands contain only primitive data types for maximum compatibility with parent
 
 | Component | Version | JavaScript | C++ Cross-Platform | Success Rate |
 |-----------|---------|------------|-------------------|--------------|
-| **CompactAST** | v2.3.0 | 100% ✅ | Version Synchronized ✅ | Production Ready |
+| **CompactAST** | v3.0.0 | 100% ✅ | Version Synchronized ✅ | Production Ready |
 | **ArduinoParser** | v6.0.0 | 100% ✅ | Full Compatibility ✅ | 135/135 (100%) |
-| **ASTInterpreter** | v16.0.0 | 100% ✅ | **114/135 (84.44%)** ✅ | Architectural Cleanup Complete |
+| **ASTInterpreter** | v17.0.0 | 100% ✅ | **114/135 (84.44%)** ✅ | CastExpression Support Complete |
 | **Cross-Platform** | Oct 2025 | | **84.44% PARITY** ✅ | **Ongoing improvements** |
 
 ### Test Coverage
