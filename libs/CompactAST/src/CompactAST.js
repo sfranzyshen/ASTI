@@ -114,7 +114,7 @@ class CompactASTExporter {
         
         // Phase 1: Collect all nodes and build string table
         this.collectNodes(ast);
-        
+
         // Phase 2: Calculate buffer size
         const headerSize = 16;
         const stringTableSize = this.calculateStringTableSize();
@@ -140,9 +140,9 @@ class CompactASTExporter {
     
     collectNodes(node, index = 0) {
         if (!node) return index;
-        
+
         // Node collection phase
-        
+
         // Add to node list
         this.nodes[index] = node;
         this.nodeMap.set(node, index);
@@ -225,7 +225,8 @@ class CompactASTExporter {
             'PostfixExpressionNode': ['operand'],
             'CommaExpression': ['left', 'right'],
             'ArrayDeclaratorNode': ['identifier', 'dimensions'],
-            'ReturnStatement': ['value']  // ULTRATHINK: Re-adding for Test 42
+            'ReturnStatement': ['value'],  // ULTRATHINK: Re-adding for Test 42
+            'CastExpression': ['operand']  // castType is a string value, not a child node
         };
 
         const childNames = childrenMap[node.type] || [];
@@ -356,11 +357,11 @@ class CompactASTExporter {
     
     getChildCount(node) {
         let count = 0;
-        
+
         if (node.children) {
             count += node.children.length;
         }
-        
+
         const namedChildren = this.getNamedChildren(node);
         for (const childName of namedChildren) {
             if (node[childName]) {
@@ -371,7 +372,9 @@ class CompactASTExporter {
                 }
             }
         }
-        
+
+        // CastExpression nodes have operand child + castType value
+
         return count;
     }
     
@@ -462,6 +465,8 @@ class CompactASTExporter {
             flags |= 0x02; // HAS_VALUE
         } else if (typeof operatorString === 'string') {
             flags |= 0x02; // HAS_VALUE for operator nodes, but only if operator exists
+        } else if (node.type === 'CastExpression' && node.castType) {
+            flags |= 0x02; // HAS_VALUE for CastExpression castType
         }
 
         view.setUint8(offset, flags);
@@ -478,6 +483,9 @@ class CompactASTExporter {
         } else if (typeof operatorString === 'string') {
             // Write the canonical operator we extracted
             offset = this.writeValue(view, offset, operatorString);
+        } else if (node.type === 'CastExpression' && node.castType) {
+            // Write castType for CastExpression nodes
+            offset = this.writeValue(view, offset, node.castType);
         }
         // The faulty fallback that wrote an empty string is now removed.
         
@@ -599,7 +607,7 @@ class CompactASTExporter {
     
     getChildIndices(node) {
         const indices = [];
-        
+
         if (node.children) {
             for (const child of node.children) {
                 if (this.nodeMap.has(child)) {
@@ -607,7 +615,7 @@ class CompactASTExporter {
                 }
             }
         }
-        
+
         const namedChildren = this.getNamedChildren(node);
         for (const childName of namedChildren) {
             if (node[childName]) {
@@ -638,7 +646,7 @@ class CompactASTExporter {
                 }
             }
         }
-        
+
         return indices;
     }
 }

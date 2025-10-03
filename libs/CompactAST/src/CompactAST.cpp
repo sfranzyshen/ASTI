@@ -168,15 +168,13 @@ void CompactASTReader::parseNodesInternal() {
 }
 
 ASTNodePtr CompactASTReader::parseNode(size_t nodeIndex) {
-    
+
     validatePosition(4); // NodeType + Flags + DataSize
-    
+
     uint8_t nodeTypeRaw = readUint8();
     uint8_t flags = readUint8();
     uint16_t dataSize = convertFromLittleEndian16(readUint16());
-    
-    
-    
+
     // Validate node type
     validateNodeType(nodeTypeRaw);
     ASTNodeType nodeType = static_cast<ASTNodeType>(nodeTypeRaw);
@@ -333,6 +331,9 @@ ASTNodePtr CompactASTReader::parseNode(size_t nodeIndex) {
         case ASTNodeType::DESIGNATED_INITIALIZER:
             node = std::make_unique<DesignatedInitializerNode>();
             break;
+        case ASTNodeType::CAST_EXPR:
+            node = std::make_unique<CastExpression>();
+            break;
 
         default:
             // Create generic node for unsupported types
@@ -357,16 +358,16 @@ ASTNodePtr CompactASTReader::parseNode(size_t nodeIndex) {
     
     // Parse children if present
     if (flags & static_cast<uint8_t>(ASTNodeFlags::HAS_CHILDREN)) {
-        
+
         // Child indices should be stored as uint16_t values
         size_t remainingBytes = dataSize - (position_ - dataStart);
         size_t childCount = remainingBytes / 2; // Each child index is 2 bytes
-        
-        
+
+
         for (size_t i = 0; i < childCount; ++i) {
             if (position_ + 2 <= dataStart + dataSize) {
                 uint16_t childIndex = convertFromLittleEndian16(readUint16());
-                
+
                 // Store child index for later linking
                 childIndices_[nodeIndex].push_back(childIndex);
             } else {
@@ -453,7 +454,7 @@ ASTValue CompactASTReader::parseValue() {
 }
 
 void CompactASTReader::linkNodeChildren() {
-    
+
     // Process in descending order, but handle root node (0) specially to avoid it being moved
     std::vector<std::pair<size_t, std::vector<uint16_t>>> orderedPairs(childIndices_.begin(), childIndices_.end());
     std::sort(orderedPairs.begin(), orderedPairs.end(), [](const auto& a, const auto& b) {
@@ -632,6 +633,18 @@ void CompactASTReader::linkNodeChildren() {
                         arrayAccessNode->setIdentifier(std::move(nodes_[childIndex]));
                     } else if (!arrayAccessNode->getIndex()) {
                         arrayAccessNode->setIndex(std::move(nodes_[childIndex]));
+                    } else {
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
+            } else if (parentNode->getType() == ASTNodeType::CAST_EXPR) {
+                auto* castNode = dynamic_cast<arduino_ast::CastExpression*>(parentNode.get());
+                if (castNode) {
+                    // CastExpression expects 1 child: operand (castType is in value field)
+                    if (!castNode->getOperand()) {
+                        castNode->setOperand(std::move(nodes_[childIndex]));
                     } else {
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }

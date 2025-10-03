@@ -223,6 +223,10 @@ void DesignatedInitializerNode::accept(ASTVisitor& visitor) {
     visitor.visit(*this);
 }
 
+void CastExpression::accept(ASTVisitor& visitor) {
+    visitor.visit(*this);
+}
+
 // =============================================================================
 // UTILITY FUNCTIONS
 // =============================================================================
@@ -268,8 +272,7 @@ ASTNodePtr createNode(ASTNodeType type) {
         case ASTNodeType::ARRAY_ACCESS:
             return std::make_unique<ArrayAccessNode>();
         case ASTNodeType::CAST_EXPR:
-            // TODO: Implement proper CastExpression class
-            return std::make_unique<ExpressionStatement>();  // Use generic expression as placeholder
+            return std::make_unique<CastExpression>();
         case ASTNodeType::SIZEOF_EXPR:
             // TODO: Implement proper SizeofExpression class
             return std::make_unique<ExpressionStatement>();  // Use generic expression as placeholder

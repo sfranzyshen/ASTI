@@ -1,6 +1,6 @@
 name=StringToInt.ino
 source=unknown
-astSize=1998
+astSize=2007
 codeSize=809
 mode=AST_AND_COMMANDS
 commandCount=20

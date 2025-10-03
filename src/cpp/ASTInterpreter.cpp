@@ -2741,6 +2741,11 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             expr->accept(*this);
             return lastExpressionResult_;
 
+        case arduino_ast::ASTNodeType::CAST_EXPR:
+            // Handle cast expressions by calling visitor
+            expr->accept(*this);
+            return lastExpressionResult_;
+
         default:
             break;
     }
@@ -6804,7 +6809,36 @@ void ASTInterpreter::visit(arduino_ast::FunctionStyleCastNode& node) {
     
     // Perform the cast using existing conversion utilities
     lastExpressionResult_ = convertToType(sourceValue, targetTypeName);
-    
+
+}
+
+void ASTInterpreter::visit(arduino_ast::CastExpression& node) {
+    TRACE_SCOPE("visit(CastExpression)", "");
+
+    const auto* operand = node.getOperand();
+    if (!operand) {
+        emitError("Cast expression missing operand");
+        return;
+    }
+
+    // Evaluate the operand
+    const_cast<arduino_ast::ASTNode*>(operand)->accept(*this);
+    CommandValue sourceValue = lastExpressionResult_;
+
+    // Get cast type from node value (JavaScript stores it as a string)
+    std::string targetTypeName;
+    const auto& nodeValue = node.getValue();
+    if (std::holds_alternative<std::string>(nodeValue)) {
+        targetTypeName = std::get<std::string>(nodeValue);
+    }
+
+    if (targetTypeName.empty()) {
+        emitError("Could not determine cast type");
+        return;
+    }
+
+    // Perform cast using existing conversion utilities
+    lastExpressionResult_ = convertToType(sourceValue, targetTypeName);
 }
 
 void ASTInterpreter::visit(arduino_ast::WideCharLiteralNode& node) {
@@ -6991,6 +7025,7 @@ void ASTInterpreter::visit(arduino_ast::EnumMemberNode& node) {
     
     if (options_.verbose) {
         std::visit([](auto&& arg) {
+            (void)arg;  // Suppress unused parameter warning
         }, memberValue);
     }
 }

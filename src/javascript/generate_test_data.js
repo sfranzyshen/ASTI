@@ -251,11 +251,10 @@ function generateCommandsOptimized(ast, example) {
                 
                 if (cmd.type === 'PROGRAM_END' || cmd.type === 'ERROR') {
                     done = true;
-                } else if (cmd.type === 'LOOP_LIMIT_REACHED') {
-                    // SMART HANDLER: Stop after nested loop limits to prevent complex loop() timeout
-                    // This handles tests like ArduinoISP where setup() has pulse() do-while loop
-                    // and loop() code would be too complex/slow to execute in test mode
+                }
 
+                // SMART HANDLER: Stop after nested loop limits to prevent complex loop() timeout
+                if (cmd.type === 'LOOP_LIMIT_REACHED') {
                     const message = cmd.message || '';
                     const isNestedLoop = message.includes('Do-while') ||
                                          message.includes('While loop') ||
@@ -263,7 +262,6 @@ function generateCommandsOptimized(ast, example) {
 
                     if (isNestedLoop) {
                         // Wait for setup to complete, then stop
-                        // This prevents attempting to execute complex loop() code
                         setTimeout(() => {
                             if (!done) {
                                 done = true;
@@ -287,7 +285,7 @@ function generateCommandsOptimized(ast, example) {
                 timedOut = true;
                 done = true;
                 restore();
-            }, 3000); // Temporarily increased to 3000ms to handle complex tests
+            }, 10000); // Increased to 10 seconds for complex tests like ArduinoISP
             
             let checkCount = 0;
             const check = () => {
@@ -301,7 +299,7 @@ function generateCommandsOptimized(ast, example) {
                         resolve({
                             success: false,
                             commands: [],
-                            error: 'TIMEOUT: Test did not complete 1 iteration within 3000ms - inconsistent data rejected'
+                            error: 'TIMEOUT: Test did not complete 1 iteration within 10000ms - inconsistent data rejected'
                         });
                     } else {
                         resolve({ success: true, commands });

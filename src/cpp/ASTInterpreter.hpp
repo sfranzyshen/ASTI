@@ -727,6 +727,7 @@ public:
     void visit(arduino_ast::NamespaceAccessNode& node) override;
     void visit(arduino_ast::CppCastNode& node) override;
     void visit(arduino_ast::FunctionStyleCastNode& node) override;
+    void visit(arduino_ast::CastExpression& node) override;
     void visit(arduino_ast::WideCharLiteralNode& node) override;
     void visit(arduino_ast::DesignatedInitializerNode& node) override;
     void visit(arduino_ast::FuncDeclNode& node) override;

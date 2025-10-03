@@ -959,6 +959,23 @@ public:
     void accept(ASTVisitor& visitor) override;
 };
 
+class CastExpression : public ASTNode {
+private:
+    ASTNodePtr castType_;
+    ASTNodePtr operand_;
+
+public:
+    CastExpression() : ASTNode(ASTNodeType::CAST_EXPR) {}
+
+    void setCastType(ASTNodePtr castType) { castType_ = std::move(castType); }
+    void setOperand(ASTNodePtr operand) { operand_ = std::move(operand); }
+
+    const ASTNode* getCastType() const { return castType_.get(); }
+    const ASTNode* getOperand() const { return operand_.get(); }
+
+    void accept(ASTVisitor& visitor) override;
+};
+
 class WideCharLiteralNode : public ASTNode {
 private:
     std::string value_;
@@ -1303,7 +1320,8 @@ public:
     virtual void visit(NamespaceAccessNode& node) = 0;
     virtual void visit(CppCastNode& node) = 0;
     virtual void visit(FunctionStyleCastNode& node) = 0;
-    
+    virtual void visit(CastExpression& node) = 0;
+
     // Literals
     virtual void visit(NumberNode& node) = 0;
     virtual void visit(StringLiteralNode& node) = 0;
