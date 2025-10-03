@@ -2557,7 +2557,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         TRACE_EXPR("evaluateExpression", "NULL expression");
         return std::monostate{};
     }
-    
+
     auto nodeType = expr->getType();
     std::string nodeTypeName = arduino_ast::nodeTypeToString(nodeType);
     TRACE_ENTRY("evaluateExpression", "type=" + nodeTypeName);
@@ -6821,9 +6821,9 @@ void ASTInterpreter::visit(arduino_ast::CastExpression& node) {
         return;
     }
 
-    // Evaluate the operand
-    const_cast<arduino_ast::ASTNode*>(operand)->accept(*this);
-    CommandValue sourceValue = lastExpressionResult_;
+    // Evaluate the operand using evaluateExpression (not accept)
+    // BinaryOpNode and other expressions are handled by evaluateExpression
+    CommandValue sourceValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(operand));
 
     // Get cast type from node value (JavaScript stores it as a string)
     std::string targetTypeName;
