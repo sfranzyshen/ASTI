@@ -2013,15 +2013,21 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
                         newValue = std::get<int32_t>(currentValue) + 1;
                     } else if (std::holds_alternative<double>(currentValue)) {
                         newValue = std::get<double>(currentValue) + 1.0;
+                    } else {
+                        // Try to convert to number and increment
+                        newValue = convertToInt(currentValue) + 1;
                     }
                 } else if (op == "--") {
                     if (std::holds_alternative<int32_t>(currentValue)) {
                         newValue = std::get<int32_t>(currentValue) - 1;
                     } else if (std::holds_alternative<double>(currentValue)) {
                         newValue = std::get<double>(currentValue) - 1.0;
+                    } else {
+                        // Try to convert to number and decrement
+                        newValue = convertToInt(currentValue) - 1;
                     }
                 }
-                
+
                 // Update variable with new value
                 var->setValue(newValue);
 
@@ -2032,10 +2038,17 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
                 // POSTFIX SEMANTICS: Return the original value (before increment/decrement)
                 // This is critical for conditions like "while(times--)" which test the OLD value
                 lastExpressionResult_ = currentValue;
+            } else {
+                emitError("Undefined variable in postfix operation: " + varName);
+                lastExpressionResult_ = std::monostate{};
             }
+        } else {
+            emitError("Postfix increment/decrement requires variable operand");
+            lastExpressionResult_ = std::monostate{};
         }
     } catch (const std::exception& e) {
         emitError("Postfix expression error: " + std::string(e.what()));
+        lastExpressionResult_ = std::monostate{};
     }
 }
 
@@ -2687,7 +2700,61 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             if (auto* unaryNode = dynamic_cast<arduino_ast::UnaryOpNode*>(expr)) {
                 std::string op = unaryNode->getOperator();
 
+                // Special handling for prefix increment/decrement operators (Test 107)
+                // These need variable context to update the variable, not just the value
+                if (op == "++" || op == "--") {
+                    const auto* operand = unaryNode->getOperand();
 
+                    // Only handle if operand is an identifier (variable)
+                    if (operand && operand->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
+                        std::string varName = operand->getValueAs<std::string>();
+                        Variable* var = scopeManager_->getVariable(varName);
+
+                        if (var) {
+                            CommandValue currentValue = var->value;
+                            CommandValue newValue = currentValue;
+
+                            // Apply prefix operation
+                            if (op == "++") {
+                                if (std::holds_alternative<int32_t>(currentValue)) {
+                                    newValue = std::get<int32_t>(currentValue) + 1;
+                                } else if (std::holds_alternative<double>(currentValue)) {
+                                    newValue = std::get<double>(currentValue) + 1.0;
+                                } else {
+                                    // Try to convert to number and increment
+                                    newValue = convertToInt(currentValue) + 1;
+                                }
+                            } else { // op == "--"
+                                if (std::holds_alternative<int32_t>(currentValue)) {
+                                    newValue = std::get<int32_t>(currentValue) - 1;
+                                } else if (std::holds_alternative<double>(currentValue)) {
+                                    newValue = std::get<double>(currentValue) - 1.0;
+                                } else {
+                                    // Try to convert to number and decrement
+                                    newValue = convertToInt(currentValue) - 1;
+                                }
+                            }
+
+                            // Update variable with new value
+                            var->setValue(newValue);
+
+                            // Emit VAR_SET command to match JavaScript behavior
+                            emitVarSet(varName, commandValueToJsonString(newValue));
+
+                            // PREFIX SEMANTICS: Return the new value (after increment/decrement)
+                            // This is critical for expressions like "int y = ++x" which should assign the incremented value
+                            return newValue;
+                        } else {
+                            emitError("Undefined variable in prefix operation: " + varName);
+                            return std::monostate{};
+                        }
+                    } else {
+                        emitError("Prefix increment/decrement requires variable operand");
+                        return std::monostate{};
+                    }
+                }
+
+                // For all other unary operators, use evaluateUnaryOperation
                 CommandValue operand = evaluateExpression(const_cast<arduino_ast::ASTNode*>(unaryNode->getOperand()));
                 return evaluateUnaryOperation(op, operand);
             }
@@ -6730,9 +6797,9 @@ CommandValue ASTInterpreter::evaluateUnaryOperation(const std::string& op, const
         // Bitwise NOT
         return ~convertToInt(operand);
     } else if (op == "++" || op == "--") {
-        // Note: Increment/decrement need variable context, not just value
-        // These should be handled at a higher level with variable access
-        emitError("Increment/decrement operators require variable context");
+        // PREFIX increment/decrement should be handled in evaluateExpression context (Test 107)
+        // This code path should never be reached if implementation is correct
+        emitError("INTERNAL ERROR: Prefix increment/decrement reached evaluateUnaryOperation (should be handled in evaluateExpression)");
         return std::monostate{};
     } else if (op == "*") {
         // Pointer dereference - for now, simulate by looking up dereferenced variable
