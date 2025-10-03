@@ -2656,6 +2656,12 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                     return static_cast<int32_t>(1);
                 }
 
+                // Check if it's a function name (implicit function-to-pointer conversion - Test 106)
+                if (userFunctionNames_.count(name) > 0) {
+                    FunctionPointer funcPtr(name, this);
+                    return funcPtr;
+                }
+
                 Variable* var = scopeManager_->getVariable(name);
                 if (var) {
                     return var->value;
@@ -2715,6 +2721,16 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                     }
                 }
 
+                // Check if functionName is actually a variable containing a FunctionPointer (Test 106)
+                // This handles calls like funcPtr(10, 20) where funcPtr is a function pointer variable
+                if (!functionName.empty()) {
+                    Variable* var = scopeManager_->getVariable(functionName);
+                    if (var && std::holds_alternative<FunctionPointer>(var->value)) {
+                        // This is a function pointer call - get the actual function name
+                        FunctionPointer funcPtr = std::get<FunctionPointer>(var->value);
+                        functionName = funcPtr.functionName;
+                    }
+                }
 
                 std::vector<CommandValue> args;
 
@@ -3089,9 +3105,27 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
             if (paramNode) {
                 // Get parameter name from declarator
                 const auto* declarator = paramNode->getDeclarator();
-                if (const auto* declNode = dynamic_cast<const arduino_ast::DeclaratorNode*>(declarator)) {
-                    std::string paramName = declNode->getName();
+                std::string paramName;
 
+                // Extract parameter name from declarator
+                if (const auto* declNode = dynamic_cast<const arduino_ast::DeclaratorNode*>(declarator)) {
+                    // Regular declarator (int x, double y, etc.)
+                    paramName = declNode->getName();
+                } else if (const auto* funcPtrDecl = dynamic_cast<const arduino_ast::FunctionPointerDeclaratorNode*>(declarator)) {
+                    // Function pointer declarator (Test 106: int (*funcPtr)(int, int))
+                    // The name is stored in the identifier property (an IdentifierNode)
+                    const auto* identifierNode = funcPtrDecl->getIdentifier();
+                    if (identifierNode) {
+                        try {
+                            paramName = identifierNode->getValueAs<std::string>();
+                        } catch (...) {
+                            // Failed to extract name - leave paramName empty
+                        }
+                    }
+                }
+
+                // Only process parameter if we successfully extracted a name
+                if (!paramName.empty()) {
                     // Get parameter type from ParamNode
                     std::string paramType = "auto";
                     const auto* typeNode = paramNode->getParamType();
@@ -3134,12 +3168,10 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
                             }
                         }
                     }
-                    
+
                     // Create parameter variable
                     Variable paramVar(paramValue, paramType);
                     scopeManager_->setVariable(paramName, paramVar);
-
-                } else {
                 }
             } else {
             }
@@ -6055,6 +6087,13 @@ std::string commandValueToJsonString(const CommandValue& value) {
             }
             json << "]";
             return json.str();
+        } else if constexpr (std::is_same_v<T, FunctionPointer>) {
+            // Function pointer - serialize as JSON object (Test 106)
+            StringBuildStream json;
+            json << "{\"functionName\":\"" << v.functionName << "\","
+                 << "\"type\":\"function_pointer\","
+                 << "\"pointerId\":\"" << v.pointerId << "\"}";
+            return json.str();
         } else {
             return "null";
         }
@@ -6142,6 +6181,9 @@ std::string commandValueToString(const CommandValue& value) {
             }
             os << "]";
             return os.str();
+        } else if constexpr (std::is_same_v<T, FunctionPointer>) {
+            // Function pointer - return toString representation (Test 106)
+            return v.toString();
         } else {
             return "null";
         }
@@ -6710,13 +6752,19 @@ CommandValue ASTInterpreter::evaluateUnaryOperation(const std::string& op, const
             return std::monostate{};
         }
     } else if (op == "&") {
-        // Address-of operator - return a simulated address (pointer to variable)
+        // Address-of operator - return a simulated address (pointer to variable/function)
+        // Check if operand is already a function pointer (from implicit conversion - Test 106)
+        if (std::holds_alternative<FunctionPointer>(operand)) {
+            // Already a function pointer from implicit function-to-pointer conversion
+            return operand;
+        }
+
         if (std::holds_alternative<std::string>(operand)) {
             std::string varName = std::get<std::string>(operand);
             // Simulate address by returning a unique identifier for the variable
             return std::string("&" + varName);
         } else {
-            emitError("Address-of operator requires variable name");
+            emitError("Address-of operator requires variable or function name");
             return std::monostate{};
         }
     } else {
@@ -7513,6 +7561,11 @@ void ASTInterpreter::visit(arduino_ast::UnionTypeNode& node) {
 // =============================================================================
 
 CommandValue ASTInterpreter::convertToType(const CommandValue& value, const std::string& typeName) {
+
+    // Test 106: Preserve FunctionPointer types without conversion
+    if (std::holds_alternative<FunctionPointer>(value)) {
+        return value;  // Function pointers are never converted
+    }
 
     // Strip qualifiers ("const ", "volatile ", "static ") if present for type checking
     std::string baseTypeName = typeName;

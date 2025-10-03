@@ -218,6 +218,7 @@ class CompactASTExporter {
             'ArrayAccessNode': ['identifier', 'index'],
             'ArrayInitializerNode': ['elements'],
             'DesignatedInitializerNode': ['value'],
+            'FunctionPointerDeclaratorNode': ['identifier', 'parameters'],
             'SwitchStatement': ['discriminant', 'cases'],
             'CaseStatement': ['test', 'consequent'],
             'RangeBasedForStatement': ['variable', 'iterable', 'body'],

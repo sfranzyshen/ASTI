@@ -839,8 +839,15 @@ public:
 
 // Function pointer declarator
 class FunctionPointerDeclaratorNode : public ASTNode {
+private:
+    ASTNodePtr identifier_;  // Parameter name (e.g., "funcPtr" in: int (*funcPtr)(int, int))
+
 public:
     FunctionPointerDeclaratorNode() : ASTNode(ASTNodeType::FUNCTION_POINTER_DECLARATOR) {}
+
+    void setIdentifier(ASTNodePtr identifier) { identifier_ = std::move(identifier); }
+    const ASTNode* getIdentifier() const { return identifier_.get(); }
+
     void accept(ASTVisitor& visitor) override;
 };
 

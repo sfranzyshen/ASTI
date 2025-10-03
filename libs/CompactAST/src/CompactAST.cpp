@@ -666,6 +666,21 @@ void CompactASTReader::linkNodeChildren() {
                 } else {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
+            } else if (parentNode->getType() == ASTNodeType::FUNCTION_POINTER_DECLARATOR) {
+                auto* funcPtrNode = dynamic_cast<arduino_ast::FunctionPointerDeclaratorNode*>(parentNode.get());
+                if (funcPtrNode) {
+
+                    // FunctionPointerDeclaratorNode expects: identifier first, then parameter nodes
+                    // Example: int (*funcPtr)(int, int) → identifier="funcPtr", parameters are subsequent children
+                    if (!funcPtrNode->getIdentifier()) {
+                        funcPtrNode->setIdentifier(std::move(nodes_[childIndex]));
+                    } else {
+                        // Subsequent children are parameter type nodes
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
             } else if (parentNode->getType() == ASTNodeType::MEMBER_ACCESS) {
                 auto* memberAccessNode = dynamic_cast<arduino_ast::MemberAccessNode*>(parentNode.get());
                 if (memberAccessNode) {
@@ -822,11 +837,11 @@ void CompactASTReader::linkNodeChildren() {
                 if (paramNode) {
                     
                     auto childType = childNodeRef->getType();
-                    // According to JavaScript CompactAST export order: 
+                    // According to JavaScript CompactAST export order:
                     // ParamNode: ['paramType', 'declarator', 'defaultValue']
                     if (childType == ASTNodeType::TYPE_NODE && !paramNode->getParamType()) {
                         paramNode->setParamType(std::move(nodes_[childIndex]));
-                    } else if (childType == ASTNodeType::DECLARATOR_NODE && !paramNode->getDeclarator()) {
+                    } else if ((childType == ASTNodeType::DECLARATOR_NODE || childType == ASTNodeType::FUNCTION_POINTER_DECLARATOR) && !paramNode->getDeclarator()) {
                         paramNode->setDeclarator(std::move(nodes_[childIndex]));
                     } else {
                         parentNode->addChild(std::move(nodes_[childIndex]));
