@@ -22,7 +22,7 @@
   "author": "Arduino AST Interpreter Project",
   "license": "MIT",
   "dependencies": {
-    "@arduino-ast-interpreter/compact-ast": "^2.1.0"
+    "@arduino-ast-interpreter/compact-ast": "^3.0.0"
   },
   "devDependencies": {},
   "files": [

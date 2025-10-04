@@ -12,7 +12,7 @@
  *   ASTInterpreter* interpreter = new ASTInterpreter(astBinary, sizeof(astBinary));
  *   interpreter->start();
  *
- * Version: 17.0.0
+ * Version: 18.0.0
  * Platform: ESP32-S3 (Arduino Framework)
  * License: MIT
  * Repository: https://github.com/sfranzyshen/ASTInterpreter
@@ -34,8 +34,8 @@ using arduino_interpreter::SyncDataProvider;
 using arduino_interpreter::CommandValue;
 
 // Version information
-#define ARDUINO_AST_INTERPRETER_VERSION "17.0.0"
-#define ARDUINO_AST_INTERPRETER_VERSION_MAJOR 17
+#define ARDUINO_AST_INTERPRETER_VERSION "18.0.0"
+#define ARDUINO_AST_INTERPRETER_VERSION_MAJOR 18
 #define ARDUINO_AST_INTERPRETER_VERSION_MINOR 0
 #define ARDUINO_AST_INTERPRETER_VERSION_PATCH 0
 

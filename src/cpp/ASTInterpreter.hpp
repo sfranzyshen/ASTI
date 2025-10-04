@@ -5,8 +5,8 @@
  * identical to the JavaScript ASTInterpreter.js implementation. Designed for
  * ESP32-S3 memory constraints and cross-platform compatibility.
  *
- * Version: 17.0.0
- * Compatible with: ASTInterpreter.js v17.0.0
+ * Version: 18.0.0
+ * Compatible with: ASTInterpreter.js v18.0.0
  * Command Protocol: CommandProtocol.hpp v1.0
  */
 
@@ -56,7 +56,7 @@ struct InterpreterOptions {
     bool enableSerial = true;       // Enable Serial commands
     bool enablePins = true;         // Enable pin operations
     bool syncMode = false;          // Test mode: immediate sync responses for digitalRead/analogRead
-    std::string version = "17.0.0";  // Interpreter version
+    std::string version = "18.0.0";  // Interpreter version
 };
 
 /**
