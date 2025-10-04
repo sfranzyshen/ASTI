@@ -1,6 +1,6 @@
 name=SerialEvent.ino
 source=unknown
-astSize=1850
+astSize=1853
 codeSize=783
 mode=AST_AND_COMMANDS
 commandCount=19

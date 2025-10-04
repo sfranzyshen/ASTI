@@ -526,6 +526,8 @@ EnhancedCommandValue upgradeCommandValue(const CommandValue& command) {
             return static_cast<int32_t>(arg);  // Convert uint32_t to int32_t
         } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoStruct>>) {
             return arg;  // Direct pass-through for ArduinoStruct (Test 110 fix - exists in both variants)
+        } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoPointer>>) {
+            return arg;  // Direct pass-through for ArduinoPointer (Test 116 fix - exists in both variants)
         } else if constexpr (std::is_same_v<T, std::vector<int32_t>> ||
                            std::is_same_v<T, std::vector<double>> ||
                            std::is_same_v<T, std::vector<std::string>>) {

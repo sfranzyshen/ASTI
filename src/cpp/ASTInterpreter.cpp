@@ -1128,7 +1128,8 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
                 result = MemberAccessHelper::getMemberValue(enhancedScopeManager_.get(), objectName, propertyName);
             }
         } else if (accessOp == "->") {
-            // Pointer member access (ptr->member)
+            // Pointer member access (ptr->member) - Test 116
+            // objectValue is already EnhancedCommandValue from lines 1076/1088
             if (isPointerType(objectValue)) {
                 auto pointerPtr = std::get<std::shared_ptr<ArduinoPointer>>(objectValue);
                 if (pointerPtr && !pointerPtr->isNull()) {
@@ -1137,6 +1138,10 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
                         auto structPtr = std::get<std::shared_ptr<ArduinoStruct>>(derefValue);
                         if (structPtr && structPtr->hasMember(propertyName)) {
                             result = structPtr->getMember(propertyName);
+
+                            // STRUCT SUPPORT: Emit STRUCT_FIELD_ACCESS command for pointer access
+                            CommandValue memberValue = downgradeExtendedCommandValue(result);
+                            emitStructFieldAccess(structPtr->getTypeName(), propertyName, memberValue);
                         } else {
                             emitError("Struct member '" + propertyName + "' not found in dereferenced pointer");
                             lastExpressionResult_ = std::monostate{};
@@ -1716,6 +1721,34 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 emitVarSet(varName, commandValueToJsonString(arrayValue));
             }
 
+        } else if (auto* funcPtrDeclNode = dynamic_cast<arduino_ast::FunctionPointerDeclaratorNode*>(declarator.get())) {
+            // Handle FunctionPointerDeclaratorNode (Test 106: int (*ptr)(int, int))
+            std::string varName = "unknown_funcptr";
+
+            // Extract function pointer name from identifier child
+            const auto* identifierNode = funcPtrDeclNode->getIdentifier();
+            if (identifierNode) {
+                try {
+                    varName = identifierNode->getValueAs<std::string>();
+                } catch (...) {
+                    // Failed to extract name - use fallback
+                }
+            }
+
+            // Function pointers start as null (uninitialized)
+            // They are assigned later with statements like: ptr = &myFunc;
+            CommandValue funcPtrValue = std::monostate{};  // null
+
+            // Create variable with null value
+            std::string funcPtrType = typeName + "(*)";  // Mark as function pointer type
+            bool isGlobal = scopeManager_->isGlobalScope();
+            Variable var(funcPtrValue, funcPtrType, false, false, false, isGlobal);
+            scopeManager_->setVariable(varName, var);
+
+            // Emit VAR_SET command with null value
+            emitVarSet(varName, "null");
+
+            TRACE("VarDecl-FunctionPointer", "Declared function pointer " + varName + " (initialized to null)");
         } else {
         }
     }
@@ -1973,7 +2006,7 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             }
             
             std::string accessOp = memberAccessNode->getAccessOperator();
-            
+
             // Get object variable
             Variable* objectVar = scopeManager_->getVariable(objectName);
             if (!objectVar) {
@@ -1981,20 +2014,47 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
                 return;
             }
 
-            // STRUCT SUPPORT: Check if this is a struct member assignment
-            if (std::holds_alternative<std::shared_ptr<ArduinoStruct>>(objectVar->value)) {
-                auto structPtr = std::get<std::shared_ptr<ArduinoStruct>>(objectVar->value);
-                if (structPtr) {
-                    // Set the struct member value
-                    EnhancedCommandValue enhancedValue = upgradeCommandValue(rightValue);
-                    structPtr->setMember(propertyName, enhancedValue);
+            // STRUCT SUPPORT: Handle both DOT and ARROW operator assignments (Test 116)
+            std::shared_ptr<ArduinoStruct> targetStruct;
 
-                    // Emit STRUCT_FIELD_SET command
-                    emitStructFieldSet(structPtr->getTypeName(), propertyName, rightValue);
-
-                    lastExpressionResult_ = rightValue;
+            if (accessOp == ".") {
+                // Direct struct access (obj.field = value)
+                if (std::holds_alternative<std::shared_ptr<ArduinoStruct>>(objectVar->value)) {
+                    targetStruct = std::get<std::shared_ptr<ArduinoStruct>>(objectVar->value);
+                }
+            } else if (accessOp == "->") {
+                // Pointer dereference access (ptr->field = value)
+                if (std::holds_alternative<std::shared_ptr<ArduinoPointer>>(objectVar->value)) {
+                    auto pointerPtr = std::get<std::shared_ptr<ArduinoPointer>>(objectVar->value);
+                    if (pointerPtr && !pointerPtr->isNull()) {
+                        CommandValue derefValue = pointerPtr->getValue();
+                        if (std::holds_alternative<std::shared_ptr<ArduinoStruct>>(derefValue)) {
+                            targetStruct = std::get<std::shared_ptr<ArduinoStruct>>(derefValue);
+                        } else {
+                            emitError("Cannot access member of non-struct through pointer");
+                            return;
+                        }
+                    } else {
+                        emitError("Cannot dereference null pointer in assignment");
+                        return;
+                    }
+                } else {
+                    emitError("-> operator requires pointer type");
                     return;
                 }
+            }
+
+            // If we have a target struct, set the member value
+            if (targetStruct) {
+                // Set the struct member value
+                EnhancedCommandValue enhancedValue = upgradeCommandValue(rightValue);
+                targetStruct->setMember(propertyName, enhancedValue);
+
+                // Emit STRUCT_FIELD_SET command
+                emitStructFieldSet(targetStruct->getTypeName(), propertyName, rightValue);
+
+                lastExpressionResult_ = rightValue;
+                return;
             }
 
             // Use enhanced member access system for proper struct member assignment
@@ -2820,11 +2880,85 @@ void ASTInterpreter::visit(arduino_ast::StructDeclaration& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::TypedefDeclaration& node) {
-    // Typedef declarations define type aliases - just traverse children for now
-    for (const auto& child : node.getChildren()) {
-        if (child) {
-            child->accept(*this);
+    // Typedef declarations define type aliases (Test 116: typedef struct {...} MyPoint;)
+    // Children structure: [baseType (StructDeclaration), aliasName (IdentifierNode)]
+
+    std::cerr << "[DEBUG] TypedefDeclaration visitor called! children count=" << node.getChildren().size() << std::endl;
+
+    // Extract alias name from node VALUE field (typeName property from JavaScript)
+    std::string aliasName;
+    try {
+        aliasName = node.getValueAs<std::string>();
+    } catch (const std::exception& e) {
+        std::cerr << "[DEBUG] Could not get typeName from VALUE field" << std::endl;
+        return;
+    }
+
+    std::cerr << "[DEBUG] TypedefDeclaration aliasName: " << aliasName << std::endl;
+
+    if (aliasName.empty()) {
+        // No valid alias name found
+        std::cerr << "[DEBUG] aliasName is empty!" << std::endl;
+        return;
+    }
+
+    // Extract base type from first child (baseType from JavaScript)
+    const auto& children = node.getChildren();
+    if (children.empty()) {
+        std::cerr << "[DEBUG] No children found for TypedefDeclaration!" << std::endl;
+        return;
+    }
+
+    const auto* baseType = children.front().get();
+
+    // Handle struct typedef specifically (typedef struct {...} MyPoint;)
+    if (auto* structDecl = dynamic_cast<const arduino_ast::StructDeclaration*>(baseType)) {
+        // Get struct name from the StructDeclaration if it has one
+        std::string structName = aliasName; // Default to alias name
+
+        // Create StructDefinition from StructDeclaration
+        StructDefinition structDef;
+        structDef.name = structName;
+
+        // Parse struct members from children
+        for (const auto& memberChild : structDecl->getChildren()) {
+            if (auto* varDecl = dynamic_cast<const arduino_ast::VarDeclNode*>(memberChild.get())) {
+                // Extract member type and name
+                std::string memberType = "int"; // Default fallback
+                const auto* typeNode = varDecl->getVarType();
+                if (typeNode) {
+                    try {
+                        memberType = typeNode->getValueAs<std::string>();
+                    } catch (const std::exception& e) {
+                        memberType = "int"; // fallback
+                    }
+                }
+
+                // Get member names from declarations
+                for (const auto& declarator : varDecl->getDeclarations()) {
+                    if (auto* declNode = dynamic_cast<const arduino_ast::DeclaratorNode*>(declarator.get())) {
+                        std::string memberName = declNode->getName();
+
+                        if (!memberName.empty()) {
+                            structDef.members.push_back({memberName, memberType});
+                        }
+                    }
+                }
+            }
         }
+
+        // Register in structTypes_ map
+        structTypes_[aliasName] = structDef;
+        std::cerr << "[DEBUG] Registered struct type: " << aliasName << " with " << structDef.members.size() << " members" << std::endl;
+
+        // Register in typeAliases_ map
+        typeAliases_[aliasName] = "struct";
+        std::cerr << "[DEBUG] Registered type alias: " << aliasName << " -> struct" << std::endl;
+
+    } else {
+        // Handle other typedef cases (typedef int MyInt;)
+        // For now, just register the alias
+        typeAliases_[aliasName] = "unknown";
     }
 }
 
@@ -2906,6 +3040,43 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         case arduino_ast::ASTNodeType::UNARY_OP:
             if (auto* unaryNode = dynamic_cast<arduino_ast::UnaryOpNode*>(expr)) {
                 std::string op = unaryNode->getOperator();
+
+                // Special handling for address-of operator (Test 116: p2 = &p1, Test 106: ptr = &myFunc)
+                // This needs variable/function context to create pointer
+                if (op == "&") {
+                    const auto* operand = unaryNode->getOperand();
+
+                    // Only handle if operand is an identifier (variable or function)
+                    if (operand && operand->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
+                        std::string name = operand->getValueAs<std::string>();
+                        Variable* var = scopeManager_->getVariable(name);
+
+                        if (var) {
+                            // Test 116: Create ArduinoPointer pointing to this variable
+                            auto pointerObj = std::make_shared<ArduinoPointer>(
+                                name,            // Target variable name
+                                this,            // Interpreter reference
+                                0,               // Offset 0 (base pointer)
+                                var->type        // Type of target variable
+                            );
+
+                            // Return pointer object
+                            return pointerObj;
+                        } else if (userFunctionNames_.find(name) != userFunctionNames_.end()) {
+                            // Test 106: Create FunctionPointer to this function
+                            FunctionPointer funcPtr(name, this);
+
+                            // Return function pointer
+                            return funcPtr;
+                        } else {
+                            emitError("Address-of operator requires defined variable or function: " + name);
+                            return std::monostate{};
+                        }
+                    } else {
+                        emitError("Address-of operator requires variable or function operand");
+                        return std::monostate{};
+                    }
+                }
 
                 // Special handling for prefix increment/decrement operators (Test 107)
                 // These need variable context to update the variable, not just the value
@@ -5495,6 +5666,12 @@ void ASTInterpreter::registerStructType(const std::string& name, const std::vect
 bool ASTInterpreter::isStructType(const std::string& typeName) const {
     // Check direct match first
     if (structTypes_.find(typeName) != structTypes_.end()) {
+        return true;
+    }
+
+    // Test 116: Check typedef aliases (e.g., "MyPoint" typedef'd to struct)
+    auto aliasIt = typeAliases_.find(typeName);
+    if (aliasIt != typeAliases_.end() && aliasIt->second == "struct") {
         return true;
     }
 

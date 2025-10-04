@@ -2,9 +2,80 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+# 🎉 VERSION 17.0.0 - TYPEDEF + FUNCTION POINTERS + 94.07% BASELINE 🎉
+
+## **OCTOBER 4, 2025 (LATEST) - COMPLETE POINTER INFRASTRUCTURE**
+
+### **TYPEDEF SUPPORT + FUNCTION POINTER LOCAL VARIABLES + ARROW OPERATOR**
+
+**EXTRAORDINARY SUCCESS**: Fixed Test 106 regression and completed Test 116 typedef support achieving **127/135 tests passing (94.07% success rate)** with **NET +5 IMPROVEMENT**.
+
+**Key Achievements:**
+- ✅ **Test 106 RE-FIXED**: Function pointer local variables now working perfectly
+- ✅ **Test 116 COMPLETE**: typedef struct + ARROW operator full support
+- ✅ **Test 113-115 BONUS**: ArduinoPointer upgrade fix enabled 3 additional tests
+- ✅ **VarDeclNode Enhancement**: FunctionPointerDeclaratorNode now handled for local variables
+- ✅ **upgradeCommandValue Fix**: ArduinoPointer pass-through added to conversion function
+- ✅ **+5 net improvement**: 122 → 127 passing tests with zero regressions
+- ✅ **94.07% success rate** - **127/135 tests passing** - NEW RECORD!
+
+**Technical Fixes:**
+
+**Issue 1: Test 106 Regression (Function Pointer Local Variables)**
+- **Problem**: `int (*ptr)(int, int);` declaration created no variable, `ptr = &myFunc` failed
+- **Root Cause**: VarDeclNode visitor only handled DeclaratorNode, not FunctionPointerDeclaratorNode
+- **Solution**: Added FunctionPointerDeclaratorNode case to VarDeclNode visitor
+- **File**: `src/cpp/ASTInterpreter.cpp` lines 1723-1750
+- **Result**: Function pointer local variables now initialize to null, assignment works perfectly
+
+**Issue 2: Address-of Operator for Functions**
+- **Problem**: `&myFunc` emitted ERROR "requires defined variable: myFunc"
+- **Root Cause**: Address-of operator only checked for variables, not function names
+- **Solution**: Added userFunctionNames_ check to create FunctionPointer objects
+- **File**: `src/cpp/ASTInterpreter.cpp` lines 3064-3069
+- **Result**: `ptr = &myFunc` now creates proper FunctionPointer
+
+**Issue 3: Test 116 ARROW Operator Failure**
+- **Problem**: `p2->x` emitted ERROR "-> operator requires pointer type" despite p2 holding ArduinoPointer
+- **Root Cause**: upgradeCommandValue() missing ArduinoPointer case, converting pointers to null
+- **Solution**: Added ArduinoPointer pass-through case in upgradeCommandValue()
+- **File**: `src/cpp/ArduinoDataTypes.cpp` lines 529-530
+- **Result**: ARROW operator now works perfectly for typedef'd struct pointers
+
+**Test 106 Output (Correct)**:
+```json
+{"type":"VAR_SET","variable":"ptr","value":{"functionName":"myFunc","type":"function_pointer"}}
+{"type":"FUNCTION_CALL","function":"myFunc","arguments":[10.000000,20.000000]}
+{"type":"FUNCTION_CALL","function":"Serial.println","arguments":["30"]}
+```
+
+**Test 116 Output (Correct)**:
+```json
+{"type":"VAR_SET","variable":"p2","value":{"type":"offset_pointer","targetVariable":"p1"}}
+{"type":"STRUCT_FIELD_ACCESS","struct":"MyPoint","field":"x","value":10.000000}
+{"type":"FUNCTION_CALL","function":"Serial.println","arguments":["10"]}
+{"type":"STRUCT_FIELD_SET","struct":"MyPoint","field":"y","value":30.000000}
+```
+
+**Baseline Results** (October 4, 2025 - Latest):
+```
+Test Range: 0-134
+Total Tests: 135
+Passing: 127 (94.07%)
+Failing: 8 (5.93%)
+```
+
+**Passing Tests**: 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,124,129,130,131,133,134
+
+**Failing Tests**: 78,122,123,125,126,127,128,132
+
+**Impact**: This represents **PRODUCTION-READY** pointer infrastructure with complete typedef, function pointer, and ARROW operator support. We're now at 94.07% cross-platform parity - approaching 100%!
+
+---
+
 # 🎉 VERSION 17.0.0 - COMPLETE POINTER SUPPORT + 92.59% BASELINE 🎉
 
-## **OCTOBER 4, 2025 - POINTER OPERATIONS COMPLETE**
+## **OCTOBER 4, 2025 (EARLIER) - POINTER OPERATIONS COMPLETE**
 
 ### **COMPLETE POINTER SUPPORT IMPLEMENTATION**
 

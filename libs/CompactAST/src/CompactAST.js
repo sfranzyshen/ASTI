@@ -230,7 +230,8 @@ class CompactASTExporter {
             'ReturnStatement': ['value'],  // ULTRATHINK: Re-adding for Test 42
             'CastExpression': ['operand'],  // castType is a string value, not a child node
             'StructDeclaration': ['members'],  // Test 110: struct support (name is in VALUE field)
-            'StructMember': ['memberType', 'declarator']  // Test 110: struct member support
+            'StructMember': ['memberType', 'declarator'],  // Test 110: struct member support
+            'TypedefDeclaration': ['baseType']  // Test 116: typedef support (typeName is in VALUE field)
         };
 
         const childNames = childrenMap[node.type] || [];
@@ -490,6 +491,8 @@ class CompactASTExporter {
             flags |= 0x02; // HAS_VALUE for StructDeclaration name (Test 110)
         } else if (node.type === 'StructType' && node.name) {
             flags |= 0x02; // HAS_VALUE for StructType name (Test 110 - struct variable declarations)
+        } else if (node.type === 'TypedefDeclaration' && node.typeName) {
+            flags |= 0x02; // HAS_VALUE for TypedefDeclaration typeName (Test 116)
         }
 
         view.setUint8(offset, flags);
@@ -515,6 +518,9 @@ class CompactASTExporter {
         } else if (node.type === 'StructType' && node.name) {
             // Write struct type name for StructType nodes (Test 110 - struct variable declarations)
             offset = this.writeValue(view, offset, node.name);
+        } else if (node.type === 'TypedefDeclaration' && node.typeName) {
+            // Write typedef alias name for TypedefDeclaration nodes (Test 116)
+            offset = this.writeValue(view, offset, node.typeName);
         }
         // The faulty fallback that wrote an empty string is now removed.
         

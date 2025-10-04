@@ -499,6 +499,7 @@ private:
     int allocationCounter_;                // malloc allocation counter
     int mallocCounter_;                    // malloc request counter
     std::unordered_map<std::string, StructDefinition> structTypes_;  // Struct type registry
+    std::unordered_map<std::string, std::string> typeAliases_;       // Type alias registry (typedef support - Test 116)
     std::string pendingStructType_;        // For handling parser bug: struct Type var; creates separate nodes
 
     // =============================================================================
