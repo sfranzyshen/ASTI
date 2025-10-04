@@ -1,6 +1,7 @@
 #include "ArduinoDataTypes.hpp"
 #include "PlatformAbstraction.hpp"
 #include <stdexcept>
+#include <chrono>
 
 namespace arduino_interpreter {
 
@@ -407,6 +408,8 @@ EnhancedCommandValue upgradeCommandValue(const CommandValue& command) {
             return arg;  // Direct conversion for shared types
         } else if constexpr (std::is_same_v<T, uint32_t>) {
             return static_cast<int32_t>(arg);  // Convert uint32_t to int32_t
+        } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoStruct>>) {
+            return arg;  // Direct pass-through for ArduinoStruct (Test 110 fix - exists in both variants)
         } else if constexpr (std::is_same_v<T, std::vector<int32_t>> ||
                            std::is_same_v<T, std::vector<double>> ||
                            std::is_same_v<T, std::vector<std::string>>) {
@@ -504,6 +507,34 @@ std::shared_ptr<ArduinoString> createString(const std::string& initialValue) {
     return std::make_shared<ArduinoString>(initialValue);
 }
 
+// =============================================================================
+// FUNCTION POINTER IMPLEMENTATION (Test 106)
+// =============================================================================
+
+FunctionPointer::FunctionPointer() : functionName(""), pointerId(""), interpreter(nullptr) {
+}
+
+FunctionPointer::FunctionPointer(const std::string& name, ASTInterpreter* interp)
+    : functionName(name), interpreter(interp) {
+    // Generate unique pointer ID matching JavaScript pattern
+    auto now = std::chrono::system_clock::now();
+    auto duration = now.time_since_epoch();
+    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+
+    // Simple random suffix (not cryptographically secure, but sufficient for IDs)
+    int random_suffix = (millis * 31 + std::hash<std::string>{}(name)) % 100000;
+
+    StringBuildStream ss;
+    ss << "fptr_" << millis << "_" << random_suffix;
+    pointerId = ss.str();
+}
+
+std::string FunctionPointer::toString() const {
+    StringBuildStream ss;
+    ss << "ArduinoFunctionPointer(" << pointerId << " -> " << functionName << ")";
+    return ss.str();
+}
+
 } // namespace arduino_interpreter
 
 // =============================================================================
@@ -561,6 +592,9 @@ EnhancedCommandValue upgradeExtendedCommandValue(const CommandValue& extended) {
         } else if constexpr (std::is_same_v<T, uint32_t>) {
             // Convert uint32_t to int32_t for EnhancedCommandValue compatibility
             return static_cast<int32_t>(arg);
+        } else if constexpr (std::is_same_v<T, FunctionPointer>) {
+            // Convert FunctionPointer to string for EnhancedCommandValue compatibility (Test 106)
+            return arg.toString();
         } else {
             return arg;  // Direct conversion for shared types
         }

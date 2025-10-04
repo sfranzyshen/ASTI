@@ -591,14 +591,26 @@ void ASTInterpreter::visit(arduino_ast::ExpressionStatement& node) {
         auto* expr = const_cast<arduino_ast::ASTNode*>(node.getExpression());
         std::string exprType = arduino_ast::nodeTypeToString(expr->getType());
         TRACE("visit(ExpressionStatement)", "Processing expression: " + exprType);
-        
-        
+
+        // Handle parser quirk: struct variable declarations create StructType + IdentifierNode (two separate nodes)
+        // Check if we have a pending struct type and this is an IdentifierNode
+        if (!pendingStructType_.empty() && expr->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
+            auto* identNode = dynamic_cast<arduino_ast::IdentifierNode*>(expr);
+            if (identNode) {
+                std::string varName = identNode->getName();
+                createStructVariable(pendingStructType_, varName);
+                pendingStructType_.clear(); // Clear pending type after use
+                return;
+            }
+        }
+
         // CRITICAL FIX: Use visitor pattern for statement-level expressions
-        // AssignmentNode, FuncCallNode, etc. need to use accept() to generate commands
+        // AssignmentNode, FuncCallNode, VarDeclNode, etc. need to use accept() to generate commands
         if (expr->getType() == arduino_ast::ASTNodeType::ASSIGNMENT ||
             expr->getType() == arduino_ast::ASTNodeType::FUNC_CALL ||
             expr->getType() == arduino_ast::ASTNodeType::CONSTRUCTOR_CALL ||
-            expr->getType() == arduino_ast::ASTNodeType::POSTFIX_EXPRESSION) {
+            expr->getType() == arduino_ast::ASTNodeType::POSTFIX_EXPRESSION ||
+            expr->getType() == arduino_ast::ASTNodeType::VAR_DECL) {
             // Use visitor pattern for statements that need to emit commands
             expr->accept(*this);
         } else {
@@ -1098,10 +1110,14 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
         
         if (accessOp == ".") {
             // Struct member access (obj.member)
-            if (isStructType(objectValue)) {
+            if (std::holds_alternative<std::shared_ptr<ArduinoStruct>>(objectValue)) {
                 auto structPtr = std::get<std::shared_ptr<ArduinoStruct>>(objectValue);
                 if (structPtr && structPtr->hasMember(propertyName)) {
                     result = structPtr->getMember(propertyName);
+
+                    // STRUCT SUPPORT: Emit STRUCT_FIELD_ACCESS command
+                    CommandValue memberValue = downgradeExtendedCommandValue(result);
+                    emitStructFieldAccess(structPtr->getTypeName(), propertyName, memberValue);
                 } else {
                     emitError("Struct member '" + propertyName + "' not found");
                     lastExpressionResult_ = std::monostate{};
@@ -1117,7 +1133,7 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
                 auto pointerPtr = std::get<std::shared_ptr<ArduinoPointer>>(objectValue);
                 if (pointerPtr && !pointerPtr->isNull()) {
                     EnhancedCommandValue derefValue = pointerPtr->dereference();
-                    if (isStructType(derefValue)) {
+                    if (std::holds_alternative<std::shared_ptr<ArduinoStruct>>(derefValue)) {
                         auto structPtr = std::get<std::shared_ptr<ArduinoStruct>>(derefValue);
                         if (structPtr && structPtr->hasMember(propertyName)) {
                             result = structPtr->getMember(propertyName);
@@ -1317,7 +1333,18 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             // Trim whitespace
             cleanTypeName.erase(0, cleanTypeName.find_first_not_of(" \t"));
             cleanTypeName.erase(cleanTypeName.find_last_not_of(" \t") + 1);
-            
+
+            // Strip "struct " prefix for struct type declarations (cross-platform parity with JavaScript)
+            if (cleanTypeName.find("struct ") == 0) {
+                cleanTypeName = cleanTypeName.substr(7); // Remove "struct "
+            } else if (cleanTypeName.find("struct\t") == 0) {
+                cleanTypeName = cleanTypeName.substr(7); // Remove "struct\t"
+            }
+
+            // Trim whitespace again after stripping struct prefix
+            cleanTypeName.erase(0, cleanTypeName.find_first_not_of(" \t"));
+            cleanTypeName.erase(cleanTypeName.find_last_not_of(" \t") + 1);
+
             // Check for template types (e.g., "vector<int>")
             std::string templateType = "";
             if (cleanTypeName.find("<") != std::string::npos && cleanTypeName.find(">") != std::string::npos) {
@@ -1326,7 +1353,34 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 size_t templateStart = cleanTypeName.find("<");
                 cleanTypeName = cleanTypeName.substr(0, templateStart);
             }
-            
+
+            // STRUCT SUPPORT: Check if this is a struct type declaration
+            if (isStructType(cleanTypeName)) {
+                // Create ArduinoStruct instance with initialized fields
+                auto structObj = std::make_shared<ArduinoStruct>(cleanTypeName);
+
+                // Initialize all struct members to default values (null/0)
+                const StructDefinition* structDef = getStructDefinition(cleanTypeName);
+                if (structDef) {
+                    for (const auto& member : structDef->members) {
+                        // Initialize each member to appropriate default value
+                        EnhancedCommandValue defaultVal = std::monostate{};  // null for now
+                        structObj->setMember(member.name, defaultVal);
+                    }
+                }
+
+                // Create variable with struct object as value
+                bool isGlobal = scopeManager_->isGlobalScope();
+                Variable var(structObj, cleanTypeName, isConst, isReference, isStatic, isGlobal);
+                scopeManager_->setVariable(varName, var);
+
+                // Emit VAR_SET command for struct variable
+                emitVarSetStruct(varName, cleanTypeName);
+
+                TRACE("VarDecl-Struct", "Declared struct " + varName + " of type " + cleanTypeName);
+                continue;  // Skip normal variable creation
+            }
+
             // Create enhanced variable with modifiers
             bool isGlobal = scopeManager_->isGlobalScope();
             Variable var(typedValue, cleanTypeName, isConst, isReference, isStatic, isGlobal);
@@ -1881,7 +1935,23 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
                 emitError("Object variable '" + objectName + "' not found");
                 return;
             }
-            
+
+            // STRUCT SUPPORT: Check if this is a struct member assignment
+            if (std::holds_alternative<std::shared_ptr<ArduinoStruct>>(objectVar->value)) {
+                auto structPtr = std::get<std::shared_ptr<ArduinoStruct>>(objectVar->value);
+                if (structPtr) {
+                    // Set the struct member value
+                    EnhancedCommandValue enhancedValue = upgradeCommandValue(rightValue);
+                    structPtr->setMember(propertyName, enhancedValue);
+
+                    // Emit STRUCT_FIELD_SET command
+                    emitStructFieldSet(structPtr->getTypeName(), propertyName, rightValue);
+
+                    lastExpressionResult_ = rightValue;
+                    return;
+                }
+            }
+
             // Use enhanced member access system for proper struct member assignment
             EnhancedCommandValue enhancedRightValue = upgradeCommandValue(rightValue);
             MemberAccessHelper::setMemberValue(enhancedScopeManager_.get(), objectName, propertyName, enhancedRightValue);
@@ -2603,12 +2673,50 @@ void ASTInterpreter::visit(arduino_ast::CommaExpression& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::StructDeclaration& node) {
-    // Struct declarations define types - just traverse children for now
+    // Extract struct name from VALUE field (set during CompactAST deserialization)
+    std::string structName;
+    std::vector<StructMemberDef> members;
+
+    // Get struct name from VALUE field
+    try {
+        std::string valueName = node.getValueAs<std::string>();
+        if (!valueName.empty()) {
+            structName = valueName;
+        }
+    } catch (...) {
+        // No VALUE field present
+    }
+
+    // Parse StructMember children (CompactAST deserializes them as StructMemberNode)
     for (const auto& child : node.getChildren()) {
-        if (child) {
-            child->accept(*this);
+        if (!child) continue;
+
+        // Each member is a StructMemberNode
+        if (auto* memberNode = dynamic_cast<arduino_ast::StructMemberNode*>(child.get())) {
+            std::string memberName = memberNode->getMemberName();
+            std::string memberType = "unknown";
+
+            // Get the type from the StructMemberNode
+            const auto* typeNode = memberNode->getMemberType();
+            if (typeNode) {
+                if (auto* tn = dynamic_cast<const arduino_ast::TypeNode*>(typeNode)) {
+                    memberType = tn->getTypeName();
+                }
+            }
+
+            if (!memberName.empty()) {
+                members.push_back({memberName, memberType});
+            }
         }
     }
+
+    if (structName.empty()) {
+        emitError("StructDeclaration missing name");
+        return;
+    }
+
+    // Register the struct type
+    registerStructType(structName, members);
 }
 
 void ASTInterpreter::visit(arduino_ast::TypedefDeclaration& node) {
@@ -2621,12 +2729,11 @@ void ASTInterpreter::visit(arduino_ast::TypedefDeclaration& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::StructType& node) {
-    // Struct types are type specifiers - just traverse children for now
-    for (const auto& child : node.getChildren()) {
-        if (child) {
-            child->accept(*this);
-        }
-    }
+    // StructType represents struct type references in variable declarations
+    // Parser creates separate nodes for "struct Point p1;" -> StructType + IdentifierNode
+    // Store pending struct type for the next IdentifierNode
+    // The struct name is stored in the VALUE field (fixed in CompactAST.js)
+    pendingStructType_ = node.getValueAs<std::string>();
 }
 
 // =============================================================================
@@ -5264,6 +5371,78 @@ CommandValue ASTInterpreter::waitForResponse(const std::string& requestId) {
 }
 
 // =============================================================================
+// STRUCT HELPER METHODS
+// =============================================================================
+
+void ASTInterpreter::registerStructType(const std::string& name, const std::vector<StructMemberDef>& members) {
+    StructDefinition def;
+    def.name = name;
+    def.members = members;
+    structTypes_[name] = def;
+}
+
+bool ASTInterpreter::isStructType(const std::string& typeName) const {
+    // Check direct match first
+    if (structTypes_.find(typeName) != structTypes_.end()) {
+        return true;
+    }
+
+    // Defensive: Check with "struct " prefix stripped (belt & suspenders)
+    if (typeName.find("struct ") == 0) {
+        std::string stripped = typeName.substr(7);
+        // Trim whitespace
+        stripped.erase(0, stripped.find_first_not_of(" \t"));
+        return structTypes_.find(stripped) != structTypes_.end();
+    }
+
+    return false;
+}
+
+const StructDefinition* ASTInterpreter::getStructDefinition(const std::string& typeName) const {
+    auto it = structTypes_.find(typeName);
+    if (it != structTypes_.end()) {
+        return &(it->second);
+    }
+    return nullptr;
+}
+
+void ASTInterpreter::createStructVariable(const std::string& structType, const std::string& varName) {
+    // Handle parser quirk: "struct Point p1;" creates StructType + IdentifierNode (two separate nodes)
+    // This method is called when we have a pending struct type and encounter an IdentifierNode
+
+    if (!isStructType(structType)) {
+        emitError("Unknown struct type: " + structType);
+        return;
+    }
+
+    const StructDefinition* structDef = getStructDefinition(structType);
+    if (!structDef) {
+        emitError("Struct definition not found: " + structType);
+        return;
+    }
+
+    // Create ArduinoStruct instance with initialized fields
+    auto structObj = std::make_shared<ArduinoStruct>(structType);
+
+    // Initialize all struct members to default values (null/0)
+    for (const auto& member : structDef->members) {
+        // Initialize each member to appropriate default value
+        EnhancedCommandValue defaultVal = std::monostate{};  // null for now
+        structObj->setMember(member.name, defaultVal);
+    }
+
+    // Create variable with struct object as value
+    bool isGlobal = scopeManager_->isGlobalScope();
+    Variable var(structObj, structType, false, false, false, isGlobal);
+    scopeManager_->setVariable(varName, var);
+
+    // Emit VAR_SET command for struct variable
+    emitVarSetStruct(varName, structType);
+
+    TRACE("createStructVariable", "Created struct " + varName + " of type " + structType);
+}
+
+// =============================================================================
 // UTILITY METHODS
 // =============================================================================
 
@@ -5740,6 +5919,28 @@ void ASTInterpreter::emitVarSetArduinoString(const std::string& varName, const s
     StringBuildStream json;
     json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << varName
          << "\",\"value\":{\"value\":\"" << stringVal << "\",\"type\":\"ArduinoString\"}}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitVarSetStruct(const std::string& varName, const std::string& structType) {
+    StringBuildStream json;
+    json << "{\"type\":\"VAR_SET\",\"timestamp\":0,\"variable\":\"" << varName
+         << "\",\"value\":{\"structName\":\"" << structType << "\",\"fields\":{},\"type\":\"struct\"}"
+         << ",\"structType\":\"" << structType << "\"}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitStructFieldSet(const std::string& structName, const std::string& fieldName, const CommandValue& value) {
+    StringBuildStream json;
+    json << "{\"type\":\"STRUCT_FIELD_SET\",\"timestamp\":0,\"struct\":\"" << structName
+         << "\",\"field\":\"" << fieldName << "\",\"value\":" << commandValueToJsonString(value) << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitStructFieldAccess(const std::string& structName, const std::string& fieldName, const CommandValue& value) {
+    StringBuildStream json;
+    json << "{\"type\":\"STRUCT_FIELD_ACCESS\",\"timestamp\":0,\"struct\":\"" << structName
+         << "\",\"field\":\"" << fieldName << "\",\"value\":" << commandValueToJsonString(value) << "}";
     emitJSON(json.str());
 }
 

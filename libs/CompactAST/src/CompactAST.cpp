@@ -250,6 +250,9 @@ ASTNodePtr CompactASTReader::parseNode(size_t nodeIndex) {
         case ASTNodeType::STRUCT_DECL:
             node = std::make_unique<StructDeclaration>();
             break;
+        case ASTNodeType::STRUCT_MEMBER:
+            node = std::make_unique<StructMemberNode>();
+            break;
         case ASTNodeType::TYPEDEF_DECL:
             node = std::make_unique<TypedefDeclaration>();
             break;
@@ -641,6 +644,29 @@ void CompactASTReader::linkNodeChildren() {
                 } else {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
+            } else if (parentNode->getType() == ASTNodeType::STRUCT_MEMBER) {
+                auto* structMemberNode = dynamic_cast<arduino_ast::StructMemberNode*>(parentNode.get());
+                if (structMemberNode) {
+                    // StructMemberNode expects 2 children: memberType, declarator
+                    int memberChildCount = 0;
+                    if (structMemberNode->getMemberType()) memberChildCount++;
+
+                    if (memberChildCount == 0) {
+                        // First child: memberType
+                        structMemberNode->setMemberType(std::move(nodes_[childIndex]));
+                    } else if (memberChildCount == 1) {
+                        // Second child: declarator - extract name and don't store node
+                        auto* declNode = dynamic_cast<arduino_ast::DeclaratorNode*>(nodes_[childIndex].get());
+                        if (declNode) {
+                            structMemberNode->setMemberName(declNode->getName());
+                        }
+                        // Note: We extract the name but don't move the node since we don't store it
+                    } else {
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
             } else if (parentNode->getType() == ASTNodeType::CAST_EXPR) {
                 auto* castNode = dynamic_cast<arduino_ast::CastExpression*>(parentNode.get());
                 if (castNode) {
@@ -685,12 +711,29 @@ void CompactASTReader::linkNodeChildren() {
             } else if (parentNode->getType() == ASTNodeType::MEMBER_ACCESS) {
                 auto* memberAccessNode = dynamic_cast<arduino_ast::MemberAccessNode*>(parentNode.get());
                 if (memberAccessNode) {
-                    
+
                     // MemberAccessNode expects 2 children in order: object, property
                     if (!memberAccessNode->getObject()) {
                         memberAccessNode->setObject(std::move(nodes_[childIndex]));
                     } else if (!memberAccessNode->getProperty()) {
                         memberAccessNode->setProperty(std::move(nodes_[childIndex]));
+
+                        // After both children are set, extract and set the access operator from VALUE field
+                        // JavaScript parser stores "DOT" or "ARROW", we need to convert to "." or "->"
+                        try {
+                            std::string operatorValue = memberAccessNode->getValueAs<std::string>();
+                            if (operatorValue == "DOT") {
+                                memberAccessNode->setAccessOperator(".");
+                            } else if (operatorValue == "ARROW") {
+                                memberAccessNode->setAccessOperator("->");
+                            } else {
+                                // Default to "." if operator is unknown
+                                memberAccessNode->setAccessOperator(".");
+                            }
+                        } catch (...) {
+                            // If no operator in VALUE field, default to "."
+                            memberAccessNode->setAccessOperator(".");
+                        }
                     } else {
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }

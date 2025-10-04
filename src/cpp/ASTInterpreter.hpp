@@ -157,6 +157,17 @@ struct Variable {
     }
 };
 
+// Struct type definitions for struct support
+struct StructMemberDef {
+    std::string name;
+    std::string type;
+};
+
+struct StructDefinition {
+    std::string name;
+    std::vector<StructMemberDef> members;
+};
+
 // =============================================================================
 // SCOPE MANAGEMENT
 // =============================================================================
@@ -486,7 +497,9 @@ private:
     std::vector<std::string> callStack_;   // Function call stack tracking
     int allocationCounter_;                // malloc allocation counter
     int mallocCounter_;                    // malloc request counter
-    
+    std::unordered_map<std::string, StructDefinition> structTypes_;  // Struct type registry
+    std::string pendingStructType_;        // For handling parser bug: struct Type var; creates separate nodes
+
     // =============================================================================
     // PERFORMANCE TRACKING & STATISTICS
     // =============================================================================
@@ -993,6 +1006,15 @@ private:
     void emitVarSetConstString(const std::string& varName, const std::string& stringVal);
     void emitVarSetArduinoString(const std::string& varName, const std::string& stringVal);
     void emitVarSetExtern(const std::string& variable, const std::string& value);
+
+    // Struct operations
+    bool isStructType(const std::string& typeName) const;
+    const StructDefinition* getStructDefinition(const std::string& typeName) const;
+    void registerStructType(const std::string& name, const std::vector<StructMemberDef>& members);
+    void createStructVariable(const std::string& structType, const std::string& varName);
+    void emitVarSetStruct(const std::string& varName, const std::string& structType);
+    void emitStructFieldSet(const std::string& structName, const std::string& fieldName, const CommandValue& value);
+    void emitStructFieldAccess(const std::string& structName, const std::string& fieldName, const CommandValue& value);
 
     // Loop and control flow
     void emitLoopEnd(const std::string& message, int iterations);

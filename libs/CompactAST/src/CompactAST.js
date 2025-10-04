@@ -67,6 +67,7 @@ class CompactASTExporter {
             'FuncDefNode': 0x21,
             'FuncDeclNode': 0x22,
             'StructDeclaration': 0x23,
+            'StructMember': 0x63,  // Test 110: struct member node
             'EnumDeclaration': 0x24,
             'ClassDeclaration': 0x25,
             'TypedefDeclaration': 0x26,
@@ -227,7 +228,9 @@ class CompactASTExporter {
             'CommaExpression': ['left', 'right'],
             'ArrayDeclaratorNode': ['identifier', 'dimensions'],
             'ReturnStatement': ['value'],  // ULTRATHINK: Re-adding for Test 42
-            'CastExpression': ['operand']  // castType is a string value, not a child node
+            'CastExpression': ['operand'],  // castType is a string value, not a child node
+            'StructDeclaration': ['members'],  // Test 110: struct support (name is in VALUE field)
+            'StructMember': ['memberType', 'declarator']  // Test 110: struct member support
         };
 
         const childNames = childrenMap[node.type] || [];
@@ -319,22 +322,37 @@ class CompactASTExporter {
     
     calculateNodeSize(node) {
         let size = 4; // NodeType + Flags + DataSize
-        
+
         // Add value size if present
         if (node.value !== undefined) {
             size += this.calculateValueSize(node.value);
         }
-        
+
         // Add operator size if present
         if (node.operator) {
             size += 3; // ValueType + StringIndex
         }
-        
+
         // Add op.value size if present (for BinaryOpNode/UnaryOpNode)
         if (node.op && node.op.value) {
             size += 3; // ValueType + StringIndex
         }
-        
+
+        // Add castType size for CastExpression nodes
+        if (node.type === 'CastExpression' && node.castType) {
+            size += 3; // ValueType + StringIndex
+        }
+
+        // Add struct name size for StructDeclaration nodes (Test 110)
+        if (node.type === 'StructDeclaration' && node.name) {
+            size += 3; // ValueType + StringIndex
+        }
+
+        // Add struct type name size for StructType nodes (Test 110)
+        if (node.type === 'StructType' && node.name) {
+            size += 3; // ValueType + StringIndex
+        }
+
         // Add children indices
         const childCount = this.getChildCount(node);
         size += childCount * 2; // 2 bytes per child index
@@ -468,6 +486,10 @@ class CompactASTExporter {
             flags |= 0x02; // HAS_VALUE for operator nodes, but only if operator exists
         } else if (node.type === 'CastExpression' && node.castType) {
             flags |= 0x02; // HAS_VALUE for CastExpression castType
+        } else if (node.type === 'StructDeclaration' && node.name) {
+            flags |= 0x02; // HAS_VALUE for StructDeclaration name (Test 110)
+        } else if (node.type === 'StructType' && node.name) {
+            flags |= 0x02; // HAS_VALUE for StructType name (Test 110 - struct variable declarations)
         }
 
         view.setUint8(offset, flags);
@@ -487,6 +509,12 @@ class CompactASTExporter {
         } else if (node.type === 'CastExpression' && node.castType) {
             // Write castType for CastExpression nodes
             offset = this.writeValue(view, offset, node.castType);
+        } else if (node.type === 'StructDeclaration' && node.name) {
+            // Write struct name for StructDeclaration nodes (Test 110)
+            offset = this.writeValue(view, offset, node.name);
+        } else if (node.type === 'StructType' && node.name) {
+            // Write struct type name for StructType nodes (Test 110 - struct variable declarations)
+            offset = this.writeValue(view, offset, node.name);
         }
         // The faulty fallback that wrote an empty string is now removed.
         
