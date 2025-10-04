@@ -1132,7 +1132,7 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
             if (isPointerType(objectValue)) {
                 auto pointerPtr = std::get<std::shared_ptr<ArduinoPointer>>(objectValue);
                 if (pointerPtr && !pointerPtr->isNull()) {
-                    EnhancedCommandValue derefValue = pointerPtr->dereference();
+                    CommandValue derefValue = pointerPtr->getValue();
                     if (std::holds_alternative<std::shared_ptr<ArduinoStruct>>(derefValue)) {
                         auto structPtr = std::get<std::shared_ptr<ArduinoStruct>>(derefValue);
                         if (structPtr && structPtr->hasMember(propertyName)) {
@@ -1194,6 +1194,7 @@ void ASTInterpreter::visit(arduino_ast::IdentifierNode& node) {
 
 void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
     TRACE_ENTRY("visit(VarDeclNode)", "Starting variable declaration");
+    std::cerr << "[DEBUG] VarDeclNode visitor called!" << std::endl;
 
     const auto& children = node.getChildren();
     for (size_t i = 0; i < children.size(); ++i) {
@@ -1216,7 +1217,11 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
         }
     } else {
     }
-    
+
+    // POINTER DETECTION: Check if type contains '*' (e.g., "int *", "int*", "char *")
+    bool isPointerType = (typeName.find('*') != std::string::npos);
+    std::cerr << "[DEBUG] VarDecl typeName: '" << typeName << "', isPointerType: " << (isPointerType ? "TRUE" : "FALSE") << std::endl;
+
     // Process declarations
     for (size_t i = 0; i < node.getDeclarations().size(); ++i) {
         const auto& declarator = node.getDeclarations()[i];
@@ -1262,6 +1267,34 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
 #ifdef ENABLE_DEBUG_OUTPUT
                 DEBUG_STREAM << "DEBUG VarDecl: After evaluation, initialValue = " << commandValueToString(initialValue) << std::endl;
 #endif
+
+                // Check if this is a pointer declaration (Test 113: int *ptr = arr)
+                if (isPointerType) {
+                    std::cerr << "[DEBUG] isPointerType is TRUE, children[0] type=" << static_cast<int>(children[0]->getType()) << std::endl;
+                    std::cerr << "[DEBUG] IDENTIFIER enum value=" << static_cast<int>(arduino_ast::ASTNodeType::IDENTIFIER) << std::endl;
+                    std::cerr << "[DEBUG] Match? " << (children[0]->getType() == arduino_ast::ASTNodeType::IDENTIFIER ? "YES" : "NO") << std::endl;
+                    // For pointer declarations, create ArduinoPointer object
+                    // Check if initializer is an identifier (variable name)
+                    if (!children.empty() && children[0] && children[0]->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
+                        std::cerr << "[DEBUG] Creating pointer object!" << std::endl;
+                        // Get target variable name from identifier
+                        std::string targetVarName;
+                        if (const auto* identNode = dynamic_cast<const arduino_ast::IdentifierNode*>(children[0].get())) {
+                            targetVarName = identNode->getName();
+                        }
+
+                        // Create pointer object
+                        auto pointerObj = std::make_shared<ArduinoPointer>(
+                            targetVarName,   // Target variable
+                            this,            // Interpreter reference
+                            0,               // Offset 0 (base pointer)
+                            typeName         // Type info
+                        );
+
+                        // Store pointer as CommandValue
+                        initialValue = pointerObj;
+                    }
+                }
             } else {
 #ifdef ENABLE_DEBUG_OUTPUT
                 DEBUG_STREAM << "DEBUG VarDecl: Variable '" << varName << "' has NO children (no initializer)" << std::endl;
@@ -1269,10 +1302,22 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 // Variable has no initializer - leave as null to match JavaScript behavior
                 initialValue = std::monostate{};  // Uninitialized variable = null
             }
-            
-            
-            // Convert initialValue to the declared type
-            CommandValue typedValue = convertToType(initialValue, typeName);
+
+
+            // Convert initialValue to the declared type (skip for pointers)
+            CommandValue typedValue;
+
+            std::cerr << "[DEBUG] Before type conversion: isPointerType=" << (isPointerType ? "TRUE" : "FALSE")
+                      << ", holds ArduinoPointer=" << (std::holds_alternative<std::shared_ptr<ArduinoPointer>>(initialValue) ? "TRUE" : "FALSE") << std::endl;
+
+            if (isPointerType && std::holds_alternative<std::shared_ptr<ArduinoPointer>>(initialValue)) {
+                // Keep pointer objects as-is, don't convert them
+                std::cerr << "[DEBUG] Keeping pointer as-is!" << std::endl;
+                typedValue = initialValue;
+            } else {
+                std::cerr << "[DEBUG] Converting to type: " << typeName << std::endl;
+                typedValue = convertToType(initialValue, typeName);
+            }
             
             // Parse variable modifiers from type name - ENHANCED: Robust const detection
             // Check multiple patterns for const detection to match JavaScript behavior
@@ -2079,7 +2124,11 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
 
                 // Apply postfix operation
                 if (op == "++") {
-                    if (std::holds_alternative<int32_t>(currentValue)) {
+                    // Check for pointer increment first (Test 113)
+                    if (std::holds_alternative<std::shared_ptr<ArduinoPointer>>(currentValue)) {
+                        auto oldPtr = std::get<std::shared_ptr<ArduinoPointer>>(currentValue);
+                        newValue = oldPtr->add(1);  // Create new pointer with offset+1
+                    } else if (std::holds_alternative<int32_t>(currentValue)) {
                         newValue = std::get<int32_t>(currentValue) + 1;
                     } else if (std::holds_alternative<double>(currentValue)) {
                         newValue = std::get<double>(currentValue) + 1.0;
@@ -2088,7 +2137,11 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
                         newValue = convertToInt(currentValue) + 1;
                     }
                 } else if (op == "--") {
-                    if (std::holds_alternative<int32_t>(currentValue)) {
+                    // Check for pointer decrement first (Test 113)
+                    if (std::holds_alternative<std::shared_ptr<ArduinoPointer>>(currentValue)) {
+                        auto oldPtr = std::get<std::shared_ptr<ArduinoPointer>>(currentValue);
+                        newValue = oldPtr->subtract(1);  // Create new pointer with offset-1
+                    } else if (std::holds_alternative<int32_t>(currentValue)) {
                         newValue = std::get<int32_t>(currentValue) - 1;
                     } else if (std::holds_alternative<double>(currentValue)) {
                         newValue = std::get<double>(currentValue) - 1.0;
@@ -3043,6 +3096,17 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
         // For comparisons, let them proceed naturally below (Arduino null comparison behavior)
     }
 
+
+    // Handle pointer arithmetic: ptr + offset (Test 113)
+    // Accept both int32_t and double for offset (literal 1 can be either type)
+    if (op == "+" && std::holds_alternative<std::shared_ptr<ArduinoPointer>>(left) &&
+        (std::holds_alternative<int32_t>(right) || std::holds_alternative<double>(right))) {
+        auto ptr = std::get<std::shared_ptr<ArduinoPointer>>(left);
+        int offset = std::holds_alternative<int32_t>(right) ?
+                     std::get<int32_t>(right) :
+                     static_cast<int>(std::get<double>(right));
+        return ptr->add(offset);
+    }
 
     // Arithmetic operations
     // Preserve integer type semantics: int op int = int, any double = double
@@ -6362,6 +6426,9 @@ std::string commandValueToJsonString(const CommandValue& value) {
                  << "\"type\":\"function_pointer\","
                  << "\"pointerId\":\"" << v.pointerId << "\"}";
             return json.str();
+        } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoPointer>>) {
+            // Arduino pointer - serialize as JSON object (Test 113)
+            return v->toJsonString();
         } else {
             return "null";
         }
@@ -6452,6 +6519,9 @@ std::string commandValueToString(const CommandValue& value) {
         } else if constexpr (std::is_same_v<T, FunctionPointer>) {
             // Function pointer - return toString representation (Test 106)
             return v.toString();
+        } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoPointer>>) {
+            // Arduino pointer - return toString representation (Test 113)
+            return v->toString();
         } else {
             return "null";
         }
@@ -7003,9 +7073,22 @@ CommandValue ASTInterpreter::evaluateUnaryOperation(const std::string& op, const
         emitError("INTERNAL ERROR: Prefix increment/decrement reached evaluateUnaryOperation (should be handled in evaluateExpression)");
         return std::monostate{};
     } else if (op == "*") {
-        // Pointer dereference - for now, simulate by looking up dereferenced variable
-        // In a full implementation, this would follow the pointer to read memory
-        if (std::holds_alternative<std::string>(operand)) {
+        // Pointer dereference (Test 113)
+        // Check if operand is an ArduinoPointer object
+        if (std::holds_alternative<std::shared_ptr<ArduinoPointer>>(operand)) {
+            auto ptr = std::get<std::shared_ptr<ArduinoPointer>>(operand);
+
+            try {
+                // Dereference pointer to get value
+                CommandValue value = ptr->getValue();
+                return value;
+            } catch (const std::exception& e) {
+                emitError(std::string("Pointer dereference failed: ") + e.what());
+                return std::monostate{};
+            }
+        }
+        // Legacy hack implementation for old-style string-based pointers
+        else if (std::holds_alternative<std::string>(operand)) {
             std::string pointerName = std::get<std::string>(operand);
             std::string dereferenceVarName = "*" + pointerName;
             Variable* derefVar = scopeManager_->getVariable(dereferenceVarName);
@@ -7016,7 +7099,8 @@ CommandValue ASTInterpreter::evaluateUnaryOperation(const std::string& op, const
                 return std::monostate{};
             }
         } else {
-            emitError("Pointer dereference requires pointer variable");
+            emitError("Pointer dereference requires pointer variable (found: " +
+                      commandValueToString(operand) + ")");
             return std::monostate{};
         }
     } else if (op == "&") {
