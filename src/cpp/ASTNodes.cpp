@@ -199,6 +199,10 @@ void StructDeclaration::accept(ASTVisitor& visitor) {
     visitor.visit(*this);
 }
 
+void StructMemberNode::accept(ASTVisitor& visitor) {
+    visitor.visit(*this);
+}
+
 void TypedefDeclaration::accept(ASTVisitor& visitor) {
     visitor.visit(*this);
 }

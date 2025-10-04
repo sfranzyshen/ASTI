@@ -644,6 +644,20 @@ void CompactASTReader::linkNodeChildren() {
                 } else {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
+            } else if (parentNode->getType() == ASTNodeType::DESIGNATED_INITIALIZER) {
+                auto* designatedInit = dynamic_cast<arduino_ast::DesignatedInitializerNode*>(parentNode.get());
+                if (designatedInit) {
+                    // DesignatedInitializerNode expects 2 children in order: field, value
+                    if (!designatedInit->getField()) {
+                        designatedInit->setField(std::move(nodes_[childIndex]));
+                    } else if (!designatedInit->getValue()) {
+                        designatedInit->setValue(std::move(nodes_[childIndex]));
+                    } else {
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
             } else if (parentNode->getType() == ASTNodeType::STRUCT_MEMBER) {
                 auto* structMemberNode = dynamic_cast<arduino_ast::StructMemberNode*>(parentNode.get());
                 if (structMemberNode) {

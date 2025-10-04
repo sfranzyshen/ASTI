@@ -1,7 +1,9 @@
 #include "ArduinoDataTypes.hpp"
 #include "PlatformAbstraction.hpp"
+#include "ASTInterpreter.hpp"  // For ArduinoPointer scope access
 #include <stdexcept>
 #include <chrono>
+#include <cstdlib>  // For rand()
 
 namespace arduino_interpreter {
 
@@ -42,43 +44,157 @@ std::string ArduinoStruct::toString() const {
 }
 
 // =============================================================================
-// ARDUINO POINTER IMPLEMENTATION
+// ARDUINO POINTER IMPLEMENTATION - Scope-based (JavaScript-compatible)
 // =============================================================================
 
-ArduinoPointer::ArduinoPointer(EnhancedCommandValue* target, 
-                               const std::string& targetType, 
-                               size_t level) 
-    : target_(target), targetType_(targetType), pointerLevel_(level) {
+ArduinoPointer::ArduinoPointer(const std::string& targetVar,
+                               ASTInterpreter* interpreter,
+                               int offset,
+                               const std::string& targetType)
+    : targetVariable_(targetVar),
+      offset_(offset),
+      interpreter_(interpreter),
+      targetType_(targetType) {
+
+    // Generate unique pointer ID (matching JavaScript pattern)
+    auto now = std::chrono::system_clock::now();
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+
+    // Simple random string generation (6 characters)
+    std::string randomStr;
+    const char* chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    for (int i = 0; i < 6; i++) {
+        randomStr += chars[rand() % 36];
+    }
+
+    pointerId_ = "ptr_" + std::to_string(ms) + "_" + randomStr;
 }
 
-EnhancedCommandValue ArduinoPointer::dereference() const {
+bool ArduinoPointer::isNull() const {
+    return interpreter_ == nullptr || targetVariable_.empty();
+}
+
+CommandValue ArduinoPointer::getValue() const {
     if (isNull()) {
         throw std::runtime_error("Cannot dereference null pointer");
     }
-    return *target_;
+
+    // Look up target variable using public method
+    CommandValue targetValue = interpreter_->getVariableValue(targetVariable_);
+
+    // Index into array (handles both offset_==0 for first element and offset_>0 for other elements)
+    if (std::holds_alternative<std::vector<int32_t>>(targetValue)) {
+        const auto& arr = std::get<std::vector<int32_t>>(targetValue);
+        if (offset_ >= 0 && static_cast<size_t>(offset_) < arr.size()) {
+            return arr[offset_];
+        } else {
+            throw std::runtime_error("Pointer offset out of bounds");
+        }
+    } else if (std::holds_alternative<std::vector<double>>(targetValue)) {
+        const auto& arr = std::get<std::vector<double>>(targetValue);
+        if (offset_ >= 0 && static_cast<size_t>(offset_) < arr.size()) {
+            return arr[offset_];
+        } else {
+            throw std::runtime_error("Pointer offset out of bounds");
+        }
+    }
+
+    // Non-array variable: only offset 0 is valid
+    if (offset_ == 0) {
+        return targetValue;  // Return the value itself for non-array pointers
+    }
+
+    // Non-array variable with offset > 0 is an error
+    throw std::runtime_error("Cannot apply offset to non-array variable");
 }
 
-void ArduinoPointer::assign(EnhancedCommandValue* newTarget) {
-    target_ = newTarget;
+void ArduinoPointer::setValue(const CommandValue& value) {
+    if (isNull()) {
+        throw std::runtime_error("Cannot assign through null pointer");
+    }
+
+    // If offset is 0, assign to variable directly
+    if (offset_ == 0) {
+        interpreter_->setVariableValue(targetVariable_, value);
+        return;
+    }
+
+    // If offset > 0, assign to array element
+    CommandValue targetValue = interpreter_->getVariableValue(targetVariable_);
+
+    if (std::holds_alternative<std::vector<int32_t>>(targetValue)) {
+        auto arr = std::get<std::vector<int32_t>>(targetValue);
+        if (offset_ >= 0 && static_cast<size_t>(offset_) < arr.size()) {
+            // Convert value to int32_t if possible
+            if (std::holds_alternative<int32_t>(value)) {
+                arr[offset_] = std::get<int32_t>(value);
+            } else if (std::holds_alternative<double>(value)) {
+                arr[offset_] = static_cast<int32_t>(std::get<double>(value));
+            } else {
+                throw std::runtime_error("Cannot assign non-numeric value to int array");
+            }
+            // Update the array in the variable
+            interpreter_->setVariableValue(targetVariable_, arr);
+        } else {
+            throw std::runtime_error("Pointer offset out of bounds");
+        }
+    } else if (std::holds_alternative<std::vector<double>>(targetValue)) {
+        auto arr = std::get<std::vector<double>>(targetValue);
+        if (offset_ >= 0 && static_cast<size_t>(offset_) < arr.size()) {
+            // Convert value to double if possible
+            if (std::holds_alternative<double>(value)) {
+                arr[offset_] = std::get<double>(value);
+            } else if (std::holds_alternative<int32_t>(value)) {
+                arr[offset_] = static_cast<double>(std::get<int32_t>(value));
+            } else {
+                throw std::runtime_error("Cannot assign non-numeric value to double array");
+            }
+            // Update the array in the variable
+            interpreter_->setVariableValue(targetVariable_, arr);
+        } else {
+            throw std::runtime_error("Pointer offset out of bounds");
+        }
+    } else {
+        throw std::runtime_error("Cannot apply offset to non-array variable");
+    }
 }
 
-ArduinoPointer ArduinoPointer::operator+(int offset) const {
-    // For now, basic implementation - could be enhanced for actual memory arithmetic
-    return ArduinoPointer(target_, targetType_, pointerLevel_);
+std::shared_ptr<ArduinoPointer> ArduinoPointer::add(int offsetDelta) const {
+    return std::make_shared<ArduinoPointer>(
+        targetVariable_,
+        interpreter_,
+        offset_ + offsetDelta,
+        targetType_
+    );
 }
 
-ArduinoPointer ArduinoPointer::operator-(int offset) const {
-    // For now, basic implementation - could be enhanced for actual memory arithmetic
-    return ArduinoPointer(target_, targetType_, pointerLevel_);
+std::shared_ptr<ArduinoPointer> ArduinoPointer::subtract(int offsetDelta) const {
+    return std::make_shared<ArduinoPointer>(
+        targetVariable_,
+        interpreter_,
+        offset_ - offsetDelta,
+        targetType_
+    );
+}
+
+std::string ArduinoPointer::toJsonString() const {
+    StringBuildStream oss;
+    oss << "{";
+    oss << "\"type\":\"offset_pointer\",";
+    oss << "\"targetVariable\":\"" << targetVariable_ << "\",";
+    oss << "\"pointerId\":\"" << pointerId_ << "\",";
+    oss << "\"offset\":" << offset_;
+    oss << "}";
+    return oss.str();
 }
 
 std::string ArduinoPointer::toString() const {
     StringBuildStream oss;
-    oss << targetType_;
-    for (size_t i = 0; i < pointerLevel_; ++i) {
-        oss << "*";
+    oss << "ArduinoPointer(" << pointerId_ << " -> " << targetVariable_;
+    if (offset_ != 0) {
+        oss << "[" << offset_ << "]";
     }
-    oss << " @ " << (void*)target_;
+    oss << ")";
     return oss.str();
 }
 

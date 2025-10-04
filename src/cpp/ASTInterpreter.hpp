@@ -27,6 +27,7 @@
 #include <functional>
 #include <chrono>
 #include <queue>
+#include <stdexcept>
 
 namespace arduino_interpreter {
 
@@ -639,6 +640,39 @@ public:
     ArduinoLibraryRegistry* getLibraryRegistry() const { return libraryRegistry_.get(); }
 
     // =============================================================================
+    // VARIABLE ACCESS (for ArduinoPointer support)
+    // =============================================================================
+
+    /**
+     * Get variable value by name (for pointer dereferencing)
+     */
+    CommandValue getVariableValue(const std::string& name) const {
+        Variable* var = scopeManager_->getVariable(name);
+        if (!var) {
+            throw std::runtime_error("Variable '" + name + "' not found");
+        }
+        return var->value;
+    }
+
+    /**
+     * Set variable value by name (for pointer assignment)
+     */
+    void setVariableValue(const std::string& name, const CommandValue& value) {
+        Variable* var = scopeManager_->getVariable(name);
+        if (!var) {
+            throw std::runtime_error("Variable '" + name + "' not found");
+        }
+        var->value = value;
+    }
+
+    /**
+     * Check if variable exists
+     */
+    bool hasVariable(const std::string& name) const {
+        return scopeManager_->hasVariable(name);
+    }
+
+    // =============================================================================
     // EVENT HANDLERS
     // =============================================================================
     
@@ -1141,6 +1175,12 @@ private:
  * Helper function to convert CommandValue to JSON string representation
  */
 std::string commandValueToJsonString(const CommandValue& value);
+
+/**
+ * Helper function to convert EnhancedCommandValue to JSON string representation
+ * Handles ArduinoStruct serialization with proper JSON formatting
+ */
+std::string enhancedCommandValueToJsonString(const EnhancedCommandValue& value);
 
 /**
  * Create interpreter from JavaScript-generated compact AST

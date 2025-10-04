@@ -2616,7 +2616,54 @@ void ASTInterpreter::visit(arduino_ast::ConstantNode& node) {
 void ASTInterpreter::visit(arduino_ast::ArrayInitializerNode& node) {
 
     try {
+        // Check if all children are designated initializers (struct initialization)
+        // Matches JavaScript implementation: ASTInterpreter.js lines 6549-6564
+        bool allDesignated = !node.getChildren().empty();
+        for (const auto& child : node.getChildren()) {
+            if (!child || child->getType() != arduino_ast::ASTNodeType::DESIGNATED_INITIALIZER) {
+                allDesignated = false;
+                break;
+            }
+        }
 
+        if (allDesignated) {
+            // This is struct initialization with designated initializers {.x = 10, .y = 20}
+            auto structObj = std::make_shared<ArduinoStruct>("struct");
+
+            for (const auto& child : node.getChildren()) {
+                auto* designatedInit = dynamic_cast<arduino_ast::DesignatedInitializerNode*>(child.get());
+                if (!designatedInit) continue;
+
+                // Get field name
+                std::string fieldName;
+                if (const auto* field = designatedInit->getField()) {
+                    if (auto* fieldIdent = dynamic_cast<const arduino_ast::IdentifierNode*>(field)) {
+                        fieldName = fieldIdent->getName();
+                    }
+                }
+
+                if (fieldName.empty()) {
+                    continue; // Skip if field name not found
+                }
+
+                // Evaluate field value
+                if (const auto* value = designatedInit->getValue()) {
+                    CommandValue fieldValue = evaluateExpression(
+                        const_cast<arduino_ast::ASTNode*>(value)
+                    );
+
+                    // Add to struct
+                    EnhancedCommandValue enhancedValue = upgradeCommandValue(fieldValue);
+                    structObj->setMember(fieldName, enhancedValue);
+                }
+            }
+
+            // Return struct object instead of array
+            lastExpressionResult_ = structObj;
+            return;
+        }
+
+        // Otherwise, continue with normal array initialization
         // Evaluate each array element to determine type
         std::vector<CommandValue> tempElements;
         bool allInts = true;
@@ -6429,8 +6476,60 @@ std::string commandValueToJsonString(const CommandValue& value) {
         } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoPointer>>) {
             // Arduino pointer - serialize as JSON object (Test 113)
             return v->toJsonString();
+        } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoStruct>>) {
+            // Struct - serialize as JSON object {"x": 10, "y": 20} (Test 114)
+            if (!v) return "null";
+
+            StringBuildStream json;
+            json << "{";
+            bool first = true;
+            for (const auto& [fieldName, fieldValue] : v->getMembers()) {
+                if (!first) json << ",";
+                json << "\"" << fieldName << "\":"
+                     << enhancedCommandValueToJsonString(fieldValue);
+                first = false;
+            }
+            json << "}";
+            return json.str();
         } else {
             return "null";
+        }
+    }, value);
+}
+
+// Helper to convert EnhancedCommandValue to JSON string representation (Test 114)
+std::string enhancedCommandValueToJsonString(const EnhancedCommandValue& value) {
+    return std::visit([](const auto& v) -> std::string {
+        using T = std::decay_t<decltype(v)>;
+        if constexpr (std::is_same_v<T, std::monostate>) {
+            return "null";
+        } else if constexpr (std::is_same_v<T, bool>) {
+            return v ? "true" : "false";
+        } else if constexpr (std::is_same_v<T, int32_t>) {
+            return std::to_string(v);
+        } else if constexpr (std::is_same_v<T, double>) {
+            return std::to_string(v);
+        } else if constexpr (std::is_same_v<T, std::string>) {
+            return "\"" + v + "\"";
+        } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoStruct>>) {
+            // Recursive struct serialization - produces JSON {"x": 10, "y": 20}
+            if (!v) return "null";
+
+            StringBuildStream json;
+            json << "{";
+            bool first = true;
+            for (const auto& [fieldName, fieldValue] : v->getMembers()) {
+                if (!first) json << ",";
+                json << "\"" << fieldName << "\":"
+                     << enhancedCommandValueToJsonString(fieldValue);
+                first = false;
+            }
+            json << "}";
+            return json.str();
+        } else {
+            // For other EnhancedCommandValue types, downgrade and use CommandValue serialization
+            CommandValue downgraded = downgradeExtendedCommandValue(v);
+            return commandValueToJsonString(downgraded);
         }
     }, value);
 }

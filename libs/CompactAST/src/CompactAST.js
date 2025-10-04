@@ -218,7 +218,7 @@ class CompactASTExporter {
             'ParamNode': ['paramType', 'declarator', 'defaultValue'],
             'ArrayAccessNode': ['identifier', 'index'],
             'ArrayInitializerNode': ['elements'],
-            'DesignatedInitializerNode': ['value'],
+            'DesignatedInitializerNode': ['field', 'value'],
             'FunctionPointerDeclaratorNode': ['identifier', 'parameters'],
             'SwitchStatement': ['discriminant', 'cases'],
             'CaseStatement': ['test', 'consequent'],

@@ -6,19 +6,29 @@
 #include <string>
 #include <variant>
 
+// Forward declarations needed for CommandValue variant
+namespace arduino_interpreter {
+    struct FunctionPointer;
+    class ArduinoStruct;
+    class ArduinoPointer;
+}
+
 // Core CommandValue definition (moved from CommandProtocol.hpp)
 using CommandValue = std::variant<
-    std::monostate,                          // void/undefined
-    bool,                                    // boolean
-    int32_t,                                 // integer (Arduino pins, values)
-    uint32_t,                                // unsigned integer (compatibility)
-    double,                                  // floating point numbers
-    std::string,                             // strings and identifiers
-    std::vector<int32_t>,                    // 1D integer arrays
-    std::vector<double>,                     // 1D double arrays
-    std::vector<std::string>,                // 1D string arrays
-    std::vector<std::vector<int32_t>>,       // 2D integer arrays (NEW for Test 105)
-    std::vector<std::vector<double>>         // 2D double arrays (NEW for Test 105)
+    std::monostate,                                  // void/undefined
+    bool,                                            // boolean
+    int32_t,                                         // integer (Arduino pins, values)
+    uint32_t,                                        // unsigned integer (compatibility)
+    double,                                          // floating point numbers
+    std::string,                                     // strings and identifiers
+    std::vector<int32_t>,                            // 1D integer arrays
+    std::vector<double>,                             // 1D double arrays
+    std::vector<std::string>,                        // 1D string arrays
+    std::vector<std::vector<int32_t>>,               // 2D integer arrays (NEW for Test 105)
+    std::vector<std::vector<double>>,                // 2D double arrays (NEW for Test 105)
+    arduino_interpreter::FunctionPointer,            // Function pointers (NEW for Test 106)
+    std::shared_ptr<arduino_interpreter::ArduinoStruct>,  // Structs (NEW for Test 110)
+    std::shared_ptr<arduino_interpreter::ArduinoPointer>  // Pointers (NEW for Test 113)
 >;
 
 /**
@@ -40,6 +50,7 @@ namespace arduino_interpreter {
     class ArduinoPointer;
     class ArduinoString;
     class ArduinoArray;
+    class ASTInterpreter;  // Forward declaration for FunctionPointer
 
     // String object wrapper for Arduino String compatibility
     struct StringObject {
@@ -47,6 +58,22 @@ namespace arduino_interpreter {
         StringObject() = default;
         StringObject(const std::string& s) : value(s) {}
         StringObject(const char* s) : value(s) {}
+    };
+
+    // Function pointer for function pointer support (Test 106)
+    struct FunctionPointer {
+        std::string functionName;
+        std::string pointerId;
+        ASTInterpreter* interpreter;
+
+        FunctionPointer();
+        FunctionPointer(const std::string& name, ASTInterpreter* interp);
+        std::string toString() const;
+
+        // Comparison operator for std::visit equality checks
+        bool operator==(const FunctionPointer& other) const {
+            return functionName == other.functionName && pointerId == other.pointerId;
+        }
     };
 
     // Command system types (moved from deleted CommandProtocol.hpp)
@@ -143,34 +170,41 @@ public:
 };
 
 // =============================================================================
-// ARDUINO POINTER CLASS - For pointer operations and dereferencing
+// ARDUINO POINTER CLASS - Scope-based pointer operations (JavaScript-compatible)
 // =============================================================================
 
 class ArduinoPointer {
 private:
-    EnhancedCommandValue* target_;  // What this pointer points to
-    std::string targetType_;        // Type of pointed-to object
-    size_t pointerLevel_;          // How many levels of indirection (*, **, ***)
+    std::string targetVariable_;     // Variable name (e.g., "arr")
+    int offset_;                     // Array offset (0 for base pointer)
+    ASTInterpreter* interpreter_;    // For scope access
+    std::string pointerId_;          // Unique ID for debugging
+    std::string targetType_;         // Original type info (preserved for compatibility)
 
 public:
-    ArduinoPointer(EnhancedCommandValue* target = nullptr, 
-                   const std::string& targetType = "", 
-                   size_t level = 1);
-    
-    // Pointer operations
-    bool isNull() const { return target_ == nullptr; }
-    EnhancedCommandValue dereference() const;
-    void assign(EnhancedCommandValue* newTarget);
-    
-    // Arithmetic operations (for array access)
-    ArduinoPointer operator+(int offset) const;
-    ArduinoPointer operator-(int offset) const;
-    
-    // Type information
+    // Constructor matching JavaScript pattern
+    ArduinoPointer(const std::string& targetVar,
+                   ASTInterpreter* interpreter,
+                   int offset = 0,
+                   const std::string& targetType = "");
+
+    // JavaScript-compatible methods
+    bool isNull() const;
+    CommandValue getValue() const;           // Dereference via scope lookup
+    void setValue(const CommandValue& value);// Assign to dereferenced location
+
+    // Pointer arithmetic (returns new pointer objects)
+    std::shared_ptr<ArduinoPointer> add(int offsetDelta) const;
+    std::shared_ptr<ArduinoPointer> subtract(int offsetDelta) const;
+
+    // Accessors
+    const std::string& getTargetVariable() const { return targetVariable_; }
+    int getOffset() const { return offset_; }
+    const std::string& getPointerId() const { return pointerId_; }
     const std::string& getTargetType() const { return targetType_; }
-    size_t getPointerLevel() const { return pointerLevel_; }
-    
-    // Debug/serialization
+
+    // Serialization for VAR_SET commands
+    std::string toJsonString() const;
     std::string toString() const;
 };
 
@@ -360,6 +394,17 @@ inline FlexibleCommandValue convertCommandValue(const OldCommandValue& oldValue)
         } else if constexpr (std::is_same_v<T, uint32_t>) {
             // Convert uint32_t to int64_t for FlexibleCommandValue
             return static_cast<int64_t>(arg);
+        } else if constexpr (std::is_same_v<T, FunctionPointer>) {
+            // Convert FunctionPointer to string representation for FlexibleCommandValue (Test 106)
+            return arg.toString();
+        } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoStruct>>) {
+            // Convert ArduinoStruct to null for FlexibleCommandValue (Test 110)
+            // Structs are handled specially in emit functions
+            return std::monostate{};
+        } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoPointer>>) {
+            // Convert ArduinoPointer to null for FlexibleCommandValue (Test 113)
+            // Pointers are handled specially in emit functions (serialized via toJsonString())
+            return std::monostate{};
         } else {
             // Direct conversion for basic types
             return arg;

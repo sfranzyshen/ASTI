@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759523177058,
+    "timestamp": 1759599004561,
     "component": "interpreter",
     "version": "17.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759523177058,
+    "timestamp": 1759599004561,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759523177058,
+    "timestamp": 1759599004562,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759523177058,
+    "timestamp": 1759599004562,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759523177058,
+    "timestamp": 1759599004562,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759523177058,
+    "timestamp": 1759599004562,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759523177058,
+    "timestamp": 1759599004562,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,13 +46,13 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759523177058
+    "timestamp": 1759599004562
   },
   {
     "type": "VAR_SET",
     "variable": "ptr",
     "value": null,
-    "timestamp": 1759523177058
+    "timestamp": 1759599004562
   },
   {
     "type": "VAR_SET",
@@ -61,9 +61,9 @@
       "functionName": "myFunc",
       "interpreter": "[Circular Reference Removed]",
       "type": "function_pointer",
-      "pointerId": "fptr_1759523177058_7skt5"
+      "pointerId": "fptr_1759599004562_uzv2h"
     },
-    "timestamp": 1759523177058
+    "timestamp": 1759599004562
   },
   {
     "type": "FUNCTION_CALL",
@@ -73,11 +73,11 @@
         "functionName": "myFunc",
         "interpreter": "[Circular Reference Removed]",
         "type": "function_pointer",
-        "pointerId": "fptr_1759523177058_7skt5"
+        "pointerId": "fptr_1759599004562_uzv2h"
       }
     ],
-    "timestamp": 1759523177059,
-    "message": "callFunc(ArduinoFunctionPointer(fptr_1759523177058_7skt5 -> myFunc))"
+    "timestamp": 1759599004562,
+    "message": "callFunc(ArduinoFunctionPointer(fptr_1759599004562_uzv2h -> myFunc))"
   },
   {
     "type": "FUNCTION_CALL",
@@ -86,7 +86,7 @@
       "Result: "
     ],
     "data": "Result: ",
-    "timestamp": 1759523177059,
+    "timestamp": 1759599004562,
     "message": "Serial.print(\"Result: \")"
   },
   {
@@ -96,7 +96,7 @@
       10,
       20
     ],
-    "timestamp": 1759523177065,
+    "timestamp": 1759599004567,
     "message": "myFunc(10, 20)"
   },
   {
@@ -106,7 +106,7 @@
       "30"
     ],
     "data": "30",
-    "timestamp": 1759523177065,
+    "timestamp": 1759599004567,
     "message": "Serial.println(30)"
   },
   {
@@ -115,23 +115,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759523177071
+    "timestamp": 1759599004572
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759523177076,
+    "timestamp": 1759599004577,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759523177076,
+    "timestamp": 1759599004577,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759523177076,
+    "timestamp": 1759599004577,
     "message": "Program execution stopped"
   }
 ]
