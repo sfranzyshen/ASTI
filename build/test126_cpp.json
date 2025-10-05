@@ -9,16 +9,16 @@
 {"type":"VAR_SET","timestamp":0,"variable":"n1","value":{"structName":"Node","fields":{},"type":"struct"},"structType":"Node"}
 {"type":"VAR_SET","timestamp":0,"variable":"n2","value":{"structName":"Node","fields":{},"type":"struct"},"structType":"Node"}
 {"type":"STRUCT_FIELD_SET","timestamp":0,"struct":"Node","field":"data","value":10.000000}
-{"type":"STRUCT_FIELD_SET","timestamp":0,"struct":"Node","field":"next","value":{"type":"offset_pointer","targetVariable":"n2","pointerId":"ptr_1759631582795_t8jhfh","offset":0}}
+{"type":"STRUCT_FIELD_SET","timestamp":0,"struct":"Node","field":"next","value":{"type":"offset_pointer","targetVariable":"n2","pointerId":"ptr_1759633540471_t8jhfh","offset":0}}
 {"type":"STRUCT_FIELD_SET","timestamp":0,"struct":"Node","field":"data","value":20.000000}
 {"type":"STRUCT_FIELD_SET","timestamp":0,"struct":"Node","field":"next","value":"NULL"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Data from n1: "],"data":"Data from n1: ","message":"Serial.print("Data from n1: ")"}
 {"type":"STRUCT_FIELD_ACCESS","timestamp":0,"struct":"Node","field":"data","value":10.000000}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["10"],"data":"10","message":"Serial.println(10)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Data from n2 via n1: "],"data":"Data from n2 via n1: ","message":"Serial.print("Data from n2 via n1: ")"}
-{"type":"STRUCT_FIELD_ACCESS","timestamp":0,"struct":"Node","field":"next","value":"ArduinoPointer(ptr_1759631582795_t8jhfh -> n2)"}
-{"type":"ERROR","timestamp":0,"message":"-> operator requires pointer type","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println("null")"}
+{"type":"STRUCT_FIELD_ACCESS","timestamp":0,"struct":"Node","field":"next","value":{"type":"offset_pointer","targetVariable":"n2","pointerId":"ptr_1759633540471_t8jhfh","offset":0}}
+{"type":"STRUCT_FIELD_ACCESS","timestamp":0,"struct":"Node","field":"data","value":20.000000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["20"],"data":"20","message":"Serial.println(20)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}

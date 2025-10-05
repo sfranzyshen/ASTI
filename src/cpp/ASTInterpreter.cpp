@@ -1231,7 +1231,6 @@ void ASTInterpreter::visit(arduino_ast::IdentifierNode& node) {
 
 void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
     TRACE_ENTRY("visit(VarDeclNode)", "Starting variable declaration");
-    std::cerr << "[DEBUG] VarDeclNode visitor called!" << std::endl;
 
     const auto& children = node.getChildren();
     for (size_t i = 0; i < children.size(); ++i) {
@@ -1257,7 +1256,6 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
 
     // POINTER DETECTION: Check if type contains '*' (e.g., "int *", "int*", "char *")
     bool isPointerType = (typeName.find('*') != std::string::npos);
-    std::cerr << "[DEBUG] VarDecl typeName: '" << typeName << "', isPointerType: " << (isPointerType ? "TRUE" : "FALSE") << std::endl;
 
     // Process declarations
     for (size_t i = 0; i < node.getDeclarations().size(); ++i) {
@@ -1265,13 +1263,14 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
         if (!declarator) {
             continue;
         }
-        
+
         if (auto* declNode = dynamic_cast<arduino_ast::DeclaratorNode*>(declarator.get())) {
             std::string varName = declNode->getName();
 
-            
-            // Debug: Print each child node type and check for ArrayDeclaratorNode
+            // Get children for later processing
             const auto& children = declNode->getChildren();
+
+            // Debug: Print each child node type and check for ArrayDeclaratorNode
             for (size_t i = 0; i < children.size(); ++i) {
                 if (children[i]) {
                     int childType = static_cast<int>(children[i]->getType());
@@ -1296,6 +1295,28 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                     }
                 }
 #endif
+
+                // Test 127 FIX: Detect function declaration artifact
+                // Parser creates ConstructorCallNode(callee="static void") as children[0] for functions
+                // This is NOT a variable initializer - skip it to prevent spurious function call!
+                if (children[0] && children[0]->getType() == arduino_ast::ASTNodeType::CONSTRUCTOR_CALL) {
+                    if (const auto* ctorNode = dynamic_cast<const arduino_ast::ConstructorCallNode*>(children[0].get())) {
+                        if (ctorNode->getCallee()) {
+                            std::string calleeName;
+                            if (const auto* calleeId = dynamic_cast<const arduino_ast::IdentifierNode*>(ctorNode->getCallee())) {
+                                calleeName = calleeId->getName();
+                            }
+
+                            // If callee name matches type name, this is function declaration artifact
+                            // Example: type="static void", callee="static void" → FUNCTION, not variable
+                            if (calleeName == typeName) {
+                                TRACE("VarDecl-Skip", "Skipping function declaration artifact: " + varName);
+                                continue;  // Skip this declarator entirely - let FuncDefNode handle it
+                            }
+                        }
+                    }
+                }
+
                 // Variable has initializer - evaluate it
 #ifdef ENABLE_DEBUG_OUTPUT
                 DEBUG_STREAM << "DEBUG VarDecl: Evaluating child[0] as initializer for '" << varName << "'" << std::endl;
@@ -1307,13 +1328,9 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
 
                 // Check if this is a pointer declaration (Test 113: int *ptr = arr)
                 if (isPointerType) {
-                    std::cerr << "[DEBUG] isPointerType is TRUE, children[0] type=" << static_cast<int>(children[0]->getType()) << std::endl;
-                    std::cerr << "[DEBUG] IDENTIFIER enum value=" << static_cast<int>(arduino_ast::ASTNodeType::IDENTIFIER) << std::endl;
-                    std::cerr << "[DEBUG] Match? " << (children[0]->getType() == arduino_ast::ASTNodeType::IDENTIFIER ? "YES" : "NO") << std::endl;
                     // For pointer declarations, create ArduinoPointer object
                     // Check if initializer is an identifier (variable name)
                     if (!children.empty() && children[0] && children[0]->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                        std::cerr << "[DEBUG] Creating pointer object!" << std::endl;
                         // Get target variable name from identifier
                         std::string targetVarName;
                         if (const auto* identNode = dynamic_cast<const arduino_ast::IdentifierNode*>(children[0].get())) {
@@ -1344,15 +1361,10 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             // Convert initialValue to the declared type (skip for pointers)
             CommandValue typedValue;
 
-            std::cerr << "[DEBUG] Before type conversion: isPointerType=" << (isPointerType ? "TRUE" : "FALSE")
-                      << ", holds ArduinoPointer=" << (std::holds_alternative<std::shared_ptr<ArduinoPointer>>(initialValue) ? "TRUE" : "FALSE") << std::endl;
-
             if (isPointerType && std::holds_alternative<std::shared_ptr<ArduinoPointer>>(initialValue)) {
                 // Keep pointer objects as-is, don't convert them
-                std::cerr << "[DEBUG] Keeping pointer as-is!" << std::endl;
                 typedValue = initialValue;
             } else {
-                std::cerr << "[DEBUG] Converting to type: " << typeName << std::endl;
                 typedValue = convertToType(initialValue, typeName);
             }
             
@@ -1565,8 +1577,13 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 std::string stringVal = std::get<std::string>(typedValue);
                 emitVarSetArduinoString(varName, stringVal);
             } else {
+                // Test 127 FIX: Static global variables emit as regular VAR_SET (not extern)
+                if (isStatic && scopeManager_->isGlobalScope()) {
+                    // Static = internal linkage, not external
+                    emitVarSet(varName, commandValueToJsonString(typedValue));
+                }
                 // TEST 43 ULTRATHINK FIX: Check if variable exists in parent scope (shadowing)
-                if (scopeManager_->hasVariableInParentScope(varName)) {
+                else if (scopeManager_->hasVariableInParentScope(varName)) {
                     emitVarSetExtern(varName, commandValueToJsonString(typedValue));
                 } else {
                     emitVarSet(varName, commandValueToJsonString(typedValue));
@@ -1788,16 +1805,19 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::FuncDefNode& node) {
-    
+    std::cerr << "[DEBUG-FuncDef] FuncDefNode visitor called!" << std::endl;
+
     auto declarator = node.getDeclarator();
-    
+    auto returnType = node.getReturnType();
+
     if (!declarator) {
+        std::cerr << "[DEBUG-FuncDef] No declarator - returning early!" << std::endl;
         return;
     }
-    
+
     // Extract function name
     std::string functionName;
-    
+
     // Try DeclaratorNode first (more likely)
     if (const auto* declNode = dynamic_cast<const arduino_ast::DeclaratorNode*>(declarator)) {
         functionName = declNode->getName();
@@ -1807,11 +1827,30 @@ void ASTInterpreter::visit(arduino_ast::FuncDefNode& node) {
         functionName = identifier->getName();
     } else {
     }
-    
+
+    // Test 127: Extract and clean return type
+    std::string returnTypeName = "void";
+    if (returnType) {
+        if (const auto* typeNode = dynamic_cast<const arduino_ast::TypeNode*>(returnType)) {
+            returnTypeName = typeNode->getValueAs<std::string>();
+
+            // Strip storage specifiers
+            if (returnTypeName.find("static ") == 0) {
+                returnTypeName = returnTypeName.substr(7);  // Remove "static "
+            }
+            if (returnTypeName.find("inline ") == 0) {
+                returnTypeName = returnTypeName.substr(7);  // Remove "inline "
+            }
+        }
+    }
+
     if (!functionName.empty()) {
         // MEMORY SAFE: Store function name instead of raw pointer
         userFunctionNames_.insert(functionName);
+        TRACE("FuncDef", "Registered function: " + functionName + " (return: " + returnTypeName + ")");
+        std::cerr << "[DEBUG-FuncDef] Registered function: " << functionName << " (return: " << returnTypeName << ")" << std::endl;
     } else {
+        std::cerr << "[DEBUG-FuncDef] Empty function name - NOT registered!" << std::endl;
     }
 }
 

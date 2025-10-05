@@ -2,7 +2,7 @@
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"VAR_SET","timestamp":0,"variable":"x","value":50}
-{"type":"VAR_SET","timestamp":0,"variable":"p","value":{"type":"offset_pointer","targetVariable":"x","pointerId":"ptr_1759631576936_t8jhfh","offset":0}}
+{"type":"VAR_SET","timestamp":0,"variable":"p","value":{"type":"offset_pointer","targetVariable":"x","pointerId":"ptr_1759633536043_t8jhfh","offset":0}}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}

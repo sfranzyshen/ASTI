@@ -7,10 +7,10 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"VAR_SET","timestamp":0,"variable":"arr","value":[10,20,30]}
-{"type":"VAR_SET","timestamp":0,"variable":"ptr","value":{"type":"offset_pointer","targetVariable":"arr","pointerId":"ptr_1759631580630_t8jhfh","offset":0}}
+{"type":"VAR_SET","timestamp":0,"variable":"ptr","value":{"type":"offset_pointer","targetVariable":"arr","pointerId":"ptr_1759633538860_t8jhfh","offset":0}}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["First element: "],"data":"First element: ","message":"Serial.print("First element: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["10"],"data":"10","message":"Serial.println(10)"}
-{"type":"VAR_SET","timestamp":0,"variable":"ptr","value":{"type":"offset_pointer","targetVariable":"arr","pointerId":"ptr_1759631580632_km7bo5","offset":1}}
+{"type":"VAR_SET","timestamp":0,"variable":"ptr","value":{"type":"offset_pointer","targetVariable":"arr","pointerId":"ptr_1759633538863_km7bo5","offset":1}}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Next element: "],"data":"Next element: ","message":"Serial.print("Next element: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["20"],"data":"20","message":"Serial.println(20)"}
 {"type":"VAR_SET","timestamp":0,"variable":"nextVal","value":30}

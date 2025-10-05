@@ -1,9 +1,6 @@
 {"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"18.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
-{"type":"VAR_SET","timestamp":0,"variable":"global_counter","value":0,"isExtern":true}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"static void","arguments":[]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: static void","errorType":"RuntimeError"}
-{"type":"VAR_SET","timestamp":0,"variable":"incrementCounter","value":null,"isExtern":true}
+{"type":"VAR_SET","timestamp":0,"variable":"global_counter","value":0}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}

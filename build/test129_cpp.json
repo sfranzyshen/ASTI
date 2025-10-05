@@ -6,7 +6,7 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"applyOperation","arguments":[{"functionName":"add","type":"function_pointer","pointerId":"fptr_1759631583264_50199"},5.000000,10.000000]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"applyOperation","arguments":[{"functionName":"add","type":"function_pointer","pointerId":"fptr_1759633540901_36946"},5.000000,10.000000]}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"add","arguments":[5,10]}
 {"type":"VAR_SET","timestamp":0,"variable":"result","value":15}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Result of applyOperation: "],"data":"Result of applyOperation: ","message":"Serial.print("Result of applyOperation: ")"}
