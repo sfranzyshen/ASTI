@@ -764,7 +764,9 @@ CommandValue downgradeExtendedCommandValue(const EnhancedCommandValue& enhanced)
             } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoString>>) {
                 return arg ? std::string(arg->c_str()) : std::string("");
             } else if constexpr (std::is_same_v<T, std::shared_ptr<ArduinoPointer>>) {
-                return arg ? arg->toString() : std::string("null_pointer");
+                // Test 126: Preserve ArduinoPointer as CommandValue (supports shared_ptr<ArduinoPointer>)
+                // This allows arrow operator to work on struct field pointers (n1.next->data)
+                return arg;  // Don't convert to string - preserve pointer object!
             } else {
                 return std::string("unknown_type");
             }
