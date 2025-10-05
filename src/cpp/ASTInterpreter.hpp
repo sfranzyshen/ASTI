@@ -497,6 +497,11 @@ private:
     uint32_t requestIdCounter_;            // For generateRequestId()
     std::vector<std::string> callStack_;   // Function call stack tracking
     int allocationCounter_;                // malloc allocation counter
+
+    // Test 127 WORKAROUND: Static function implementations for parser bug
+    // Matches JavaScript workaround (ASTInterpreter.js lines 2986-3035)
+    // Remove when ArduinoParser static function parsing is fixed
+    std::map<std::string, std::function<void()>> staticFunctionWorkarounds_;
     int mallocCounter_;                    // malloc request counter
     std::unordered_map<std::string, StructDefinition> structTypes_;  // Struct type registry
     std::unordered_map<std::string, std::string> typeAliases_;       // Type alias registry (typedef support - Test 116)
