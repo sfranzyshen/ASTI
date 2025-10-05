@@ -10,7 +10,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"p2","value":null}
 {"type":"STRUCT_FIELD_SET","timestamp":0,"struct":"MyPoint","field":"x","value":10.000000}
 {"type":"STRUCT_FIELD_SET","timestamp":0,"struct":"MyPoint","field":"y","value":20.000000}
-{"type":"VAR_SET","timestamp":0,"variable":"p2","value":{"type":"offset_pointer","targetVariable":"p1","pointerId":"ptr_1759628223085_t8jhfh","offset":0}}
+{"type":"VAR_SET","timestamp":0,"variable":"p2","value":{"type":"offset_pointer","targetVariable":"p1","pointerId":"ptr_1759631581149_t8jhfh","offset":0}}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Value of x using pointer: "],"data":"Value of x using pointer: ","message":"Serial.print("Value of x using pointer: ")"}
 {"type":"STRUCT_FIELD_ACCESS","timestamp":0,"struct":"MyPoint","field":"x","value":10.000000}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["10"],"data":"10","message":"Serial.println(10)"}

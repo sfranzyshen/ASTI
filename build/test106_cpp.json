@@ -6,8 +6,8 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
-{"type":"VAR_SET","timestamp":0,"variable":"ptr","value":{"functionName":"myFunc","type":"function_pointer","pointerId":"fptr_1759628221898_76803"}}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"callFunc","arguments":[{"functionName":"myFunc","type":"function_pointer","pointerId":"fptr_1759628221898_76803"}]}
+{"type":"VAR_SET","timestamp":0,"variable":"ptr","value":{"functionName":"myFunc","type":"function_pointer","pointerId":"fptr_1759631579472_61597"}}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"callFunc","arguments":[{"functionName":"myFunc","type":"function_pointer","pointerId":"fptr_1759631579472_61597"}]}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Result: "],"data":"Result: ","message":"Serial.print("Result: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"myFunc","arguments":[10.000000,20.000000]}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["30"],"data":"30","message":"Serial.println(30)"}

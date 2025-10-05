@@ -592,16 +592,44 @@ void ASTInterpreter::visit(arduino_ast::ExpressionStatement& node) {
         std::string exprType = arduino_ast::nodeTypeToString(expr->getType());
         TRACE("visit(ExpressionStatement)", "Processing expression: " + exprType);
 
-        // Handle parser quirk: struct variable declarations create StructType + IdentifierNode (two separate nodes)
-        // Check if we have a pending struct type and this is an IdentifierNode
-        if (!pendingStructType_.empty() && expr->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-            auto* identNode = dynamic_cast<arduino_ast::IdentifierNode*>(expr);
-            if (identNode) {
-                std::string varName = identNode->getName();
-                createStructVariable(pendingStructType_, varName);
-                pendingStructType_.clear(); // Clear pending type after use
-                return;
+        // Handle parser quirk: struct variable declarations create StructType + Node (two separate nodes)
+        // Single variable: StructType + IdentifierNode
+        // Multiple variables: StructType + CommaExpression containing multiple IdentifierNodes
+        if (!pendingStructType_.empty()) {
+            // Test 126 FIX: Handle both single and multi-declaration
+            if (expr->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
+                // Single variable: struct Node n1;
+                auto* identNode = dynamic_cast<arduino_ast::IdentifierNode*>(expr);
+                if (identNode) {
+                    std::string varName = identNode->getName();
+                    createStructVariable(pendingStructType_, varName);
+                    pendingStructType_.clear(); // Clear after single variable
+                    return;
+                }
+            } else if (expr->getType() == arduino_ast::ASTNodeType::COMMA_EXPRESSION) {
+                // Multiple variables: struct Node n1, n2;
+                auto* commaExpr = dynamic_cast<arduino_ast::CommaExpression*>(expr);
+                if (commaExpr) {
+                    // Process all IdentifierNode children in CommaExpression
+                    for (const auto& child : commaExpr->getChildren()) {
+                        if (child && child->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
+                            auto* identNode = dynamic_cast<arduino_ast::IdentifierNode*>(child.get());
+                            if (identNode) {
+                                std::string varName = identNode->getName();
+                                createStructVariable(pendingStructType_, varName);
+                            }
+                        }
+                    }
+                    pendingStructType_.clear(); // Clear after all variables created
+                    return;
+                }
             }
+        }
+
+        // Test 126 FIX: Clear pendingStructType_ when encountering non-identifier expression
+        // This ends the struct declaration sequence and prevents type bleeding into unrelated code
+        if (!pendingStructType_.empty()) {
+            pendingStructType_.clear();
         }
 
         // CRITICAL FIX: Use visitor pattern for statement-level expressions

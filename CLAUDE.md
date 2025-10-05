@@ -2,6 +2,45 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+# 🔧 STRUCT MULTI-DECLARATION SUPPORT + 97.037% MAINTAINED 🔧
+
+## **OCTOBER 4, 2025 (LATEST) - COMMAEXPRESSION STRUCT VARIABLE FIX**
+
+### **INFRASTRUCTURE IMPROVEMENT: Multi-Variable Struct Declarations**
+
+**PARTIAL SUCCESS**: Enhanced struct declaration support to handle `struct Node n1, n2;` syntax, maintaining **131/135 tests (97.037% success rate)**.
+
+**Key Achievements:**
+- ✅ **Multi-Declaration Fixed**: Both variables now properly created from CommaExpression pattern
+- ✅ **ExpressionStatement Enhanced**: Added CommaExpression child iteration for struct variables
+- ✅ **Zero Regressions**: All 131 previously passing tests maintained
+- ❌ **Test 126**: Arrow operator on struct field pointers still requires work
+- ✅ **97.037% maintained** - **131/135 tests passing** - production stability preserved
+
+**Technical Root Cause**:
+- JavaScript parser creates `StructType + CommaExpression(id1, id2)` for `struct Node n1, n2;`
+- C++ ExpressionStatement only checked for IdentifierNode, missing CommaExpression case
+- Solution: Iterate CommaExpression children and create struct variable for each IdentifierNode
+
+**Code Changes**: `src/cpp/ASTInterpreter.cpp` lines 595-627
+```cpp
+if (expr->getType() == arduino_ast::ASTNodeType::COMMA_EXPRESSION) {
+    // Multiple variables: struct Node n1, n2;
+    for (const auto& child : commaExpr->getChildren()) {
+        if (child && child->getType() == IDENTIFIER) {
+            createStructVariable(pendingStructType_, varName);
+        }
+    }
+    pendingStructType_.clear();
+}
+```
+
+**Test 126 Status**: Variables created correctly, arrow operator issue requires separate fix
+
+**Baseline**: 131/135 passing (97.037%) - no change from previous commit
+
+---
+
 # 🎉 POINTER-TO-POINTER COMPLETE + 97.037% SUCCESS RATE 🎉
 
 ## **OCTOBER 4, 2025 (LATEST) - POINTER-TO-POINTER IMPLEMENTATION**
