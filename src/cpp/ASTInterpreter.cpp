@@ -485,22 +485,22 @@ void ASTInterpreter::executeLoop() {
 // =============================================================================
 
 void ASTInterpreter::visit(arduino_ast::ProgramNode& node) {
-    
+
     const auto& children = node.getChildren();
-    
+
     for (size_t i = 0; i < children.size(); ++i) {
         if (state_ != ExecutionState::RUNNING) {
             break;
         }
-        
+
         const auto& child = children[i];
         if (!child) {
             continue;
         }
-        
+
         child->accept(*this);
     }
-    
+
 }
 
 void ASTInterpreter::visit(arduino_ast::ErrorNode& node) {
@@ -1805,13 +1805,10 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
 }
 
 void ASTInterpreter::visit(arduino_ast::FuncDefNode& node) {
-    std::cerr << "[DEBUG-FuncDef] FuncDefNode visitor called!" << std::endl;
-
     auto declarator = node.getDeclarator();
     auto returnType = node.getReturnType();
 
     if (!declarator) {
-        std::cerr << "[DEBUG-FuncDef] No declarator - returning early!" << std::endl;
         return;
     }
 
@@ -1825,10 +1822,9 @@ void ASTInterpreter::visit(arduino_ast::FuncDefNode& node) {
     // Fallback to IdentifierNode
     else if (const auto* identifier = dynamic_cast<const arduino_ast::IdentifierNode*>(declarator)) {
         functionName = identifier->getName();
-    } else {
     }
 
-    // Test 127: Extract and clean return type
+    // Test 127 FIX: Extract and clean return type
     std::string returnTypeName = "void";
     if (returnType) {
         if (const auto* typeNode = dynamic_cast<const arduino_ast::TypeNode*>(returnType)) {
@@ -1848,9 +1844,6 @@ void ASTInterpreter::visit(arduino_ast::FuncDefNode& node) {
         // MEMORY SAFE: Store function name instead of raw pointer
         userFunctionNames_.insert(functionName);
         TRACE("FuncDef", "Registered function: " + functionName + " (return: " + returnTypeName + ")");
-        std::cerr << "[DEBUG-FuncDef] Registered function: " << functionName << " (return: " << returnTypeName << ")" << std::endl;
-    } else {
-        std::cerr << "[DEBUG-FuncDef] Empty function name - NOT registered!" << std::endl;
     }
 }
 

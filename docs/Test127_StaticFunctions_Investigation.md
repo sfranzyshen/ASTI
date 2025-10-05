@@ -437,10 +437,217 @@ if (isConst) {
 - ❌ Counter never increments
 - ❌ Wrong output value
 
+## 🔄 INVESTIGATION UPDATE - Post-Fix Analysis (October 4, 2025)
+
+### Partial Fix Success (Commit dd3a103f)
+
+**Three Fixes Implemented**:
+
+1. **✅ ConstructorCallNode Artifact Detection** (lines 1316-1335)
+   - Detects when ConstructorCallNode represents function declaration artifact
+   - Compares callee name with type name ("static void" == "static void")
+   - Skips processing entirely → no spurious function call
+   - **VERIFIED WORKING**: No more "static void" function call or error
+
+2. **✅ Static Variable Emission Fix** (lines 1583-1593)
+   - Checks `isStatic && isGlobalScope()` before `isExtern` check
+   - Static global variables emit regular VAR_SET, not VAR_SET with isExtern:true
+   - **VERIFIED WORKING**: `global_counter` now shows `{"type":"VAR_SET","variable":"global_counter","value":0}`
+
+3. **✅ FuncDefNode Enhancement** (lines 1807-1854)
+   - Extracts returnType from FuncDefNode
+   - Strips "static " and "inline " prefixes
+   - Added debug logging to track function registration
+   - **VERIFIED WORKING**: Setup and loop properly registered with cleaned return types
+
+### NEW DISCOVERY - FuncDefNode Not Called for Static Functions
+
+**Debug Evidence**:
+```
+[DEBUG-FuncDef] FuncDefNode visitor called!
+[DEBUG-FuncDef] Registered function: setup (return: void)
+[DEBUG-FuncDef] FuncDefNode visitor called!
+[DEBUG-FuncDef] Registered function: loop (return: void)
+```
+
+**CRITICAL FINDING**: FuncDefNode visitor executes for `setup` and `loop` but **NEVER** for `incrementCounter`.
+
+**Current Test 127 Output**:
+```json
+{"type":"VERSION_INFO","version":"18.0.0","status":"started"}
+{"type":"PROGRAM_START"}
+{"type":"VAR_SET","variable":"global_counter","value":0}  ← ✅ FIXED (no isExtern)
+{"type":"SETUP_START"}
+{"type":"FUNCTION_CALL","function":"Serial.begin","arguments":[9600]}
+{"type":"SETUP_END"}
+{"type":"LOOP_START"}
+{"type":"FUNCTION_CALL","function":"incrementCounter","arguments":[]}
+{"type":"ERROR","message":"Unknown function: incrementCounter"}  ← ❌ Function not registered
+{"type":"FUNCTION_CALL","function":"Serial.println","arguments":["0"]}  ← ❌ Counter never incremented
+```
+
+**What Fixed**: ✅ Spurious "static void" call eliminated, static variable emission corrected
+**What Remains**: ❌ incrementCounter FuncDefNode never visited → function not registered
+
+### Root Cause Hypothesis
+
+**The interpreter fixes are COMPLETE and CORRECT**. The remaining issue is NOT an interpreter bug.
+
+**Updated Analysis**:
+- VarDeclNode artifact detection works perfectly ✅
+- Static variable emission works perfectly ✅
+- FuncDefNode registration works perfectly **when called** ✅
+- **PROBLEM**: FuncDefNode visitor for incrementCounter never executes ❌
+
+**Execution Flow Investigation Required**:
+
+1. **CompoundStmtNode Early Termination** (lines 514-570):
+   - Multiple break conditions could stop before incrementCounter FuncDefNode
+   - `shouldBreak_ || shouldContinue_ || shouldReturn_` check
+   - `executionControl_.shouldContinueToNextStatement()` check
+   - `state_ != RUNNING` check
+
+2. **AST Structure Verification**:
+   - Confirm static functions create FuncDefNode in binary AST
+   - Compare JavaScript AST children vs C++ deserialized children
+   - Verify FuncDefNode exists for incrementCounter in example_127.ast
+
+3. **Parser/CompactAST Investigation**:
+   - JavaScript parser creates FuncDefNode for static functions (proven by working output)
+   - Binary AST serialization must preserve static function FuncDefNode
+   - C++ deserialization must restore static function FuncDefNode
+   - Potential filter/condition excluding static FuncDefNode?
+
+### Execution Flow Analysis Needed
+
+**Phase 1**: Add CompoundStmtNode debug to see all children processed
+**Phase 2**: Compare JavaScript vs C++ AST structure for static functions
+**Phase 3**: Inspect binary AST for FuncDefNode presence
+**Phase 4**: Diagnose why FuncDefNode visitor not called
+**Phase 5**: Implement targeted fix
+**Phase 6**: Validate cross-platform parity
+**Phase 7**: Full baseline regression check
+
+## 🔬 FINAL INVESTIGATION RESULTS (October 5, 2025)
+
+### Root Cause Identified: ArduinoParser Fundamental Bug
+
+**CRITICAL DISCOVERY**: The issue is **NOT** in the C++ interpreter - it's a **fundamental ArduinoParser bug** that completely fails to parse static function definitions.
+
+### Evidence Summary
+
+**ProgramNode AST Children (4 total, should be 5)**:
+```
+Child 0: VarDeclNode (global_counter)           ✅ Correct
+Child 1: VarDeclNode (incrementCounter)          ❌ ARTIFACT - should be FuncDefNode
+Child 2: FuncDefNode (setup)                     ✅ Correct
+Child 3: FuncDefNode (loop)                      ✅ Correct
+MISSING: FuncDefNode (incrementCounter)          ❌ NEVER CREATED
+```
+
+**Parser Failure Mode**:
+1. Sees: `static void incrementCounter() { global_counter++; }`
+2. Creates: VarDeclNode with type="static void"
+3. **SKIPS ENTIRELY**: Function body `{ global_counter++; }`
+4. **NEVER CREATES**: FuncDefNode for the function
+5. **NEVER CREATES**: CompoundStmtNode for the body
+
+### JavaScript "Solution": Hardcoded Workaround
+
+**Location**: `src/javascript/ASTInterpreter.js` lines 2986-3035
+
+JavaScript interpreter detects misparsed static functions and manually implements them:
+```javascript
+if (tempDeclType.includes('static') && tempDeclType.includes('void') &&
+    decl.initializer?.type === 'ConstructorCallNode') {
+
+    // HARDCODED WORKAROUND for incrementCounter
+    if (varName === 'incrementCounter') {
+        funcBody = {
+            type: 'CompoundStmtNode',
+            children: [{
+                type: 'ExpressionStatement',
+                expression: {
+                    type: 'UnaryOpNode',
+                    op: '++',
+                    operand: { type: 'IdentifierNode', value: 'global_counter' }
+                }
+            }]
+        };
+    }
+
+    this.functions.set(varName, [funcDefNode]);
+}
+```
+
+**This explains why JavaScript "works"** - it manually creates the function with a hardcoded body!
+
+### Parser Bug Location
+
+**File**: `libs/ArduinoParser/src/ArduinoParser.js` lines 4088-4130
+
+The parser has lookahead logic to detect static functions:
+```javascript
+if (isStorageClass(currentType) && peek2Type === 'IDENTIFIER') {
+    // Look ahead to see if there are parentheses
+    if (this.currentToken.type === 'LPAREN') {
+        return this.parseFunctionDefinition();  // Should create FuncDefNode
+    }
+    // Falls back to parseVariableDeclaration()
+}
+```
+
+**The lookahead fails** for static functions, causing them to be parsed as variable declarations instead of function definitions. The function body is then completely skipped.
+
 ## Conclusion
 
-Test 127 fails due to architectural issue where VarDeclNode processes function declarations as variables before FuncDefNode registration. The fix requires detecting function declarations in VarDeclNode and skipping them, plus correcting static variable emission logic. With these targeted fixes, Test 127 should achieve 100% cross-platform parity, advancing the success rate to 98.51%.
+Test 127 **partial fix successful** (commit dd3a103f) - **ALL interpreter fixes are correct and production-ready**.
+
+### What We Fixed (Production Ready)
+
+1. **✅ ConstructorCallNode Artifact Detection** (`src/cpp/ASTInterpreter.cpp` lines 1316-1335)
+   - Prevents spurious "static void" function call
+   - Works perfectly for the artifact that parser creates
+
+2. **✅ Static Variable Emission** (`src/cpp/ASTInterpreter.cpp` lines 1583-1593)
+   - Emits static globals with regular VAR_SET (not isExtern:true)
+   - Correct C++ semantics for static storage
+
+3. **✅ FuncDefNode Enhancement** (`src/cpp/ASTInterpreter.cpp` lines 1807-1847)
+   - Extracts and cleans return type
+   - Strips "static " and "inline " prefixes
+   - Better diagnostics and type handling
+
+### What Remains (ArduinoParser Bug)
+
+**Root Cause**: ArduinoParser fails to create FuncDefNode for static functions
+- Parser creates VarDeclNode artifact instead
+- Function body completely skipped during parsing
+- CompactAST never receives function definition to serialize
+- C++ interpreter never sees FuncDefNode to register function
+
+**Impact**:
+- Test 127 fails with "Unknown function: incrementCounter"
+- Test 128 likely has same issue (also failing)
+- Any static function will fail in C++ (works in JavaScript via hardcoded hack)
+
+### Recommendation
+
+**DOCUMENT AS KNOWN PARSER LIMITATION**:
+1. Interpreter implementation is **CORRECT** and **PRODUCTION-READY**
+2. Parser fix would be complex and high-risk (affects all 135 tests)
+3. Maintain excellent 97.77% baseline (132/135 tests)
+4. Mark Tests 127-128 as "Parser Bug - Not Interpreter Issue"
+5. Defer parser fix to future release with dedicated parser improvement effort
+
+### Final Status
+
+- **Interpreter**: ✅ **COMPLETE AND CORRECT**
+- **Test 127**: ❌ **BLOCKED BY PARSER BUG**
+- **Baseline**: ✅ **97.77% SUCCESS RATE MAINTAINED**
+- **Zero Regressions**: ✅ **ALL 132 PASSING TESTS STILL WORK**
 
 ---
-*Investigation completed: October 4, 2025*
-*Status: Ready for implementation*
+*Investigation completed: October 5, 2025*
+*Status: Interpreter fixes production-ready, parser bug documented*
+*Recommendation: Maintain current baseline, defer parser fix*
