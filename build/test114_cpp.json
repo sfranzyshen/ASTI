@@ -1,4 +1,4 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"16.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"18.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
@@ -7,15 +7,15 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"VAR_SET","timestamp":0,"variable":"numbers","value":[1,2,3]}
-{"type":"VAR_SET","timestamp":0,"variable":"p","value":null}
+{"type":"VAR_SET","timestamp":0,"variable":"p","value":{"y":20.000000,"x":10.000000}}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Numbers[1]: "],"data":"Numbers[1]: ","message":"Serial.print("Numbers[1]: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["2"],"data":"2","message":"Serial.println(2)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Point x: "],"data":"Point x: ","message":"Serial.print("Point x: ")"}
-{"type":"ERROR","timestamp":0,"message":"Unsupported access operator: ","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println("null")"}
+{"type":"STRUCT_FIELD_ACCESS","timestamp":0,"struct":"struct","field":"x","value":10.000000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["10"],"data":"10","message":"Serial.println(10)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Point y: "],"data":"Point y: ","message":"Serial.print("Point y: ")"}
-{"type":"ERROR","timestamp":0,"message":"Unsupported access operator: ","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println("null")"}
+{"type":"STRUCT_FIELD_ACCESS","timestamp":0,"struct":"struct","field":"y","value":20.000000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["20"],"data":"20","message":"Serial.println(20)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}

@@ -75,7 +75,8 @@
       "Bash(for:*)",
       "Bash(do echo \"$file:\")",
       "Bash(do echo \"=== $file.cpp ===\")",
-      "Bash(do echo \"=== $file ===\")"
+      "Bash(do echo \"=== $file ===\")",
+      "Read(///**)"
     ],
     "deny": [],
     "ask": [],

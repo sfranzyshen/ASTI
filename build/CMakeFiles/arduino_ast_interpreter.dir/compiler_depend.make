@@ -475,6 +475,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ASTInterpreter.cpp.o: ../src/cpp/
   /usr/include/c++/11/ctime \
   /usr/include/c++/11/queue \
   /usr/include/c++/11/bits/stl_queue.h \
+  /usr/include/c++/11/stdexcept \
   ../src/cpp/ExecutionTracer.hpp \
   ../src/cpp/PlatformAbstraction.hpp \
   /usr/include/c++/11/iostream \
@@ -485,7 +486,6 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ASTInterpreter.cpp.o: ../src/cpp/
   /usr/include/c++/11/bits/locale_classes.tcc \
   /usr/include/c++/11/system_error \
   /usr/include/x86_64-linux-gnu/c++/11/bits/error_constants.h \
-  /usr/include/c++/11/stdexcept \
   /usr/include/c++/11/streambuf \
   /usr/include/c++/11/bits/streambuf.tcc \
   /usr/include/c++/11/bits/basic_ios.h \
@@ -1009,7 +1009,37 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoDataTypes.cpp.o: ../src/cp
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
   /usr/include/c++/11/sstream \
-  /usr/include/c++/11/bits/sstream.tcc
+  /usr/include/c++/11/bits/sstream.tcc \
+  ../src/cpp/ASTInterpreter.hpp \
+  ../src/cpp/ASTNodes.hpp \
+  /usr/include/c++/11/map \
+  /usr/include/c++/11/bits/stl_tree.h \
+  /usr/include/c++/11/bits/stl_map.h \
+  /usr/include/c++/11/bits/stl_multimap.h \
+  ../libs/CompactAST/src/CompactAST.hpp \
+  ../src/cpp/EnhancedInterpreter.hpp \
+  ../src/cpp/ArduinoLibraryRegistry.hpp \
+  /usr/include/c++/11/unordered_set \
+  /usr/include/c++/11/bits/unordered_set.h \
+  /usr/include/c++/11/functional \
+  /usr/include/c++/11/bits/std_function.h \
+  /usr/include/c++/11/bits/stl_algo.h \
+  /usr/include/c++/11/bits/algorithmfwd.h \
+  /usr/include/c++/11/bits/stl_heap.h \
+  /usr/include/c++/11/bits/uniform_int_dist.h \
+  ../src/cpp/InterpreterConfig.hpp \
+  ../src/cpp/SyncDataProvider.hpp \
+  /usr/include/c++/11/stack \
+  /usr/include/c++/11/deque \
+  /usr/include/c++/11/bits/stl_deque.h \
+  /usr/include/c++/11/bits/deque.tcc \
+  /usr/include/c++/11/bits/stl_stack.h \
+  /usr/include/c++/11/chrono \
+  /usr/include/c++/11/ratio \
+  /usr/include/c++/11/limits \
+  /usr/include/c++/11/ctime \
+  /usr/include/c++/11/queue \
+  /usr/include/c++/11/bits/stl_queue.h
 
 CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.o: ../src/cpp/ArduinoLibraryRegistry.cpp \
   /usr/include/stdc-predef.h \
@@ -1236,6 +1266,7 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.o: ../
   /usr/include/c++/11/ctime \
   /usr/include/c++/11/queue \
   /usr/include/c++/11/bits/stl_queue.h \
+  /usr/include/c++/11/stdexcept \
   ../src/cpp/PlatformAbstraction.hpp \
   /usr/include/c++/11/iostream \
   /usr/include/c++/11/ostream \
@@ -1245,7 +1276,6 @@ CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ArduinoLibraryRegistry.cpp.o: ../
   /usr/include/c++/11/bits/locale_classes.tcc \
   /usr/include/c++/11/system_error \
   /usr/include/x86_64-linux-gnu/c++/11/bits/error_constants.h \
-  /usr/include/c++/11/stdexcept \
   /usr/include/c++/11/streambuf \
   /usr/include/c++/11/bits/streambuf.tcc \
   /usr/include/c++/11/bits/basic_ios.h \

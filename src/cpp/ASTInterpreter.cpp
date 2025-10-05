@@ -2066,36 +2066,64 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             MemberAccessHelper::setMemberValue(enhancedScopeManager_.get(), objectName, propertyName, enhancedRightValue);
             
         } else if (leftNode && leftNode->getType() == arduino_ast::ASTNodeType::UNARY_OP) {
-            // Handle pointer dereferencing assignment (*ptr = value)
-            
+            // Handle pointer dereferencing assignment (*ptr = value or **ptr = value)
+            // Test 125: Support for pointer-to-pointer assignments through modern ArduinoPointer infrastructure
+
             const auto* unaryOpNode = dynamic_cast<const arduino_ast::UnaryOpNode*>(leftNode);
             if (!unaryOpNode || unaryOpNode->getOperator() != "*") {
                 emitError("Only dereference operator (*) supported in unary assignment");
                 return;
             }
-            
-            // Get the pointer variable
-            const auto* operandNode = unaryOpNode->getOperand();
-            if (!operandNode || operandNode->getType() != arduino_ast::ASTNodeType::IDENTIFIER) {
-                emitError("Pointer dereference requires simple variable identifier");
+
+            // MODERN APPROACH: Evaluate the pointer expression
+            // This handles ALL nesting levels recursively through evaluateExpression()
+            // For **p2, this evaluates *p2 which returns the pointer that p2 points to
+            CommandValue pointerValue = evaluateExpression(
+                const_cast<arduino_ast::ASTNode*>(unaryOpNode->getOperand())
+            );
+
+            // Check if result is an ArduinoPointer
+            if (!std::holds_alternative<std::shared_ptr<ArduinoPointer>>(pointerValue)) {
+                emitError("Dereference assignment requires pointer variable");
                 return;
             }
-            
-            std::string pointerName = operandNode->getValueAs<std::string>();
-            
-            // Get pointer variable
-            Variable* pointerVar = scopeManager_->getVariable(pointerName);
-            if (!pointerVar) {
-                emitError("Pointer variable '" + pointerName + "' not found");
-                return;
+
+            auto pointer = std::get<std::shared_ptr<ArduinoPointer>>(pointerValue);
+
+            // Handle compound assignment operators (+=, -=, *=, /=, etc.)
+            CommandValue finalValue = rightValue;  // For operator =
+            std::string op = node.getOperator();
+
+            if (op == "+=") {
+                CommandValue currentValue = pointer->getValue();
+                finalValue = evaluateBinaryOperation("+", currentValue, rightValue);
+            } else if (op == "-=") {
+                CommandValue currentValue = pointer->getValue();
+                finalValue = evaluateBinaryOperation("-", currentValue, rightValue);
+            } else if (op == "*=") {
+                CommandValue currentValue = pointer->getValue();
+                finalValue = evaluateBinaryOperation("*", currentValue, rightValue);
+            } else if (op == "/=") {
+                CommandValue currentValue = pointer->getValue();
+                finalValue = evaluateBinaryOperation("/", currentValue, rightValue);
+            } else if (op == "%=") {
+                CommandValue currentValue = pointer->getValue();
+                finalValue = evaluateBinaryOperation("%", currentValue, rightValue);
             }
-            
-            // For now, simulate pointer dereferencing by creating a shadow variable
-            // In a full implementation, this would update the memory location pointed to
-            std::string dereferenceVarName = "*" + pointerName;
-            Variable dereferenceVar(rightValue);
-            scopeManager_->setVariable(dereferenceVarName, dereferenceVar);
-            
+
+            // Set value through pointer (handles all indirection levels via ArduinoPointer::setValue)
+            try {
+                pointer->setValue(finalValue);
+
+                // Emit POINTER_ASSIGNMENT command
+                emitPointerAssignment(pointer, finalValue);
+
+                lastExpressionResult_ = finalValue;
+            } catch (const std::exception& e) {
+                emitError(std::string("Pointer assignment failed: ") + e.what());
+            }
+            return;
+
         } else if (leftNode && leftNode->getType() == arduino_ast::ASTNodeType::ARRAY_ACCESS) {
             // Check if this is a multi-dimensional array access (nested array access)
             const auto* outerArrayAccessNode = dynamic_cast<const arduino_ast::ArrayAccessNode*>(leftNode);
@@ -6256,6 +6284,17 @@ void ASTInterpreter::emitStructFieldAccess(const std::string& structName, const 
     StringBuildStream json;
     json << "{\"type\":\"STRUCT_FIELD_ACCESS\",\"timestamp\":0,\"struct\":\"" << structName
          << "\",\"field\":\"" << fieldName << "\",\"value\":" << commandValueToJsonString(value) << "}";
+    emitJSON(json.str());
+}
+
+void ASTInterpreter::emitPointerAssignment(const std::shared_ptr<ArduinoPointer>& pointer, const CommandValue& value) {
+    // Test 125: Emit POINTER_ASSIGNMENT command for pointer dereference assignments (*ptr = value, **ptr = value)
+    StringBuildStream json;
+    json << "{\"type\":\"POINTER_ASSIGNMENT\",\"timestamp\":0"
+         << ",\"pointer\":\"" << pointer->getPointerId() << "\""
+         << ",\"targetVariable\":\"" << pointer->getTargetVariable() << "\""
+         << ",\"value\":" << commandValueToJsonString(value)
+         << ",\"message\":\"*" << pointer->getTargetVariable() << " = " << commandValueToString(value) << "\"}";
     emitJSON(json.str());
 }
 

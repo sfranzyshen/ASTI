@@ -1057,6 +1057,9 @@ private:
     void emitStructFieldSet(const std::string& structName, const std::string& fieldName, const CommandValue& value);
     void emitStructFieldAccess(const std::string& structName, const std::string& fieldName, const CommandValue& value);
 
+    // Pointer assignment (Test 125: pointer-to-pointer support)
+    void emitPointerAssignment(const std::shared_ptr<ArduinoPointer>& pointer, const CommandValue& value);
+
     // Loop and control flow
     void emitLoopEnd(const std::string& message, int iterations);
     void emitFunctionCallLoop(int iteration, bool completed);

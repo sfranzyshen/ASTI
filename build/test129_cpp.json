@@ -1,4 +1,4 @@
-{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"16.0.0","status":"started"}
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"18.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[9600],"baudRate":9600,"message":"Serial.begin(9600)"}
@@ -6,13 +6,11 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
-{"type":"ERROR","timestamp":0,"message":"Undefined variable: add","errorType":"RuntimeError"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"applyOperation","arguments":[null,5.000000,10.000000]}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"op","arguments":["5","10"]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: op","errorType":"RuntimeError"}
-{"type":"VAR_SET","timestamp":0,"variable":"result","value":null}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"applyOperation","arguments":[{"functionName":"add","type":"function_pointer","pointerId":"fptr_1759628224610_31925"},5.000000,10.000000]}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"add","arguments":[5,10]}
+{"type":"VAR_SET","timestamp":0,"variable":"result","value":15}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Result of applyOperation: "],"data":"Result of applyOperation: ","message":"Serial.print("Result of applyOperation: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["null"],"data":"null","message":"Serial.println("null")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["15"],"data":"15","message":"Serial.println(15)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}
