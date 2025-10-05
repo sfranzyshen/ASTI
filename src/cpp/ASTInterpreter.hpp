@@ -741,6 +741,7 @@ public:
     
     void visit(arduino_ast::BinaryOpNode& node) override;
     void visit(arduino_ast::UnaryOpNode& node) override;
+    void visit(arduino_ast::SizeofExpressionNode& node) override;
     void visit(arduino_ast::FuncCallNode& node) override;
     void visit(arduino_ast::ConstructorCallNode& node) override;
     void visit(arduino_ast::MemberAccessNode& node) override;
@@ -963,7 +964,12 @@ private:
     CommandValue evaluateUnaryOperation(const std::string& op, const CommandValue& operand);
     CommandValue evaluateComparison(const std::string& op, const CommandValue& left, const CommandValue& right);
     CommandValue evaluateLogical(const std::string& op, const CommandValue& left, const CommandValue& right);
-    
+
+    // sizeof operator support
+    CommandValue visitSizeofExpression(arduino_ast::SizeofExpressionNode& node);
+    int32_t getSizeofType(const std::string& typeName);
+    int32_t getSizeofValue(const CommandValue& value);
+
     // Arduino function handling
     CommandValue executeArduinoFunction(const std::string& name, const std::vector<CommandValue>& args);
     CommandValue executeUserFunction(const std::string& name, const arduino_ast::FuncDefNode* funcDef, const std::vector<CommandValue>& args);

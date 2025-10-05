@@ -466,6 +466,19 @@ public:
     void accept(ASTVisitor& visitor) override;
 };
 
+class SizeofExpressionNode : public ASTNode {
+private:
+    ASTNodePtr operand_;
+
+public:
+    SizeofExpressionNode() : ASTNode(ASTNodeType::SIZEOF_EXPR) {}
+
+    void setOperand(ASTNodePtr operand) { operand_ = std::move(operand); }
+    const ASTNode* getOperand() const { return operand_.get(); }
+
+    void accept(ASTVisitor& visitor) override;
+};
+
 class FuncCallNode : public ASTNode {
 private:
     ASTNodePtr callee_;
@@ -1316,6 +1329,7 @@ public:
     // Expressions
     virtual void visit(BinaryOpNode& node) = 0;
     virtual void visit(UnaryOpNode& node) = 0;
+    virtual void visit(SizeofExpressionNode& node) = 0;
     virtual void visit(FuncCallNode& node) = 0;
     virtual void visit(ConstructorCallNode& node) = 0;
     virtual void visit(MemberAccessNode& node) = 0;

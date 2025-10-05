@@ -864,11 +864,23 @@ void CompactASTReader::linkNodeChildren() {
             } else if (parentNode->getType() == ASTNodeType::UNARY_OP) {
                 auto* unaryOpNode = dynamic_cast<arduino_ast::UnaryOpNode*>(parentNode.get());
                 if (unaryOpNode) {
-                    
-                    
+
+
                     // Unary operations expect: operand
                     if (!unaryOpNode->getOperand()) {
                         unaryOpNode->setOperand(std::move(nodes_[childIndex]));
+                    } else {
+                        parentNode->addChild(std::move(nodes_[childIndex]));
+                    }
+                } else {
+                    parentNode->addChild(std::move(nodes_[childIndex]));
+                }
+            } else if (parentNode->getType() == ASTNodeType::SIZEOF_EXPR) {
+                auto* sizeofNode = dynamic_cast<arduino_ast::SizeofExpressionNode*>(parentNode.get());
+                if (sizeofNode) {
+                    // SizeofExpression expects: operand (type or expression)
+                    if (!sizeofNode->getOperand()) {
+                        sizeofNode->setOperand(std::move(nodes_[childIndex]));
                     } else {
                         parentNode->addChild(std::move(nodes_[childIndex]));
                     }

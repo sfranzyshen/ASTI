@@ -212,6 +212,7 @@ class CompactASTExporter {
             'ForStatement': ['initializer', 'condition', 'increment', 'body'],
             'BinaryOpNode': ['left', 'right'],
             'UnaryOpNode': ['operand'],
+            'SizeofExpression': ['operand'],
             'AssignmentNode': ['left', 'right'],
             'ExpressionStatement': ['expression'],
             'MemberAccessNode': ['object', 'property'],

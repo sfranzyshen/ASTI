@@ -103,6 +103,10 @@ void UnaryOpNode::accept(ASTVisitor& visitor) {
     visitor.visit(*this);
 }
 
+void SizeofExpressionNode::accept(ASTVisitor& visitor) {
+    visitor.visit(*this);
+}
+
 void FuncCallNode::accept(ASTVisitor& visitor) {
     visitor.visit(*this);
 }
@@ -278,8 +282,7 @@ ASTNodePtr createNode(ASTNodeType type) {
         case ASTNodeType::CAST_EXPR:
             return std::make_unique<CastExpression>();
         case ASTNodeType::SIZEOF_EXPR:
-            // TODO: Implement proper SizeofExpression class
-            return std::make_unique<ExpressionStatement>();  // Use generic expression as placeholder
+            return std::make_unique<SizeofExpressionNode>();
         case ASTNodeType::TERNARY_EXPR:
             return std::make_unique<TernaryExpressionNode>();
         case ASTNodeType::CONSTANT:

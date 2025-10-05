@@ -892,6 +892,10 @@ void ASTInterpreter::visit(arduino_ast::UnaryOpNode& node) {
     // Unary operations are handled by evaluateExpression
 }
 
+void ASTInterpreter::visit(arduino_ast::SizeofExpressionNode& node) {
+    // Sizeof expressions are handled by evaluateExpression via visitSizeofExpression
+}
+
 void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
     TRACE_ENTRY("visit(FuncCallNode)", "Starting function call");
     if (!node.getCallee()) {
@@ -3279,6 +3283,12 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             // Handle array initializers by calling visitor
             expr->accept(*this);
             return lastExpressionResult_;
+
+        case arduino_ast::ASTNodeType::SIZEOF_EXPR:
+            if (auto* sizeofNode = dynamic_cast<arduino_ast::SizeofExpressionNode*>(expr)) {
+                return visitSizeofExpression(*sizeofNode);
+            }
+            break;
 
         default:
             break;
@@ -7399,6 +7409,80 @@ CommandValue ASTInterpreter::evaluateUnaryOperation(const std::string& op, const
         emitError("Unknown unary operator: " + op);
         return std::monostate{};
     }
+}
+
+// =============================================================================
+// SIZEOF OPERATOR IMPLEMENTATION
+// =============================================================================
+
+CommandValue ASTInterpreter::visitSizeofExpression(arduino_ast::SizeofExpressionNode& node) {
+    const arduino_ast::ASTNode* operand = node.getOperand();
+
+    if (!operand) {
+        emitError("Invalid sizeof expression: missing operand");
+        return std::monostate{};
+    }
+
+    // Handle sizeof(type) vs sizeof(variable)
+    if (operand->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
+        if (const auto* typeNode = dynamic_cast<const arduino_ast::TypeNode*>(operand)) {
+            std::string typeName = typeNode->getTypeName();
+            return getSizeofType(typeName);
+        }
+    }
+
+    // For expressions, evaluate them and get their size
+    CommandValue value = evaluateExpression(const_cast<arduino_ast::ASTNode*>(operand));
+    return getSizeofValue(value);
+}
+
+int32_t ASTInterpreter::getSizeofType(const std::string& typeName) {
+    // Return size in bytes for Arduino types (matching JavaScript behavior)
+    static const std::unordered_map<std::string, int32_t> typeSizes = {
+        {"char", 1},
+        {"byte", 1},
+        {"bool", 1},
+        {"int", 4},        // Match JavaScript test expectations (32-bit Arduino)
+        {"short", 2},
+        {"long", 4},
+        {"float", 4},
+        {"double", 4},     // Arduino double is same as float
+        {"size_t", 2},
+        {"uint8_t", 1},
+        {"uint16_t", 2},
+        {"uint32_t", 4},
+        {"int8_t", 1},
+        {"int16_t", 2},
+        {"int32_t", 4}
+    };
+
+    auto it = typeSizes.find(typeName);
+    return (it != typeSizes.end()) ? it->second : 4; // Default to 4 bytes
+}
+
+int32_t ASTInterpreter::getSizeofValue(const CommandValue& value) {
+    return std::visit([](auto&& arg) -> int32_t {
+        using T = std::decay_t<decltype(arg)>;
+
+        if constexpr (std::is_same_v<T, std::monostate>) {
+            return 0;
+        } else if constexpr (std::is_same_v<T, bool>) {
+            return 1;
+        } else if constexpr (std::is_same_v<T, int32_t>) {
+            // Check if value fits in int16_t range
+            if (arg >= -32768 && arg <= 32767) {
+                return 2; // Arduino int (16-bit)
+            } else {
+                return 4; // Arduino long (32-bit)
+            }
+        } else if constexpr (std::is_same_v<T, double>) {
+            return 4; // Arduino float/double (both 32-bit)
+        } else if constexpr (std::is_same_v<T, std::string>) {
+            return static_cast<int32_t>(arg.length() + 1); // Include null terminator
+        } else {
+            return 2; // Pointer size on Arduino
+        }
+    }, value);
 }
 
 // =============================================================================

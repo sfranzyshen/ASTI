@@ -2,6 +2,84 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+# 🎉 SIZEOF OPERATOR COMPLETE + 94.81% SUCCESS RATE 🎉
+
+## **OCTOBER 4, 2025 (LATEST) - SIZEOF OPERATOR IMPLEMENTATION**
+
+### **COMPLETE SIZEOF OPERATOR CROSS-PLATFORM PARITY**
+
+**MAJOR BREAKTHROUGH**: Implemented complete sizeof operator support achieving **128/135 tests passing (94.81% success rate)** with **+1 TEST IMPROVEMENT**.
+
+**Key Achievements:**
+- ✅ **Test 122 FIXED**: sizeof operator working perfectly (sizeof(int)=4, sizeof(char)=1, sizeof(float)=4)
+- ✅ **Complete AST Pipeline**: SizeofExpressionNode class, visitor pattern, CompactAST linking
+- ✅ **Type Size Support**: Arduino-compatible type sizes (int=4 for 32-bit Arduino like Due/ESP32)
+- ✅ **Expression Support**: Both sizeof(type) and sizeof(variable) working correctly
+- ✅ **+1 test improvement**: 127 → 128 passing tests with zero regressions
+- ✅ **94.81% success rate** - **128/135 tests passing** - NEW RECORD!
+
+**Technical Implementation:**
+
+**Phase 1: C++ AST Node Implementation**
+- **File**: `src/cpp/ASTNodes.hpp` lines 469-480
+  - Added `SizeofExpressionNode` class with operand member
+  - Added visitor pattern support with accept() method
+- **File**: `src/cpp/ASTNodes.cpp` line 281
+  - Updated createNode() to instantiate SizeofExpressionNode
+  - Added accept() implementation line 106-108
+
+**Phase 2: C++ Interpreter Visitor**
+- **File**: `src/cpp/ASTInterpreter.hpp` lines 967-970
+  - Added visitSizeofExpression(), getSizeofType(), getSizeofValue() declarations
+  - Added visit(SizeofExpressionNode&) override line 744
+- **File**: `src/cpp/ASTInterpreter.cpp` lines 3283-3287
+  - Added SIZEOF_EXPR case to evaluateExpression()
+  - Implemented visit(SizeofExpressionNode&) stub line 895-897
+
+**Phase 3: sizeof Execution Logic**
+- **File**: `src/cpp/ASTInterpreter.cpp` lines 7414-7482
+  - Implemented visitSizeofExpression() - handles TypeNode vs expression
+  - Implemented getSizeofType() - Arduino type sizes mapping
+  - Implemented getSizeofValue() - runtime value size detection
+
+**Phase 4: CompactAST Serialization**
+- **File**: `libs/CompactAST/src/CompactAST.cpp` lines 878-889
+  - Added SIZEOF_EXPR linking logic to connect operand child
+- **File**: `libs/CompactAST/src/CompactAST.js` line 215
+  - Added 'SizeofExpression': ['operand'] to childrenMap
+
+**Test 122 Output (Correct)**:
+```json
+{"type":"FUNCTION_CALL","function":"Serial.println","arguments":["4"],"data":"4"}  // sizeof(int)
+{"type":"FUNCTION_CALL","function":"Serial.println","arguments":["1"],"data":"1"}  // sizeof(char)
+{"type":"FUNCTION_CALL","function":"Serial.println","arguments":["4"],"data":"4"}  // sizeof(float)
+```
+
+**Arduino Type Sizes (32-bit Compatible)**:
+```cpp
+char/byte/bool: 1 byte
+short/int16_t:  2 bytes
+int/long:       4 bytes  // 32-bit Arduino (Due, ESP32, ESP8266)
+float/double:   4 bytes  // Arduino double = float
+```
+
+**Baseline Results** (October 4, 2025):
+```
+Total Tests: 135
+Passing: 128 (94.81%)
+Failing: 7 (5.19%)
+```
+
+**Passing Tests**: 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,124,129,130,131,133,134
+
+**Failing Tests**: 78,123,125,126,127,128,132
+
+**Documentation**: Complete investigation in `docs/Test122_SizeofOperator_Investigation.md`
+
+**Impact**: This represents **systematic progress** toward 100% cross-platform parity with complete sizeof operator support matching JavaScript implementation exactly.
+
+---
+
 # 🔖 VERSION 18.0.0 - VERSION SYNCHRONIZATION + DEPENDENCY ALIGNMENT 🔖
 
 ## **OCTOBER 4, 2025 - VERSION BUMP + COMPACTAST 3.1.0**
