@@ -1,3 +1,0 @@
-pinMode(7, INPUT);
-/* digitalRead(7) request */;
-delay(1);

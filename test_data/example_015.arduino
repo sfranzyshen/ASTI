@@ -1,3 +1,0 @@
-/* analogRead(14) request */;
-analogWrite(9, 140);
-delay(2);

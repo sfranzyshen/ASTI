@@ -1,3 +1,0 @@
-pinMode(9, OUTPUT);
-analogWrite(9, 0);
-delay(30);

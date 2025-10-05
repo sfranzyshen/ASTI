@@ -2,9 +2,69 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+# 🎉 COMMA OPERATOR COMPLETE + 96.29% SUCCESS RATE 🎉
+
+## **OCTOBER 4, 2025 (LATEST) - COMMA OPERATOR IMPLEMENTATION**
+
+### **COMPLETE COMMA OPERATOR CROSS-PLATFORM PARITY**
+
+**MAJOR BREAKTHROUGH**: Implemented complete comma operator support achieving **130/135 tests passing (96.29% success rate)** with **+2 TEST IMPROVEMENT**.
+
+**Key Achievements:**
+- ✅ **Test 123 FIXED**: Comma operator in for loops working perfectly `a = (a++, b++);`
+- ✅ **Test 132 FIXED**: Bonus fix from comma expression support
+- ✅ **Complete AST Pipeline**: COMMA_EXPRESSION case in evaluateExpression() + CompactAST initializer types
+- ✅ **Proper Semantics**: Left-to-right evaluation, returns rightmost value
+- ✅ **+2 test improvement**: 128 → 130 passing tests with zero regressions
+- ✅ **96.29% success rate** - **130/135 tests passing** - NEW RECORD!
+
+**Technical Implementation:**
+
+**Fix 1: C++ evaluateExpression() - COMMA_EXPRESSION case**
+- **File**: `src/cpp/ASTInterpreter.cpp` lines 3293-3308
+- **Change**: Added switch case to evaluate comma expressions left-to-right and return rightmost value
+- **Semantics**: Evaluates all operands for side effects, returns final operand's value
+
+**Fix 2: CompactAST Initializer Types**
+- **File**: `libs/CompactAST/src/CompactAST.cpp` line 552
+- **Change**: Added `ASTNodeType::COMMA_EXPRESSION` to initializer expression types list
+- **Impact**: Comma expressions properly linked during AST deserialization
+
+**Test 123 Output (Correct)**:
+```json
+{"type":"VAR_SET","variable":"b","value":10}        // int b = 10
+{"type":"VAR_SET","variable":"a","value":10}        // int a (from comma expr)
+{"type":"VAR_SET","variable":"a","value":11}        // a++ (postfix)
+{"type":"VAR_SET","variable":"b","value":11}        // b++ (postfix)
+{"type":"VAR_SET","variable":"a","value":10}        // a = (rightmost value)
+```
+
+**Comma Operator Semantics**:
+```cpp
+a = (a++, b++);  // Evaluates a++, then b++, returns b++'s old value (10)
+// Result: a = 10, a incremented to 11, b incremented to 11
+```
+
+**Baseline Results** (October 4, 2025):
+```
+Total Tests: 135
+Passing: 130 (96.29%)
+Failing: 5 (3.71%)
+```
+
+**Passing Tests**: 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,129,130,131,132,133,134
+
+**Failing Tests**: 78,125,126,127,128
+
+**Documentation**: Complete investigation in `docs/Test123_CommaOperator_Investigation.md`
+
+**Impact**: This represents **systematic progress** toward 100% cross-platform parity with complete comma operator support matching JavaScript implementation exactly.
+
+---
+
 # 🎉 SIZEOF OPERATOR COMPLETE + 94.81% SUCCESS RATE 🎉
 
-## **OCTOBER 4, 2025 (LATEST) - SIZEOF OPERATOR IMPLEMENTATION**
+## **OCTOBER 4, 2025 (EARLIER) - SIZEOF OPERATOR IMPLEMENTATION**
 
 ### **COMPLETE SIZEOF OPERATOR CROSS-PLATFORM PARITY**
 
@@ -16,7 +76,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - ✅ **Type Size Support**: Arduino-compatible type sizes (int=4 for 32-bit Arduino like Due/ESP32)
 - ✅ **Expression Support**: Both sizeof(type) and sizeof(variable) working correctly
 - ✅ **+1 test improvement**: 127 → 128 passing tests with zero regressions
-- ✅ **94.81% success rate** - **128/135 tests passing** - NEW RECORD!
+- ✅ **94.81% success rate** - **128/135 tests passing**
 
 **Technical Implementation:**
 
@@ -62,17 +122,6 @@ short/int16_t:  2 bytes
 int/long:       4 bytes  // 32-bit Arduino (Due, ESP32, ESP8266)
 float/double:   4 bytes  // Arduino double = float
 ```
-
-**Baseline Results** (October 4, 2025):
-```
-Total Tests: 135
-Passing: 128 (94.81%)
-Failing: 7 (5.19%)
-```
-
-**Passing Tests**: 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,124,129,130,131,133,134
-
-**Failing Tests**: 78,123,125,126,127,128,132
 
 **Documentation**: Complete investigation in `docs/Test122_SizeofOperator_Investigation.md`
 

@@ -548,7 +548,8 @@ void CompactASTReader::linkNodeChildren() {
                                childType == ASTNodeType::CONSTANT ||
                                childType == ASTNodeType::ARRAY_ACCESS ||
                                childType == ASTNodeType::CAST_EXPR ||
-                               childType == ASTNodeType::POSTFIX_EXPRESSION) {
+                               childType == ASTNodeType::POSTFIX_EXPRESSION ||
+                               childType == ASTNodeType::COMMA_EXPRESSION) {
                         // This is an initializer - add it as a child to the last DeclaratorNode
                         const auto& declarations = varDeclNode->getDeclarations();
                         if (!declarations.empty()) {

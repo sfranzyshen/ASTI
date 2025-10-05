@@ -3290,6 +3290,23 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             }
             break;
 
+        case arduino_ast::ASTNodeType::COMMA_EXPRESSION:
+            if (auto* commaNode = dynamic_cast<arduino_ast::CommaExpression*>(expr)) {
+                const auto& children = commaNode->getChildren();
+
+                // Comma operator: evaluate all operands left-to-right, return rightmost
+                CommandValue result = std::monostate{};
+                for (const auto& child : children) {
+                    if (child) {
+                        result = evaluateExpression(child.get());
+                    }
+                }
+
+                // Return the rightmost child's value (comma operator semantics)
+                return result;
+            }
+            break;
+
         default:
             break;
     }

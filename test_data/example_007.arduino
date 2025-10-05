@@ -1,4 +1,0 @@
-pinMode(13, OUTPUT);
-pinMode(2, INPUT);
-/* digitalRead(2) request */;
-digitalWrite(13, LOW);
