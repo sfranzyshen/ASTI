@@ -1270,13 +1270,45 @@ class ScopeManager {
                 return { success: false, error: 'TYPE_INCOMPATIBLE', message: errorMsg };
             }
         }
-        
-        const metadata = new VariableMetadata(value, {
-            scopeLevel: this.currentScopeLevel - 1,
-            scopeType: currentScope.scopeType,
-            isDeclaration: options.isDeclaration || false,
-            ...options
-        });
+
+        // TEST 128 FIX: Preserve ALL metadata fields from existing variable when updating
+        let metadataOptions;
+
+        if (!options.isDeclaration && this.has(name)) {
+            // This is an assignment to existing variable - preserve ALL metadata fields
+            const existingMetadata = this.getMetadata(name);
+            if (existingMetadata) {
+                // Preserve all fields from existing metadata, only update the value
+                metadataOptions = {
+                    declaredType: existingMetadata.declaredType,          // Preserve type info
+                    scopeLevel: existingMetadata.scopeLevel,              // Preserve original scope level
+                    scopeType: existingMetadata.scopeType,                // Preserve original scope type
+                    declarationLine: existingMetadata.declarationLine,    // Preserve declaration location
+                    isArray: existingMetadata.isArray,                    // Preserve array flag
+                    arraySize: existingMetadata.arraySize,                // Preserve array size
+                    isDeclaration: false,                                 // This is an assignment, not a declaration
+                    ...options  // Allow explicit overrides if provided
+                };
+            } else {
+                // Existing variable but no metadata (shouldn't happen, but fallback)
+                metadataOptions = {
+                    scopeLevel: this.currentScopeLevel - 1,
+                    scopeType: currentScope.scopeType,
+                    isDeclaration: false,
+                    ...options
+                };
+            }
+        } else {
+            // This is a new declaration - use current scope information
+            metadataOptions = {
+                scopeLevel: this.currentScopeLevel - 1,
+                scopeType: currentScope.scopeType,
+                isDeclaration: options.isDeclaration || false,
+                ...options
+            };
+        }
+
+        const metadata = new VariableMetadata(value, metadataOptions);
         
         // CRITICAL FIX: For assignments (not declarations), update variable in its existing scope
         if (!options.isDeclaration && this.has(name)) {
@@ -3220,9 +3252,9 @@ class ASTInterpreter {
                 }
                 
                 // Extract declared type from AST first
-                const declType = node.varType?.value || decl.type?.value || decl.type?.type || 
+                const declType = node.varType?.value || decl.type?.value || decl.type?.type ||
                                (typeof decl.type === 'string' ? decl.type : null);
-                
+
                 let value = null;
                 
                 // Handle object type declarations (with or without initializers)
@@ -3456,14 +3488,14 @@ class ASTInterpreter {
                     debugLog(`Variable set ${varName}:`, JSON.stringify(value), 'isArray:', isArray, 'arraySize:', arraySize);
                 }
 
-                const result = this.variables.set(varName, value, { 
+                const result = this.variables.set(varName, value, {
                     isDeclaration: true,
                     declaredType: declType,
                     isArray: isArray,
                     arraySize: arraySize,
                     isInitialized: hasInitializer
                 });
-                
+
                 // Phase 4.1: Handle duplicate declaration errors
                 if (!result.success) {
                     this.emitError(result.message || `Failed to declare variable '${varName}'`);
@@ -3921,23 +3953,90 @@ class ASTInterpreter {
             case 'uint64_t':
             case 'int64_t':
                 return 0;
-            
+
             case 'float':
             case 'double':
                 return 0.0;
-            
+
             case 'bool':
             case 'boolean':
                 return false;
-            
+
             case 'char':
                 return '\0';
-            
+
             default:
                 return null;
         }
     }
-    
+
+    // TEST 128 FIX: Unsigned integer type support
+    isUnsignedType(typeName) {
+        if (!typeName) return false;
+        // Normalize whitespace: parser creates "unsigned  int" (2 spaces), we need "unsigned int" (1 space)
+        const baseType = typeName.replace(/\s*const\s*/, '').replace(/\s+/g, ' ').trim();
+
+        const result = baseType === 'unsigned int' ||
+               baseType === 'unsigned long' ||
+               baseType === 'uint32_t' ||
+               baseType === 'uint16_t' ||
+               baseType === 'uint8_t' ||
+               baseType === 'byte';
+
+        return result;
+    }
+
+    // TEST 128 FIX: Get declared type from an expression node
+    getOperandType(node) {
+        if (!node) return null;
+
+        // If it's an identifier, get its declared type
+        if (node.type === 'IdentifierNode') {
+            const varInfo = this.variables.get(node.value);
+            return varInfo?.metadata?.declaredType || null;
+        }
+
+        // For other node types, return null
+        return null;
+    }
+
+    // TEST 128 FIX: Convert value to declared type with proper unsigned wrapping
+    convertToType(value, typeName) {
+        if (!typeName) return value;
+
+        const baseType = typeName.replace(/\s*const\s*/, '').trim();
+
+        // Unsigned integer types - force 32-bit unsigned wrapping
+        if (this.isUnsignedType(baseType)) {
+            // >>> 0 forces unsigned 32-bit integer (wraps at 2^32)
+            // Examples:
+            //   4294967295 + 1 = 4294967296 >>> 0 = 0 (rollover!)
+            //   0 - 1 = -1 >>> 0 = 4294967295 (rollover!)
+            return (Number(value) >>> 0);
+        }
+
+        // Signed integer types - force 32-bit signed
+        if (baseType === 'int' || baseType === 'long' ||
+            baseType === 'int32_t' || baseType === 'int16_t' ||
+            baseType === 'int8_t') {
+            // | 0 forces signed 32-bit integer
+            return (Number(value) | 0);
+        }
+
+        // Float/double types
+        if (baseType === 'float' || baseType === 'double') {
+            return Number(value);
+        }
+
+        // Boolean types
+        if (baseType === 'bool' || baseType === 'boolean') {
+            return Boolean(value);
+        }
+
+        // Default: return value unchanged
+        return value;
+    }
+
     isTemplateType(type) {
         // Check for common template types
         if (type && typeof type === 'string') {
@@ -5492,7 +5591,18 @@ class ASTInterpreter {
                     // Extract numeric values for arithmetic operations
                     const leftValue = this.getNumericValue(left);
                     const rightValue = this.getNumericValue(right);
-                    result = leftValue + rightValue;
+
+                    // TEST 128 FIX: Check if either operand is unsigned
+                    const leftType = this.getOperandType(node.left);
+                    const rightType = this.getOperandType(node.right);
+                    const isUnsignedOp = this.isUnsignedType(leftType) || this.isUnsignedType(rightType);
+
+                    if (isUnsignedOp) {
+                        // Unsigned arithmetic with rollover
+                        result = ((leftValue + rightValue) >>> 0);
+                    } else {
+                        result = leftValue + rightValue;
+                    }
                 }
                 break;
                 
@@ -5514,14 +5624,36 @@ class ASTInterpreter {
                     // Extract numeric values for arithmetic operations
                     const leftValue = this.getNumericValue(left);
                     const rightValue = this.getNumericValue(right);
-                    result = leftValue - rightValue;
+
+                    // TEST 128 FIX: Check if either operand is unsigned
+                    const leftType = this.getOperandType(node.left);
+                    const rightType = this.getOperandType(node.right);
+                    const isUnsignedOp = this.isUnsignedType(leftType) || this.isUnsignedType(rightType);
+
+                    if (isUnsignedOp) {
+                        // Unsigned arithmetic with rollover (critical for Test 6 timing!)
+                        result = ((leftValue - rightValue) >>> 0);
+                    } else {
+                        result = leftValue - rightValue;
+                    }
                 }
                 break;
-            case '*': 
+            case '*':
                 // Extract numeric values for arithmetic operations
                 const leftMul = this.getNumericValue(left);
                 const rightMul = this.getNumericValue(right);
-                result = leftMul * rightMul; 
+
+                // TEST 128 FIX: Check if either operand is unsigned
+                const leftTypeMul = this.getOperandType(node.left);
+                const rightTypeMul = this.getOperandType(node.right);
+                const isUnsignedMul = this.isUnsignedType(leftTypeMul) || this.isUnsignedType(rightTypeMul);
+
+                if (isUnsignedMul) {
+                    // Unsigned arithmetic with rollover
+                    result = ((leftMul * rightMul) >>> 0);
+                } else {
+                    result = leftMul * rightMul;
+                }
                 break;
             case '/':
                 // Extract numeric values for arithmetic operations
@@ -5551,8 +5683,18 @@ class ASTInterpreter {
                     // Float division
                     result = leftDiv / rightDiv;
                 }
+
+                // TEST 128 FIX: Apply unsigned wrapping if operands are unsigned
+                const leftTypeDiv = this.getOperandType(node.left);
+                const rightTypeDiv = this.getOperandType(node.right);
+                const isUnsignedDiv = this.isUnsignedType(leftTypeDiv) || this.isUnsignedType(rightTypeDiv);
+
+                if (isUnsignedDiv && Number.isInteger(result)) {
+                    // Unsigned integer division result needs wrapping
+                    result = (result >>> 0);
+                }
                 break;
-            case '%': 
+            case '%':
                 // Extract numeric values for arithmetic operations
                 const leftMod = this.getNumericValue(left);
                 const rightMod = this.getNumericValue(right);
@@ -5563,7 +5705,18 @@ class ASTInterpreter {
                     this.executionContext.isExecuting = false;
                     return null;
                 }
-                result = leftMod % rightMod; 
+
+                // TEST 128 FIX: Check if either operand is unsigned
+                const leftTypeMod = this.getOperandType(node.left);
+                const rightTypeMod = this.getOperandType(node.right);
+                const isUnsignedMod = this.isUnsignedType(leftTypeMod) || this.isUnsignedType(rightTypeMod);
+
+                if (isUnsignedMod) {
+                    // Unsigned modulo with wrapping
+                    result = ((leftMod % rightMod) >>> 0);
+                } else {
+                    result = leftMod % rightMod;
+                }
                 break;
             case '==':
                 // Handle String comparison
@@ -5601,29 +5754,73 @@ class ASTInterpreter {
                     }
                 }
                 break;
-            case '<': 
+            case '<':
                 // Extract numeric values for comparison
                 const leftLT = this.getNumericValue(left);
                 const rightLT = this.getNumericValue(right);
-                result = leftLT < rightLT; 
+
+                // TEST 128 FIX: Unsigned comparison semantics
+                const leftTypeLT = this.getOperandType(node.left);
+                const rightTypeLT = this.getOperandType(node.right);
+                const isUnsignedLT = this.isUnsignedType(leftTypeLT) || this.isUnsignedType(rightTypeLT);
+
+                if (isUnsignedLT) {
+                    // Convert both to unsigned for proper comparison
+                    result = (leftLT >>> 0) < (rightLT >>> 0);
+                } else {
+                    result = leftLT < rightLT;
+                }
                 break;
-            case '>': 
+            case '>':
                 // Extract numeric values for comparison
                 const leftGT = this.getNumericValue(left);
                 const rightGT = this.getNumericValue(right);
-                result = leftGT > rightGT; 
+
+                // TEST 128 FIX: Unsigned comparison semantics
+                const leftTypeGT = this.getOperandType(node.left);
+                const rightTypeGT = this.getOperandType(node.right);
+                const isUnsignedGT = this.isUnsignedType(leftTypeGT) || this.isUnsignedType(rightTypeGT);
+
+                if (isUnsignedGT) {
+                    // Convert both to unsigned for proper comparison
+                    result = (leftGT >>> 0) > (rightGT >>> 0);
+                } else {
+                    result = leftGT > rightGT;
+                }
                 break;
-            case '<=': 
+            case '<=':
                 // Extract numeric values for comparison
                 const leftLE = this.getNumericValue(left);
                 const rightLE = this.getNumericValue(right);
-                result = leftLE <= rightLE; 
+
+                // TEST 128 FIX: Unsigned comparison semantics
+                const leftTypeLE = this.getOperandType(node.left);
+                const rightTypeLE = this.getOperandType(node.right);
+                const isUnsignedLE = this.isUnsignedType(leftTypeLE) || this.isUnsignedType(rightTypeLE);
+
+                if (isUnsignedLE) {
+                    // Convert both to unsigned for proper comparison
+                    result = (leftLE >>> 0) <= (rightLE >>> 0);
+                } else {
+                    result = leftLE <= rightLE;
+                }
                 break;
-            case '>=': 
+            case '>=':
                 // Extract numeric values for comparison
                 const leftGE = this.getNumericValue(left);
                 const rightGE = this.getNumericValue(right);
-                result = leftGE >= rightGE; 
+
+                // TEST 128 FIX: Unsigned comparison semantics
+                const leftTypeGE = this.getOperandType(node.left);
+                const rightTypeGE = this.getOperandType(node.right);
+                const isUnsignedGE = this.isUnsignedType(leftTypeGE) || this.isUnsignedType(rightTypeGE);
+
+                if (isUnsignedGE) {
+                    // Convert both to unsigned for proper comparison
+                    result = (leftGE >>> 0) >= (rightGE >>> 0);
+                } else {
+                    result = leftGE >= rightGE;
+                }
                 break;
             case '&&': result = left && right; break;
             case '||': result = left || right; break;
@@ -5692,13 +5889,28 @@ class ASTInterpreter {
                 const result = primitiveValue ? 0 : 1;  // Arduino-style: !0=1, !non-zero=0
                 return result;
             case '~': return ~operand;
-            case '++': 
+            case '++':
                 // Prefix increment: ++i
                 if (node.operand?.type === 'IdentifierNode') {
                     const varName = node.operand.value;
-                    const newValue = operand + 1;
+
+                    // TEST 128 FIX: Apply unsigned wrapping for unsigned types
+                    const declaredType = this.variables.getMetadata(varName)?.declaredType;
+                    let newValue;
+
+                    if (this.isUnsignedType(declaredType)) {
+                        // Extract numeric value from ArduinoNumber if needed
+                        const numericValue = (operand && typeof operand === 'object' && operand.value !== undefined) ? operand.value : operand;
+
+                        // Unsigned increment with rollover: 4294967295++ = 0
+                        newValue = ((numericValue + 1) >>> 0);
+                    } else {
+                        // Regular numeric increment
+                        newValue = operand + 1;
+                    }
+
                     const result = this.variables.set(varName, newValue);
-                    
+
                     // Check if this is a static variable by looking in static storage
                     const staticKey = `global_${varName}`;  // Try global static variable
                     if (this.staticVariables.has(staticKey)) {
@@ -5740,10 +5952,25 @@ class ASTInterpreter {
                 }
                 return operand + 1;
             case '--':
-                // Prefix decrement: --i  
+                // Prefix decrement: --i
                 if (node.operand?.type === 'IdentifierNode') {
                     const varName = node.operand.value;
-                    const newValue = operand - 1;
+
+                    // TEST 128 FIX: Apply unsigned wrapping for unsigned types
+                    const declaredType = this.variables.getMetadata(varName)?.declaredType;
+                    let newValue;
+
+                    if (this.isUnsignedType(declaredType)) {
+                        // Extract numeric value from ArduinoNumber if needed
+                        const numericValue = (operand && typeof operand === 'object' && operand.value !== undefined) ? operand.value : operand;
+
+                        // Unsigned decrement with rollover: 0-- = 4294967295
+                        newValue = ((numericValue - 1) >>> 0);
+                    } else {
+                        // Regular numeric decrement
+                        newValue = operand - 1;
+                    }
+
                     const result = this.variables.set(varName, newValue);
                     if (!result.success) {
                         this.emitError(result.message || `Failed to decrement variable '${varName}'`);
@@ -5838,16 +6065,27 @@ class ASTInterpreter {
                     const varName = node.operand.value;
                     const oldValue = operand;
                     let newValue;
-                    
+
                     // Handle pointer arithmetic for increment
                     if (oldValue instanceof ArduinoPointer) {
                         // For pointer++, create a new offset pointer pointing to the next element
                         newValue = oldValue.add(1);
                     } else {
-                        // Regular numeric increment
-                        newValue = oldValue + 1;
+                        // TEST 128 FIX: Apply unsigned wrapping for unsigned types
+                        const declaredType = this.variables.getMetadata(varName)?.declaredType;
+
+                        if (this.isUnsignedType(declaredType)) {
+                            // Extract numeric value from ArduinoNumber if needed
+                            const numericValue = (oldValue && typeof oldValue === 'object' && oldValue.value !== undefined) ? oldValue.value : oldValue;
+
+                            // Unsigned increment with rollover: 4294967295++ = 0
+                            newValue = ((numericValue + 1) >>> 0);
+                        } else {
+                            // Regular numeric increment
+                            newValue = oldValue + 1;
+                        }
                     }
-                    
+
                     const success = this.variables.set(varName, newValue);
                     if (!success) {
                         this.emitError(`Failed to increment variable '${varName}'`);
@@ -5878,7 +6116,7 @@ class ASTInterpreter {
                         value: this.sanitizeForCommand(newValue),
                         timestamp: Date.now()
                     });
-                    
+
                     return oldValue; // Return original value
                 }
                 return operand;
@@ -5887,7 +6125,23 @@ class ASTInterpreter {
                 if (node.operand?.type === 'IdentifierNode') {
                     const varName = node.operand.value;
                     const oldValue = operand;
-                    const success = this.variables.set(varName, oldValue - 1);
+                    let newValue;
+
+                    // TEST 128 FIX: Apply unsigned wrapping for unsigned types
+                    const declaredType = this.variables.getMetadata(varName)?.declaredType;
+
+                    if (this.isUnsignedType(declaredType)) {
+                        // Extract numeric value from ArduinoNumber if needed
+                        const numericValue = (oldValue && typeof oldValue === 'object' && oldValue.value !== undefined) ? oldValue.value : oldValue;
+
+                        // Unsigned decrement with rollover: 0-- = 4294967295
+                        newValue = ((numericValue - 1) >>> 0);
+                    } else {
+                        // Regular numeric decrement
+                        newValue = oldValue - 1;
+                    }
+
+                    const success = this.variables.set(varName, newValue);
                     if (!success) {
                         this.emitError(`Failed to decrement variable '${varName}'`);
                         return operand;
@@ -5896,23 +6150,23 @@ class ASTInterpreter {
                     // Update static variable storage if this is a static variable
                     const varInfo = this.variables.get(varName);
                     if (varInfo?.metadata?.isStatic) {
-                        this.staticVariables.set(varInfo.metadata.staticKey, oldValue - 1);
+                        this.staticVariables.set(varInfo.metadata.staticKey, newValue);
                         if (this.options.verbose) {
-                            debugLog(`Updated static variable ${varName} = ${oldValue - 1} (key: ${varInfo.metadata.staticKey})`);
+                            debugLog(`Updated static variable ${varName} = ${newValue} (key: ${varInfo.metadata.staticKey})`);
                         }
                     }
                     
                     if (this.options.verbose) {
-                        debugLog(`Postfix decrement: ${varName}-- (${oldValue} -> ${oldValue - 1})`);
+                        debugLog(`Postfix decrement: ${varName}-- (${oldValue} -> ${newValue})`);
                     }
-                    
+
                     this.emitCommand({
                         type: COMMAND_TYPES.VAR_SET,
                         variable: varName,
-                        value: this.sanitizeForCommand(oldValue - 1),
+                        value: this.sanitizeForCommand(newValue),
                         timestamp: Date.now()
                     });
-                    
+
                     return oldValue; // Return original value
                 }
                 return operand;
