@@ -6971,17 +6971,29 @@ class ASTInterpreter {
     }
     
     async executeIfStatement(node) {
-        const condition = await this.evaluateExpression(node.condition);
-        
+        const conditionValue = await this.evaluateExpression(node.condition);
+
+        // CRITICAL FIX: Extract primitive value for boolean evaluation
+        // Handle cases where condition might be wrapped in object (e.g., {value: 0})
+        let condition = conditionValue;
+        if (typeof conditionValue === 'object' && conditionValue !== null) {
+            if ('value' in conditionValue) {
+                condition = conditionValue.value;
+            }
+        }
+
+        // Convert to boolean using JavaScript semantics (0, null, undefined, false → false)
+        const boolCondition = Boolean(condition);
+
         this.emitCommand({
             type: COMMAND_TYPES.IF_STATEMENT,
             condition: condition,
             result: condition,
-            branch: condition ? 'then' : 'else',
+            branch: boolCondition ? 'then' : 'else',
             timestamp: Date.now()
         });
-        
-        if (condition) {
+
+        if (boolCondition) {
             // Execute then branch with its own scope (only if not already a compound statement)
             if (node.consequent.type === 'CompoundStmtNode') {
                 // CompoundStmtNode will create its own scope
