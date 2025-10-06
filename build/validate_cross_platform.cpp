@@ -343,8 +343,8 @@ int main(int argc, char* argv[]) {
         std::string status = loadMetadataStatus(testNumber);
         if (status == "FAILED") {
             std::cout << "Test " << testNumber << ": SKIPPED (generation failed, see metadata)" << std::endl;
-            // Don't count as success or failure - just skip
-            totalTests--;  // Don't count skipped tests in total
+            // Count as failure - generation failure is still a test failure
+            // Don't increment successCount, so this test fails validation
             continue;
         }
 
