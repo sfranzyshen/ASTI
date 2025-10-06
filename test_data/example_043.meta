@@ -2,6 +2,7 @@ name=RowColumnScanning.ino
 source=unknown
 astSize=3399
 codeSize=1976
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=57
 content=// 07.Display RowColumnScanning.ino

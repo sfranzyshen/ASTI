@@ -153,6 +153,14 @@ private:
             return;
         }
 
+        // GENERATION_FAILED - Test generation timeout/error marker
+        if (type == "GENERATION_FAILED") {
+            std::string reason = extractStringField(jsonObj, "reason");
+            std::string testName = extractStringField(jsonObj, "testName");
+            commandStream.push_back("GENERATION_FAILED: " + testName + " - " + reason);
+            return;
+        }
+
         // SETUP_START/END - Flow control validation
         if (type == "SETUP_START") {
             commandStream.push_back("SETUP_START");

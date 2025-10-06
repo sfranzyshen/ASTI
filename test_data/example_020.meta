@@ -2,6 +2,7 @@ name=Smoothing.ino
 source=unknown
 astSize=2205
 codeSize=1039
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=33
 content=// 03.Analog Smoothing.ino

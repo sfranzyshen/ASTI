@@ -2,6 +2,7 @@ name=Bit-Fields_in_Structs.ino
 source=unknown
 astSize=1802
 codeSize=348
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=22
 content=// Bit-Fields in Structs

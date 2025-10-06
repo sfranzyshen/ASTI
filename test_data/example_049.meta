@@ -2,6 +2,7 @@ name=StringCharacters.ino
 source=unknown
 astSize=1935
 codeSize=830
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=25
 content=// 08.Strings StringCharacters

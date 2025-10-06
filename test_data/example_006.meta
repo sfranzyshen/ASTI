@@ -2,6 +2,7 @@ name=BlinkWithoutDelay.ino
 source=unknown
 astSize=1784
 codeSize=1009
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=23
 content=// 02.Digital BlinkWithoutDelay.ino

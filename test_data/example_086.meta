@@ -2,6 +2,7 @@ name=Test_Rigorous_Brackets_Parentheses.ino
 source=unknown
 astSize=1606
 codeSize=272
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=18
 content=// Test Rigorous Brackets & Parentheses

@@ -2,6 +2,7 @@ name=AnalogInOutSerial.ino
 source=unknown
 astSize=1943
 codeSize=823
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=25
 content=// 03.Analog AnalogInOutSerial.ino

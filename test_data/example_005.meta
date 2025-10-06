@@ -2,6 +2,7 @@ name=ReadAnalogVoltage.ino
 source=unknown
 astSize=1455
 codeSize=526
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=16
 content=// 01.Basics ReadAnalogVoltage.ino

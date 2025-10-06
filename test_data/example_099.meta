@@ -2,6 +2,7 @@ name=Floating-Point_Arithmetic_and_Mixed_Types.ino
 source=unknown
 astSize=2020
 codeSize=476
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=23
 content=// Floating-Point Arithmetic and Mixed Types

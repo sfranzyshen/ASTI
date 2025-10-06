@@ -2,6 +2,7 @@ name=p12_KnockLock.ino
 source=unknown
 astSize=4031
 codeSize=3355
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=38
 content=// 10.StarterKit_BasicKit p12_KnockLock

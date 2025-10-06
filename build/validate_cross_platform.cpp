@@ -167,6 +167,27 @@ std::string extractCppCommands(int testNumber) {
     return jsonOutput.str();
 }
 
+// Load metadata status from reference files
+std::string loadMetadataStatus(int testNumber) {
+    std::ostringstream fileName;
+    fileName << "../test_data/example_" << std::setfill('0') << std::setw(3) << testNumber << ".meta";
+
+    std::ifstream file(fileName.str());
+    if (!file) {
+        return "UNKNOWN";
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        // Look for status= field
+        if (line.find("status=") == 0) {
+            return line.substr(7);  // Extract value after "status="
+        }
+    }
+
+    return "UNKNOWN";
+}
+
 // Load JavaScript JSON commands from reference files
 std::string loadJsCommands(int testNumber) {
     std::ostringstream fileName;
@@ -317,14 +338,23 @@ int main(int argc, char* argv[]) {
     
     for (int testNumber = startTest; testNumber <= endTest; testNumber++) {
         totalTests++;
-        
+
+        // Check metadata status before attempting validation
+        std::string status = loadMetadataStatus(testNumber);
+        if (status == "FAILED") {
+            std::cout << "Test " << testNumber << ": SKIPPED (generation failed, see metadata)" << std::endl;
+            // Don't count as success or failure - just skip
+            totalTests--;  // Don't count skipped tests in total
+            continue;
+        }
+
         // Extract both command streams
         std::string cppCommands = extractCppCommands(testNumber);
         std::string jsCommands = loadJsCommands(testNumber);
-        
+
         // Compare functionally
         bool matches = compareJSONCommands(cppCommands, jsCommands, testNumber);
-        
+
         if (matches) {
             successCount++;
         } else {

@@ -2,6 +2,7 @@ name=p10_Zoetrope.ino
 source=unknown
 astSize=3125
 codeSize=2380
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=48
 content=// 10.StarterKit_BasicKit p10_Zoetrope

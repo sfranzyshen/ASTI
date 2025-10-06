@@ -2,6 +2,7 @@ name=p11_CrystalBall.ino
 source=unknown
 astSize=3040
 codeSize=2236
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=26
 content=// 10.StarterKit_BasicKit p11_CrystalBall

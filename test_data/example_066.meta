@@ -2,6 +2,7 @@ name=p04_ColorMixingLamp.ino
 source=unknown
 astSize=3211
 codeSize=1742
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=53
 content=// 10.StarterKit_BasicKit p04_ColorMixingLamp

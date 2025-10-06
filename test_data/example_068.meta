@@ -2,6 +2,7 @@ name=p06_LightTheremin.ino
 source=unknown
 astSize=2043
 codeSize=1132
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=26
 content=// 10.StarterKit_BasicKit p06_LightTheremin

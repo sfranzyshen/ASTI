@@ -2,6 +2,7 @@ name=AnalogReadSerial.ino
 source=unknown
 astSize=1396
 codeSize=453
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=16
 content=// 01.Basics AnalogReadSerial.ino

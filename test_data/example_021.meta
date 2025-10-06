@@ -2,6 +2,7 @@ name=ASCIITable.ino
 source=unknown
 astSize=2038
 codeSize=1130
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=27
 content=// 04.Communication ASCIITable.ino

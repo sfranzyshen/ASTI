@@ -2,6 +2,7 @@ name=StringStartsWithEndsWith.ino
 source=unknown
 astSize=2316
 codeSize=1147
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=32
 content=// 08.Strings StringStartsWithEndsWith

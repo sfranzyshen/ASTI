@@ -2,6 +2,7 @@ name=static_Variables_and_Scope.ino
 source=unknown
 astSize=1526
 codeSize=223
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=17
 content=// static Variables and Scope

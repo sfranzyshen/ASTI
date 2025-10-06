@@ -2,6 +2,7 @@ name=toneMultiple.ino
 source=unknown
 astSize=1570
 codeSize=446
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=20
 content=// 02.Digital toneMultiple.ino

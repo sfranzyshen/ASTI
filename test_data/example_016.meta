@@ -2,6 +2,7 @@ name=AnalogInput.ino
 source=unknown
 astSize=1576
 codeSize=536
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=21
 content=// 03.Analog AnalogInput.ino

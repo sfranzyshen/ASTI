@@ -2,6 +2,7 @@ name=Unary_sizeof_Operator.ino
 source=unknown
 astSize=1725
 codeSize=323
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=21
 content=// Unary sizeof Operator

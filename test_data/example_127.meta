@@ -2,6 +2,7 @@ name=static_Global_Variable_and_Function.ino
 source=unknown
 astSize=1537
 codeSize=282
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=17
 content=// static Global Variable and Function

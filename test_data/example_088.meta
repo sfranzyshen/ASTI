@@ -2,6 +2,7 @@ name=Test_Case_for_Advanced_Numeric_Literals.ino
 source=unknown
 astSize=1291
 codeSize=139
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=14
 content=// Test Case for Advanced Numeric Literals

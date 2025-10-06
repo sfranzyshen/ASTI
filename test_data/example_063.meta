@@ -2,6 +2,7 @@ name=JoystickMouseControl.ino
 source=unknown
 astSize=3253
 codeSize=2133
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=53
 content=// 09.USB Mouse/JoystickMouseControl

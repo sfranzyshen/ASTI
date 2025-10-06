@@ -2,6 +2,7 @@ name=Test_Case_for_Parentheses_Precedence.ino
 source=unknown
 astSize=1346
 codeSize=187
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=15
 content=// Test Case for Parentheses Precedence

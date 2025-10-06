@@ -2,6 +2,7 @@ name=Variable_Declarations_in_a_for_Loop.ino
 source=unknown
 astSize=1446
 codeSize=178
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=19
 content=// Variable Declarations in a for Loop

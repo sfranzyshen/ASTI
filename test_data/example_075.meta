@@ -2,6 +2,7 @@ name=p13_TouchSensorLamp.ino
 source=unknown
 astSize=1841
 codeSize=1006
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=22
 content=// 10.StarterKit_BasicKit p13_TouchSensorLamp

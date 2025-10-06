@@ -2,6 +2,7 @@ name=ButtonMouseControl.ino
 source=unknown
 astSize=2792
 codeSize=1514
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=42
 content=// 09.USB Mouse/ButtonMouseControl

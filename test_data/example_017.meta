@@ -2,6 +2,7 @@ name=AnalogWriteMega.ino
 source=unknown
 astSize=1933
 codeSize=843
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=31
 content=// 03.Analog AnalogWriteMega.ino

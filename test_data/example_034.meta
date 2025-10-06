@@ -2,6 +2,7 @@ name=ForLoopIteration.ino
 source=unknown
 astSize=1830
 codeSize=695
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=26
 content=// 05.Control ForLoopIteration.ino

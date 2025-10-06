@@ -2,6 +2,7 @@ name=DigitalInputPullup.ino
 source=unknown
 astSize=1637
 codeSize=708
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=19
 content=// 02.Digital DigitalInputPullup.ino

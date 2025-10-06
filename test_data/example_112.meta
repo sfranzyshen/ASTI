@@ -2,6 +2,7 @@ name=Empty_and_NULL_statements.ino
 source=unknown
 astSize=1581
 codeSize=222
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=17
 content=// Empty and NULL statements

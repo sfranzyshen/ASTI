@@ -2,6 +2,7 @@ name=Multiple_Statements_on_a_Single_Line.ino
 source=unknown
 astSize=1797
 codeSize=305
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=22
 content=// Multiple Statements on a Single Line

@@ -2,6 +2,7 @@ name=Nested_Loops_and_Variable_Scope.ino
 source=unknown
 astSize=1874
 codeSize=406
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=32
 content=// Nested Loops and Variable Scope

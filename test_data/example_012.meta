@@ -2,6 +2,7 @@ name=toneMelody.ino
 source=unknown
 astSize=1944
 codeSize=776
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=23
 content=// 02.Digital toneMelody.ino

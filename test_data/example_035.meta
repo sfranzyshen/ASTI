@@ -2,6 +2,7 @@ name=IfStatementConditional.ino
 source=unknown
 astSize=1753
 codeSize=644
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=22
 content=// 05.Control IfStatementConditional.ino

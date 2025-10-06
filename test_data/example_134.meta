@@ -2,6 +2,7 @@ name=strandtest_nodelay.ino
 source=unknown
 astSize=6782
 codeSize=7007
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=51
 content=#include <Adafruit_NeoPixel.h>

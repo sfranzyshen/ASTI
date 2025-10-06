@@ -2,6 +2,7 @@ name=Logical_Operators_with_Short-Circuiting.ino
 source=unknown
 astSize=1734
 codeSize=350
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=21
 content=// Logical Operators with Short-Circuiting

@@ -2,6 +2,7 @@ name=StringConstructors.ino
 source=unknown
 astSize=2706
 codeSize=1486
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=43
 content=// 08.Strings StringConstructors

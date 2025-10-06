@@ -75,123 +75,8 @@ function ensureOutputDir(outputDir) {
 }
 
 // =============================================================================
-// AST-ONLY MODE (FASTEST)
+// COMMAND GENERATION
 // =============================================================================
-
-/**
- * Generate AST data only - ultra-fast approach
- */
-async function generateASTOnly() {
-    conditionalLog(isVerbose, '=== AST-ONLY MODE ===');
-    conditionalLog(isVerbose, 'Generating compact AST data for C++ parsing validation');
-    conditionalLog(isVerbose, '(Skipping interpreter execution to avoid debug overhead)');
-    conditionalLog(isVerbose, '');
-    
-    const outputDir = 'test_data';
-    ensureOutputDir(outputDir);
-    
-    const allExamples = getAllExamples();
-    conditionalLog(isVerbose, `Processing ${allExamples.length} examples...`);
-    
-    const startTime = Date.now();
-    const results = [];
-    
-    for (let i = 0; i < allExamples.length; i++) {
-        const example = allExamples[i];
-        const baseName = `example_${String(i).padStart(3, '0')}`;
-        
-        try {
-            const code = example.content || example.code;
-            const ast = parse(code);
-            const compactAST = exportCompactAST(ast);
-            
-            // Save AST
-            fs.writeFileSync(
-                path.join(outputDir, `${baseName}.ast`),
-                Buffer.from(compactAST)
-            );
-            
-            // Save metadata
-            fs.writeFileSync(
-                path.join(outputDir, `${baseName}.meta`),
-                [
-                    `name=${example.name}`,
-                    `source=${example.source || 'unknown'}`,
-                    `astSize=${compactAST.byteLength}`,
-                    `codeSize=${code.length}`,
-                    `mode=AST_AND_COMMANDS`,
-                    `content=${code}`
-                ].join('\n')
-            );
-            
-            // Save placeholder commands
-            fs.writeFileSync(
-                path.join(outputDir, `${baseName}.commands`),
-                JSON.stringify([{ type: 'PLACEHOLDER_COMMANDS', data: {} }])
-            );
-            
-            results.push({ name: example.name, success: true, astSize: compactAST.byteLength });
-            
-        } catch (error) {
-            console.error(`  ERROR: ${example.name}: ${error.message}`);
-            results.push({ name: example.name, success: false, error: error.message });
-        }
-        
-        if ((i + 1) % 25 === 0 || i === allExamples.length - 1) {
-            const elapsed = Date.now() - startTime;
-            const rate = (i + 1) / elapsed * 1000;
-            conditionalLog(isVerbose, `[${i + 1}/${allExamples.length}] ${(elapsed/1000).toFixed(1)}s, ${rate.toFixed(1)} tests/sec`);
-        }
-    }
-    
-    const totalTime = Date.now() - startTime;
-    const successful = results.filter(r => r.success).length;
-    
-    conditionalLog(isVerbose, '');
-    conditionalLog(isVerbose, `✓ AST-only generation complete: ${successful}/${results.length} in ${(totalTime/1000).toFixed(1)}s`);
-    
-    return { successful, total: results.length, time: totalTime };
-}
-
-// =============================================================================
-// SELECTIVE MODE (RECOMMENDED)
-// =============================================================================
-
-/**
- * Classify examples by execution speed
- */
-function classifyExamples(allExamples) {
-    const fastExamples = [];
-    const slowExamples = [];
-    
-    allExamples.forEach((example, index) => {
-        const code = example.content || example.code;
-        const name = example.name;
-        
-        // Fast example criteria
-        const isFast = (
-            code.length < 600 &&
-            !name.includes('String') &&
-            !name.includes('Keyboard') &&
-            !name.includes('Mouse') &&
-            !code.includes('while (') &&
-            !code.includes('for (') &&
-            !(name.includes('Blink') && code.includes('delay(1000)'))
-        ) || (
-            // Always include critical simple examples
-            ['BareMinimum.ino', 'ReadAnalogVoltage.ino', 'Button.ino'].includes(name)
-        );
-        
-        const exampleWithIndex = { ...example, index };
-        if (isFast) {
-            fastExamples.push(exampleWithIndex);
-        } else {
-            slowExamples.push(exampleWithIndex);
-        }
-    });
-    
-    return { fastExamples, slowExamples };
-}
 
 /**
  * Generate commands with aggressive optimizations
@@ -258,25 +143,26 @@ function generateCommandsOptimized(ast, example) {
                     done = true;
                 }
 
-                // TEST 78 FIX: Disabled smart handler - let programs complete naturally
-                // With maxLoopIterations=1, all tests complete quickly without timeout
-                // The smart handler was causing Test 78 to time out by interfering with execution
-                // if (cmd.type === 'LOOP_LIMIT_REACHED') {
-                //     const message = cmd.message || '';
-                //     const isNestedLoop = message.includes('Do-while') ||
-                //                          message.includes('While loop') ||
-                //                          message.includes('For loop');
-                //
-                //     // Only stop if we're in loop() context (after setup completed)
-                //     if (isNestedLoop && hasSeenSetupEnd) {
-                //         // Wait for loop to complete, then stop
-                //         setTimeout(() => {
-                //             if (!done) {
-                //                 done = true;
-                //             }
-                //         }, 100);
-                //     }
-                // }
+                // TEST 78 FIX: Smart handler with state tracking
+                // Stop after loop limits ONLY in loop() context (after SETUP_END)
+                // This prevents timeout in complex loop() functions (like ArduinoISP Serial communication)
+                if (cmd.type === 'LOOP_LIMIT_REACHED' || cmd.type === 'LOOP_END') {
+                    const message = cmd.message || '';
+                    const isNestedLoop = message.includes('Do-while') ||
+                                         message.includes('While loop') ||
+                                         message.includes('For loop');
+                    const isMainLoop = cmd.type === 'LOOP_END' || message.includes('Loop limit reached');
+
+                    // Stop if we're in loop() context (after setup completed) and hit ANY loop limit
+                    if ((isNestedLoop || isMainLoop) && hasSeenSetupEnd) {
+                        // Wait for loop to complete, then stop
+                        setTimeout(() => {
+                            if (!done) {
+                                done = true;
+                            }
+                        }, 100);
+                    }
+                }
             };
             
             interpreter.onError = (error) => {
@@ -356,127 +242,6 @@ function suppressAllOutput() {
     };
 }
 
-/**
- * Generate AST + selective commands
- */
-async function generateSelective() {
-    conditionalLog(isVerbose, '=== SELECTIVE MODE (RECOMMENDED) ===');
-    conditionalLog(isVerbose, 'AST generation for all examples + commands for fast examples');
-    conditionalLog(isVerbose, '');
-    
-    // Step 1: Generate all AST data
-    const astResult = await generateASTOnly();
-    
-    conditionalLog(isVerbose, '');
-    conditionalLog(isVerbose, 'AST generation complete, now adding commands for fast examples...');
-    conditionalLog(isVerbose, '');
-    
-    // Step 2: Add commands for fast examples
-    const allExamples = getAllExamples();
-    const { fastExamples, slowExamples } = classifyExamples(allExamples);
-    
-    conditionalLog(isVerbose, `Command generation plan:`);
-    conditionalLog(isVerbose, `- Fast examples: ${fastExamples.length} (will generate commands)`);
-    conditionalLog(isVerbose, `- Slow examples: ${slowExamples.length} (AST-only due to debug overhead)`);
-    conditionalLog(isVerbose, '');
-    
-    const outputDir = 'test_data';
-    const commandResults = [];
-    const startTime = Date.now();
-    
-    for (let i = 0; i < fastExamples.length; i++) {
-        const example = fastExamples[i];
-        const baseName = `example_${String(example.index).padStart(3, '0')}`;
-        
-        try {
-            // Parse for command generation
-            const code = example.content || example.code;
-            const ast = parse(code);
-            
-            // Generate commands
-            const result = await generateCommandsOptimized(ast, example);
-            
-            if (result.success) {
-                // Update commands file
-                fs.writeFileSync(
-                    path.join(outputDir, `${baseName}.commands`),
-                    JSON.stringify(result.commands, null, 2)
-                );
-                
-                // Update metadata
-                const metaFile = path.join(outputDir, `${baseName}.meta`);
-                const metadata = fs.readFileSync(metaFile, 'utf8');
-                const updatedMetadata = metadata.replace(
-                    'mode=AST_AND_COMMANDS',
-                    `mode=AST_AND_COMMANDS\ncommandCount=${result.commands.length}`
-                );
-                fs.writeFileSync(metaFile, updatedMetadata);
-                
-                commandResults.push({ name: example.name, success: true, commandCount: result.commands.length });
-            } else {
-                commandResults.push({ name: example.name, success: false, error: result.error });
-            }
-            
-        } catch (error) {
-            commandResults.push({ name: example.name, success: false, error: error.message });
-        }
-        
-        if ((i + 1) % 15 === 0 || i === fastExamples.length - 1) {
-            const elapsed = Date.now() - startTime;
-            const rate = (i + 1) / elapsed * 1000;
-            conditionalLog(isVerbose, `Commands: [${i + 1}/${fastExamples.length}] ${(elapsed/1000).toFixed(1)}s, ${rate.toFixed(1)}/sec`);
-        }
-    }
-    
-    const commandTime = Date.now() - startTime;
-    const commandSuccess = commandResults.filter(r => r.success).length;
-    
-    conditionalLog(isVerbose, '');
-    conditionalLog(isVerbose, '=== FINAL SELECTIVE RESULTS ===');
-    conditionalLog(isVerbose, `Total examples: ${allExamples.length}`);
-    conditionalLog(isVerbose, `AST files: ${astResult.successful}/${astResult.total} (${(astResult.successful*100/astResult.total).toFixed(1)}%)`);
-    conditionalLog(isVerbose, `Command files: ${commandSuccess}/${fastExamples.length} (${(commandSuccess*100/fastExamples.length).toFixed(1)}%)`);
-    conditionalLog(isVerbose, `Total time: ${((astResult.time + commandTime)/1000).toFixed(1)} seconds`);
-    conditionalLog(isVerbose, '');
-    conditionalLog(isVerbose, 'FILE SUMMARY:');
-    conditionalLog(isVerbose, `- ${astResult.successful} .ast files (100% coverage)`);
-    conditionalLog(isVerbose, `- ${commandSuccess} .commands files (${(commandSuccess*100/allExamples.length).toFixed(1)}% coverage)`);
-    conditionalLog(isVerbose, `- ${allExamples.length} .meta files (100% coverage)`);
-    
-    return {
-        totalExamples: allExamples.length,
-        astGenerated: astResult.successful,
-        commandsGenerated: commandSuccess,
-        totalTime: astResult.time + commandTime
-    };
-}
-
-// =============================================================================
-// FORCE MODE (LEGACY COMPATIBILITY)
-// =============================================================================
-
-/**
- * Attempt full command generation with maximum optimizations
- */
-async function generateForce() {
-    conditionalLog(isVerbose, '=== FORCE MODE ===');
-    conditionalLog(isVerbose, 'Attempting full command generation with aggressive optimizations');
-    conditionalLog(isVerbose, 'WARNING: May timeout on debug-heavy examples');
-    conditionalLog(isVerbose, '');
-    
-    // Import original function with modifications
-    const { generateTestDataOptimized } = require('./generate_test_data_optimized.js');
-    
-    try {
-        const success = await generateTestDataOptimized();
-        return success;
-    } catch (error) {
-        conditionalLog(isVerbose, 'Force mode failed:', error.message);
-        conditionalLog(isVerbose, 'Falling back to selective mode...');
-        return await generateSelective();
-    }
-}
-
 // =============================================================================
 // FULL TEST DATA GENERATION - ALL 135 TESTS OR FAIL
 // =============================================================================
@@ -499,8 +264,8 @@ async function generateFullTestData() {
     
     const results = {
         totalTests: 0,
-        fullCommandTests: 0,
-        failures: []
+        successes: 0,       // Track actual successes
+        failures: []        // Track failures with details
     };
     
     for (let i = 0; i < allExamples.length; i++) {
@@ -521,27 +286,19 @@ async function generateFullTestData() {
             let commandResult = await generateCommandsOptimized(ast, example);
             
             if (!commandResult.success || !commandResult.commands || commandResult.commands.length === 0) {
-                // LOG WARNING but CONTINUE generation (resilient mode)
-                console.warn(`⚠️  WARNING: ${example.name} - ${commandResult.error || 'Empty command stream'}`);
+                // Mark as EXPLICIT FAILURE - no hacks, no fake success
+                console.error(`❌ GENERATION FAILED: ${example.name} - ${commandResult.error || 'Empty command stream'}`);
 
-                // Try to use backup data if available
-                const backupPath = path.join('trash/test_data_backup', `${baseName}.commands`);
-                if (fs.existsSync(backupPath)) {
-                    console.log(`  → Using backup data for ${example.name}`);
-                    const backupCommands = JSON.parse(fs.readFileSync(backupPath, 'utf8'));
-                    commandResult = { success: true, commands: backupCommands };
-                } else {
-                    // Write minimal placeholder to allow continuation
-                    console.log(`  → Writing placeholder data for ${example.name}`);
-                    commandResult = {
-                        success: true,
-                        commands: [{
-                            type: 'ERROR',
-                            message: `Test generation timeout: ${commandResult.error}`,
-                            timestamp: 0
-                        }]
-                    };
-                }
+                // Write EXPLICIT FAILURE marker
+                commandResult = {
+                    success: false,  // Real failure, not fake success
+                    commands: [{
+                        type: 'GENERATION_FAILED',
+                        reason: commandResult.error || 'Unknown error',
+                        testName: example.name,
+                        timestamp: 0
+                    }]
+                };
             }
             
             // Save full command stream with circular reference handling
@@ -571,15 +328,21 @@ async function generateFullTestData() {
                     `source=${example.source || 'unknown'}`,
                     `astSize=${compactAST.byteLength}`,
                     `codeSize=${code.length}`,
+                    `status=${commandResult.success ? 'SUCCESS' : 'FAILED'}`,  // NEW: Track generation status
                     `mode=AST_AND_COMMANDS`,
                     `commandCount=${commandResult.commands.length}`,
                     `content=${code}`
                 ].join('\n')
             );
-            
+
+            // Track successes vs failures
             results.totalTests++;
-            results.fullCommandTests++;
-            
+            if (commandResult.success) {
+                results.successes++;
+            } else {
+                results.failures.push({ name: example.name, error: commandResult.error || 'Unknown error' });
+            }
+
         } catch (error) {
             console.error(`❌ FAILED: ${example.name} - ${error.message}`);
             results.failures.push({ name: example.name, error: error.message });
@@ -587,8 +350,8 @@ async function generateFullTestData() {
             
             // STOP IMMEDIATELY ON ANY FAILURE
             console.error('');
-            console.error('FATAL ERROR: Cannot generate placeholder data');
-            console.error('REQUIREMENT: ALL tests must have full command streams');
+            console.error('FATAL ERROR: Test generation failed');
+            console.error('REQUIREMENT: All tests must generate successfully');
             console.error(`Failed at test ${i+1}/${allExamples.length}: ${example.name}`);
             throw error;
         }
@@ -611,17 +374,33 @@ async function main() {
     
     // GENERATE FULL COMMAND STREAMS FOR ALL 135 TESTS OR FAIL
     result = await generateFullTestData();
-    
-    if (result.totalTests !== 135 || result.fullCommandTests !== 135) {
-        console.error('FATAL ERROR: Failed to generate full command streams for all tests');
-        console.error(`Generated: ${result.fullCommandTests}/${result.totalTests} full command streams`);
-        console.error('REQUIREMENT: ALL 135 tests must have full command streams');
+
+    // Report generation summary
+    console.log('');
+    console.log('=== GENERATION SUMMARY ===');
+    console.log(`Total Tests: ${result.totalTests}`);
+    console.log(`Successful: ${result.successes}`);
+    console.log(`Failed: ${result.failures.length}`);
+
+    if (result.failures.length > 0) {
+        console.log('');
+        console.log('Failed tests:');
+        result.failures.forEach(f => {
+            console.log(`  - ${f.name}: ${f.error}`);
+        });
+    }
+
+    if (result.successes !== 135) {
+        console.log('');
+        console.error('❌ GENERATION INCOMPLETE');
+        console.error(`Expected: 135 successful tests`);
+        console.error(`Actual: ${result.successes} successful, ${result.failures.length} failed`);
         process.exit(1);
     }
-    
-    conditionalLog(true, '');
-    conditionalLog(true, '✅ SUCCESS: Generated full command streams for ALL 135 tests');
-    conditionalLog(true, '✅ Test data is now complete and ready for validation');
+
+    console.log('');
+    console.log('✅ SUCCESS: All 135 tests generated successfully');
+    console.log('✅ Test data is now complete and ready for validation');
     
     conditionalLog(true, '');
     conditionalLog(true, 'Next steps:');
@@ -640,5 +419,3 @@ if (require.main === module) {
             process.exit(2);
         });
 }
-
-module.exports = { generateASTOnly, generateSelective };

@@ -2,6 +2,7 @@ name=DigitalReadSerial.ino
 source=unknown
 astSize=1494
 codeSize=556
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=18
 content=// 01.Basics DigitalReadSerial.ino

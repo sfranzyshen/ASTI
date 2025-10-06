@@ -2,6 +2,7 @@ name=StringComparisonOperators.ino
 source=unknown
 astSize=4512
 codeSize=2795
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=63
 content=// 08.Strings StringComparisonOperators

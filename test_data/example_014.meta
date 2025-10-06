@@ -2,6 +2,7 @@ name=tonePitchFollower.ino
 source=unknown
 astSize=1586
 codeSize=654
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=18
 content=// 02.Digital tonePitchFollower.ino

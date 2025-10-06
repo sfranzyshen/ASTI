@@ -2,6 +2,7 @@ name=Global_variable_declarations.ino
 source=unknown
 astSize=1828
 codeSize=494
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=24
 content=#include <Arduino.h>

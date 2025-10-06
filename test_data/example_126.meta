@@ -2,6 +2,7 @@ name=Self-Referential_Structs_Linked_List_Node.ino
 source=unknown
 astSize=1897
 codeSize=379
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=25
 content=// Self-Referential Structs (Linked List Node)

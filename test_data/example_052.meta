@@ -2,6 +2,7 @@ name=StringLength.ino
 source=unknown
 astSize=2223
 codeSize=975
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=22
 content=// 08.Strings StringLength

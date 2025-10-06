@@ -2,6 +2,7 @@ name=switchCase2.ino
 source=unknown
 astSize=2105
 codeSize=821
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=20
 content=// 05.Control switchCase2.ino

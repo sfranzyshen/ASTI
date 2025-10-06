@@ -2,6 +2,7 @@ name=Midi.ino
 source=unknown
 astSize=1820
 codeSize=700
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=27
 content=// 04.Communication Midi.ino

@@ -2,6 +2,7 @@ name=Test_Case_for_Function_Pointer_Declarations.ino
 source=unknown
 astSize=1244
 codeSize=155
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=12
 content=// Test Case for Function Pointer Declarations

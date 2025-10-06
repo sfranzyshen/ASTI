@@ -2,6 +2,7 @@ name=Type_Promotion_and_Implicit_Conversions.ino
 source=unknown
 astSize=1713
 codeSize=309
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=21
 content=// Type Promotion and Implicit Conversions

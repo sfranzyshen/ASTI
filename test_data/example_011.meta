@@ -2,6 +2,7 @@ name=toneKeyboard.ino
 source=unknown
 astSize=1610
 codeSize=499
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=22
 content=// 02.Digital toneKeyboard.ino

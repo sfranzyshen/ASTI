@@ -2,6 +2,7 @@ name=Complex_for_loop_with_multiple_expressions.ino
 source=unknown
 astSize=1751
 codeSize=291
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=24
 content=// Complex for loop with multiple expressions

@@ -2,6 +2,7 @@ name=Mixed-Type_Expressions_and_Casting.ino
 source=unknown
 astSize=1968
 codeSize=433
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=23
 content=// Mixed-Type Expressions and Casting

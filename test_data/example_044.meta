@@ -2,6 +2,7 @@ name=barGraph.ino
 source=unknown
 astSize=2089
 codeSize=938
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=30
 content=// 07.Display barGraph.ino

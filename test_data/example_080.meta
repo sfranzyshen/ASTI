@@ -2,6 +2,7 @@ name=To_test_the_Lexer_and_Parser.ino
 source=unknown
 astSize=1467
 codeSize=433
+status=SUCCESS
 mode=AST_AND_COMMANDS
 commandCount=17
 content=// To test the Lexer and Parser
