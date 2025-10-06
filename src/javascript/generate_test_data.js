@@ -214,12 +214,17 @@ function generateCommandsOptimized(ast, example) {
             
             const commands = [];
             let done = false;
-            let inSetupContext = false; // Track if we're in setup() execution
+            let hasSeenSetupEnd = false; // TEST 78 FIX: Track if setup() has completed
 
             interpreter.onCommand = (cmd) => {
                 // Capture command exactly as JavaScript interpreter produces it
                 commands.push(cmd);
-                
+
+                // TEST 78 FIX: Track when setup() completes
+                if (cmd.type === 'SETUP_END') {
+                    hasSeenSetupEnd = true;
+                }
+
                 // DETERMINISTIC PATTERN: Handle request-response with reproducible mock data
                 // Using MockDataManager for cross-platform consistency
                 switch (cmd.type) {
@@ -248,27 +253,30 @@ function generateCommandsOptimized(ast, example) {
                         }, 5); // Fixed 5ms delay for determinism
                         break;
                 }
-                
+
                 if (cmd.type === 'PROGRAM_END' || cmd.type === 'ERROR') {
                     done = true;
                 }
 
-                // SMART HANDLER: Stop after nested loop limits to prevent complex loop() timeout
-                if (cmd.type === 'LOOP_LIMIT_REACHED') {
-                    const message = cmd.message || '';
-                    const isNestedLoop = message.includes('Do-while') ||
-                                         message.includes('While loop') ||
-                                         message.includes('For loop');
-
-                    if (isNestedLoop) {
-                        // Wait for setup to complete, then stop
-                        setTimeout(() => {
-                            if (!done) {
-                                done = true;
-                            }
-                        }, 100);
-                    }
-                }
+                // TEST 78 FIX: Disabled smart handler - let programs complete naturally
+                // With maxLoopIterations=1, all tests complete quickly without timeout
+                // The smart handler was causing Test 78 to time out by interfering with execution
+                // if (cmd.type === 'LOOP_LIMIT_REACHED') {
+                //     const message = cmd.message || '';
+                //     const isNestedLoop = message.includes('Do-while') ||
+                //                          message.includes('While loop') ||
+                //                          message.includes('For loop');
+                //
+                //     // Only stop if we're in loop() context (after setup completed)
+                //     if (isNestedLoop && hasSeenSetupEnd) {
+                //         // Wait for loop to complete, then stop
+                //         setTimeout(() => {
+                //             if (!done) {
+                //                 done = true;
+                //             }
+                //         }, 100);
+                //     }
+                // }
             };
             
             interpreter.onError = (error) => {
