@@ -2,9 +2,9 @@ name=ArduinoISP.ino
 source=unknown
 astSize=16829
 codeSize=12510
-status=FAILED
+status=SUCCESS
 mode=AST_AND_COMMANDS
-commandCount=1
+commandCount=65
 content=// 11.ArduinoISP ArduinoISP.ino
 
 #include "Arduino.h"

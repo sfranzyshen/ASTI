@@ -7131,8 +7131,10 @@ class ASTInterpreter {
             if (this.options.verbose) {
                 debugLog(`Do-while loop limit reached: ${iterations} iterations`);
             }
-            // Signal that we reached the limit for test completion
-            this.executionContext.shouldContinue = false;
+            // Only signal completion if we're in loop() context, not setup() context
+            if (this.executionContext.phase === 'loop') {
+                this.executionContext.shouldContinue = false;
+            }
         }
     }
     
