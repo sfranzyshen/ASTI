@@ -1,7 +1,5 @@
 {"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"18.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
-{"type":"ARDUINO_LIBRARY_INSTANTIATION","library":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"objectId":"Adafruit_NeoPixel_88076058924299","timestamp":0,"message":"Adafruit_NeoPixel(60, 6, 82)"}
-{"type":"VAR_SET","timestamp":0,"variable":"strip","value":{"libraryName":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"type":"library_object","objectId":"Adafruit_NeoPixel_88076058924299","initialized":true,"properties":{}}}
 {"type":"VAR_SET","timestamp":0,"variable":"pixelPrevious","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"patternPrevious","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"patternCurrent","value":0}
@@ -14,6 +12,12 @@
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"clock_prescale_set","arguments":["0"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: clock_prescale_set","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.begin","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.begin","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.show","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.show","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.setBrightness","arguments":["50"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.setBrightness","errorType":"RuntimeError"}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
@@ -35,10 +39,16 @@
 {"type":"SWITCH_CASE","timestamp":0,"value":3.000000,"shouldExecute":false}
 {"type":"SWITCH_CASE","timestamp":0,"value":2.000000,"shouldExecute":false}
 {"type":"SWITCH_CASE","timestamp":0,"value":1.000000,"shouldExecute":true}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["0","255","0"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50.000000]}
 {"type":"VAR_SET","timestamp":0,"variable":"current_pixel","value":0,"isExtern":true}
 {"type":"VAR_SET","timestamp":0,"variable":"pixelInterval","value":50}
 {"type":"VAR_SET","timestamp":0,"variable":"current_pixel","value":1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.setPixelColor","arguments":["0","null"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.setPixelColor","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.show","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.show","errorType":"RuntimeError"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"BREAK_STATEMENT","timestamp":0}
 {"type":"SWITCH_CASE","timestamp":0,"value":null,"shouldExecute":false}

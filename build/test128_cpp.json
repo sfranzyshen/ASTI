@@ -6,16 +6,16 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
-{"type":"VAR_SET","timestamp":0,"variable":"i","value":-2147483648}
+{"type":"VAR_SET","timestamp":0,"variable":"i","value":4294967295}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Initial value: "],"data":"Initial value: ","message":"Serial.print("Initial value: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["-2147483648"],"data":"-2147483648","message":"Serial.println(-2147483648)"}
-{"type":"VAR_SET","timestamp":0,"variable":"i","value":-2147483647}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["After increment (rollover): "],"data":"After increment (rollover): ","message":"Serial.print("After increment (rollover): ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["-2147483647"],"data":"-2147483647","message":"Serial.println(-2147483647)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["4294967295"],"data":"4294967295","message":"Serial.println(4294967295)"}
 {"type":"VAR_SET","timestamp":0,"variable":"i","value":0}
-{"type":"VAR_SET","timestamp":0,"variable":"i","value":-1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["After increment (rollover): "],"data":"After increment (rollover): ","message":"Serial.print("After increment (rollover): ")"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["0"],"data":"0","message":"Serial.println(0)"}
+{"type":"VAR_SET","timestamp":0,"variable":"i","value":0}
+{"type":"VAR_SET","timestamp":0,"variable":"i","value":4294967295}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["After decrement (rollover): "],"data":"After decrement (rollover): ","message":"Serial.print("After decrement (rollover): ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["-1"],"data":"-1","message":"Serial.println(-1)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["4294967295"],"data":"4294967295","message":"Serial.println(4294967295)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
 {"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}

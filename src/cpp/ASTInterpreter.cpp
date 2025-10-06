@@ -2320,6 +2320,10 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
                     if (std::holds_alternative<std::shared_ptr<ArduinoPointer>>(currentValue)) {
                         auto oldPtr = std::get<std::shared_ptr<ArduinoPointer>>(currentValue);
                         newValue = oldPtr->add(1);  // Create new pointer with offset+1
+                    } else if (std::holds_alternative<uint32_t>(currentValue)) {
+                        // TEST 128: Unsigned arithmetic with automatic rollover
+                        uint32_t val = std::get<uint32_t>(currentValue);
+                        newValue = static_cast<uint32_t>(val + 1);  // Rollover: 4294967295 + 1 = 0
                     } else if (std::holds_alternative<int32_t>(currentValue)) {
                         newValue = std::get<int32_t>(currentValue) + 1;
                     } else if (std::holds_alternative<double>(currentValue)) {
@@ -2333,6 +2337,10 @@ void ASTInterpreter::visit(arduino_ast::PostfixExpressionNode& node) {
                     if (std::holds_alternative<std::shared_ptr<ArduinoPointer>>(currentValue)) {
                         auto oldPtr = std::get<std::shared_ptr<ArduinoPointer>>(currentValue);
                         newValue = oldPtr->subtract(1);  // Create new pointer with offset-1
+                    } else if (std::holds_alternative<uint32_t>(currentValue)) {
+                        // TEST 128: Unsigned arithmetic with automatic rollover
+                        uint32_t val = std::get<uint32_t>(currentValue);
+                        newValue = static_cast<uint32_t>(val - 1);  // Rollover: 0 - 1 = 4294967295
                     } else if (std::holds_alternative<int32_t>(currentValue)) {
                         newValue = std::get<int32_t>(currentValue) - 1;
                     } else if (std::holds_alternative<double>(currentValue)) {
@@ -3226,7 +3234,11 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
 
                             // Apply prefix operation
                             if (op == "++") {
-                                if (std::holds_alternative<int32_t>(currentValue)) {
+                                if (std::holds_alternative<uint32_t>(currentValue)) {
+                                    // TEST 128: Unsigned arithmetic with automatic rollover
+                                    uint32_t val = std::get<uint32_t>(currentValue);
+                                    newValue = static_cast<uint32_t>(val + 1);
+                                } else if (std::holds_alternative<int32_t>(currentValue)) {
                                     newValue = std::get<int32_t>(currentValue) + 1;
                                 } else if (std::holds_alternative<double>(currentValue)) {
                                     newValue = std::get<double>(currentValue) + 1.0;
@@ -3235,7 +3247,11 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                                     newValue = convertToInt(currentValue) + 1;
                                 }
                             } else { // op == "--"
-                                if (std::holds_alternative<int32_t>(currentValue)) {
+                                if (std::holds_alternative<uint32_t>(currentValue)) {
+                                    // TEST 128: Unsigned arithmetic with automatic rollover
+                                    uint32_t val = std::get<uint32_t>(currentValue);
+                                    newValue = static_cast<uint32_t>(val - 1);
+                                } else if (std::holds_alternative<int32_t>(currentValue)) {
                                     newValue = std::get<int32_t>(currentValue) - 1;
                                 } else if (std::holds_alternative<double>(currentValue)) {
                                     newValue = std::get<double>(currentValue) - 1.0;
@@ -3483,15 +3499,22 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
 
     // Arithmetic operations
     // Preserve integer type semantics: int op int = int, any double = double
-    // This matches Arduino/C++ behavior
+    // TEST 128: Preserve unsigned semantics: uint32_t op uint32_t = uint32_t
     if (op == "+") {
         if (isNumeric(left) && isNumeric(right)) {
-            bool leftIsInt = std::holds_alternative<int32_t>(left) || std::holds_alternative<uint32_t>(left);
-            bool rightIsInt = std::holds_alternative<int32_t>(right) || std::holds_alternative<uint32_t>(right);
+            bool leftIsUnsigned = std::holds_alternative<uint32_t>(left);
+            bool rightIsUnsigned = std::holds_alternative<uint32_t>(right);
+            bool leftIsSigned = std::holds_alternative<int32_t>(left);
+            bool rightIsSigned = std::holds_alternative<int32_t>(right);
 
-            if (leftIsInt && rightIsInt) {
-                // Integer addition
-                return convertToInt(left) + convertToInt(right);
+            if (leftIsUnsigned || rightIsUnsigned) {
+                // At least one unsigned operand - use unsigned arithmetic with rollover
+                uint32_t leftVal = leftIsUnsigned ? std::get<uint32_t>(left) : static_cast<uint32_t>(std::get<int32_t>(left));
+                uint32_t rightVal = rightIsUnsigned ? std::get<uint32_t>(right) : static_cast<uint32_t>(std::get<int32_t>(right));
+                return static_cast<uint32_t>(leftVal + rightVal);  // Automatic rollover
+            } else if (leftIsSigned && rightIsSigned) {
+                // Both signed - signed arithmetic
+                return std::get<int32_t>(left) + std::get<int32_t>(right);
             } else {
                 // Floating-point addition
                 return convertToDouble(left) + convertToDouble(right);
@@ -3501,55 +3524,124 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
             return convertToString(left) + convertToString(right);
         }
     } else if (op == "-") {
-        bool leftIsInt = std::holds_alternative<int32_t>(left) || std::holds_alternative<uint32_t>(left);
-        bool rightIsInt = std::holds_alternative<int32_t>(right) || std::holds_alternative<uint32_t>(right);
+        bool leftIsUnsigned = std::holds_alternative<uint32_t>(left);
+        bool rightIsUnsigned = std::holds_alternative<uint32_t>(right);
+        bool leftIsSigned = std::holds_alternative<int32_t>(left);
+        bool rightIsSigned = std::holds_alternative<int32_t>(right);
+        bool leftIsDouble = std::holds_alternative<double>(left);
+        bool rightIsDouble = std::holds_alternative<double>(right);
 
-        if (leftIsInt && rightIsInt) {
-            // Integer subtraction
-            return convertToInt(left) - convertToInt(right);
+        // TEST 78 DEBUG: Log variant types to diagnose variant access error
+        #ifdef ENABLE_DEBUG_OUTPUT
+        DEBUG_STREAM << "DEBUG subtraction: leftIsUnsigned=" << leftIsUnsigned
+                    << " leftIsSigned=" << leftIsSigned
+                    << " leftIsDouble=" << leftIsDouble
+                    << " rightIsUnsigned=" << rightIsUnsigned
+                    << " rightIsSigned=" << rightIsSigned
+                    << " rightIsDouble=" << rightIsDouble << std::endl;
+        #endif
+
+        if (leftIsUnsigned || rightIsUnsigned) {
+            // At least one unsigned operand - use unsigned arithmetic with rollover
+            // TEST 78 FIX: Handle double operands that need conversion
+            uint32_t leftVal;
+            if (leftIsUnsigned) {
+                leftVal = std::get<uint32_t>(left);
+            } else if (leftIsSigned) {
+                leftVal = static_cast<uint32_t>(std::get<int32_t>(left));
+            } else if (leftIsDouble) {
+                leftVal = static_cast<uint32_t>(std::get<double>(left));
+            } else {
+                leftVal = 0; // Fallback for monostate or other types
+            }
+
+            uint32_t rightVal;
+            if (rightIsUnsigned) {
+                rightVal = std::get<uint32_t>(right);
+            } else if (rightIsSigned) {
+                rightVal = static_cast<uint32_t>(std::get<int32_t>(right));
+            } else if (rightIsDouble) {
+                rightVal = static_cast<uint32_t>(std::get<double>(right));
+            } else {
+                rightVal = 0; // Fallback for monostate or other types
+            }
+
+            return static_cast<uint32_t>(leftVal - rightVal);  // Automatic rollover
+        } else if (leftIsSigned && rightIsSigned) {
+            // Both signed - signed arithmetic
+            return std::get<int32_t>(left) - std::get<int32_t>(right);
         } else {
             // Floating-point subtraction
             return convertToDouble(left) - convertToDouble(right);
         }
     } else if (op == "*") {
-        bool leftIsInt = std::holds_alternative<int32_t>(left) || std::holds_alternative<uint32_t>(left);
-        bool rightIsInt = std::holds_alternative<int32_t>(right) || std::holds_alternative<uint32_t>(right);
+        bool leftIsUnsigned = std::holds_alternative<uint32_t>(left);
+        bool rightIsUnsigned = std::holds_alternative<uint32_t>(right);
+        bool leftIsSigned = std::holds_alternative<int32_t>(left);
+        bool rightIsSigned = std::holds_alternative<int32_t>(right);
 
-        if (leftIsInt && rightIsInt) {
-            // Integer multiplication
-            return convertToInt(left) * convertToInt(right);
+        if (leftIsUnsigned || rightIsUnsigned) {
+            // At least one unsigned operand - use unsigned arithmetic
+            uint32_t leftVal = leftIsUnsigned ? std::get<uint32_t>(left) : static_cast<uint32_t>(std::get<int32_t>(left));
+            uint32_t rightVal = rightIsUnsigned ? std::get<uint32_t>(right) : static_cast<uint32_t>(std::get<int32_t>(right));
+            return static_cast<uint32_t>(leftVal * rightVal);
+        } else if (leftIsSigned && rightIsSigned) {
+            // Both signed - signed arithmetic
+            return std::get<int32_t>(left) * std::get<int32_t>(right);
         } else {
             // Floating-point multiplication
             return convertToDouble(left) * convertToDouble(right);
         }
     } else if (op == "/") {
         // Preserve integer division semantics (C++/Arduino behavior)
-        // int / int = int (with truncation), any double operand = double result
-        bool leftIsInt = std::holds_alternative<int32_t>(left) || std::holds_alternative<uint32_t>(left);
-        bool rightIsInt = std::holds_alternative<int32_t>(right) || std::holds_alternative<uint32_t>(right);
+        // TEST 128: Preserve unsigned division: uint / uint = uint
+        bool leftIsUnsigned = std::holds_alternative<uint32_t>(left);
+        bool rightIsUnsigned = std::holds_alternative<uint32_t>(right);
+        bool leftIsSigned = std::holds_alternative<int32_t>(left);
+        bool rightIsSigned = std::holds_alternative<int32_t>(right);
 
-        if (leftIsInt && rightIsInt) {
-            // Integer division: int / int = int (with truncation)
-            int32_t leftVal = convertToInt(left);
-            int32_t rightVal = convertToInt(right);
+        if (leftIsUnsigned || rightIsUnsigned) {
+            // At least one unsigned operand - unsigned division
+            uint32_t leftVal = leftIsUnsigned ? std::get<uint32_t>(left) : static_cast<uint32_t>(std::get<int32_t>(left));
+            uint32_t rightVal = rightIsUnsigned ? std::get<uint32_t>(right) : static_cast<uint32_t>(std::get<int32_t>(right));
             if (rightVal == 0) {
                 emitError("Division by zero");
                 return std::monostate{};
             }
-            return leftVal / rightVal;  // Returns int32_t
-        } else if (leftIsInt && std::holds_alternative<double>(right)) {
+            return static_cast<uint32_t>(leftVal / rightVal);
+        } else if (leftIsSigned && rightIsSigned) {
+            // Both signed - signed division
+            int32_t leftVal = std::get<int32_t>(left);
+            int32_t rightVal = std::get<int32_t>(right);
+            if (rightVal == 0) {
+                emitError("Division by zero");
+                return std::monostate{};
+            }
+            return leftVal / rightVal;
+        } else if ((leftIsSigned || leftIsUnsigned) && std::holds_alternative<double>(right)) {
             // Special case: int / double where double is integer-valued (e.g., 560 / 1024.0)
             // Match JavaScript's behavior: does INTEGER division when right is integer-valued
             double rightDouble = std::get<double>(right);
             if (std::floor(rightDouble) == rightDouble) {
                 // Right operand has no fractional part - do integer division
-                int32_t leftVal = convertToInt(left);
-                int32_t rightVal = static_cast<int32_t>(rightDouble);
-                if (rightVal == 0) {
-                    emitError("Division by zero");
-                    return std::monostate{};
+                // TEST 128: Preserve unsigned type if left operand is unsigned
+                if (leftIsUnsigned) {
+                    uint32_t leftVal = std::get<uint32_t>(left);
+                    uint32_t rightVal = static_cast<uint32_t>(rightDouble);
+                    if (rightVal == 0) {
+                        emitError("Division by zero");
+                        return std::monostate{};
+                    }
+                    return leftVal / rightVal;  // Unsigned integer division
+                } else {
+                    int32_t leftVal = std::get<int32_t>(left);
+                    int32_t rightVal = static_cast<int32_t>(rightDouble);
+                    if (rightVal == 0) {
+                        emitError("Division by zero");
+                        return std::monostate{};
+                    }
+                    return leftVal / rightVal;  // Signed integer division
                 }
-                return leftVal / rightVal;  // INTEGER division to match JavaScript
             }
             // Right operand has fractional part - do normal float division
             if (rightDouble == 0.0) {
@@ -3567,13 +3659,31 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
             return convertToDouble(left) / rightVal;  // Returns double
         }
     } else if (op == "%") {
-        int32_t leftVal = convertToInt(left);
-        int32_t rightVal = convertToInt(right);
-        if (rightVal == 0) {
-            emitError("Modulo by zero");
-            return std::monostate{};
+        // TEST 128: Preserve unsigned modulo semantics
+        bool leftIsUnsigned = std::holds_alternative<uint32_t>(left);
+        bool rightIsUnsigned = std::holds_alternative<uint32_t>(right);
+        bool leftIsSigned = std::holds_alternative<int32_t>(left);
+        bool rightIsSigned = std::holds_alternative<int32_t>(right);
+
+        if (leftIsUnsigned || rightIsUnsigned) {
+            // At least one unsigned operand - unsigned modulo
+            uint32_t leftVal = leftIsUnsigned ? std::get<uint32_t>(left) : static_cast<uint32_t>(std::get<int32_t>(left));
+            uint32_t rightVal = rightIsUnsigned ? std::get<uint32_t>(right) : static_cast<uint32_t>(std::get<int32_t>(right));
+            if (rightVal == 0) {
+                emitError("Modulo by zero");
+                return std::monostate{};
+            }
+            return static_cast<uint32_t>(leftVal % rightVal);
+        } else {
+            // Signed modulo
+            int32_t leftVal = convertToInt(left);
+            int32_t rightVal = convertToInt(right);
+            if (rightVal == 0) {
+                emitError("Modulo by zero");
+                return std::monostate{};
+            }
+            return leftVal % rightVal;
         }
-        return leftVal % rightVal;
     }
     
     // Comparison operations
@@ -3582,13 +3692,161 @@ CommandValue ASTInterpreter::evaluateBinaryOperation(const std::string& op, cons
     } else if (op == "!=") {
         return !commandValuesEqual(left, right);
     } else if (op == "<") {
-        return convertToDouble(left) < convertToDouble(right);
+        // TEST 128: Preserve unsigned comparison semantics
+        bool leftIsUnsigned = std::holds_alternative<uint32_t>(left);
+        bool rightIsUnsigned = std::holds_alternative<uint32_t>(right);
+        bool leftIsSigned = std::holds_alternative<int32_t>(left);
+        bool rightIsSigned = std::holds_alternative<int32_t>(right);
+        bool leftIsDouble = std::holds_alternative<double>(left);
+        bool rightIsDouble = std::holds_alternative<double>(right);
+
+        if (leftIsUnsigned || rightIsUnsigned) {
+            // At least one unsigned - unsigned comparison
+            // TEST 78 FIX: Handle double operands safely
+            uint32_t leftVal;
+            if (leftIsUnsigned) {
+                leftVal = std::get<uint32_t>(left);
+            } else if (leftIsSigned) {
+                leftVal = static_cast<uint32_t>(std::get<int32_t>(left));
+            } else if (leftIsDouble) {
+                leftVal = static_cast<uint32_t>(std::get<double>(left));
+            } else {
+                leftVal = 0;
+            }
+
+            uint32_t rightVal;
+            if (rightIsUnsigned) {
+                rightVal = std::get<uint32_t>(right);
+            } else if (rightIsSigned) {
+                rightVal = static_cast<uint32_t>(std::get<int32_t>(right));
+            } else if (rightIsDouble) {
+                rightVal = static_cast<uint32_t>(std::get<double>(right));
+            } else {
+                rightVal = 0;
+            }
+
+            return leftVal < rightVal;
+        } else if (leftIsSigned && rightIsSigned) {
+            // Both signed - signed comparison
+            return std::get<int32_t>(left) < std::get<int32_t>(right);
+        } else {
+            // Floating-point comparison
+            return convertToDouble(left) < convertToDouble(right);
+        }
     } else if (op == "<=") {
-        return convertToDouble(left) <= convertToDouble(right);
+        bool leftIsUnsigned = std::holds_alternative<uint32_t>(left);
+        bool rightIsUnsigned = std::holds_alternative<uint32_t>(right);
+        bool leftIsSigned = std::holds_alternative<int32_t>(left);
+        bool rightIsSigned = std::holds_alternative<int32_t>(right);
+        bool leftIsDouble = std::holds_alternative<double>(left);
+        bool rightIsDouble = std::holds_alternative<double>(right);
+
+        if (leftIsUnsigned || rightIsUnsigned) {
+            // TEST 78 FIX: Handle double operands safely
+            uint32_t leftVal;
+            if (leftIsUnsigned) {
+                leftVal = std::get<uint32_t>(left);
+            } else if (leftIsSigned) {
+                leftVal = static_cast<uint32_t>(std::get<int32_t>(left));
+            } else if (leftIsDouble) {
+                leftVal = static_cast<uint32_t>(std::get<double>(left));
+            } else {
+                leftVal = 0;
+            }
+
+            uint32_t rightVal;
+            if (rightIsUnsigned) {
+                rightVal = std::get<uint32_t>(right);
+            } else if (rightIsSigned) {
+                rightVal = static_cast<uint32_t>(std::get<int32_t>(right));
+            } else if (rightIsDouble) {
+                rightVal = static_cast<uint32_t>(std::get<double>(right));
+            } else {
+                rightVal = 0;
+            }
+
+            return leftVal <= rightVal;
+        } else if (leftIsSigned && rightIsSigned) {
+            return std::get<int32_t>(left) <= std::get<int32_t>(right);
+        } else {
+            return convertToDouble(left) <= convertToDouble(right);
+        }
     } else if (op == ">") {
-        return convertToDouble(left) > convertToDouble(right);
+        bool leftIsUnsigned = std::holds_alternative<uint32_t>(left);
+        bool rightIsUnsigned = std::holds_alternative<uint32_t>(right);
+        bool leftIsSigned = std::holds_alternative<int32_t>(left);
+        bool rightIsSigned = std::holds_alternative<int32_t>(right);
+        bool leftIsDouble = std::holds_alternative<double>(left);
+        bool rightIsDouble = std::holds_alternative<double>(right);
+
+        if (leftIsUnsigned || rightIsUnsigned) {
+            // TEST 78 FIX: Handle double operands safely
+            uint32_t leftVal;
+            if (leftIsUnsigned) {
+                leftVal = std::get<uint32_t>(left);
+            } else if (leftIsSigned) {
+                leftVal = static_cast<uint32_t>(std::get<int32_t>(left));
+            } else if (leftIsDouble) {
+                leftVal = static_cast<uint32_t>(std::get<double>(left));
+            } else {
+                leftVal = 0;
+            }
+
+            uint32_t rightVal;
+            if (rightIsUnsigned) {
+                rightVal = std::get<uint32_t>(right);
+            } else if (rightIsSigned) {
+                rightVal = static_cast<uint32_t>(std::get<int32_t>(right));
+            } else if (rightIsDouble) {
+                rightVal = static_cast<uint32_t>(std::get<double>(right));
+            } else {
+                rightVal = 0;
+            }
+
+            return leftVal > rightVal;
+        } else if (leftIsSigned && rightIsSigned) {
+            return std::get<int32_t>(left) > std::get<int32_t>(right);
+        } else {
+            return convertToDouble(left) > convertToDouble(right);
+        }
     } else if (op == ">=") {
-        return convertToDouble(left) >= convertToDouble(right);
+        bool leftIsUnsigned = std::holds_alternative<uint32_t>(left);
+        bool rightIsUnsigned = std::holds_alternative<uint32_t>(right);
+        bool leftIsSigned = std::holds_alternative<int32_t>(left);
+        bool rightIsSigned = std::holds_alternative<int32_t>(right);
+        bool leftIsDouble = std::holds_alternative<double>(left);
+        bool rightIsDouble = std::holds_alternative<double>(right);
+
+        if (leftIsUnsigned || rightIsUnsigned) {
+            // TEST 78 FIX: Handle double operands safely
+            uint32_t leftVal;
+            if (leftIsUnsigned) {
+                leftVal = std::get<uint32_t>(left);
+            } else if (leftIsSigned) {
+                leftVal = static_cast<uint32_t>(std::get<int32_t>(left));
+            } else if (leftIsDouble) {
+                leftVal = static_cast<uint32_t>(std::get<double>(left));
+            } else {
+                leftVal = 0;
+            }
+
+            uint32_t rightVal;
+            if (rightIsUnsigned) {
+                rightVal = std::get<uint32_t>(right);
+            } else if (rightIsSigned) {
+                rightVal = static_cast<uint32_t>(std::get<int32_t>(right));
+            } else if (rightIsDouble) {
+                rightVal = static_cast<uint32_t>(std::get<double>(right));
+            } else {
+                rightVal = 0;
+            }
+
+            return leftVal >= rightVal;
+        } else if (leftIsSigned && rightIsSigned) {
+            return std::get<int32_t>(left) >= std::get<int32_t>(right);
+        } else {
+            return convertToDouble(left) >= convertToDouble(right);
+        }
     }
     
     // Logical operations
@@ -8466,21 +8724,38 @@ CommandValue ASTInterpreter::convertToType(const CommandValue& value, const std:
     }
 
     // Handle conversion from any CommandValue type to the target type
-    if (baseTypeName == "int" || baseTypeName == "unsigned int" || baseTypeName == "byte" ||
-        baseTypeName == "long" || baseTypeName == "unsigned long" ||
-        baseTypeName == "int32_t" || baseTypeName == "uint32_t" ||
-        baseTypeName == "int16_t" || baseTypeName == "uint16_t" ||
-        baseTypeName == "int8_t" || baseTypeName == "uint8_t") {
-        // Convert to integer (int32_t to match CommandValue variant)
-        // TEST 42 FIX: Added "long" and other integer type variants
+    // TEST 128 FIX: Split unsigned and signed integer types for proper rollover semantics
+    if (baseTypeName == "unsigned int" || baseTypeName == "unsigned long" ||
+        baseTypeName == "uint32_t" || baseTypeName == "uint16_t" || baseTypeName == "uint8_t" || baseTypeName == "byte") {
+        // Convert to UNSIGNED integer (uint32_t for proper rollover)
+        if (std::holds_alternative<double>(value)) {
+            uint32_t uintValue = static_cast<uint32_t>(std::get<double>(value));
+            return uintValue;
+        } else if (std::holds_alternative<int32_t>(value)) {
+            // Convert signed to unsigned (handles negative → large positive)
+            uint32_t uintValue = static_cast<uint32_t>(std::get<int32_t>(value));
+            return uintValue;
+        } else if (std::holds_alternative<uint32_t>(value)) {
+            return value; // Already uint32_t
+        } else if (std::holds_alternative<bool>(value)) {
+            uint32_t uintValue = std::get<bool>(value) ? 1 : 0;
+            return uintValue;
+        }
+    } else if (baseTypeName == "int" || baseTypeName == "long" ||
+               baseTypeName == "int32_t" || baseTypeName == "int16_t" || baseTypeName == "int8_t") {
+        // Convert to SIGNED integer (int32_t)
         if (std::holds_alternative<double>(value)) {
             int32_t intValue = static_cast<int32_t>(std::get<double>(value));
             return intValue;
-        } else if (std::holds_alternative<bool>(value)) {
-            int32_t intValue = std::get<bool>(value) ? 1 : 0;
+        } else if (std::holds_alternative<uint32_t>(value)) {
+            // Convert unsigned to signed
+            int32_t intValue = static_cast<int32_t>(std::get<uint32_t>(value));
             return intValue;
         } else if (std::holds_alternative<int32_t>(value)) {
             return value; // Already int32_t
+        } else if (std::holds_alternative<bool>(value)) {
+            int32_t intValue = std::get<bool>(value) ? 1 : 0;
+            return intValue;
         }
     } else if (baseTypeName == "float" || baseTypeName == "double") {
         // Convert to float/double

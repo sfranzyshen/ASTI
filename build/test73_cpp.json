@@ -1,13 +1,19 @@
 {"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"18.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
-{"type":"ARDUINO_LIBRARY_INSTANTIATION","library":"LiquidCrystal","constructorArgs":[12,11,5,4,3,2],"objectId":"LiquidCrystal_88068526251887","timestamp":0,"message":"LiquidCrystal(12, 11, 5, 4, 3, 2)"}
-{"type":"VAR_SET","timestamp":0,"variable":"lcd","value":{"libraryName":"LiquidCrystal","constructorArgs":[12,11,5,4,3,2],"type":"library_object","objectId":"LiquidCrystal_88068526251887","initialized":true,"properties":{}}}
 {"type":"VAR_SET","timestamp":0,"variable":"switchPin","value":6,"isConst":true}
 {"type":"VAR_SET","timestamp":0,"variable":"switchState","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"prevSwitchState","value":0}
 {"type":"VAR_SET","timestamp":0,"variable":"reply","value":null}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"lcd.begin","arguments":["16","2"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: lcd.begin","errorType":"RuntimeError"}
 {"type":"PIN_MODE","timestamp":0,"pin":6,"mode":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"lcd.print","arguments":["Ask the"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: lcd.print","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"lcd.setCursor","arguments":["0","1"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: lcd.setCursor","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"lcd.print","arguments":["Crystal Ball!"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: lcd.print","errorType":"RuntimeError"}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}

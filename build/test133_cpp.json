@@ -1,20 +1,64 @@
 {"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"18.0.0","status":"started"}
 {"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
-{"type":"ARDUINO_LIBRARY_INSTANTIATION","library":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"objectId":"Adafruit_NeoPixel_88075935093979","timestamp":0,"message":"Adafruit_NeoPixel(60, 6, 82)"}
-{"type":"VAR_SET","timestamp":0,"variable":"strip","value":{"libraryName":"Adafruit_NeoPixel","constructorArgs":[60,6,82],"type":"library_object","objectId":"Adafruit_NeoPixel_88075935093979","initialized":true,"properties":{}}}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"clock_prescale_set","arguments":["0"]}
 {"type":"ERROR","timestamp":0,"message":"Unknown function: clock_prescale_set","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.begin","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.begin","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.show","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.show","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.setBrightness","arguments":["50"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.setBrightness","errorType":"RuntimeError"}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["255","0","0"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50.000000]}
 {"type":"FOR_LOOP","timestamp":0,"phase":"start"}
 {"type":"VAR_SET","timestamp":0,"variable":"i","value":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.numPixels","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.numPixels","errorType":"RuntimeError"}
+{"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":0,"maxIterations":1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["0","255","0"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50.000000]}
+{"type":"FOR_LOOP","timestamp":0,"phase":"start"}
+{"type":"VAR_SET","timestamp":0,"variable":"i","value":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.numPixels","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.numPixels","errorType":"RuntimeError"}
+{"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":0,"maxIterations":1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["0","0","255"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"colorWipe","arguments":[null,50.000000]}
+{"type":"FOR_LOOP","timestamp":0,"phase":"start"}
+{"type":"VAR_SET","timestamp":0,"variable":"i","value":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.numPixels","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.numPixels","errorType":"RuntimeError"}
+{"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":0,"maxIterations":1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.Color","arguments":["127","127","127"]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.Color","errorType":"RuntimeError"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"theaterChase","arguments":[null,50.000000]}
+{"type":"FOR_LOOP","timestamp":0,"phase":"start"}
+{"type":"VAR_SET","timestamp":0,"variable":"a","value":0}
 {"type":"FOR_LOOP","timestamp":0,"phase":"iteration","iteration":0}
+{"type":"FOR_LOOP","timestamp":0,"phase":"start"}
+{"type":"VAR_SET","timestamp":0,"variable":"b","value":0}
+{"type":"FOR_LOOP","timestamp":0,"phase":"iteration","iteration":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.clear","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.clear","errorType":"RuntimeError"}
+{"type":"FOR_LOOP","timestamp":0,"phase":"start"}
+{"type":"VAR_SET","timestamp":0,"variable":"c","value":0}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.numPixels","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.numPixels","errorType":"RuntimeError"}
+{"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":0,"maxIterations":1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"strip.show","arguments":[]}
+{"type":"ERROR","timestamp":0,"message":"Unknown function: strip.show","errorType":"RuntimeError"}
 {"type":"DELAY","timestamp":0,"duration":50,"actualDelay":50}
-{"type":"VAR_SET","timestamp":0,"variable":"i","value":1}
+{"type":"VAR_SET","timestamp":0,"variable":"b","value":1}
+{"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":1,"maxIterations":1}
+{"type":"VAR_SET","timestamp":0,"variable":"a","value":1}
 {"type":"FOR_LOOP","timestamp":0,"phase":"end","iterations":1,"maxIterations":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}

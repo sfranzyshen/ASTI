@@ -7,10 +7,7 @@
 {"type":"VAR_SET","timestamp":0,"variable":"param","value":{"structName":"parameter","fields":{},"type":"struct"},"structType":"parameter"}
 {"type":"VAR_SET","timestamp":0,"variable":"hbval","value":128}
 {"type":"VAR_SET","timestamp":0,"variable":"hbdelta","value":8}
-{"type":"VAR_SET","timestamp":0,"variable":"rst_active_high","value":null,"isExtern":true}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"unsigned int","arguments":[]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: unsigned int","errorType":"RuntimeError"}
-{"type":"VAR_SET","timestamp":0,"variable":"current_page","value":null}
+{"type":"VAR_SET","timestamp":0,"variable":"rst_active_high","value":null}
 {"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.begin","arguments":[19200],"baudRate":19200,"message":"Serial.begin(19200)"}
 {"type":"PIN_MODE","timestamp":0,"pin":5,"mode":1}
@@ -39,8 +36,8 @@
 {"type":"VAR_SET","timestamp":0,"variable":"last_time","value":17807}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
-{"type":"VAR_SET","timestamp":0,"variable":"hbval","value":136}
-{"type":"ANALOG_WRITE","timestamp":0,"pin":7,"value":136}
+{"type":"VAR_SET","timestamp":0,"variable":"hbval","value":"1288"}
+{"type":"ANALOG_WRITE","timestamp":0,"pin":7,"value":1288}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.available","arguments":[]}
 {"type":"IF_STATEMENT","timestamp":0,"condition":0,"conditionDisplay":"0","branch":"else"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}

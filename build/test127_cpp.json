@@ -8,9 +8,9 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"incrementCounter","arguments":[]}
-{"type":"ERROR","timestamp":0,"message":"Unknown function: incrementCounter","errorType":"RuntimeError"}
+{"type":"VAR_SET","timestamp":0,"variable":"global_counter","value":1}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Counter: "],"data":"Counter: ","message":"Serial.print("Counter: ")"}
-{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["0"],"data":"0","message":"Serial.println(0)"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["1"],"data":"1","message":"Serial.println(1)"}
 {"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
 {"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}

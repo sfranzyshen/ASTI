@@ -7,15 +7,15 @@
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
 {"type":"VAR_SET","timestamp":0,"variable":"x","value":100}
-{"type":"VAR_SET","timestamp":0,"variable":"p1","value":{"type":"offset_pointer","targetVariable":"x","pointerId":"ptr_1759633540334_t8jhfh","offset":0}}
-{"type":"VAR_SET","timestamp":0,"variable":"p2","value":{"type":"offset_pointer","targetVariable":"p1","pointerId":"ptr_1759633540334_km7bo5","offset":0}}
+{"type":"VAR_SET","timestamp":0,"variable":"p1","value":{"type":"offset_pointer","targetVariable":"x","pointerId":"ptr_1759713392754_t8jhfh","offset":0}}
+{"type":"VAR_SET","timestamp":0,"variable":"p2","value":{"type":"offset_pointer","targetVariable":"p1","pointerId":"ptr_1759713392754_km7bo5","offset":0}}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Value of x: "],"data":"Value of x: ","message":"Serial.print("Value of x: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["100"],"data":"100","message":"Serial.println(100)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Value of *p1: "],"data":"Value of *p1: ","message":"Serial.print("Value of *p1: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["100"],"data":"100","message":"Serial.println(100)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["Value of **p2: "],"data":"Value of **p2: ","message":"Serial.print("Value of **p2: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["100"],"data":"100","message":"Serial.println(100)"}
-{"type":"POINTER_ASSIGNMENT","timestamp":0,"pointer":"ptr_1759633540334_t8jhfh","targetVariable":"x","value":200.000000,"message":"*x = 200"}
+{"type":"POINTER_ASSIGNMENT","timestamp":0,"pointer":"ptr_1759713392754_t8jhfh","targetVariable":"x","value":200.000000,"message":"*x = 200"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.print","arguments":["New value of x: "],"data":"New value of x: ","message":"Serial.print("New value of x: ")"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.println","arguments":["200"],"data":"200","message":"Serial.println(200)"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
