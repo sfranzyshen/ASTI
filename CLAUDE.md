@@ -188,6 +188,68 @@ Test 78: SKIPPED (generation failed, see metadata)
 
 ---
 
+# 🐛 CRITICAL BUG FIX - VALIDATION EXIT CODE CONSISTENCY 🐛
+
+## **OCTOBER 6, 2025 (LATEST) - EXIT CODE LOGIC FIX FOR SKIPPED TESTS**
+
+### **FIXED CRITICAL INCONSISTENCY IN VALIDATION REPORTING**
+
+**CRITICAL BUG FIXED**: Test 78 was returning exit code 0 (success) causing `run_baseline_validation.sh` to mark it as PASSING when it should be FAILING.
+
+**The Inconsistency:**
+- ✅ `generate_test_data.js`: Correctly reported "134 successes, 1 failure"
+- ❌ `run_baseline_validation.sh`: Incorrectly marked Test 78 as PASSING
+- **Root Cause**: Exit code 0 when it should be exit code 1
+
+**Technical Root Cause** (`build/validate_cross_platform.cpp` line 347):
+```cpp
+// BEFORE (BUG):
+if (status == "FAILED") {
+    std::cout << "Test " << testNumber << ": SKIPPED (generation failed, see metadata)" << std::endl;
+    totalTests--;  // ← BUG: Causes wrong exit code!
+    continue;
+}
+// For single test: totalTests=0, successCount=0
+// Return: (0 == 0) ? 0 : 1 → EXIT CODE 0 (SUCCESS) ← WRONG!
+```
+
+**The Fix:**
+```cpp
+// AFTER (CORRECT):
+if (status == "FAILED") {
+    std::cout << "Test " << testNumber << ": SKIPPED (generation failed, see metadata)" << std::endl;
+    // Count as failure - generation failure is still a test failure
+    // Don't increment successCount, so this test fails validation
+    continue;
+}
+// For single test: totalTests=1, successCount=0
+// Return: (0 == 1) ? 0 : 1 → EXIT CODE 1 (FAILURE) ← CORRECT!
+```
+
+**Validation Results** (After Fix):
+```
+=== Test 78 Individual Run ===
+Tests processed: 1
+Exact matches: 0
+Success rate: 0%
+Exit code: 1 ✅ (was 0 before fix)
+
+=== Full Baseline Validation ===
+Total Tests: 135
+Passing Tests: 134
+Failing Tests: 1 (Test 78)
+Success Rate: 99.25%
+```
+
+**Consistency Achieved:**
+- ✅ `generate_test_data.js`: 134 successes, 1 failure
+- ✅ `run_baseline_validation.sh`: 134 passing, 1 failing (Test 78)
+- ✅ `validate_cross_platform`: Proper exit codes for all tests
+
+**Impact**: Complete consistency across all validation tools. Skipped tests now properly counted as failures with correct exit codes, ensuring accurate reporting throughout the entire validation pipeline.
+
+---
+
 # 🎉 UNSIGNED INTEGER SUPPORT COMPLETE + 99.26% SUCCESS RATE 🎉
 
 ## **OCTOBER 5, 2025 (EARLIER) - COMPLETE CROSS-PLATFORM UNSIGNED INTEGER IMPLEMENTATION**
