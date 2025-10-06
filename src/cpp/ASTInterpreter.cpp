@@ -6152,6 +6152,9 @@ int32_t ASTInterpreter::convertToInt(const CommandValue& value) {
         using T = std::decay_t<decltype(v)>;
         if constexpr (std::is_same_v<T, int32_t>) {
             return v;
+        } else if constexpr (std::is_same_v<T, uint32_t>) {
+            // TEST 78 FIX: Handle uint32_t for unsigned integer support
+            return static_cast<int32_t>(v);
         } else if constexpr (std::is_same_v<T, double>) {
             return static_cast<int32_t>(v);
         } else if constexpr (std::is_same_v<T, bool>) {
@@ -6173,6 +6176,9 @@ double ASTInterpreter::convertToDouble(const CommandValue& value) {
         if constexpr (std::is_same_v<T, double>) {
             return v;
         } else if constexpr (std::is_same_v<T, int32_t>) {
+            return static_cast<double>(v);
+        } else if constexpr (std::is_same_v<T, uint32_t>) {
+            // TEST 78 FIX: Handle uint32_t for unsigned integer support
             return static_cast<double>(v);
         } else if constexpr (std::is_same_v<T, bool>) {
             return v ? 1.0 : 0.0;
@@ -6198,6 +6204,9 @@ bool ASTInterpreter::convertToBool(const CommandValue& value) {
             return v;
         } else if constexpr (std::is_same_v<T, int32_t>) {
             return v != 0;
+        } else if constexpr (std::is_same_v<T, uint32_t>) {
+            // TEST 78 FIX: Handle uint32_t for unsigned integer support
+            return v != 0;
         } else if constexpr (std::is_same_v<T, double>) {
             return v != 0.0;
         } else if constexpr (std::is_same_v<T, std::string>) {
@@ -6210,7 +6219,10 @@ bool ASTInterpreter::convertToBool(const CommandValue& value) {
 }
 
 bool ASTInterpreter::isNumeric(const CommandValue& value) {
-    return std::holds_alternative<int32_t>(value) || std::holds_alternative<double>(value);
+    // TEST 78 FIX: Include uint32_t for unsigned integer support (Test 128 addition)
+    return std::holds_alternative<int32_t>(value) ||
+           std::holds_alternative<uint32_t>(value) ||
+           std::holds_alternative<double>(value);
 }
 
 // =============================================================================
