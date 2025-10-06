@@ -789,8 +789,13 @@ void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
              << iteration << ",\"message\":\"Do-while loop limit reached: completed "
              << iteration << " iterations (max: " << maxLoopIterations_ << ")\"}";
         emitJSON(json.str());
-        shouldContinueExecution_ = false;
-        executionControl_.setStopReason(ExecutionControlStack::StopReason::ITERATION_LIMIT, false);
+
+        shouldContinueExecution_ = false;  // Keep for backward compatibility
+
+        // CRITICAL: Test 78 needs individual loop completion in setup() to continue to next statement
+        // Test 17+ need iteration limit in loop() to stop everything
+        bool continueInParent = (executionControl_.getCurrentScope() == ExecutionControlStack::ScopeType::SETUP);
+        executionControl_.setStopReason(ExecutionControlStack::StopReason::ITERATION_LIMIT, continueInParent);
     } else {
         emitDoWhileLoopEnd(iteration);
     }

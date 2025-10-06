@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1759777985704,
+    "timestamp": 1759778333863,
     "component": "interpreter",
     "version": "18.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1759777985704,
+    "timestamp": 1759778333863,
     "message": "Program execution started"
   },
   {
@@ -16,30 +16,30 @@
     "variable": "analogInPin",
     "value": 14,
     "isConst": true,
-    "timestamp": 1759777985705
+    "timestamp": 1759778333864
   },
   {
     "type": "VAR_SET",
     "variable": "analogOutPin",
     "value": 9,
     "isConst": true,
-    "timestamp": 1759777985705
+    "timestamp": 1759778333864
   },
   {
     "type": "VAR_SET",
     "variable": "sensorValue",
     "value": 0,
-    "timestamp": 1759777985705
+    "timestamp": 1759778333864
   },
   {
     "type": "VAR_SET",
     "variable": "outputValue",
     "value": 0,
-    "timestamp": 1759777985705
+    "timestamp": 1759778333864
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1759777985705,
+    "timestamp": 1759778333864,
     "message": "Executing setup() function"
   },
   {
@@ -49,22 +49,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1759777985705,
+    "timestamp": 1759778333864,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1759777985705,
+    "timestamp": 1759778333864,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759777985705,
+    "timestamp": 1759778333864,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1759777985705,
+    "timestamp": 1759778333864,
     "message": "Starting loop iteration 1"
   },
   {
@@ -72,31 +72,31 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1759777985705
+    "timestamp": 1759778333864
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
     "requestId": "analogRead_000001",
-    "timestamp": 1759777985705
+    "timestamp": 1759778333864
   },
   {
     "type": "VAR_SET",
     "variable": "sensorValue",
     "value": 560,
-    "timestamp": 1759777985710
+    "timestamp": 1759778333869
   },
   {
     "type": "VAR_SET",
     "variable": "outputValue",
     "value": 140,
-    "timestamp": 1759777985710
+    "timestamp": 1759778333869
   },
   {
     "type": "ANALOG_WRITE",
     "pin": 9,
     "value": 140,
-    "timestamp": 1759777985710
+    "timestamp": 1759778333869
   },
   {
     "type": "FUNCTION_CALL",
@@ -105,7 +105,7 @@
       "sensor = "
     ],
     "data": "sensor = ",
-    "timestamp": 1759777985710,
+    "timestamp": 1759778333869,
     "message": "Serial.print(\"sensor = \")"
   },
   {
@@ -115,7 +115,7 @@
       "560"
     ],
     "data": "560",
-    "timestamp": 1759777985710,
+    "timestamp": 1759778333869,
     "message": "Serial.print(560)"
   },
   {
@@ -125,7 +125,7 @@
       "\t output = "
     ],
     "data": "\t output = ",
-    "timestamp": 1759777985710,
+    "timestamp": 1759778333869,
     "message": "Serial.print(\"\t output = \")"
   },
   {
@@ -135,14 +135,14 @@
       "140"
     ],
     "data": "140",
-    "timestamp": 1759777985710,
+    "timestamp": 1759778333869,
     "message": "Serial.println(140)"
   },
   {
     "type": "DELAY",
     "duration": 2,
     "actualDelay": 2,
-    "timestamp": 1759777985710
+    "timestamp": 1759778333869
   },
   {
     "type": "FUNCTION_CALL",
@@ -150,23 +150,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1759777985710
+    "timestamp": 1759778333869
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1759777985715,
+    "timestamp": 1759778333874,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759777985715,
+    "timestamp": 1759778333874,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1759777985715,
+    "timestamp": 1759778333874,
     "message": "Program execution stopped"
   }
 ]

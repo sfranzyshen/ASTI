@@ -20,6 +20,26 @@
 {"type":"DELAY","timestamp":0,"duration":30,"actualDelay":30}
 {"type":"VAR_SET","timestamp":0,"variable":"times","value":1}
 {"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"Do-while loop limit reached: completed 1 iterations (max: 1)"}
+{"type":"PIN_MODE","timestamp":0,"pin":6,"mode":1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"pulse","arguments":[6.000000,2.000000]}
+{"type":"DO_WHILE_LOOP","timestamp":0,"phase":"start"}
+{"type":"DO_WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":6,"value":1}
+{"type":"DELAY","timestamp":0,"duration":30,"actualDelay":30}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":6,"value":0}
+{"type":"DELAY","timestamp":0,"duration":30,"actualDelay":30}
+{"type":"VAR_SET","timestamp":0,"variable":"times","value":1}
+{"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"Do-while loop limit reached: completed 1 iterations (max: 1)"}
+{"type":"PIN_MODE","timestamp":0,"pin":7,"mode":1}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"pulse","arguments":[7.000000,2.000000]}
+{"type":"DO_WHILE_LOOP","timestamp":0,"phase":"start"}
+{"type":"DO_WHILE_LOOP","timestamp":0,"phase":"iteration","iteration":0}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":7,"value":1}
+{"type":"DELAY","timestamp":0,"duration":30,"actualDelay":30}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":7,"value":0}
+{"type":"DELAY","timestamp":0,"duration":30,"actualDelay":30}
+{"type":"VAR_SET","timestamp":0,"variable":"times","value":1}
+{"type":"LOOP_LIMIT_REACHED","timestamp":0,"phase":"end","iterations":1,"message":"Do-while loop limit reached: completed 1 iterations (max: 1)"}
 {"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
 {"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
@@ -36,8 +56,8 @@
 {"type":"VAR_SET","timestamp":0,"variable":"last_time","value":17807}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
 {"type":"IF_STATEMENT","timestamp":0,"condition":false,"conditionDisplay":"false","branch":"else"}
-{"type":"VAR_SET","timestamp":0,"variable":"hbval","value":"1288"}
-{"type":"ANALOG_WRITE","timestamp":0,"pin":7,"value":1288}
+{"type":"VAR_SET","timestamp":0,"variable":"hbval","value":136}
+{"type":"ANALOG_WRITE","timestamp":0,"pin":7,"value":136}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"Serial.available","arguments":[]}
 {"type":"IF_STATEMENT","timestamp":0,"condition":0,"conditionDisplay":"0","branch":"else"}
 {"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}

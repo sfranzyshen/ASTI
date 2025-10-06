@@ -85,7 +85,15 @@ function generateCommandsOptimized(ast, example) {
     return new Promise((resolve) => {
         try {
             const { ASTInterpreter } = require('./ASTInterpreter.js');
-            
+
+            // DIAGNOSTIC: Track if this is Test 78 (ArduinoISP.ino)
+            const isTest78 = example.name === 'ArduinoISP.ino';
+            if (isTest78) {
+                console.log('\n🔍 DIAGNOSTIC: Starting Test 78 (ArduinoISP.ino)');
+                console.log('🔍 maxLoopIterations: 1');
+                console.log('🔍 timeout: 10000ms');
+            }
+
             // Create deterministic mock data manager for this test
             const mockData = new MockDataManager();
 
@@ -96,18 +104,26 @@ function generateCommandsOptimized(ast, example) {
                 maxLoopIterations: 1,  // Reduced from 3 to 1 for faster, consistent execution
                 mockDataManager: mockData  // Pass mock data manager to interpreter
             });
-            
+
             const commands = [];
             let done = false;
             let hasSeenSetupEnd = false; // TEST 78 FIX: Track if setup() has completed
+            let commandCount = 0; // DIAGNOSTIC: Track command count
 
             interpreter.onCommand = (cmd) => {
                 // Capture command exactly as JavaScript interpreter produces it
                 commands.push(cmd);
+                commandCount++;
+
+                // DIAGNOSTIC: Log every command for Test 78
+                if (isTest78) {
+                    console.log(`🔍 CMD ${commandCount}: ${cmd.type}` + (cmd.message ? ` - ${cmd.message}` : ''));
+                }
 
                 // TEST 78 FIX: Track when setup() completes
                 if (cmd.type === 'SETUP_END') {
                     hasSeenSetupEnd = true;
+                    if (isTest78) console.log('🔍 setup() completed, hasSeenSetupEnd = true');
                 }
 
                 // DETERMINISTIC PATTERN: Handle request-response with reproducible mock data
@@ -115,31 +131,40 @@ function generateCommandsOptimized(ast, example) {
                 switch (cmd.type) {
                     case 'ANALOG_READ_REQUEST':
                         const analogValue = mockData.getAnalogReadValue(cmd.pin || 0);
+                        if (isTest78) console.log(`🔍 ANALOG_READ_REQUEST -> scheduling response (${analogValue}) in 5ms`);
                         setTimeout(() => {
+                            if (isTest78) console.log(`🔍 ANALOG_READ_REQUEST response delivered: ${analogValue}`);
                             interpreter.handleResponse(cmd.requestId, analogValue);
                         }, 5); // Fixed 5ms delay for determinism
                         break;
                     case 'DIGITAL_READ_REQUEST':
                         const digitalValue = mockData.getDigitalReadValue(cmd.pin || 0);
+                        if (isTest78) console.log(`🔍 DIGITAL_READ_REQUEST -> scheduling response (${digitalValue}) in 5ms`);
                         setTimeout(() => {
+                            if (isTest78) console.log(`🔍 DIGITAL_READ_REQUEST response delivered: ${digitalValue}`);
                             interpreter.handleResponse(cmd.requestId, digitalValue);
                         }, 5); // Fixed 5ms delay for determinism
                         break;
                     case 'MILLIS_REQUEST':
                         const millisValue = mockData.getMillisValue();
+                        if (isTest78) console.log(`🔍 MILLIS_REQUEST -> scheduling response (${millisValue}) in 5ms`);
                         setTimeout(() => {
+                            if (isTest78) console.log(`🔍 MILLIS_REQUEST response delivered: ${millisValue}`);
                             interpreter.handleResponse(cmd.requestId, millisValue);
                         }, 5); // Fixed 5ms delay for determinism
                         break;
                     case 'MICROS_REQUEST':
                         const microsValue = mockData.getMicrosValue();
+                        if (isTest78) console.log(`🔍 MICROS_REQUEST -> scheduling response (${microsValue}) in 5ms`);
                         setTimeout(() => {
+                            if (isTest78) console.log(`🔍 MICROS_REQUEST response delivered: ${microsValue}`);
                             interpreter.handleResponse(cmd.requestId, microsValue);
                         }, 5); // Fixed 5ms delay for determinism
                         break;
                 }
 
                 if (cmd.type === 'PROGRAM_END' || cmd.type === 'ERROR') {
+                    if (isTest78) console.log(`🔍 Setting done=true (${cmd.type})`);
                     done = true;
                 }
 
@@ -153,52 +178,76 @@ function generateCommandsOptimized(ast, example) {
                                          message.includes('For loop');
                     const isMainLoop = cmd.type === 'LOOP_END' || message.includes('Loop limit reached');
 
+                    if (isTest78) {
+                        console.log(`🔍 LOOP event: ${cmd.type}, isNestedLoop=${isNestedLoop}, isMainLoop=${isMainLoop}, hasSeenSetupEnd=${hasSeenSetupEnd}`);
+                    }
+
                     // Stop if we're in loop() context (after setup completed) and hit ANY loop limit
                     if ((isNestedLoop || isMainLoop) && hasSeenSetupEnd) {
+                        if (isTest78) console.log('🔍 Scheduling done=true in 100ms');
                         // Wait for loop to complete, then stop
                         setTimeout(() => {
                             if (!done) {
+                                if (isTest78) console.log('🔍 Setting done=true from setTimeout');
                                 done = true;
                             }
                         }, 100);
                     }
                 }
             };
-            
+
             interpreter.onError = (error) => {
+                if (isTest78) console.log(`🔍 ERROR: ${error.message}`);
                 done = true;
             };
-            
-            // Complete output suppression
+
+            // Complete output suppression (but our diagnostic logs are already emitted)
             const restore = suppressAllOutput();
-            
+
+            if (isTest78) console.log('🔍 Starting interpreter.start()');
             interpreter.start();
             
             let timedOut = false;
+            const startTime = Date.now();
             const timeout = setTimeout(() => {
+                const elapsed = Date.now() - startTime;
+                if (isTest78) console.log(`🔍 TIMEOUT after ${elapsed}ms, commandCount=${commandCount}, done=${done}`);
                 timedOut = true;
                 done = true;
                 restore();
             }, 10000); // Increased to 10 seconds for complex tests like ArduinoISP
-            
+
             let checkCount = 0;
+            let lastCheckLog = 0;
             const check = () => {
                 checkCount++;
+
+                // DIAGNOSTIC: Log check progress every 1000 iterations for Test 78
+                if (isTest78 && checkCount % 1000 === 0) {
+                    const elapsed = Date.now() - startTime;
+                    console.log(`🔍 check() iteration ${checkCount}, elapsed=${elapsed}ms, done=${done}, commandCount=${commandCount}`);
+                }
+
                 if (done) {
+                    const elapsed = Date.now() - startTime;
+                    if (isTest78) console.log(`🔍 done=true detected at check ${checkCount}, elapsed=${elapsed}ms, commandCount=${commandCount}`);
                     clearTimeout(timeout);
                     restore();
-                    
+
                     // CRITICAL: If timeout occurred, this is a FAILURE not success
                     if (timedOut) {
+                        if (isTest78) console.log(`🔍 Resolving with TIMEOUT failure`);
                         resolve({
                             success: false,
                             commands: [],
                             error: 'TIMEOUT: Test did not complete 1 iteration within 10000ms - inconsistent data rejected'
                         });
                     } else {
+                        if (isTest78) console.log(`🔍 Resolving with SUCCESS, ${commands.length} commands`);
                         resolve({ success: true, commands });
                     }
                 } else if (checkCount > 10000) { // Prevent infinite recursion
+                    if (isTest78) console.log(`🔍 Infinite check loop detected at ${checkCount} iterations`);
                     clearTimeout(timeout);
                     restore();
                     resolve({ success: false, error: 'Infinite check loop detected' });
@@ -206,6 +255,7 @@ function generateCommandsOptimized(ast, example) {
                     setTimeout(check, 1); // Use setTimeout instead of setImmediate
                 }
             };
+            if (isTest78) console.log('🔍 Starting check() polling loop');
             check();
             
         } catch (error) {
@@ -277,10 +327,16 @@ async function generateFullTestData() {
             const code = example.content || example.code;
             const ast = parse(code);
             const compactAST = exportCompactAST(ast);
-            
+
             // Save AST file (convert ArrayBuffer to Buffer)
             fs.writeFileSync(path.join(outputDir, `${baseName}.ast`), Buffer.from(compactAST));
-            
+
+            // DIAGNOSTIC: Always log Test 78
+            if (i === 78) {
+                console.log(`\n🔍 PROCESSING Test ${i}: ${example.name}`);
+                console.log(`🔍 example.name === 'ArduinoISP.ino': ${example.name === 'ArduinoISP.ino'}`);
+            }
+
             // Generate FULL command stream - NO PLACEHOLDERS ALLOWED
             conditionalLog(isVerbose, `[${i+1}/${allExamples.length}] Generating commands for ${example.name}...`);
             let commandResult = await generateCommandsOptimized(ast, example);
