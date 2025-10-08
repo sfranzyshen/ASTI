@@ -4,9 +4,9 @@
  * Cross-platform binary AST parser that reads the compact format generated
  * by JavaScript exportCompactAST() function. Designed for ESP32-S3 constraints.
  * 
- * Version: 3.1.0
+ * Version: 3.2.0
  * Compatible with: ArduinoParser.js exportCompactAST() v6.0.0
- * Format: Compact AST Binary Format Specification v3.1.0
+ * Format: Compact AST Binary Format Specification v3.2.0
  */
 
 #pragma once

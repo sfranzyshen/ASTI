@@ -270,6 +270,7 @@ grep -r "X\.Y\.Z" --include="*.{js,cpp,hpp,h,cmake,json,properties}" --exclude-d
 
 | Date | ASTInterpreter | CompactAST | ArduinoParser | Baseline | Notes |
 |------|----------------|------------|---------------|----------|-------|
+| 2025-10-06 | 18.1.0 | 3.2.0 | 6.0.0 | 100% (135/135) | **100% PARITY** - JS IF fix |
 | 2025-10-04 | 18.0.0 | 3.1.0 | 6.0.0 | 94.07% (127/135) | Version sync + dependency fix |
 | 2025-10-04 | 17.0.0 | 3.0.0 | 6.0.0 | 94.07% (127/135) | Typedef + function pointers |
 | 2025-10-03 | 17.0.0 | 3.0.0 | 6.0.0 | 92.59% (125/135) | Complete pointer support |
