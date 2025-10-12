@@ -9,7 +9,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 project(ArduinoASTInterpreter
-    VERSION 18.1.0
+    VERSION 19.0.0
     DESCRIPTION "ESP32-S3 Arduino AST Interpreter - Host Development"
     LANGUAGES CXX)
 
@@ -298,14 +298,23 @@ if(BUILD_TESTS)
     
     # Cross-platform validation tool - compares C++ and JavaScript command streams
     add_executable(validate_cross_platform
-        build/validate_cross_platform.cpp
+        tests/validate_cross_platform.cpp
         tests/test_utils.hpp
     )
     
     target_link_libraries(validate_cross_platform
         PRIVATE arduino_ast_interpreter
     )
-    
+
+    # Universal JSON to Arduino command stream converter
+    add_executable(universal_json_to_arduino
+        tests/universal_json_to_arduino.cpp
+    )
+
+    target_link_libraries(universal_json_to_arduino
+        PRIVATE arduino_ast_interpreter
+    )
+
     # Memory usage and performance tests
     if(ENABLE_PROFILING)
         add_executable(test_memory_performance

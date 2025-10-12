@@ -4,8 +4,8 @@
  * Provides identical API to JavaScript ASTInterpreter.js for drop-in replacement.
  * Enables high-performance Arduino code interpretation in browsers via WebAssembly.
  *
- * Version: 18.1.0
- * Compatible with: ASTInterpreter.js v18.1.0
+ * Version: 19.0.0
+ * Compatible with: ASTInterpreter.js v19.0.0
  *
  * Usage:
  *   const interpreter = new WasmASTInterpreter();
@@ -25,7 +25,7 @@ class WasmASTInterpreter {
         this.module = null;
         this.interpreterPtr = null;
         this.isReady = false;
-        this.version = "18.1.0";
+        this.version = "19.0.0";
     }
 
     /**
@@ -41,7 +41,7 @@ class WasmASTInterpreter {
         }
 
         try {
-            // Load WASM module (built by build_wasm.sh)
+            // Load WASM module (built by scripts/build_wasm.sh)
             const moduleUrl = typeof window !== 'undefined'
                 ? '../build/wasm/arduino_interpreter.js'  // Browser
                 : './build/wasm/arduino_interpreter.js';  // Node.js

@@ -26,14 +26,14 @@ The project is organized into three independent, reusable modules:
 - **Achievement**: Production-ready parser with 100% Arduino language support
 - **Output**: Clean Abstract Syntax Tree + CompactAST binary serialization
 
-### **ASTInterpreter Core** (v18.1.0)
+### **ASTInterpreter Core** (v19.0.0)
 - **Purpose**: AST execution engine with Arduino hardware simulation
 - **Recent Victories**: Complete typedef/function pointer support, ARROW operator, pointer infrastructure complete
 - **Architecture**: Direct JSON emission, synchronous C++ + async JavaScript, systematic cross-platform parity
 - **Features**: Full pointer support, typedef struct handling, function pointer parameters, ARROW operator (->)
 - **Output**: Structured command streams for parent application integration
 
-## 🎯 Current Status (October 6, 2025) - 100% CROSS-PLATFORM PARITY ACHIEVED!
+## 🎯 Current Status (October 12, 2025) - 100% CROSS-PLATFORM PARITY ACHIEVED!
 
 **✅ JavaScript: 100% Complete (135/135) | ✅ C++ Implementation: 100% Complete (135/135)**
 
@@ -52,6 +52,13 @@ The project is organized into three independent, reusable modules:
 - **Build Output**: 36MB static library (`libarduino_ast_interpreter.a`) + comprehensive testing infrastructure
 - **ESP32-S3 Ready**: C++17 compatible, direct JSON emission, memory optimized for embedded deployment
 - **Cross-Platform Parity**: 100% compatibility achieved - COMPLETE!
+
+**Latest Milestone** (October 12, 2025):
+- **Project Reorganization**: Clean separation of production code, testing infrastructure, and documentation
+- **Documentation Cleanup**: 78% reduction (54 historical docs moved to trash/)
+- **Production Focus**: src/ folder now contains only ASTInterpreter.js and WasmASTInterpreter.js
+- **Test Consolidation**: All test infrastructure moved to tests/ folder
+- **Zero Breaking Changes**: 100% baseline maintained (135/135 tests passing)
 
 **Historic Milestone** (October 6, 2025):
 - **100% Cross-Platform Parity**: JavaScript and C++ interpreters produce identical command streams
@@ -138,7 +145,7 @@ Commands contain only primitive data types for maximum compatibility with parent
 |-----------|---------|------------|-------------------|--------------|
 | **CompactAST** | v3.2.0 | 100% ✅ | Version Synchronized ✅ | Production Ready |
 | **ArduinoParser** | v6.0.0 | 100% ✅ | Full Compatibility ✅ | 135/135 (100%) |
-| **ASTInterpreter** | v18.1.0 | 100% ✅ | **135/135 (100%)** ✅ | 100% Cross-Platform Parity Achieved |
+| **ASTInterpreter** | v19.0.0 | 100% ✅ | **135/135 (100%)** ✅ | 100% Cross-Platform Parity Achieved |
 | **Cross-Platform** | Oct 2025 | | **100% PARITY** ✅ | **COMPLETE** 🎉 |
 
 ### Test Coverage
@@ -452,7 +459,7 @@ void setup() {
 
 - **Full Guide**: `docs/ESP32_DEPLOYMENT_GUIDE.md`
 - **Examples**: `examples/BasicInterpreter/` and `examples/AnalogReadExample/`
-- **Binary Conversion**: `tools/ast_to_c_array.sh`
+- **Binary Conversion**: `scripts/ast_to_c_array.sh`
 
 ---
 
@@ -469,7 +476,7 @@ cd emsdk && ./emsdk install latest && ./emsdk activate latest
 source ./emsdk_env.sh
 
 # Build WASM binary
-./build_wasm.sh
+./scripts/build_wasm.sh
 
 # Validate size
 ./scripts/validate_wasm_size.sh

@@ -7,7 +7,7 @@
  * - ESP32-S3/Arduino (embedded hardware deployment)
  *
  * Version: 1.0.0
- * Compatible with: ASTInterpreter v18.1.0
+ * Compatible with: ASTInterpreter v19.0.0
  */
 
 #pragma once
