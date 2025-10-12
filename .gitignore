@@ -1,1 +1,10 @@
 type:
+
+# C++ test outputs (regenerated on each validation run)
+test_data/*_cpp.json
+test_data/*_cpp.arduino
+test_data/*_js.arduino
+
+# Legacy build directory outputs (in case old paths used)
+build/test*.json
+build/test*.arduino

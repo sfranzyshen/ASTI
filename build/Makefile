@@ -231,6 +231,19 @@ validate_cross_platform/fast:
 .PHONY : validate_cross_platform/fast
 
 #=============================================================================
+# Target rules for targets named universal_json_to_arduino
+
+# Build rule for target.
+universal_json_to_arduino: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 universal_json_to_arduino
+.PHONY : universal_json_to_arduino
+
+# fast build rule for target.
+universal_json_to_arduino/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/universal_json_to_arduino.dir/build.make CMakeFiles/universal_json_to_arduino.dir/build
+.PHONY : universal_json_to_arduino/fast
+
+#=============================================================================
 # Target rules for targets named strip_library
 
 # Build rule for target.
@@ -474,29 +487,53 @@ tests/extract_cpp_commands.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extract_cpp_commands.dir/build.make CMakeFiles/extract_cpp_commands.dir/tests/extract_cpp_commands.cpp.s
 .PHONY : tests/extract_cpp_commands.cpp.s
 
-validate_cross_platform.o: validate_cross_platform.cpp.o
-.PHONY : validate_cross_platform.o
+tests/universal_json_to_arduino.o: tests/universal_json_to_arduino.cpp.o
+.PHONY : tests/universal_json_to_arduino.o
 
 # target to build an object file
-validate_cross_platform.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o
-.PHONY : validate_cross_platform.cpp.o
+tests/universal_json_to_arduino.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/universal_json_to_arduino.dir/build.make CMakeFiles/universal_json_to_arduino.dir/tests/universal_json_to_arduino.cpp.o
+.PHONY : tests/universal_json_to_arduino.cpp.o
 
-validate_cross_platform.i: validate_cross_platform.cpp.i
-.PHONY : validate_cross_platform.i
+tests/universal_json_to_arduino.i: tests/universal_json_to_arduino.cpp.i
+.PHONY : tests/universal_json_to_arduino.i
 
 # target to preprocess a source file
-validate_cross_platform.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.i
-.PHONY : validate_cross_platform.cpp.i
+tests/universal_json_to_arduino.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/universal_json_to_arduino.dir/build.make CMakeFiles/universal_json_to_arduino.dir/tests/universal_json_to_arduino.cpp.i
+.PHONY : tests/universal_json_to_arduino.cpp.i
 
-validate_cross_platform.s: validate_cross_platform.cpp.s
-.PHONY : validate_cross_platform.s
+tests/universal_json_to_arduino.s: tests/universal_json_to_arduino.cpp.s
+.PHONY : tests/universal_json_to_arduino.s
 
 # target to generate assembly for a file
-validate_cross_platform.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.s
-.PHONY : validate_cross_platform.cpp.s
+tests/universal_json_to_arduino.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/universal_json_to_arduino.dir/build.make CMakeFiles/universal_json_to_arduino.dir/tests/universal_json_to_arduino.cpp.s
+.PHONY : tests/universal_json_to_arduino.cpp.s
+
+tests/validate_cross_platform.o: tests/validate_cross_platform.cpp.o
+.PHONY : tests/validate_cross_platform.o
+
+# target to build an object file
+tests/validate_cross_platform.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o
+.PHONY : tests/validate_cross_platform.cpp.o
+
+tests/validate_cross_platform.i: tests/validate_cross_platform.cpp.i
+.PHONY : tests/validate_cross_platform.i
+
+# target to preprocess a source file
+tests/validate_cross_platform.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.i
+.PHONY : tests/validate_cross_platform.cpp.i
+
+tests/validate_cross_platform.s: tests/validate_cross_platform.cpp.s
+.PHONY : tests/validate_cross_platform.s
+
+# target to generate assembly for a file
+tests/validate_cross_platform.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.s
+.PHONY : tests/validate_cross_platform.cpp.s
 
 # Help Target
 help:
@@ -519,6 +556,7 @@ help:
 	@echo "... strip_tools"
 	@echo "... arduino_ast_interpreter"
 	@echo "... extract_cpp_commands"
+	@echo "... universal_json_to_arduino"
 	@echo "... validate_cross_platform"
 	@echo "... libs/CompactAST/src/CompactAST.o"
 	@echo "... libs/CompactAST/src/CompactAST.i"
@@ -544,9 +582,12 @@ help:
 	@echo "... tests/extract_cpp_commands.o"
 	@echo "... tests/extract_cpp_commands.i"
 	@echo "... tests/extract_cpp_commands.s"
-	@echo "... validate_cross_platform.o"
-	@echo "... validate_cross_platform.i"
-	@echo "... validate_cross_platform.s"
+	@echo "... tests/universal_json_to_arduino.o"
+	@echo "... tests/universal_json_to_arduino.i"
+	@echo "... tests/universal_json_to_arduino.s"
+	@echo "... tests/validate_cross_platform.o"
+	@echo "... tests/validate_cross_platform.i"
+	@echo "... tests/validate_cross_platform.s"
 .PHONY : help
 
 

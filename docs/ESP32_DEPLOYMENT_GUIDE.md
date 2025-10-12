@@ -66,7 +66,7 @@ pio run -e esp32-s3 -t upload
    ```
 3. **Convert to C array**:
    ```bash
-   ./tools/ast_to_c_array.sh example.ast > example_array.txt
+   ./scripts/ast_to_c_array.sh example.ast > example_array.txt
    ```
 4. **Embed in ESP32 sketch** (copy array from example_array.txt)
 

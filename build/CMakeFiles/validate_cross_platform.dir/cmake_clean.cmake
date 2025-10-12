@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o"
-  "CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o.d"
+  "CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o"
+  "CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o.d"
   "validate_cross_platform"
   "validate_cross_platform.pdb"
 )

@@ -20,7 +20,7 @@ GZIP_FILE="build/wasm/arduino_interpreter.wasm.gz"
 if [ ! -f "$WASM_FILE" ]; then
     echo "❌ Error: WASM file not found: $WASM_FILE"
     echo ""
-    echo "Please run ./build_wasm.sh first"
+    echo "Please run ./scripts/build_wasm.sh first"
     exit 1
 fi
 
@@ -98,7 +98,7 @@ else
     echo "⚠️  WARNING: $FAIL_COUNT size target(s) exceeded"
     echo ""
     echo "Consider optimization strategies:"
-    echo "  - Use -Os instead of -O3 in build_wasm.sh"
+    echo "  - Use -Os instead of -O3 in scripts/build_wasm.sh"
     echo "  - Enable -ffunction-sections -fdata-sections"
     echo "  - Review EXPORTED_FUNCTIONS (only export necessary functions)"
     echo "  - Consider splitting into core + optional modules"

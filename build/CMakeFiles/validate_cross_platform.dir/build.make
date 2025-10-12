@@ -69,28 +69,28 @@ include CMakeFiles/validate_cross_platform.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/validate_cross_platform.dir/flags.make
 
-CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: CMakeFiles/validate_cross_platform.dir/flags.make
-CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: validate_cross_platform.cpp
-CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o: CMakeFiles/validate_cross_platform.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o -MF CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o.d -o CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o -c /mnt/d/Devel/ASTInterpreter/build/validate_cross_platform.cpp
+CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o: CMakeFiles/validate_cross_platform.dir/flags.make
+CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o: ../tests/validate_cross_platform.cpp
+CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o: CMakeFiles/validate_cross_platform.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o -MF CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o.d -o CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o -c /mnt/d/Devel/ASTInterpreter/tests/validate_cross_platform.cpp
 
-CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/d/Devel/ASTInterpreter/build/validate_cross_platform.cpp > CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.i
+CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/d/Devel/ASTInterpreter/tests/validate_cross_platform.cpp > CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.i
 
-CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/d/Devel/ASTInterpreter/build/validate_cross_platform.cpp -o CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.s
+CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/d/Devel/ASTInterpreter/tests/validate_cross_platform.cpp -o CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.s
 
 # Object files for target validate_cross_platform
 validate_cross_platform_OBJECTS = \
-"CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o"
+"CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o"
 
 # External object files for target validate_cross_platform
 validate_cross_platform_EXTERNAL_OBJECTS =
 
-validate_cross_platform: CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o
+validate_cross_platform: CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o
 validate_cross_platform: CMakeFiles/validate_cross_platform.dir/build.make
 validate_cross_platform: libarduino_ast_interpreter.a
 validate_cross_platform: CMakeFiles/validate_cross_platform.dir/link.txt

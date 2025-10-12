@@ -1,6 +1,7 @@
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/arduino_ast_interpreter.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/extract_cpp_commands.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/validate_cross_platform.dir
+/mnt/d/Devel/ASTInterpreter/build/CMakeFiles/universal_json_to_arduino.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/strip_library.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/strip_tools.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/strip_all.dir

@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/mnt/d/Devel/ASTInterpreter/build/validate_cross_platform.cpp" "CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o" "gcc" "CMakeFiles/validate_cross_platform.dir/validate_cross_platform.cpp.o.d"
+  "/mnt/d/Devel/ASTInterpreter/tests/validate_cross_platform.cpp" "CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o" "gcc" "CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o.d"
   )
 
 # Targets to which this target links.

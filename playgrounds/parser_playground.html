@@ -326,19 +326,19 @@ void loop() {
     <script src="../libs/ArduinoParser/src/ArduinoParser.js"></script>
     <!-- Note: ArduinoParser includes CompactAST integration - no need to load CompactAST separately -->
     <!-- Load test files directly -->
-    <script src="../examples.js"></script>
+    <script src="../tests/examples.js"></script>
     <script>
         // Capture examples.js examplesFiles immediately
         const examplesTestFiles = examplesFiles.slice();
         console.log(`Loaded ${examplesTestFiles.length} Arduino examples`);
     </script>
-    <script src="../old_test.js"></script>
+    <script src="../tests/old_test.js"></script>
     <script>
-        // Capture old_test.js oldTestFiles immediately  
+        // Capture old_test.js oldTestFiles immediately
         const oldTestFilesArray = oldTestFiles.slice();
         console.log(`Loaded ${oldTestFilesArray.length} comprehensive tests`);
     </script>
-    <script src="../neopixel.js"></script>
+    <script src="../tests/neopixel.js"></script>
     <script>
         // Capture neopixel.js neopixelFiles immediately
         const neopixelTestFilesArray = neopixelFiles.slice();

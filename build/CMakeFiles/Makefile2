@@ -66,6 +66,7 @@ CMAKE_BINARY_DIR = /mnt/d/Devel/ASTInterpreter/build
 all: CMakeFiles/arduino_ast_interpreter.dir/all
 all: CMakeFiles/extract_cpp_commands.dir/all
 all: CMakeFiles/validate_cross_platform.dir/all
+all: CMakeFiles/universal_json_to_arduino.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -76,6 +77,7 @@ preinstall:
 clean: CMakeFiles/arduino_ast_interpreter.dir/clean
 clean: CMakeFiles/extract_cpp_commands.dir/clean
 clean: CMakeFiles/validate_cross_platform.dir/clean
+clean: CMakeFiles/universal_json_to_arduino.dir/clean
 clean: CMakeFiles/strip_library.dir/clean
 clean: CMakeFiles/strip_tools.dir/clean
 clean: CMakeFiles/strip_all.dir/clean
@@ -141,7 +143,7 @@ CMakeFiles/extract_cpp_commands.dir/clean:
 CMakeFiles/validate_cross_platform.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=15,16 "Built target validate_cross_platform"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=17,18 "Built target validate_cross_platform"
 .PHONY : CMakeFiles/validate_cross_platform.dir/all
 
 # Build rule for subdir invocation for target.
@@ -159,6 +161,32 @@ validate_cross_platform: CMakeFiles/validate_cross_platform.dir/rule
 CMakeFiles/validate_cross_platform.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/clean
 .PHONY : CMakeFiles/validate_cross_platform.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/universal_json_to_arduino.dir
+
+# All Build rule for target.
+CMakeFiles/universal_json_to_arduino.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/universal_json_to_arduino.dir/build.make CMakeFiles/universal_json_to_arduino.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/universal_json_to_arduino.dir/build.make CMakeFiles/universal_json_to_arduino.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=15,16 "Built target universal_json_to_arduino"
+.PHONY : CMakeFiles/universal_json_to_arduino.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/universal_json_to_arduino.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 10
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/universal_json_to_arduino.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
+.PHONY : CMakeFiles/universal_json_to_arduino.dir/rule
+
+# Convenience name for target.
+universal_json_to_arduino: CMakeFiles/universal_json_to_arduino.dir/rule
+.PHONY : universal_json_to_arduino
+
+# clean rule for target.
+CMakeFiles/universal_json_to_arduino.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/universal_json_to_arduino.dir/build.make CMakeFiles/universal_json_to_arduino.dir/clean
+.PHONY : CMakeFiles/universal_json_to_arduino.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/strip_library.dir
@@ -190,8 +218,8 @@ CMakeFiles/strip_library.dir/clean:
 # Target rules for target CMakeFiles/strip_tools.dir
 
 # All Build rule for target.
-CMakeFiles/strip_tools.dir/all: CMakeFiles/validate_cross_platform.dir/all
 CMakeFiles/strip_tools.dir/all: CMakeFiles/extract_cpp_commands.dir/all
+CMakeFiles/strip_tools.dir/all: CMakeFiles/validate_cross_platform.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_tools.dir/build.make CMakeFiles/strip_tools.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_tools.dir/build.make CMakeFiles/strip_tools.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=14 "Built target strip_tools"

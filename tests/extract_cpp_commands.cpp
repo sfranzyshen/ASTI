@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     
     // Format test file name - use test_data/ from project root
     std::ostringstream astFileName;
-    astFileName << "test_data/example_" << std::setfill('0') << std::setw(3) << testNumber << ".ast";
+    astFileName << "test_data/test" << testNumber << "_js.ast";
     std::string astFile = astFileName.str();
     
     // Headers removed for validate_cross_platform compatibility
@@ -119,7 +119,7 @@ int main(int argc, char* argv[]) {
 
         // CRITICAL FIX: ALWAYS save JSON to file for debugging and analysis
         std::ostringstream outputFileName;
-        outputFileName << "build/test" << testNumber << "_cpp.json";
+        outputFileName << "test_data/test" << testNumber << "_cpp.json";
         std::ofstream outputFile(outputFileName.str());
         if (outputFile) {
             outputFile << jsonOutput << std::endl;

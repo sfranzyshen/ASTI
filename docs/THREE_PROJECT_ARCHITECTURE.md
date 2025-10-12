@@ -172,7 +172,7 @@ interpreter.start();
 const { parse, exportCompactAST, PlatformEmulation } = require('./libs/ArduinoParser/src/ArduinoParser.js');
 
 // Use compatibility wrapper for stability
-const parser = require('./src/javascript/ArduinoParser.js'); // Loads from libs automatically
+const parser = require('./tests/ArduinoParser_wrapper.js'); // Loads from libs automatically
 ```
 
 **For Full System**:

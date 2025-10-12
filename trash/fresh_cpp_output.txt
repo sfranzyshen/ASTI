@@ -1,106 +1,0 @@
-=== Cross-Platform Validation Test Suite ===
-Comparing C++ vs JavaScript Arduino AST Interpreter
-
-Loaded 135 test examples from JavaScript test data.
-Running validation on 135 test examples...
-
-[1/135] AnalogReadSerial.ino... DIFFERENT (45%) ✗
-    Differences: Length differs: 2248 vs 1132
-[2/135] BareMinimum.ino... DIFFERENT (72%) ✗
-    Differences: Length differs: 1484 vs 1451
-[3/135] Blink.ino... DIFFERENT (56%) ✗
-    Differences: Length differs: 1994 vs 2762
-[4/135] DigitalReadSerial.ino... DIFFERENT (43%) ✗
-    Differences: Length differs: 2558 vs 1322
-[5/135] Fade.ino... DIFFERENT (50%) ✗
-    Differences: Length differs: 2457 vs 3077
-[6/135] ReadAnalogVoltage.ino... DIFFERENT (42%) ✗
-    Differences: Length differs: 2409 vs 1132
-[7/135] BlinkWithoutDelay.ino... DIFFERENT (40%) ✗
-    Differences: Length differs: 3032 vs 1476
-[8/135] Button.ino... DIFFERENT (54%) ✗
-    Differences: Length differs: 2657 vs 2600
-[9/135] Debounce.ino... DIFFERENT (39%) ✗
-    Differences: Length differs: 3895 vs 1963
-[10/135] DigitalInputPullup.ino... DIFFERENT (41%) ✗
-    Differences: Length differs: 2680 vs 1332
-[11/135] StateChangeDetection.ino... DIFFERENT (49%) ✗
-    Differences: Length differs: 4433 vs 3563
-[12/135] toneKeyboard.ino... DIFFERENT (44%) ✗
-    Differences: Length differs: 2754 vs 3700
-[13/135] toneMelody.ino... DIFFERENT (47%) ✗
-    Differences: Length differs: 2412 vs 2171
-[14/135] toneMultiple.ino... DIFFERENT (49%) ✗
-    Differences: Length differs: 3196 vs 4088
-[15/135] tonePitchFollower.ino... DIFFERENT (38%) ✗
-    Differences: Length differs: 2717 vs 1132
-[16/135] AnalogInOutSerial.ino... DIFFERENT (43%) ✗
-    Differences: Length differs: 3748 vs 5064
-[17/135] AnalogInput.ino... DIFFERENT (46%) ✗
-    Differences: Length differs: 2706 vs 3713
-[18/135] AnalogWriteMega.ino... DIFFERENT (27%) ✗
-    Differences: Length differs: 1585 vs 4509
-[19/135] Calibration.ino... DIFFERENT (43%) ✗
-    Differences: Length differs: 3529 vs 4562
-[20/135] Fading.ino... DIFFERENT (27%) ✗
-    Differences: Length differs: 2129 vs 5860
-[21/135] Smoothing.ino... DIFFERENT (24%) ✗
-    Differences: Length differs: 2235 vs 6719
-[22/135] ASCIITable.ino... DIFFERENT (49%) ✗
-    Differences: Length differs: 4597 vs 4853
-[23/135] Dimmer.ino... DIFFERENT (58%) ✗
-    Differences: Length differs: 2410 vs 1740
-[24/135] Graph.ino... DIFFERENT (49%) ✗
-    Differences: Length differs: 2232 vs 1233
-[25/135] Midi.ino... DIFFERENT (49%) ✗
-    Differences: Length differs: 3710 vs 3712
-[26/135] MultiSerial.ino... DIFFERENT (54%) ✗
-    Differences: Length differs: 2571 vs 1663
-[27/135] PhysicalPixel.ino... DIFFERENT (58%) ✗
-    Differences: Length differs: 2422 vs 1829
-[28/135] ReadASCIIString.ino... DIFFERENT (56%) ✗
-    Differences: Length differs: 2924 vs 2116
-[29/135] SerialCallResponse.ino... DIFFERENT (52%) ✗
-    Differences: Length differs: 2775 vs 2240
-[30/135] SerialCallResponseASCII.ino... DIFFERENT (52%) ✗
-    Differences: Length differs: 2792 vs 2240
-[31/135] SerialEvent.ino... DIFFERENT (53%) ✗
-    Differences: Length differs: 2778 vs 1966
-[32/135] SerialPassthrough.ino... DIFFERENT (54%) ✗
-    Differences: Length differs: 2571 vs 1663
-[33/135] VirtualColorMixer.ino... DIFFERENT (35%) ✗
-    Differences: Length differs: 3669 vs 1500
-[34/135] Arrays.ino... DIFFERENT (20%) ✗
-    Differences: Length differs: 1714 vs 6669
-[35/135] ForLoopIteration.ino... DIFFERENT (17%) ✗
-    Differences: Length differs: 1423 vs 6580
-[36/135] IfStatementConditional.ino... DIFFERENT (40%) ✗
-    Differences: Length differs: 3106 vs 1498
-[37/135] WhileStatementConditional.ino... DIFFERENT (43%) ✗
-    Differences: Length differs: 3930 vs 5047
-[38/135] switchCase.ino... DIFFERENT (36%) ✗
-    Differences: Length differs: 3118 vs 1310
-[39/135] switchCase2.ino... DIFFERENT (46%) ✗
-    Differences: Length differs: 1518 vs 2272
-[40/135] ADXL3xx.ino... DIFFERENT (36%) ✗
-    Differences: Length differs: 4624 vs 2094
-[41/135] Knock.ino... DIFFERENT (53%) ✗
-    Differences: Length differs: 3478 vs 2780
-[42/135] Memsic2125.ino... DIFFERENT (42%) ✗
-    Differences: Length differs: 4573 vs 6155
-[43/135] Ping.ino... DIFFERENT (39%) ✗
-    Differences: Length differs: 5171 vs 7728
-[44/135] RowColumnScanning.ino... DIFFERENT (36%) ✗
-    Differences: Length differs: 3196 vs 4443
-[45/135] barGraph.ino... DIFFERENT (47%) ✗
-    Differences: Length differs: 1804 vs 1929
-[46/135] CharacterAnalysis... DIFFERENT (49%) ✗
-    Differences: Length differs: 2911 vs 1754
-[47/135] StringAdditionOperator... DIFFERENT (39%) ✗
-    Differences: Length differs: 7019 vs 3930
-[48/135] StringAppendOperator... DIFFERENT (43%) ✗
-    Differences: Length differs: 7564 vs 5152
-[49/135] StringCaseChanges.ino... DIFFERENT (43%) ✗
-    Differences: Length differs: 3869 vs 4394
-[50/135] StringCharacters.ino... DIFFERENT (42%) ✗
-    Differences: Length differs: 3927 vs 4962

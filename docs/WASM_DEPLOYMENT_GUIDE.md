@@ -44,7 +44,7 @@ emcc --version
 
 ```bash
 # Build WASM binary
-./build_wasm.sh
+./scripts/build_wasm.sh
 
 # Validate size
 ./scripts/validate_wasm_size.sh
@@ -278,7 +278,7 @@ Typical performance on modern browsers:
 ### Optimization Tips
 
 **For Size**:
-- Use `-Os` instead of `-O3` in build_wasm.sh
+- Use `-Os` instead of `-O3` in scripts/build_wasm.sh
 - Enable dead code elimination: `-ffunction-sections -fdata-sections`
 - Minimize exported functions
 - Consider code splitting for large libraries
@@ -297,7 +297,7 @@ Validate WASM output matches JavaScript and C++ implementations:
 
 ```bash
 # Build WASM
-./build_wasm.sh
+./scripts/build_wasm.sh
 
 # Validate cross-platform parity
 node tests/wasm_cross_platform_test.js
@@ -316,7 +316,7 @@ node tests/wasm_cross_platform_test.js
 **Solution**: Ensure Emscripten version matches build requirements. Rebuild with:
 ```bash
 emcc --version  # Check version
-./build_wasm.sh  # Rebuild
+./scripts/build_wasm.sh  # Rebuild
 ```
 
 ---
@@ -325,7 +325,7 @@ emcc --version  # Check version
 
 **Error**: "Cannot enlarge memory arrays"
 
-**Solution**: Increase INITIAL_MEMORY in build_wasm.sh:
+**Solution**: Increase INITIAL_MEMORY in scripts/build_wasm.sh:
 ```bash
 -s INITIAL_MEMORY=32MB  # Increase from 16MB
 ```
@@ -350,12 +350,12 @@ python3 -m http.server 8000
 
 **Solution**: Apply size optimization:
 ```bash
-# In build_wasm.sh, change:
+# In scripts/build_wasm.sh, change:
 -O3  # To:
 -Os
 
 # Rebuild and validate
-./build_wasm.sh
+./scripts/build_wasm.sh
 ./scripts/validate_wasm_size.sh
 ```
 
@@ -364,7 +364,7 @@ python3 -m http.server 8000
 ## Deployment Checklist
 
 ✅ Emscripten SDK installed (v3.1.0+)
-✅ Build succeeds: `./build_wasm.sh`
+✅ Build succeeds: `./scripts/build_wasm.sh`
 ✅ Size validation passes: `./scripts/validate_wasm_size.sh`
 ✅ Browser demo works: `playgrounds/wasm_interpreter_playground.html`
 ✅ Cross-platform validation: 100% command stream parity
