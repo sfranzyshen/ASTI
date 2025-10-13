@@ -25,7 +25,7 @@ class WasmASTInterpreter {
         this.module = null;
         this.interpreterPtr = null;
         this.isReady = false;
-        this.version = "21.0.0";
+        this.version = "21.1.0";
     }
 
     /**

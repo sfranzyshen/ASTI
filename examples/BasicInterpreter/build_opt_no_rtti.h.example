@@ -1,39 +1,54 @@
 /**
- * build_opt_no_rtti.h.example - RTTI-Free Compilation for Arduino IDE
+ * build_opt_no_rtti.h.example - RTTI-Free Mode (Size Optimization)
  *
- * This file provides optional RTTI-free compilation to reduce binary size
- * by approximately 40KB (from ~906KB to ~866KB flash).
+ * v21.1.0: Opt-in configuration for size-constrained deployments.
  *
- * USAGE (Arduino IDE):
- * ====================
- * 1. Copy this file: cp build_opt_no_rtti.h.example build_opt.h
- * 2. Compile sketch - Arduino IDE automatically applies build_opt.h flags
- * 3. Upload to ESP32-S3
+ * ⚙️ THIS IS EXPLICIT OPT-IN - Overwrites Default
+ * =================================================
+ * To enable RTTI-free mode:
  *
- * USAGE (arduino-cli):
- * ====================
- * 1. Copy this file: cp build_opt_no_rtti.h.example build_opt.h
- * 2. arduino-cli compile --fqbn esp32:esp32:esp32s3 .
+ * cd examples/BasicInterpreter
+ * cp build_opt_no_rtti.h.example build_opt.h
  *
- * WARNING:
- * ========
- * RTTI-free mode disables runtime type checking!
- * - Uses static_cast (no runtime verification)
- * - Wrong casts cause undefined behavior instead of nullptr
- * - Recommended ONLY for production embedded deployments
- * - ALWAYS test thoroughly with RTTI mode first!
+ * This will overwrite the default build_opt.h (committed with -frtti) with
+ * RTTI-free configuration.
  *
- * DEFAULT BEHAVIOR:
- * =================
- * Without this file (or build_opt.h), ESP32 Arduino framework compiles
- * with RTTI ENABLED by default, providing runtime type safety.
+ * 📊 BINARY SIZE: ~866KB (saves 40KB vs RTTI mode)
  *
- * SIZE COMPARISON:
- * ================
- * RTTI mode (default):    906KB flash / 24KB RAM
- * RTTI-free mode (this):  866KB flash / 24KB RAM (~40KB savings)
+ * ⚠️ WARNING:
+ * ===========
+ * • Disables runtime type safety (dynamic_cast → static_cast)
+ * • Wrong type casts cause undefined behavior (not safe nullptr)
+ * • Use ONLY after thorough testing with RTTI mode
+ * • Recommended only for flash-constrained production (<1MB available)
  *
- * Version: 21.0.0
+ * 📖 USAGE (Arduino IDE):
+ * =======================
+ * 1. cd examples/BasicInterpreter
+ * 2. cp build_opt_no_rtti.h.example build_opt.h
+ * 3. Open BasicInterpreter.ino in Arduino IDE
+ * 4. Compile (IDE applies overridden build_opt.h)
+ * 5. Verify binary size: Should be ~866KB
+ * 6. Upload to ESP32-S3
+ *
+ * 🔧 USAGE (arduino-cli):
+ * =======================
+ * cd examples/BasicInterpreter
+ * cp build_opt_no_rtti.h.example build_opt.h
+ * arduino-cli compile --fqbn esp32:esp32:esp32s3 .
+ *
+ * 🔄 TO RESTORE DEFAULT (RTTI Mode):
+ * ==================================
+ * git checkout examples/BasicInterpreter/build_opt.h
+ *
+ * This restores the committed default RTTI configuration (-frtti).
+ *
+ * 📊 SIZE COMPARISON:
+ * ===================
+ * RTTI mode (default):    ~906KB flash
+ * RTTI-free mode (this):  ~866KB flash (-40KB savings)
+ *
+ * Version: 21.1.0
  */
 
 // Enable RTTI-free mode (size optimization)

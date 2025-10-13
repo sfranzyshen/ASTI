@@ -31,17 +31,20 @@ fi
 echo "✅ Emscripten found: $(emcc --version | head -n 1)"
 
 # =============================================================================
-# RTTI CONFIGURATION (v21.0.0)
+# RTTI CONFIGURATION (v21.1.0)
 # =============================================================================
 # WASM REQUIREMENT: Emscripten's embind binding system REQUIRES RTTI
 # RTTI-free mode (-fno-rtti) is NOT SUPPORTED for WASM builds
 #
+# v21.1.0: RTTI is the universal default for ALL platforms (Linux, WASM, ESP32)
+# WASM enforces this requirement - cannot be disabled even if requested
+#
 # Reason: embind uses RTTI for type information in JavaScript bindings
 # This is documented in Emscripten's official documentation
 #
-# RTTI-free mode is available for:
+# RTTI-free mode (explicit opt-in) is available for:
 #  - Linux/native builds (cmake -DAST_NO_RTTI=ON)
-#  - ESP32 builds (via build_opt.h or PlatformIO esp32-s3-no-rtti environment)
+#  - ESP32 builds (copy build_opt_no_rtti.h.example or use PlatformIO esp32-s3-no-rtti)
 
 # Check if user tried to disable RTTI (not supported for WASM)
 if [ "$AST_NO_RTTI" = "1" ]; then
@@ -62,10 +65,11 @@ fi
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════════╗"
-echo "║  WASM Build: RTTI ENABLED (Required)                          ║"
+echo "║  WASM Build: RTTI ENABLED (Required - Universal Default)      ║"
 echo "║  • Uses dynamic_cast (runtime type verification)              ║"
 echo "║  • RTTI required by Emscripten embind (cannot be disabled)    ║"
-echo "║  • Size optimized with -O3 (gzip compression: 487KB → ~158KB) ║"
+echo "║  • Consistent with v21.1.0 universal RTTI default             ║"
+echo "║  • Size optimized with -O3 (gzip: 487KB → ~158KB)             ║"
 echo "╚════════════════════════════════════════════════════════════════╝"
 echo ""
 

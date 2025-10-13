@@ -1,6 +1,132 @@
 # RTTI Removal Assessment - Critical Analysis
 
-## 🚨 CRITICAL CORRECTION (October 13, 2025)
+## 🔄 v21.1.0 UPDATE: UNIVERSAL RTTI DEFAULT (October 13, 2025)
+
+**MAJOR CHANGE**: v21.1.0 removes platform-specific auto-detection and establishes RTTI as the universal default for ALL platforms.
+
+### What Changed from v21.0.0 to v21.1.0
+
+**v21.0.0 Behavior:**
+- Linux: RTTI default ✅
+- WASM: RTTI required ✅
+- ESP32: RTTI-free auto-detected (forced by `#ifdef ARDUINO`) ❌
+
+**v21.1.0 Behavior:**
+- Linux: RTTI default ✅
+- WASM: RTTI required ✅
+- ESP32: RTTI default (requires `-frtti` build flag) ✅
+
+### Rationale for Change
+
+**Problem with v21.0.0:**
+Platform-specific auto-detection created inconsistency:
+```cpp
+#if defined(ARDUINO) && !defined(AST_NO_RTTI) && !defined(AST_FORCE_RTTI)
+    #define AST_NO_RTTI  // ESP32 forced to RTTI-free
+#endif
+```
+
+**Solution in v21.1.0:**
+Remove platform-specific logic, make RTTI universal default:
+```cpp
+// No auto-detection - RTTI is default for ALL platforms
+#ifdef AST_NO_RTTI
+    // RTTI-free (explicit opt-in)
+#else
+    // RTTI (default everywhere)
+#endif
+```
+
+### ESP32 Configuration Matrix
+
+| Configuration | Code Flags | Build Flags | Binary Size | Type Safety |
+|--------------|-----------|-------------|-------------|-------------|
+| **RTTI (default)** | None (default) | `-frtti` | 906KB | ✅ dynamic_cast |
+| **RTTI-free (opt-in)** | `-DAST_NO_RTTI` | `-fno-rtti` | 866KB | ❌ static_cast only |
+
+### Migration Guide
+
+**If you were using v21.0.0 with auto-detection:**
+
+**Scenario 1: You want RTTI (recommended)**
+- Add `-frtti` to your build configuration
+- No code changes needed
+- Binary will be ~906KB
+
+**Scenario 2: You want RTTI-free (size optimization)**
+- Add `-DAST_NO_RTTI -fno-rtti` to build configuration
+- No code changes needed
+- Binary will be ~866KB
+
+**PlatformIO Migration:**
+```ini
+# v21.0.0 (auto-detected RTTI-free)
+[env:esp32-s3]
+build_flags = # empty - auto-detected
+
+# v21.1.0 Option A (RTTI default)
+[env:esp32-s3]
+build_flags = -frtti
+
+# v21.1.0 Option B (RTTI-free opt-in)
+[env:esp32-s3-no-rtti]
+build_flags = -DAST_NO_RTTI -fno-rtti
+```
+
+**Arduino IDE Migration:**
+```bash
+# v21.0.0 (auto-detected RTTI-free)
+# No build_opt.h needed
+
+# v21.1.0 Option A (RTTI default)
+# Use committed build_opt.h (contains: -frtti)
+# No action needed!
+
+# v21.1.0 Option B (RTTI-free opt-in)
+cd examples/BasicInterpreter
+cp build_opt_no_rtti.h.example build_opt.h  # Contains: -DAST_NO_RTTI -fno-rtti
+```
+
+### Key Simplifications
+
+**v21.0.0:**
+- Three flags: `AST_NO_RTTI`, `AST_FORCE_RTTI`, `ARDUINO`
+- Complex auto-detection logic
+- Platform-specific behavior
+- Confusing double-negatives
+
+**v21.1.0:**
+- One flag: `AST_NO_RTTI` (explicit opt-in)
+- No auto-detection
+- Consistent behavior across all platforms
+- Simple: default is RTTI, opt-in for size
+
+### User Experience Improvements
+
+**Most Users (Default RTTI):**
+- ✅ Linux: `cmake .. && make` → Works automatically
+- ✅ WASM: `./scripts/build_wasm.sh` → Works automatically
+- ✅ ESP32 PlatformIO: `pio run -e esp32-s3` → Works (includes `-frtti`)
+- ✅ ESP32 Arduino IDE: Open sketch, compile → Works (committed `build_opt.h`)
+
+**Size-Conscious Users (Opt-In RTTI-Free):**
+- ⚙️ Linux: `cmake -DAST_NO_RTTI=ON .. && make`
+- ⚙️ ESP32 PlatformIO: `pio run -e esp32-s3-no-rtti`
+- ⚙️ ESP32 Arduino IDE: `cp build_opt_no_rtti.h.example build_opt.h` then compile
+
+### Philosophy
+
+v21.0.0 treated platforms differently based on preprocessor detection. v21.1.0 treats all platforms uniformly in code - RTTI is the default everywhere. The fact that ESP32 needs `-frtti` to override its platform default (`-fno-rtti`) is a **build configuration detail**, not an architecture decision.
+
+**Benefits:**
+- ✅ Consistency: Same code logic across all platforms
+- ✅ Safety First: Runtime type checking by default
+- ✅ Explicit Optimization: Size reduction is conscious choice
+- ✅ Simpler Code: No platform-specific conditionals
+
+---
+
+## 🚨 CRITICAL CORRECTION (October 13, 2025 - v21.0.0)
 
 **PREVIOUS ASSESSMENT WAS WRONG!** The original assessment below incorrectly concluded that ESP32 supports RTTI by default. Actual compilation testing reveals:
 

@@ -9,7 +9,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 project(ArduinoASTInterpreter
-    VERSION 21.0.0
+    VERSION 21.1.0
     DESCRIPTION "ESP32-S3 Arduino AST Interpreter - Host Development"
     LANGUAGES CXX)
 
@@ -71,11 +71,11 @@ option(ENABLE_PROFILING "Enable memory and performance profiling" OFF)
 option(ENABLE_COVERAGE "Enable code coverage" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
-# v21.0.0: RTTI Support Options
+# v21.1.0: RTTI Support Options
 # ==============================
-# RTTI (Run-Time Type Information) enabled by default for runtime safety.
-# Disable for size-constrained embedded deployments (~40KB savings).
-option(AST_NO_RTTI "Disable RTTI for size optimization (reduces binary by ~40KB)" OFF)
+# RTTI (Run-Time Type Information) is the universal default for ALL platforms.
+# Explicit opt-in to RTTI-free mode for size-constrained deployments (~40KB savings).
+option(AST_NO_RTTI "Disable RTTI for size optimization (explicit opt-in, ~40KB savings)" OFF)
 
 # ESP32-specific options (for when targeting ESP32)
 option(TARGET_ESP32 "Target ESP32 platform" OFF)
@@ -104,18 +104,18 @@ if(ENABLE_COVERAGE)
 endif()
 
 # =============================================================================
-# RTTI CONFIGURATION (v21.0.0)
+# RTTI CONFIGURATION (v21.1.0)
 # =============================================================================
-# By default, RTTI is ENABLED for runtime type safety (dynamic_cast).
-# Optional RTTI-free mode for size-constrained deployments (static_cast).
+# By default, RTTI is ENABLED for ALL platforms (dynamic_cast).
+# RTTI-free mode is explicit opt-in for size-constrained deployments (static_cast).
 
 if(AST_NO_RTTI)
     message(STATUS "")
     message(STATUS "╔════════════════════════════════════════════════════════════════╗")
-    message(STATUS "║  RTTI DISABLED - Size-Optimized Mode (~40KB savings)          ║")
-    message(STATUS "║  • Uses static_cast (no runtime type checking)                ║")
-    message(STATUS "║  • Recommended ONLY for production embedded deployments       ║")
-    message(STATUS "║  • Test thoroughly with RTTI mode first!                      ║")
+    message(STATUS "║  RTTI DISABLED (Explicit Opt-In)                              ║")
+    message(STATUS "║  • Uses static_cast (NO runtime type checking)                ║")
+    message(STATUS "║  • ~40KB smaller than RTTI mode                                ║")
+    message(STATUS "║  • Use ONLY after testing with RTTI mode!                     ║")
     message(STATUS "╚════════════════════════════════════════════════════════════════╝")
     message(STATUS "")
 
@@ -131,10 +131,10 @@ if(AST_NO_RTTI)
 else()
     message(STATUS "")
     message(STATUS "╔════════════════════════════════════════════════════════════════╗")
-    message(STATUS "║  RTTI ENABLED - Runtime Type Safety (Default)                 ║")
+    message(STATUS "║  RTTI ENABLED (Universal Default - All Platforms)             ║")
     message(STATUS "║  • Uses dynamic_cast (runtime type verification)              ║")
-    message(STATUS "║  • Recommended for development, testing, and production       ║")
-    message(STATUS "║  • Binary size: ~40KB larger than RTTI-free mode             ║")
+    message(STATUS "║  • Recommended for development and production                  ║")
+    message(STATUS "║  • ~40KB larger than RTTI-free mode                            ║")
     message(STATUS "╚════════════════════════════════════════════════════════════════╝")
     message(STATUS "")
 endif()

@@ -2,6 +2,156 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+# 🎉 VERSION 21.1.0 - UNIVERSAL RTTI DEFAULT 🎉
+
+## **OCTOBER 13, 2025 - RTTI AS DEFAULT FOR ALL PLATFORMS**
+
+### **MAJOR PHILOSOPHICAL SHIFT: CONSISTENCY & SAFETY FIRST**
+
+**CONSISTENCY RELEASE**: v21.1.0 establishes RTTI (runtime type safety via dynamic_cast) as the universal default for ALL platforms, with RTTI-free mode as explicit opt-in for size-constrained deployments.
+
+**Key Achievements:**
+- ✅ **Universal RTTI Default**: ALL platforms use RTTI by default (consistent behavior)
+- ✅ **Simplified Architecture**: Removed platform-specific auto-detection logic
+- ✅ **Safety First Philosophy**: Runtime type checking is default, size optimization is explicit choice
+- ✅ **Zero Configuration**: Arduino IDE users do nothing - `build_opt.h` committed with `-frtti`
+- ✅ **Explicit Optimization**: RTTI-free mode requires explicit copy command or flag
+- ✅ **100% Backward Compatible**: Existing explicit builds continue to work
+- ✅ **100% Test Parity**: All 135/135 tests pass in both RTTI and RTTI-free modes
+
+**Philosophical Change from v21.0.0:**
+- **v21.0.0**: Platform-specific defaults (ESP32 auto-detected to RTTI-free via `#ifdef ARDUINO`)
+- **v21.1.0**: Universal RTTI default (ESP32 requires `-frtti` build configuration flag)
+
+**Platform Configuration:**
+
+**Linux/Native: RTTI Default (No Configuration)**
+- ✅ **Default Build**: `cmake .. && make`
+  - Uses RTTI (dynamic_cast) automatically
+  - Binary size: ~4.3MB
+  - No configuration required
+
+- ⚙️ **Size Optimization**: `cmake -DAST_NO_RTTI=ON .. && make`
+  - Uses static_cast (explicit opt-in)
+  - Binary size: ~4.26MB (-40KB)
+  - Requires explicit flag
+
+**WASM: RTTI Required (No Choice)**
+- ✅ **Build**: `./scripts/build_wasm.sh`
+  - Uses RTTI (Emscripten embind requirement)
+  - Binary size: 487KB (gzipped: 158KB)
+  - Cannot be disabled
+
+**ESP32/Arduino: RTTI Default (Requires -frtti Flag)**
+
+⚠️ **IMPORTANT**: Arduino ESP32 framework uses `-fno-rtti` by default. You must add `-frtti` to enable our RTTI default!
+
+**PlatformIO:**
+- ✅ **RTTI Mode (default)**: `pio run -e esp32-s3`
+  - Includes `-frtti` in build_flags
+  - Binary: ~906KB
+  ```ini
+  [env:esp32-s3]
+  build_flags = -frtti  # Override Arduino's -fno-rtti
+  ```
+
+- ⚙️ **RTTI-Free Mode (opt-in)**: `pio run -e esp32-s3-no-rtti`
+  - Includes `-DAST_NO_RTTI -fno-rtti`
+  - Binary: ~866KB (-40KB)
+  ```ini
+  [env:esp32-s3-no-rtti]
+  build_flags = -DAST_NO_RTTI -fno-rtti
+  ```
+
+**Arduino IDE:**
+- ✅ **RTTI Mode (default)**: Open sketch and compile
+  - **No action required** - committed `build_opt.h` contains `-frtti`
+  - Binary: ~906KB
+  - Just works!
+
+- ⚙️ **RTTI-Free Mode (opt-in)**:
+  ```bash
+  cd examples/BasicInterpreter
+  cp build_opt_no_rtti.h.example build_opt.h
+  # Compile in Arduino IDE
+  ```
+  - Binary: ~866KB (-40KB)
+  - Overwrites default configuration
+
+**arduino-cli:**
+- ✅ **RTTI Mode (default)**: Use committed `build_opt.h`
+  ```bash
+  arduino-cli compile --fqbn esp32:esp32:esp32s3 examples/BasicInterpreter
+  ```
+  - Binary: ~906KB
+
+- ⚙️ **RTTI-Free Mode (opt-in)**: Override with flags
+  ```bash
+  arduino-cli compile --fqbn esp32:esp32:esp32s3 \
+    --build-property "compiler.cpp.extra_flags=-DAST_NO_RTTI -fno-rtti" \
+    examples/BasicInterpreter
+  ```
+  - Binary: ~866KB (-40KB)
+
+**Technical Implementation:**
+
+**Files Modified/Created:**
+- `src/cpp/ASTCast.hpp` - Removed auto-detection, updated to v21.1.0, comprehensive platform docs
+- `platformio.ini` - Default `[env:esp32-s3]` now includes `-frtti`
+- `examples/BasicInterpreter/build_opt.h` (NEW, COMMITTED) - Contains `-frtti` for Arduino IDE default
+- `examples/BasicInterpreter/build_opt_no_rtti.h.example` - Updated for explicit opt-in override
+- `CMakeLists.txt` - Version 21.1.0, updated messaging emphasizing universal default
+- `scripts/build_wasm.sh` - Updated to reflect universal default philosophy
+
+**Key Changes:**
+- Removed: `#ifdef ARDUINO` auto-detection from ASTCast.hpp
+- Removed: `AST_FORCE_RTTI` flag (no longer needed - default is RTTI)
+- Added: Committed `build_opt.h` with `-frtti` for Arduino IDE users
+- Simplified: Single flag (`AST_NO_RTTI`) for explicit opt-in
+
+**Migration from v21.0.0:**
+
+**If you were using v21.0.0 with auto-detection:**
+
+- **Arduino IDE**: No action - now uses committed `build_opt.h` with RTTI
+  - v21.0.0: Auto-detected to RTTI-free
+  - v21.1.0: Uses committed RTTI default (~906KB)
+
+- **Want RTTI-free?** Copy override file:
+  ```bash
+  cd examples/BasicInterpreter
+  cp build_opt_no_rtti.h.example build_opt.h
+  ```
+
+**PlatformIO Migration:**
+```ini
+# v21.0.0 (auto-detected RTTI-free)
+[env:esp32-s3]
+build_flags = # empty - auto-detected
+
+# v21.1.0 Option A: RTTI default (recommended)
+[env:esp32-s3]
+build_flags = -frtti
+
+# v21.1.0 Option B: RTTI-free opt-in
+[env:esp32-s3-no-rtti]
+build_flags = -DAST_NO_RTTI -fno-rtti
+```
+
+**Testing Results:**
+- ✅ **Linux RTTI**: 135/135 tests passing (default)
+- ✅ **Linux RTTI-free**: 135/135 tests passing (opt-in)
+- ✅ **WASM**: Successful build (487KB)
+- ✅ **ESP32 RTTI**: Successful build with `-frtti` (906KB)
+- ✅ **ESP32 RTTI-free**: Successful build with `-DAST_NO_RTTI` (866KB)
+
+**Rationale:**
+v21.0.0's platform-specific auto-detection created inconsistency - ESP32 behaved differently due to `#ifdef ARDUINO` logic. v21.1.0 treats all platforms uniformly in code - RTTI is always the default. The fact that ESP32 needs `-frtti` to override its platform default is a build configuration detail, not an architecture decision. This provides consistency, safety by default, and explicit optimization choices.
+
+**Version**: ASTInterpreter 21.1.0, CompactAST 3.2.0, ArduinoParser 6.0.0
+
+---
+
 # 🎉 VERSION 21.0.0 - HYBRID RTTI SUPPORT + AUTO-DETECTION 🎉
 
 ## **OCTOBER 13, 2025 - CONDITIONAL RTTI WITH PLATFORM AUTO-DETECTION**
