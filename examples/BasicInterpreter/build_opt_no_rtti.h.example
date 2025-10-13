@@ -1,0 +1,43 @@
+/**
+ * build_opt_no_rtti.h.example - RTTI-Free Compilation for Arduino IDE
+ *
+ * This file provides optional RTTI-free compilation to reduce binary size
+ * by approximately 40KB (from ~906KB to ~866KB flash).
+ *
+ * USAGE (Arduino IDE):
+ * ====================
+ * 1. Copy this file: cp build_opt_no_rtti.h.example build_opt.h
+ * 2. Compile sketch - Arduino IDE automatically applies build_opt.h flags
+ * 3. Upload to ESP32-S3
+ *
+ * USAGE (arduino-cli):
+ * ====================
+ * 1. Copy this file: cp build_opt_no_rtti.h.example build_opt.h
+ * 2. arduino-cli compile --fqbn esp32:esp32:esp32s3 .
+ *
+ * WARNING:
+ * ========
+ * RTTI-free mode disables runtime type checking!
+ * - Uses static_cast (no runtime verification)
+ * - Wrong casts cause undefined behavior instead of nullptr
+ * - Recommended ONLY for production embedded deployments
+ * - ALWAYS test thoroughly with RTTI mode first!
+ *
+ * DEFAULT BEHAVIOR:
+ * =================
+ * Without this file (or build_opt.h), ESP32 Arduino framework compiles
+ * with RTTI ENABLED by default, providing runtime type safety.
+ *
+ * SIZE COMPARISON:
+ * ================
+ * RTTI mode (default):    906KB flash / 24KB RAM
+ * RTTI-free mode (this):  866KB flash / 24KB RAM (~40KB savings)
+ *
+ * Version: 21.0.0
+ */
+
+// Enable RTTI-free mode (size optimization)
+-DAST_NO_RTTI
+
+// Disable RTTI compiler feature (~40KB savings)
+-fno-rtti

@@ -4,10 +4,11 @@
  * Core interpreter implementation that executes AST nodes and generates
  * command streams matching JavaScript ASTInterpreter.js exactly.
  *
- * Version: 20.0.0
+ * Version: 21.0.0
  */
 
 #include "ASTInterpreter.hpp"
+#include "ASTCast.hpp"  // v21.0.0: Conditional RTTI support (dynamic_cast default, static_cast optional)
 
 // Global reset flags for static state variables (must be at global scope)
 static bool g_resetTimingCounters = false;
@@ -377,7 +378,7 @@ void ASTInterpreter::executeSetup() {
             
             // Execute the function BODY, not the function definition
             if (setupFunc->getType() == arduino_ast::ASTNodeType::FUNC_DEF) {
-                auto* funcDef = static_cast<const arduino_ast::FuncDefNode*>(setupFunc);
+                auto* funcDef = AST_CONST_CAST(arduino_ast::FuncDefNode, setupFunc);
                 const auto* body = funcDef->getBody();
                 if (body) {
                     const_cast<arduino_ast::ASTNode*>(body)->accept(*this);
@@ -430,7 +431,7 @@ void ASTInterpreter::executeLoop() {
                 try {
                     if (loopFunc) {
                         if (loopFunc->getType() == arduino_ast::ASTNodeType::FUNC_DEF) {
-                            auto* funcDef = static_cast<const arduino_ast::FuncDefNode*>(loopFunc);
+                            auto* funcDef = AST_CONST_CAST(arduino_ast::FuncDefNode, loopFunc);
                             const auto* body = funcDef->getBody();
                             if (body) {
                                 const_cast<arduino_ast::ASTNode*>(body)->accept(*this);
@@ -472,7 +473,7 @@ void ASTInterpreter::executeLoop() {
 
             // Execute serialEvent function (this will emit the FUNCTION_CALL command internally)
             if (serialEventFunc->getType() == arduino_ast::ASTNodeType::FUNC_DEF) {
-                auto* funcDefNode = static_cast<const arduino_ast::FuncDefNode*>(serialEventFunc);
+                auto* funcDefNode = AST_CONST_CAST(arduino_ast::FuncDefNode, serialEventFunc);
                 executeUserFunction("serialEvent", funcDefNode, std::vector<CommandValue>{});
             }
         }
@@ -602,7 +603,7 @@ void ASTInterpreter::visit(arduino_ast::ExpressionStatement& node) {
             // Test 126 FIX: Handle both single and multi-declaration
             if (expr->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
                 // Single variable: struct Node n1;
-                auto* identNode = static_cast<arduino_ast::IdentifierNode*>(expr);
+                auto* identNode = AST_CAST(arduino_ast::IdentifierNode, expr);
                 if (identNode) {
                     std::string varName = identNode->getName();
                     createStructVariable(pendingStructType_, varName);
@@ -611,12 +612,12 @@ void ASTInterpreter::visit(arduino_ast::ExpressionStatement& node) {
                 }
             } else if (expr->getType() == arduino_ast::ASTNodeType::COMMA_EXPRESSION) {
                 // Multiple variables: struct Node n1, n2;
-                auto* commaExpr = static_cast<arduino_ast::CommaExpression*>(expr);
+                auto* commaExpr = AST_CAST(arduino_ast::CommaExpression, expr);
                 if (commaExpr) {
                     // Process all IdentifierNode children in CommaExpression
                     for (const auto& child : commaExpr->getChildren()) {
                         if (child && child->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                            auto* identNode = static_cast<arduino_ast::IdentifierNode*>(child.get());
+                            auto* identNode = AST_CAST(arduino_ast::IdentifierNode, child.get());
                             if (identNode) {
                                 std::string varName = identNode->getName();
                                 createStructVariable(pendingStructType_, varName);
@@ -942,16 +943,16 @@ void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
     // Get function name
     std::string functionName;
     if (node.getCallee()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(node.getCallee());
+        const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, node.getCallee());
         functionName = identifier->getName();
         TRACE("FuncCall-Name", "Calling function: " + functionName);
     } else if (node.getCallee()->getType() == arduino_ast::ASTNodeType::MEMBER_ACCESS) {
-        const auto* memberAccess = static_cast<const arduino_ast::MemberAccessNode*>(node.getCallee());
+        const auto* memberAccess = AST_CONST_CAST(arduino_ast::MemberAccessNode, node.getCallee());
         // Handle member access like Serial.begin()
         if (memberAccess->getObject()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-            const auto* objectId = static_cast<const arduino_ast::IdentifierNode*>(memberAccess->getObject());
+            const auto* objectId = AST_CONST_CAST(arduino_ast::IdentifierNode, memberAccess->getObject());
             if (memberAccess->getProperty()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                const auto* propertyId = static_cast<const arduino_ast::IdentifierNode*>(memberAccess->getProperty());
+                const auto* propertyId = AST_CONST_CAST(arduino_ast::IdentifierNode, memberAccess->getProperty());
                 std::string objectName = objectId->getName();
                 std::string methodName = propertyId->getName();
                 functionName = objectName + "." + methodName;
@@ -967,7 +968,7 @@ void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
 
         // CROSS-PLATFORM FIX: Special handling for character literals in Serial.print
         if (functionName == "Serial.print" && arg->getType() == arduino_ast::ASTNodeType::CHAR_LITERAL) {
-            auto* charNode = static_cast<arduino_ast::CharLiteralNode*>(arg.get());
+            auto* charNode = AST_CAST(arduino_ast::CharLiteralNode, arg.get());
             if (charNode) {
                 std::string charStr = charNode->getCharValue();
                 char value = charStr.empty() ? '\0' : charStr[0];
@@ -1000,7 +1001,7 @@ void ASTInterpreter::visit(arduino_ast::FuncCallNode& node) {
         auto* userFunc = findFunctionInAST(functionName);
         if (userFunc && userFunc->getType() == arduino_ast::ASTNodeType::FUNC_DEF) {
             // Execute user-defined function
-            const auto* funcDefNode = static_cast<const arduino_ast::FuncDefNode*>(userFunc);
+            const auto* funcDefNode = AST_CONST_CAST(arduino_ast::FuncDefNode, userFunc);
             executeUserFunction(functionName, funcDefNode, args);
         }
     } else {
@@ -1026,7 +1027,7 @@ void ASTInterpreter::visit(arduino_ast::ConstructorCallNode& node) {
     // Get constructor name
     std::string constructorName;
     if (node.getCallee()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(node.getCallee());
+        const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, node.getCallee());
         constructorName = identifier->getName();
     }
     
@@ -1120,7 +1121,7 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
         std::string objectName;
 
         if (node.getObject()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-            const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(node.getObject());
+            const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, node.getObject());
             // Simple identifier: obj.member
             objectName = identifier->getName();
 
@@ -1142,7 +1143,7 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
                 }
             }
         } else if (node.getObject()->getType() == arduino_ast::ASTNodeType::MEMBER_ACCESS) {
-            const auto* nestedAccess = static_cast<const arduino_ast::MemberAccessNode*>(node.getObject());
+            const auto* nestedAccess = AST_CONST_CAST(arduino_ast::MemberAccessNode, node.getObject());
             // Nested member access: obj.member.submember
 
             // Recursively evaluate the nested access first
@@ -1158,7 +1159,7 @@ void ASTInterpreter::visit(arduino_ast::MemberAccessNode& node) {
         // Get property name
         std::string propertyName;
         if (node.getProperty()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-            const auto* propIdentifier = static_cast<const arduino_ast::IdentifierNode*>(node.getProperty());
+            const auto* propIdentifier = AST_CONST_CAST(arduino_ast::IdentifierNode, node.getProperty());
             propertyName = propIdentifier->getName();
         } else {
             emitError("Property must be an identifier");
@@ -1296,7 +1297,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
         }
 
         if (declarator->getType() == arduino_ast::ASTNodeType::DECLARATOR_NODE) {
-            auto* declNode = static_cast<arduino_ast::DeclaratorNode*>(declarator.get());
+            auto* declNode = AST_CAST(arduino_ast::DeclaratorNode, declarator.get());
             std::string varName = declNode->getName();
 
             // Get children for later processing
@@ -1332,12 +1333,12 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 // Parser creates ConstructorCallNode(callee="static void") as children[0] for functions
                 // This is NOT a variable initializer - skip it to prevent spurious function call!
                 if (children[0] && children[0]->getType() == arduino_ast::ASTNodeType::CONSTRUCTOR_CALL) {
-                    const auto* ctorNode = static_cast<const arduino_ast::ConstructorCallNode*>(children[0].get());
+                    const auto* ctorNode = AST_CONST_CAST(arduino_ast::ConstructorCallNode, children[0].get());
                     if (ctorNode) {
                         if (ctorNode->getCallee()) {
                             std::string calleeName;
                             if (ctorNode->getCallee()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                                const auto* calleeId = static_cast<const arduino_ast::IdentifierNode*>(ctorNode->getCallee());
+                                const auto* calleeId = AST_CONST_CAST(arduino_ast::IdentifierNode, ctorNode->getCallee());
                                 calleeName = calleeId->getName();
                             }
 
@@ -1394,7 +1395,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                     if (!children.empty() && children[0] && children[0]->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
                         // Get target variable name from identifier
                         std::string targetVarName;
-                        const auto* identNode = static_cast<const arduino_ast::IdentifierNode*>(children[0].get());
+                        const auto* identNode = AST_CONST_CAST(arduino_ast::IdentifierNode, children[0].get());
                         if (identNode) {
                             targetVarName = identNode->getName();
                         }
@@ -1550,7 +1551,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             if (isReference && !children.empty()) {
                 // For reference variables, try to find the target variable
                 if (children[0]->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                    auto* identifierNode = static_cast<arduino_ast::IdentifierNode*>(children[0].get());
+                    auto* identifierNode = AST_CAST(arduino_ast::IdentifierNode, children[0].get());
                     std::string targetName = identifierNode->getName();
                     if (scopeManager_->createReference(varName, targetName)) {
                     } else {
@@ -1653,11 +1654,11 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                 }
             }
         } else if (declarator->getType() == arduino_ast::ASTNodeType::ARRAY_DECLARATOR) {
-            auto* arrayDeclNode = static_cast<arduino_ast::ArrayDeclaratorNode*>(declarator.get());
+            auto* arrayDeclNode = AST_CAST(arduino_ast::ArrayDeclaratorNode, declarator.get());
             // Handle ArrayDeclaratorNode (like int notes[] = {...} or int pixels[8][8])
             std::string varName = "unknown_array";
             if (arrayDeclNode->getIdentifier()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(arrayDeclNode->getIdentifier());
+                const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, arrayDeclNode->getIdentifier());
                 varName = identifier->getName();
             }
 
@@ -1711,7 +1712,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
                     auto childType = allChildren[i]->getType();
                     if (childType == arduino_ast::ASTNodeType::ARRAY_INIT) {
                         // Process ArrayInitializerNode to get real values
-                        auto* arrayInitNode = static_cast<arduino_ast::ArrayInitializerNode*>(allChildren[i].get());
+                        auto* arrayInitNode = AST_CAST(arduino_ast::ArrayInitializerNode, allChildren[i].get());
                         if (arrayInitNode) {
                             const auto& initChildren = arrayInitNode->getChildren();
                             for (size_t j = 0; j < initChildren.size(); ++j) {
@@ -1837,7 +1838,7 @@ void ASTInterpreter::visit(arduino_ast::VarDeclNode& node) {
             }
 
         } else if (declarator->getType() == arduino_ast::ASTNodeType::FUNCTION_POINTER_DECLARATOR) {
-            auto* funcPtrDeclNode = static_cast<arduino_ast::FunctionPointerDeclaratorNode*>(declarator.get());
+            auto* funcPtrDeclNode = AST_CAST(arduino_ast::FunctionPointerDeclaratorNode, declarator.get());
             // Handle FunctionPointerDeclaratorNode (Test 106: int (*ptr)(int, int))
             std::string varName = "unknown_funcptr";
 
@@ -1884,12 +1885,12 @@ void ASTInterpreter::visit(arduino_ast::FuncDefNode& node) {
 
     // Try DeclaratorNode first (more likely)
     if (declarator->getType() == arduino_ast::ASTNodeType::DECLARATOR_NODE) {
-        const auto* declNode = static_cast<const arduino_ast::DeclaratorNode*>(declarator);
+        const auto* declNode = AST_CONST_CAST(arduino_ast::DeclaratorNode, declarator);
         functionName = declNode->getName();
     }
     // Fallback to IdentifierNode
     else if (declarator->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(declarator);
+        const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, declarator);
         functionName = identifier->getName();
     }
 
@@ -1897,7 +1898,7 @@ void ASTInterpreter::visit(arduino_ast::FuncDefNode& node) {
     std::string returnTypeName = "void";
     if (returnType) {
         if (returnType->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
-            const auto* typeNode = static_cast<const arduino_ast::TypeNode*>(returnType);
+            const auto* typeNode = AST_CONST_CAST(arduino_ast::TypeNode, returnType);
             returnTypeName = typeNode->getValueAs<std::string>();
 
             // Strip storage specifiers
@@ -2021,7 +2022,7 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
         } else if (leftNode && leftNode->getType() == arduino_ast::ASTNodeType::ARRAY_ACCESS) {
             // Array element assignment (e.g., arr[i] = value)
 
-            const auto* arrayAccessNode = static_cast<const arduino_ast::ArrayAccessNode*>(leftNode);
+            const auto* arrayAccessNode = AST_CONST_CAST(arduino_ast::ArrayAccessNode, leftNode);
             if (!arrayAccessNode || !arrayAccessNode->getIdentifier() || !arrayAccessNode->getIndex()) {
                 emitError("Invalid array access in assignment");
                 return;
@@ -2033,14 +2034,14 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             bool is2DArray = false;
 
             if (arrayAccessNode->getIdentifier()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(arrayAccessNode->getIdentifier());
+                const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, arrayAccessNode->getIdentifier());
                 // Simple 1D array: arr[index]
                 arrayName = identifier->getName();
             } else if (arrayAccessNode->getIdentifier()->getType() == arduino_ast::ASTNodeType::ARRAY_ACCESS) {
-                const auto* nestedAccess = static_cast<const arduino_ast::ArrayAccessNode*>(arrayAccessNode->getIdentifier());
+                const auto* nestedAccess = AST_CONST_CAST(arduino_ast::ArrayAccessNode, arrayAccessNode->getIdentifier());
                 // 2D array: arr[x][y] - arrayAccessNode->getIdentifier() is arr[x]
                 if (nestedAccess->getIdentifier()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                    const auto* baseIdentifier = static_cast<const arduino_ast::IdentifierNode*>(nestedAccess->getIdentifier());
+                    const auto* baseIdentifier = AST_CONST_CAST(arduino_ast::IdentifierNode, nestedAccess->getIdentifier());
                     arrayName = baseIdentifier->getName();
                     is2DArray = true;
                     // Evaluate the first index (x in arr[x][y])
@@ -2118,7 +2119,7 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
         } else if (leftNode && leftNode->getType() == arduino_ast::ASTNodeType::MEMBER_ACCESS) {
             // Member access assignment (e.g., obj.field = value)
 
-            const auto* memberAccessNode = static_cast<const arduino_ast::MemberAccessNode*>(leftNode);
+            const auto* memberAccessNode = AST_CONST_CAST(arduino_ast::MemberAccessNode, leftNode);
             if (!memberAccessNode || !memberAccessNode->getObject() || !memberAccessNode->getProperty()) {
                 emitError("Invalid member access in assignment");
                 return;
@@ -2127,7 +2128,7 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             // Get object name (support simple identifier objects)
             std::string objectName;
             if (memberAccessNode->getObject()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(memberAccessNode->getObject());
+                const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, memberAccessNode->getObject());
                 objectName = identifier->getName();
             } else {
                 emitError("Complex object expressions not supported in assignment");
@@ -2137,7 +2138,7 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             // Get property name
             std::string propertyName;
             if (memberAccessNode->getProperty()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                const auto* propIdentifier = static_cast<const arduino_ast::IdentifierNode*>(memberAccessNode->getProperty());
+                const auto* propIdentifier = AST_CONST_CAST(arduino_ast::IdentifierNode, memberAccessNode->getProperty());
                 propertyName = propIdentifier->getName();
             } else {
                 emitError("Property must be an identifier");
@@ -2204,7 +2205,7 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
             // Handle pointer dereferencing assignment (*ptr = value or **ptr = value)
             // Test 125: Support for pointer-to-pointer assignments through modern ArduinoPointer infrastructure
 
-            const auto* unaryOpNode = static_cast<const arduino_ast::UnaryOpNode*>(leftNode);
+            const auto* unaryOpNode = AST_CONST_CAST(arduino_ast::UnaryOpNode, leftNode);
             if (!unaryOpNode || unaryOpNode->getOperator() != "*") {
                 emitError("Only dereference operator (*) supported in unary assignment");
                 return;
@@ -2261,18 +2262,18 @@ void ASTInterpreter::visit(arduino_ast::AssignmentNode& node) {
 
         } else if (leftNode && leftNode->getType() == arduino_ast::ASTNodeType::ARRAY_ACCESS) {
             // Check if this is a multi-dimensional array access (nested array access)
-            const auto* outerArrayAccessNode = static_cast<const arduino_ast::ArrayAccessNode*>(leftNode);
+            const auto* outerArrayAccessNode = AST_CONST_CAST(arduino_ast::ArrayAccessNode, leftNode);
             if (outerArrayAccessNode && outerArrayAccessNode->getIdentifier() &&
                 outerArrayAccessNode->getIdentifier()->getType() == arduino_ast::ASTNodeType::ARRAY_ACCESS) {
 
                 // Multi-dimensional array assignment (e.g., arr[i][j] = value)
 
-                const auto* innerArrayAccessNode = static_cast<const arduino_ast::ArrayAccessNode*>(outerArrayAccessNode->getIdentifier());
+                const auto* innerArrayAccessNode = AST_CONST_CAST(arduino_ast::ArrayAccessNode, outerArrayAccessNode->getIdentifier());
 
                 // Get array name from the innermost access
                 std::string arrayName;
                 if (innerArrayAccessNode->getIdentifier()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                    const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(innerArrayAccessNode->getIdentifier());
+                    const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, innerArrayAccessNode->getIdentifier());
                     arrayName = identifier->getName();
                 } else {
                     emitError("Complex multi-dimensional array expressions not supported");
@@ -2630,7 +2631,7 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
 
         // Check if this is nested access: arr[x][y]
         if (node.getIdentifier()->getType() == arduino_ast::ASTNodeType::ARRAY_ACCESS) {
-            const auto* nestedAccess = static_cast<const arduino_ast::ArrayAccessNode*>(node.getIdentifier());
+            const auto* nestedAccess = AST_CONST_CAST(arduino_ast::ArrayAccessNode, node.getIdentifier());
             // This is arr[x][y] - evaluate arr[x] first
             CommandValue firstAccess = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getIdentifier()));
 
@@ -2676,7 +2677,7 @@ void ASTInterpreter::visit(arduino_ast::ArrayAccessNode& node) {
 
         // Handle 1D array or first access of 2D array: arr[index]
         if (node.getIdentifier()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-            const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(node.getIdentifier());
+            const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, node.getIdentifier());
             std::string arrayName = identifier->getName();
 
             // Check basic scope manager first for 2D arrays
@@ -2870,14 +2871,14 @@ void ASTInterpreter::visit(arduino_ast::ArrayInitializerNode& node) {
 
             for (const auto& child : node.getChildren()) {
                 if (child->getType() != arduino_ast::ASTNodeType::DESIGNATED_INITIALIZER) continue;
-                auto* designatedInit = static_cast<arduino_ast::DesignatedInitializerNode*>(child.get());
+                auto* designatedInit = AST_CAST(arduino_ast::DesignatedInitializerNode, child.get());
                 if (!designatedInit) continue;
 
                 // Get field name
                 std::string fieldName;
                 if (const auto* field = designatedInit->getField()) {
                     if (field->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                        auto* fieldIdent = static_cast<const arduino_ast::IdentifierNode*>(field);
+                        auto* fieldIdent = AST_CONST_CAST(arduino_ast::IdentifierNode, field);
                         fieldName = fieldIdent->getName();
                     }
                 }
@@ -3033,7 +3034,7 @@ void ASTInterpreter::visit(arduino_ast::StructDeclaration& node) {
 
         // Each member is a StructMemberNode
         if (child->getType() == arduino_ast::ASTNodeType::STRUCT_MEMBER) {
-            auto* memberNode = static_cast<arduino_ast::StructMemberNode*>(child.get());
+            auto* memberNode = AST_CAST(arduino_ast::StructMemberNode, child.get());
             std::string memberName = memberNode->getMemberName();
             std::string memberType = "unknown";
 
@@ -3041,7 +3042,7 @@ void ASTInterpreter::visit(arduino_ast::StructDeclaration& node) {
             const auto* typeNode = memberNode->getMemberType();
             if (typeNode) {
                 if (typeNode->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
-                    auto* tn = static_cast<const arduino_ast::TypeNode*>(typeNode);
+                    auto* tn = AST_CONST_CAST(arduino_ast::TypeNode, typeNode);
                     memberType = tn->getTypeName();
                 }
             }
@@ -3088,7 +3089,7 @@ void ASTInterpreter::visit(arduino_ast::TypedefDeclaration& node) {
 
     // Handle struct typedef specifically (typedef struct {...} MyPoint;)
     if (baseType->getType() == arduino_ast::ASTNodeType::STRUCT_DECL) {
-        auto* structDecl = static_cast<const arduino_ast::StructDeclaration*>(baseType);
+        auto* structDecl = AST_CONST_CAST(arduino_ast::StructDeclaration, baseType);
         // Get struct name from the StructDeclaration if it has one
         std::string structName = aliasName; // Default to alias name
 
@@ -3099,7 +3100,7 @@ void ASTInterpreter::visit(arduino_ast::TypedefDeclaration& node) {
         // Parse struct members from children
         for (const auto& memberChild : structDecl->getChildren()) {
             if (memberChild->getType() == arduino_ast::ASTNodeType::VAR_DECL) {
-                auto* varDecl = static_cast<const arduino_ast::VarDeclNode*>(memberChild.get());
+                auto* varDecl = AST_CONST_CAST(arduino_ast::VarDeclNode, memberChild.get());
                 // Extract member type and name
                 std::string memberType = "int"; // Default fallback
                 const auto* typeNode = varDecl->getVarType();
@@ -3114,7 +3115,7 @@ void ASTInterpreter::visit(arduino_ast::TypedefDeclaration& node) {
                 // Get member names from declarations
                 for (const auto& declarator : varDecl->getDeclarations()) {
                     if (declarator->getType() == arduino_ast::ASTNodeType::DECLARATOR_NODE) {
-                        auto* declNode = static_cast<const arduino_ast::DeclaratorNode*>(declarator.get());
+                        auto* declNode = AST_CONST_CAST(arduino_ast::DeclaratorNode, declarator.get());
                         std::string memberName = declNode->getName();
 
                         if (!memberName.empty()) {
@@ -3162,7 +3163,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
 
     switch (nodeType) {
         case arduino_ast::ASTNodeType::NUMBER_LITERAL: {
-            auto* numNode = static_cast<arduino_ast::NumberNode*>(expr);
+            auto* numNode = AST_CAST(arduino_ast::NumberNode, expr);
             double value = numNode->getNumber();
             // Keep all literals as double to preserve floating-point arithmetic
             // Type detection happens in specific contexts (e.g., String constructor)
@@ -3171,13 +3172,13 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         break;
 
         case arduino_ast::ASTNodeType::STRING_LITERAL: {
-            auto* strNode = static_cast<arduino_ast::StringLiteralNode*>(expr);
+            auto* strNode = AST_CAST(arduino_ast::StringLiteralNode, expr);
             return strNode->getString();
         }
         break;
 
         case arduino_ast::ASTNodeType::IDENTIFIER: {
-            auto* idNode = static_cast<arduino_ast::IdentifierNode*>(expr);
+            auto* idNode = AST_CAST(arduino_ast::IdentifierNode, expr);
             std::string name = idNode->getName();
 
                 // Special handling for built-in objects like Serial
@@ -3203,7 +3204,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         break;
 
         case arduino_ast::ASTNodeType::BINARY_OP: {
-            auto* binNode = static_cast<arduino_ast::BinaryOpNode*>(expr);
+            auto* binNode = AST_CAST(arduino_ast::BinaryOpNode, expr);
             std::string extractedOp = binNode->getOperator();
 
             CommandValue left = evaluateExpression(const_cast<arduino_ast::ASTNode*>(binNode->getLeft()));
@@ -3214,7 +3215,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
         break;
 
         case arduino_ast::ASTNodeType::UNARY_OP: {
-            auto* unaryNode = static_cast<arduino_ast::UnaryOpNode*>(expr);
+            auto* unaryNode = AST_CAST(arduino_ast::UnaryOpNode, expr);
             std::string op = unaryNode->getOperator();
 
                 // Special handling for address-of operator (Test 116: p2 = &p1, Test 106: ptr = &myFunc)
@@ -3328,19 +3329,19 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             return lastExpressionResult_;
 
         case arduino_ast::ASTNodeType::FUNC_CALL: {
-            auto* funcNode = static_cast<arduino_ast::FuncCallNode*>(expr);
+            auto* funcNode = AST_CAST(arduino_ast::FuncCallNode, expr);
             std::string functionName;
 
             if (funcNode->getCallee()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(funcNode->getCallee());
+                const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, funcNode->getCallee());
                 functionName = identifier->getName();
             } else if (funcNode->getCallee()->getType() == arduino_ast::ASTNodeType::MEMBER_ACCESS) {
-                const auto* memberAccess = static_cast<const arduino_ast::MemberAccessNode*>(funcNode->getCallee());
+                const auto* memberAccess = AST_CONST_CAST(arduino_ast::MemberAccessNode, funcNode->getCallee());
                 // Handle member access like Serial.begin()
                 if (memberAccess->getObject()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                    const auto* objectId = static_cast<const arduino_ast::IdentifierNode*>(memberAccess->getObject());
+                    const auto* objectId = AST_CONST_CAST(arduino_ast::IdentifierNode, memberAccess->getObject());
                     if (memberAccess->getProperty()->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                        const auto* propertyId = static_cast<const arduino_ast::IdentifierNode*>(memberAccess->getProperty());
+                        const auto* propertyId = AST_CONST_CAST(arduino_ast::IdentifierNode, memberAccess->getProperty());
                         std::string objectName = objectId->getName();
                         std::string methodName = propertyId->getName();
                         functionName = objectName + "." + methodName;
@@ -3399,7 +3400,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
                         // CLEAN FUNCTION CALL: StateGuard in executeUserFunction handles all state management
                         // This eliminates the segfault-causing dual-level state management
                         return executeUserFunction(functionName,
-                            static_cast<const arduino_ast::FuncDefNode*>(userFunc), args);
+                            AST_CONST_CAST(arduino_ast::FuncDefNode, userFunc), args);
                     }
                 }
 
@@ -3424,7 +3425,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             return lastExpressionResult_;
             
         case arduino_ast::ASTNodeType::CONSTANT: {
-            auto* constNode = static_cast<arduino_ast::ConstantNode*>(expr);
+            auto* constNode = AST_CAST(arduino_ast::ConstantNode, expr);
             std::string value = constNode->getConstantValue();
 
             // Handle boolean constants
@@ -3445,7 +3446,7 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             return lastExpressionResult_;
             
         case arduino_ast::ASTNodeType::CHAR_LITERAL: {
-            auto* charNode = static_cast<arduino_ast::CharLiteralNode*>(expr);
+            auto* charNode = AST_CAST(arduino_ast::CharLiteralNode, expr);
             std::string charStr = charNode->getCharValue();
             char value = charStr.empty() ? '\0' : charStr[0];
             int32_t intValue = static_cast<int32_t>(value);
@@ -3469,13 +3470,13 @@ CommandValue ASTInterpreter::evaluateExpression(arduino_ast::ASTNode* expr) {
             return lastExpressionResult_;
 
         case arduino_ast::ASTNodeType::SIZEOF_EXPR: {
-            auto* sizeofNode = static_cast<arduino_ast::SizeofExpressionNode*>(expr);
+            auto* sizeofNode = AST_CAST(arduino_ast::SizeofExpressionNode, expr);
             return visitSizeofExpression(*sizeofNode);
         }
         break;
 
         case arduino_ast::ASTNodeType::COMMA_EXPRESSION: {
-            auto* commaNode = static_cast<arduino_ast::CommaExpression*>(expr);
+            auto* commaNode = AST_CAST(arduino_ast::CommaExpression, expr);
             const auto& children = commaNode->getChildren();
 
                 // Comma operator: evaluate all operands left-to-right, return rightmost
@@ -3996,7 +3997,7 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
         size_t requiredParams = 0;
         for (const auto& param : parameters) {
             if (param->getType() == arduino_ast::ASTNodeType::PARAM_NODE) {
-                const auto* paramNode = static_cast<const arduino_ast::ParamNode*>(param.get());
+                const auto* paramNode = AST_CONST_CAST(arduino_ast::ParamNode, param.get());
                 if (paramNode->getChildren().empty()) { // No default value
                     requiredParams++;
                 }
@@ -4013,18 +4014,18 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
         // Process each parameter
         for (size_t i = 0; i < parameters.size(); ++i) {
             if (parameters[i]->getType() == arduino_ast::ASTNodeType::PARAM_NODE) {
-                const auto* paramNode = static_cast<const arduino_ast::ParamNode*>(parameters[i].get());
+                const auto* paramNode = AST_CONST_CAST(arduino_ast::ParamNode, parameters[i].get());
                 // Get parameter name from declarator
                 const auto* declarator = paramNode->getDeclarator();
                 std::string paramName;
 
                 // Extract parameter name from declarator
                 if (declarator->getType() == arduino_ast::ASTNodeType::DECLARATOR_NODE) {
-                    const auto* declNode = static_cast<const arduino_ast::DeclaratorNode*>(declarator);
+                    const auto* declNode = AST_CONST_CAST(arduino_ast::DeclaratorNode, declarator);
                     // Regular declarator (int x, double y, etc.)
                     paramName = declNode->getName();
                 } else if (declarator->getType() == arduino_ast::ASTNodeType::FUNCTION_POINTER_DECLARATOR) {
-                    const auto* funcPtrDecl = static_cast<const arduino_ast::FunctionPointerDeclaratorNode*>(declarator);
+                    const auto* funcPtrDecl = AST_CONST_CAST(arduino_ast::FunctionPointerDeclaratorNode, declarator);
                     // Function pointer declarator (Test 106: int (*funcPtr)(int, int))
                     // The name is stored in the identifier property (an IdentifierNode)
                     const auto* identifierNode = funcPtrDecl->getIdentifier();
@@ -4108,7 +4109,7 @@ CommandValue ASTInterpreter::executeUserFunction(const std::string& name, const 
         std::string returnType = "void";
         const auto* returnTypeNode = funcDef->getReturnType();
         if (returnTypeNode && returnTypeNode->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
-            auto* typeNode = static_cast<const arduino_ast::TypeNode*>(returnTypeNode);
+            auto* typeNode = AST_CONST_CAST(arduino_ast::TypeNode, returnTypeNode);
             returnType = typeNode->getTypeName();
             if (returnType != "void") {
                 result = convertToType(result, returnType);
@@ -7900,7 +7901,7 @@ CommandValue ASTInterpreter::visitSizeofExpression(arduino_ast::SizeofExpression
 
     // Handle sizeof(type) vs sizeof(variable)
     if (operand->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
-        const auto* typeNode = static_cast<const arduino_ast::TypeNode*>(operand);
+        const auto* typeNode = AST_CONST_CAST(arduino_ast::TypeNode, operand);
         std::string typeName = typeNode->getTypeName();
         return getSizeofType(typeName);
     }
@@ -7989,7 +7990,7 @@ void ASTInterpreter::visit(arduino_ast::ArrayDeclaratorNode& node) {
     std::string varName;
     const auto* identifierNode = node.getIdentifier();
     if (identifierNode && identifierNode->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(identifierNode);
+        const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, identifierNode);
         varName = identifier->getName();
     } else {
         return;
@@ -8088,12 +8089,12 @@ void ASTInterpreter::visit(arduino_ast::NamespaceAccessNode& node) {
     std::string namespaceName, memberName;
 
     if (namespaceNode->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        auto* nsIdent = static_cast<const arduino_ast::IdentifierNode*>(namespaceNode);
+        auto* nsIdent = AST_CONST_CAST(arduino_ast::IdentifierNode, namespaceNode);
         namespaceName = nsIdent->getName();
     }
 
     if (memberNode->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        auto* memberIdent = static_cast<const arduino_ast::IdentifierNode*>(memberNode);
+        auto* memberIdent = AST_CONST_CAST(arduino_ast::IdentifierNode, memberNode);
         memberName = memberIdent->getName();
     }
     
@@ -8134,10 +8135,10 @@ void ASTInterpreter::visit(arduino_ast::CppCastNode& node) {
 
     std::string targetTypeName;
     if (targetType && targetType->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        auto* typeIdent = static_cast<const arduino_ast::IdentifierNode*>(targetType);
+        auto* typeIdent = AST_CONST_CAST(arduino_ast::IdentifierNode, targetType);
         targetTypeName = typeIdent->getName();
     } else if (targetType && targetType->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
-        auto* typeNode = static_cast<const arduino_ast::TypeNode*>(targetType);
+        auto* typeNode = AST_CONST_CAST(arduino_ast::TypeNode, targetType);
         targetTypeName = typeNode->getTypeName();
     }
     
@@ -8176,10 +8177,10 @@ void ASTInterpreter::visit(arduino_ast::FunctionStyleCastNode& node) {
     std::string targetTypeName;
 
     if (castType && castType->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        auto* typeIdent = static_cast<const arduino_ast::IdentifierNode*>(castType);
+        auto* typeIdent = AST_CONST_CAST(arduino_ast::IdentifierNode, castType);
         targetTypeName = typeIdent->getName();
     } else if (castType && castType->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
-        auto* typeNode = static_cast<const arduino_ast::TypeNode*>(castType);
+        auto* typeNode = AST_CONST_CAST(arduino_ast::TypeNode, castType);
         targetTypeName = typeNode->getTypeName();
     }
     
@@ -8257,7 +8258,7 @@ void ASTInterpreter::visit(arduino_ast::DesignatedInitializerNode& node) {
     // Get field name
     std::string fieldName;
     if (field && field->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        auto* fieldIdent = static_cast<const arduino_ast::IdentifierNode*>(field);
+        auto* fieldIdent = AST_CONST_CAST(arduino_ast::IdentifierNode, field);
         fieldName = fieldIdent->getName();
     }
     
@@ -8296,7 +8297,7 @@ void ASTInterpreter::visit(arduino_ast::FuncDeclNode& node) {
     // Get function name
     std::string funcName;
     if (declarator && declarator->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        auto* declIdent = static_cast<const arduino_ast::IdentifierNode*>(declarator);
+        auto* declIdent = AST_CONST_CAST(arduino_ast::IdentifierNode, declarator);
         funcName = declIdent->getName();
     }
 
@@ -8310,7 +8311,7 @@ void ASTInterpreter::visit(arduino_ast::FuncDeclNode& node) {
     std::string returnType = "void";
     const auto* returnTypeNode = node.getReturnType();
     if (returnTypeNode && returnTypeNode->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
-        auto* typeNode = static_cast<const arduino_ast::TypeNode*>(returnTypeNode);
+        auto* typeNode = AST_CONST_CAST(arduino_ast::TypeNode, returnTypeNode);
         returnType = typeNode->getTypeName();
     }
     
@@ -8493,7 +8494,7 @@ void ASTInterpreter::visit(arduino_ast::MemberFunctionDeclarationNode& node) {
     const auto* returnType = node.getReturnType();
     std::string returnTypeName = "void";
     if (returnType && returnType->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
-        auto* typeNode = static_cast<const arduino_ast::TypeNode*>(returnType);
+        auto* typeNode = AST_CONST_CAST(arduino_ast::TypeNode, returnType);
         returnTypeName = typeNode->getTypeName();
     }
     
@@ -8553,10 +8554,10 @@ void ASTInterpreter::visit(arduino_ast::NewExpressionNode& node) {
     const auto* typeSpecifier = node.getTypeSpecifier();
     std::string typeName = "object";
     if (typeSpecifier && typeSpecifier->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
-        auto* typeNode = static_cast<const arduino_ast::TypeNode*>(typeSpecifier);
+        auto* typeNode = AST_CONST_CAST(arduino_ast::TypeNode, typeSpecifier);
         typeName = typeNode->getTypeName();
     } else if (typeSpecifier && typeSpecifier->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-        auto* identNode = static_cast<const arduino_ast::IdentifierNode*>(typeSpecifier);
+        auto* identNode = AST_CONST_CAST(arduino_ast::IdentifierNode, typeSpecifier);
         typeName = identNode->getName();
     }
     
@@ -8666,7 +8667,7 @@ void ASTInterpreter::visit(arduino_ast::StructMemberNode& node) {
     const auto* memberType = node.getMemberType();
     std::string typeName = "unknown";
     if (memberType && memberType->getType() == arduino_ast::ASTNodeType::TYPE_NODE) {
-        auto* typeNode = static_cast<const arduino_ast::TypeNode*>(memberType);
+        auto* typeNode = AST_CONST_CAST(arduino_ast::TypeNode, memberType);
         typeName = typeNode->getTypeName();
     }
     
@@ -8885,15 +8886,15 @@ arduino_ast::ASTNode* ASTInterpreter::findFunctionInAST(const std::string& funct
 
         // Check if this is a FuncDefNode with matching name
         if (node->getType() == arduino_ast::ASTNodeType::FUNC_DEF) {
-            auto* funcDefNode = static_cast<arduino_ast::FuncDefNode*>(node);
-            auto* declarator = funcDefNode->getDeclarator();
+            auto* funcDefNode = AST_CAST(arduino_ast::FuncDefNode, node);
+            const auto* declarator = funcDefNode->getDeclarator();
             if (declarator && declarator->getType() == arduino_ast::ASTNodeType::DECLARATOR_NODE) {
-                const auto* declNode = static_cast<const arduino_ast::DeclaratorNode*>(declarator);
+                const auto* declNode = AST_CONST_CAST(arduino_ast::DeclaratorNode, declarator);
                 if (declNode->getName() == functionName) {
                     return node;
                 }
             } else if (declarator && declarator->getType() == arduino_ast::ASTNodeType::IDENTIFIER) {
-                const auto* identifier = static_cast<const arduino_ast::IdentifierNode*>(declarator);
+                const auto* identifier = AST_CONST_CAST(arduino_ast::IdentifierNode, declarator);
                 if (identifier->getName() == functionName) {
                     return node;
                 }

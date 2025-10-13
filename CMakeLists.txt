@@ -9,7 +9,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 project(ArduinoASTInterpreter
-    VERSION 20.0.0
+    VERSION 21.0.0
     DESCRIPTION "ESP32-S3 Arduino AST Interpreter - Host Development"
     LANGUAGES CXX)
 
@@ -71,6 +71,12 @@ option(ENABLE_PROFILING "Enable memory and performance profiling" OFF)
 option(ENABLE_COVERAGE "Enable code coverage" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
+# v21.0.0: RTTI Support Options
+# ==============================
+# RTTI (Run-Time Type Information) enabled by default for runtime safety.
+# Disable for size-constrained embedded deployments (~40KB savings).
+option(AST_NO_RTTI "Disable RTTI for size optimization (reduces binary by ~40KB)" OFF)
+
 # ESP32-specific options (for when targeting ESP32)
 option(TARGET_ESP32 "Target ESP32 platform" OFF)
 option(USE_ARDUINO_FRAMEWORK "Use Arduino framework headers" OFF)
@@ -95,6 +101,42 @@ if(ENABLE_COVERAGE)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
     endif()
+endif()
+
+# =============================================================================
+# RTTI CONFIGURATION (v21.0.0)
+# =============================================================================
+# By default, RTTI is ENABLED for runtime type safety (dynamic_cast).
+# Optional RTTI-free mode for size-constrained deployments (static_cast).
+
+if(AST_NO_RTTI)
+    message(STATUS "")
+    message(STATUS "╔════════════════════════════════════════════════════════════════╗")
+    message(STATUS "║  RTTI DISABLED - Size-Optimized Mode (~40KB savings)          ║")
+    message(STATUS "║  • Uses static_cast (no runtime type checking)                ║")
+    message(STATUS "║  • Recommended ONLY for production embedded deployments       ║")
+    message(STATUS "║  • Test thoroughly with RTTI mode first!                      ║")
+    message(STATUS "╚════════════════════════════════════════════════════════════════╝")
+    message(STATUS "")
+
+    # Add AST_NO_RTTI preprocessor definition
+    add_definitions(-DAST_NO_RTTI)
+
+    # Add compiler flag to disable RTTI
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        add_compile_options(-fno-rtti)
+    elseif(MSVC)
+        add_compile_options(/GR-)  # MSVC flag to disable RTTI
+    endif()
+else()
+    message(STATUS "")
+    message(STATUS "╔════════════════════════════════════════════════════════════════╗")
+    message(STATUS "║  RTTI ENABLED - Runtime Type Safety (Default)                 ║")
+    message(STATUS "║  • Uses dynamic_cast (runtime type verification)              ║")
+    message(STATUS "║  • Recommended for development, testing, and production       ║")
+    message(STATUS "║  • Binary size: ~40KB larger than RTTI-free mode             ║")
+    message(STATUS "╚════════════════════════════════════════════════════════════════╝")
+    message(STATUS "")
 endif()
 
 # =============================================================================

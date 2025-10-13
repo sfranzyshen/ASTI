@@ -31,6 +31,45 @@ fi
 echo "✅ Emscripten found: $(emcc --version | head -n 1)"
 
 # =============================================================================
+# RTTI CONFIGURATION (v21.0.0)
+# =============================================================================
+# WASM REQUIREMENT: Emscripten's embind binding system REQUIRES RTTI
+# RTTI-free mode (-fno-rtti) is NOT SUPPORTED for WASM builds
+#
+# Reason: embind uses RTTI for type information in JavaScript bindings
+# This is documented in Emscripten's official documentation
+#
+# RTTI-free mode is available for:
+#  - Linux/native builds (cmake -DAST_NO_RTTI=ON)
+#  - ESP32 builds (via build_opt.h or PlatformIO esp32-s3-no-rtti environment)
+
+# Check if user tried to disable RTTI (not supported for WASM)
+if [ "$AST_NO_RTTI" = "1" ]; then
+    echo ""
+    echo "❌ ERROR: RTTI-free mode is NOT SUPPORTED for WASM builds"
+    echo ""
+    echo "Emscripten's embind binding system requires RTTI for JavaScript interop."
+    echo "RTTI cannot be disabled when using emscripten::val and embind features."
+    echo ""
+    echo "RTTI-free mode is only available for:"
+    echo "  • Native/Linux builds: cmake -DAST_NO_RTTI=ON .."
+    echo "  • ESP32 builds: Use build_opt.h or PlatformIO esp32-s3-no-rtti"
+    echo ""
+    echo "WASM builds always use RTTI (this is acceptable as browsers have ample memory)."
+    echo ""
+    exit 1
+fi
+
+echo ""
+echo "╔════════════════════════════════════════════════════════════════╗"
+echo "║  WASM Build: RTTI ENABLED (Required)                          ║"
+echo "║  • Uses dynamic_cast (runtime type verification)              ║"
+echo "║  • RTTI required by Emscripten embind (cannot be disabled)    ║"
+echo "║  • Size optimized with -O3 (gzip compression: 487KB → ~158KB) ║"
+echo "╚════════════════════════════════════════════════════════════════╝"
+echo ""
+
+# =============================================================================
 # BUILD DIRECTORY SETUP
 # =============================================================================
 

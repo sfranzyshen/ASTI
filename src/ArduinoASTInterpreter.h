@@ -12,7 +12,7 @@
  *   ASTInterpreter* interpreter = new ASTInterpreter(astBinary, sizeof(astBinary));
  *   interpreter->start();
  *
- * Version: 20.0.0
+ * Version: 21.0.0
  * Platform: ESP32-S3 (Arduino Framework)
  * License: MIT
  * Repository: https://github.com/sfranzyshen/ASTInterpreter
@@ -33,7 +33,7 @@ using arduino_interpreter::InterpreterOptions;
 using arduino_interpreter::SyncDataProvider;
 
 // Version information
-#define ARDUINO_AST_INTERPRETER_VERSION "20.0.0"
+#define ARDUINO_AST_INTERPRETER_VERSION "21.0.0"
 #define ARDUINO_AST_INTERPRETER_VERSION_MAJOR 20
 #define ARDUINO_AST_INTERPRETER_VERSION_MINOR 0
 #define ARDUINO_AST_INTERPRETER_VERSION_PATCH 0
