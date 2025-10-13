@@ -1,0 +1,203 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1760391061032,
+    "component": "interpreter",
+    "version": "21.1.1",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1760391061032,
+    "message": "Program execution started"
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1760391061032,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.begin",
+    "arguments": [
+      9600
+    ],
+    "baudRate": 9600,
+    "timestamp": 1760391061032,
+    "message": "Serial.begin(9600)"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1760391061032,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391061032,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391061032,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1760391061032
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "n1",
+    "value": {
+      "structName": "Node",
+      "fields": {},
+      "type": "struct",
+      "structId": "struct_1760391061033_8f016"
+    },
+    "structType": "Node",
+    "timestamp": 1760391061033
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "n2",
+    "value": {
+      "structName": "Node",
+      "fields": {},
+      "type": "struct",
+      "structId": "struct_1760391061033_jgfjm"
+    },
+    "structType": "Node",
+    "timestamp": 1760391061033
+  },
+  {
+    "type": "STRUCT_FIELD_SET",
+    "struct": "Node",
+    "field": "data",
+    "value": 10,
+    "timestamp": 1760391061033,
+    "message": "Node.data = 10"
+  },
+  {
+    "type": "STRUCT_FIELD_SET",
+    "struct": "Node",
+    "field": "next",
+    "value": {
+      "type": "ArduinoPointer",
+      "address": 0,
+      "pointsTo": "undefined"
+    },
+    "timestamp": 1760391061033,
+    "message": "Node.next = ArduinoPointer(ptr_1760391061033_o4vto -> n2)"
+  },
+  {
+    "type": "STRUCT_FIELD_SET",
+    "struct": "Node",
+    "field": "data",
+    "value": 20,
+    "timestamp": 1760391061033,
+    "message": "Node.data = 20"
+  },
+  {
+    "type": "STRUCT_FIELD_SET",
+    "struct": "Node",
+    "field": "next",
+    "timestamp": 1760391061033,
+    "message": "Node.next = undefined"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.print",
+    "arguments": [
+      "Data from n1: "
+    ],
+    "data": "Data from n1: ",
+    "timestamp": 1760391061033,
+    "message": "Serial.print(\"Data from n1: \")"
+  },
+  {
+    "type": "STRUCT_FIELD_ACCESS",
+    "struct": "Node",
+    "field": "data",
+    "value": 10,
+    "timestamp": 1760391061033,
+    "message": "Node.data = 10"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "10"
+    ],
+    "data": "10",
+    "timestamp": 1760391061033,
+    "message": "Serial.println(10)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.print",
+    "arguments": [
+      "Data from n2 via n1: "
+    ],
+    "data": "Data from n2 via n1: ",
+    "timestamp": 1760391061033,
+    "message": "Serial.print(\"Data from n2 via n1: \")"
+  },
+  {
+    "type": "STRUCT_FIELD_ACCESS",
+    "struct": "Node",
+    "field": "next",
+    "value": {
+      "type": "ArduinoPointer",
+      "address": 0,
+      "pointsTo": "undefined"
+    },
+    "timestamp": 1760391061033,
+    "message": "Node.next = ArduinoPointer(ptr_1760391061033_o4vto -> n2)"
+  },
+  {
+    "type": "STRUCT_FIELD_ACCESS",
+    "struct": "Node",
+    "field": "data",
+    "value": 20,
+    "timestamp": 1760391061033,
+    "message": "Node.data = 20"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [
+      "20"
+    ],
+    "data": "20",
+    "timestamp": 1760391061033,
+    "message": "Serial.println(20)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1760391061033
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1760391061039,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391061039,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391061039,
+    "message": "Program execution stopped"
+  }
+]

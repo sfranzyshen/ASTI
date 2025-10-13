@@ -1,0 +1,16 @@
+name=BareMinimum.ino
+source=unknown
+astSize=1132
+codeSize=157
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=11
+content=// 01.Basics BareMinimum.ino
+
+void setup() {
+  // put your setup code here, to run once:
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+}

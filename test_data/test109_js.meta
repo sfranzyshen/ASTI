@@ -1,0 +1,27 @@
+name=do-while_loop_with_a_complex_condition.ino
+source=unknown
+astSize=1750
+codeSize=330
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=22
+content=// do-while loop with a complex condition
+bool checkCondition(int val) {
+  return val % 2 == 0;
+}
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int count = 0;
+  int val = 10;
+
+  do {
+    count++;
+    val--;
+    Serial.print("Count: ");
+    Serial.println(count);
+  } while (count < 5 && checkCondition(val) == false);
+}

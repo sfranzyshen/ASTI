@@ -4,7 +4,7 @@
  * Provides C-style interface functions for Emscripten to export to JavaScript.
  * Enables the C++ ASTInterpreter to run in web browsers via WebAssembly.
  *
- * Version: 20.0.0
+ * Version: 21.1.1
  * Platform: WebAssembly/Emscripten
  */
 
@@ -250,7 +250,7 @@ void destroyInterpreter(void* interpreterPtr) {
  */
 EMSCRIPTEN_KEEPALIVE
 const char* getInterpreterVersion() {
-    return "20.0.0";
+    return "21.1.1";
 }
 
 } // extern "C"

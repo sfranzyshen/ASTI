@@ -1,0 +1,24 @@
+name=Test_Rigorous_Brackets_Parentheses.ino
+source=unknown
+astSize=1606
+codeSize=272
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=18
+content=// Test Rigorous Brackets & Parentheses
+int myPins[] = {2, 4, 8};
+
+int getIndex() {
+  return 1;
+}
+
+void setup() {
+  int x = myPins[0];
+  int y = myPins[getIndex()];
+  pinMode(myPins[2], OUTPUT);
+  int z = (myPins[0] + getIndex()) * myPins[2];
+}
+
+void loop() {
+  // empty
+}

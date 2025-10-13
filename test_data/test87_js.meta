@@ -1,0 +1,18 @@
+name=Test_Case_for_the_return_statement.ino
+source=unknown
+astSize=1253
+codeSize=135
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=11
+content=// Test Case for the return statement
+int getValue() {
+  return 42;
+}
+
+void doSomething() {
+  return;
+}
+
+void setup() {}
+void loop() {}

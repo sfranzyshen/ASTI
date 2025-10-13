@@ -1,0 +1,69 @@
+name=StringAppendOperator
+source=unknown
+astSize=2577
+codeSize=1366
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=44
+content=// 08.Strings StringAppendOperator
+
+String stringOne, stringTwo;
+
+void setup() {
+  // Open serial communications and wait for port to open:
+  Serial.begin(9600);
+  while (!Serial) {
+    ;
+  }
+
+  stringOne = String("Sensor ");
+  stringTwo = String("value");
+
+  // send an intro:
+  Serial.println("\n\nAppending to a String:");
+  Serial.println();
+}
+
+void loop() {
+  Serial.println(stringOne);
+
+  // adding a string to a String:
+  stringOne += stringTwo;
+  Serial.println(stringOne);
+
+  // adding a constant string to a String:
+  stringOne += " for input ";
+  Serial.println(stringOne);
+
+  // adding a constant character to a String:
+  stringOne += 'A';
+  Serial.println(stringOne);
+
+  // adding a constant integer to a String:
+  stringOne += 0;
+  Serial.println(stringOne);
+
+  // adding a constant string to a String:
+  stringOne += ": ";
+  Serial.println(stringOne);
+
+  // adding a variable integer to a String:
+  stringOne += analogRead(A0);
+  Serial.println(stringOne);
+
+  Serial.println("\n\nchanging the Strings' values");
+  stringOne = "A long integer: ";
+  stringTwo = "The millis(): ";
+
+  // adding a constant long integer to a String:
+  stringOne += 123456789;
+  Serial.println(stringOne);
+
+  // using concat() to add a long variable to a String:
+  stringTwo.concat(millis());
+  Serial.println(stringTwo);
+
+  // do nothing while true:
+  while (true)
+    ;
+}

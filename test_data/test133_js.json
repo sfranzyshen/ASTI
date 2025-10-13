@@ -1,0 +1,236 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1760391061168,
+    "component": "interpreter",
+    "version": "21.1.1",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1760391061168,
+    "message": "Program execution started"
+  },
+  {
+    "type": "LIBRARY_OBJECT_INSTANTIATION",
+    "library": "Adafruit_NeoPixel",
+    "variableName": "strip",
+    "constructorArgs": [
+      60,
+      6,
+      82
+    ],
+    "timestamp": 1760391061168,
+    "message": "Adafruit_NeoPixel(60, 6, 82)"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "strip",
+    "value": {
+      "__type": "ArduinoObject",
+      "className": "Adafruit_NeoPixel",
+      "constructorArgs": [
+        60,
+        6,
+        82
+      ],
+      "objectId": "Adafruit_NeoPixel_1760391061168_ploi7h2af"
+    },
+    "timestamp": 1760391061169
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1760391061169,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "AVR_FUNCTION_CALL",
+    "function": "clock_prescale_set",
+    "args": [
+      0
+    ],
+    "message": "clock_prescale_set(0)",
+    "timestamp": 1760391061169
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "Adafruit_NeoPixel",
+    "object": "Adafruit_NeoPixel_1760391061168_ploi7h2af",
+    "variableName": "strip",
+    "method": "begin",
+    "args": [],
+    "message": "strip.begin()",
+    "timestamp": 1760391061169
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "Adafruit_NeoPixel",
+    "object": "Adafruit_NeoPixel_1760391061168_ploi7h2af",
+    "variableName": "strip",
+    "method": "show",
+    "args": [],
+    "message": "strip.show()",
+    "timestamp": 1760391061169
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "Adafruit_NeoPixel",
+    "object": "Adafruit_NeoPixel_1760391061168_ploi7h2af",
+    "variableName": "strip",
+    "method": "setBrightness",
+    "args": [
+      50
+    ],
+    "message": "strip.setBrightness(50)",
+    "timestamp": 1760391061169
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1760391061169,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391061169,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391061169,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1760391061169
+  },
+  {
+    "type": "LIBRARY_METHOD_INTERNAL",
+    "library": "Adafruit_NeoPixel",
+    "method": "Color",
+    "args": [
+      255,
+      0,
+      0
+    ],
+    "result": 65280,
+    "variableName": "strip",
+    "timestamp": 1760391061169
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "colorWipe",
+    "arguments": [
+      65280,
+      50
+    ],
+    "timestamp": 1760391061169,
+    "message": "colorWipe(65280, 50)"
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1760391061169,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "i",
+    "value": 0,
+    "timestamp": 1760391061169
+  },
+  {
+    "type": "LIBRARY_METHOD_INTERNAL",
+    "library": "Adafruit_NeoPixel",
+    "method": "numPixels",
+    "args": [],
+    "result": 60,
+    "variableName": "strip",
+    "timestamp": 1760391061170
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1760391061170,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "Adafruit_NeoPixel",
+    "object": "Adafruit_NeoPixel_1760391061168_ploi7h2af",
+    "variableName": "strip",
+    "method": "setPixelColor",
+    "args": [
+      0,
+      65280
+    ],
+    "message": "strip.setPixelColor(0, 65280)",
+    "timestamp": 1760391061170
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "Adafruit_NeoPixel",
+    "object": "Adafruit_NeoPixel_1760391061168_ploi7h2af",
+    "variableName": "strip",
+    "method": "show",
+    "args": [],
+    "message": "strip.show()",
+    "timestamp": 1760391061170
+  },
+  {
+    "type": "DELAY",
+    "duration": 50,
+    "actualDelay": 50,
+    "timestamp": 1760391061170
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "i",
+    "value": 1,
+    "timestamp": 1760391061170
+  },
+  {
+    "type": "LIBRARY_METHOD_INTERNAL",
+    "library": "Adafruit_NeoPixel",
+    "method": "numPixels",
+    "args": [],
+    "result": 60,
+    "variableName": "strip",
+    "timestamp": 1760391061174
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "phase": "end",
+    "iterations": 1,
+    "timestamp": 1760391061174,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1760391061179
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1760391061185,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391061185,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391061185,
+    "message": "Program execution stopped"
+  }
+]

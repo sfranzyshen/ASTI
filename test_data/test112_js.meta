@@ -1,0 +1,24 @@
+name=Empty_and_NULL_statements.ino
+source=unknown
+astSize=1581
+codeSize=222
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=17
+content=// Empty and NULL statements
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int i = 0;
+  while (i < 5) {
+    i++;
+  } ;
+
+  for (int j = 0; j < 5; j++);
+
+  if (1 == 1) {}
+
+  Serial.println("Execution finished.");
+}

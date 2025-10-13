@@ -1,0 +1,21 @@
+name=Graph.ino
+source=unknown
+astSize=1345
+codeSize=308
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=15
+content=// 04.Communication Graph.ino
+
+void setup() {
+  // initialize the serial communication:
+  Serial.begin(9600);
+}
+
+void loop() {
+  // send the value of analog input 0:
+  Serial.println(analogRead(A0));
+  // wait a bit for the analog-to-digital converter to stabilize after the last
+  // reading:
+  delay(2);
+}

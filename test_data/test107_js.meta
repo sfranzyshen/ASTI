@@ -1,0 +1,25 @@
+name=Chained_Assignments_and_Unary_Operators.ino
+source=unknown
+astSize=2107
+codeSize=428
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=36
+content=// Chained Assignments and Unary Operators
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int a, b, c;
+  a = b = c = 5;
+  int x = 10;
+  int y = ++x;
+  int z = y++;
+  Serial.print("a: "); Serial.println(a);
+  Serial.print("x: "); Serial.println(x);
+  Serial.print("y: "); Serial.println(y);
+  Serial.print("z: "); Serial.println(z);
+  int result = --x * (y++);
+  Serial.print("Final result: "); Serial.println(result);
+}

@@ -1,0 +1,209 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1760391059893,
+    "component": "interpreter",
+    "version": "21.1.1",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1760391059893,
+    "message": "Program execution started"
+  },
+  {
+    "type": "LIBRARY_OBJECT_INSTANTIATION",
+    "library": "LiquidCrystal",
+    "variableName": "lcd",
+    "constructorArgs": [
+      12,
+      11,
+      5,
+      4,
+      3,
+      2
+    ],
+    "timestamp": 1760391059893,
+    "message": "LiquidCrystal(12, 11, 5, 4, 3, 2)"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "lcd",
+    "value": {
+      "__type": "ArduinoObject",
+      "className": "LiquidCrystal",
+      "constructorArgs": [
+        12,
+        11,
+        5,
+        4,
+        3,
+        2
+      ],
+      "objectId": "LiquidCrystal_1760391059893_5oydxfz6e"
+    },
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "switchPin",
+    "value": 6,
+    "isConst": true,
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "switchState",
+    "value": 0,
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "prevSwitchState",
+    "value": 0,
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "reply",
+    "value": null,
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1760391059893,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "LiquidCrystal",
+    "object": "LiquidCrystal_1760391059893_5oydxfz6e",
+    "variableName": "lcd",
+    "method": "begin",
+    "args": [
+      16,
+      2
+    ],
+    "message": "lcd.begin(16, 2)",
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "PIN_MODE",
+    "pin": 6,
+    "mode": 0,
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "LiquidCrystal",
+    "object": "LiquidCrystal_1760391059893_5oydxfz6e",
+    "variableName": "lcd",
+    "method": "print",
+    "args": [
+      {
+        "value": "Ask the"
+      }
+    ],
+    "message": "lcd.print(Ask the)",
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "LiquidCrystal",
+    "object": "LiquidCrystal_1760391059893_5oydxfz6e",
+    "variableName": "lcd",
+    "method": "setCursor",
+    "args": [
+      0,
+      1
+    ],
+    "message": "lcd.setCursor(0, 1)",
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "LIBRARY_METHOD_CALL",
+    "library": "LiquidCrystal",
+    "object": "LiquidCrystal_1760391059893_5oydxfz6e",
+    "variableName": "lcd",
+    "method": "print",
+    "args": [
+      {
+        "value": "Crystal Ball!"
+      }
+    ],
+    "message": "lcd.print(Crystal Ball!)",
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1760391059893,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391059893,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391059893,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "DIGITAL_READ_REQUEST",
+    "pin": 6,
+    "requestId": "digitalRead_000001",
+    "timestamp": 1760391059893
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "switchState",
+    "value": 0,
+    "timestamp": 1760391059898
+  },
+  {
+    "type": "IF_STATEMENT",
+    "condition": false,
+    "result": false,
+    "branch": "else",
+    "timestamp": 1760391059898
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "prevSwitchState",
+    "value": 0,
+    "timestamp": 1760391059898
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1760391059898
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1760391059904,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391059904,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391059904,
+    "message": "Program execution stopped"
+  }
+]

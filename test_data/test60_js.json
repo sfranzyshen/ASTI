@@ -1,0 +1,315 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1760391059439,
+    "component": "interpreter",
+    "version": "21.1.1",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1760391059439,
+    "message": "Program execution started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "ctrlKey",
+    "value": 131,
+    "timestamp": 1760391059439
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1760391059439,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "PIN_MODE",
+    "pin": 2,
+    "mode": 2,
+    "timestamp": 1760391059439
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.begin",
+    "arguments": [],
+    "timestamp": 1760391059439,
+    "message": "Keyboard.begin()"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1760391059439,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391059439,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391059439,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1760391059439
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "start",
+    "timestamp": 1760391059439,
+    "message": "while loop started"
+  },
+  {
+    "type": "DIGITAL_READ_REQUEST",
+    "pin": 2,
+    "requestId": "digitalRead_000001",
+    "timestamp": 1760391059439
+  },
+  {
+    "type": "WHILE_LOOP",
+    "phase": "end",
+    "iterations": 0,
+    "timestamp": 1760391059444,
+    "message": "while loop completed (0 iterations)"
+  },
+  {
+    "type": "DELAY",
+    "duration": 1000,
+    "actualDelay": 1000,
+    "timestamp": 1760391059444
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.press",
+    "arguments": [
+      131
+    ],
+    "timestamp": 1760391059444,
+    "message": "Keyboard.press(131)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.press",
+    "arguments": [
+      110
+    ],
+    "timestamp": 1760391059444,
+    "message": "Keyboard.press('110')"
+  },
+  {
+    "type": "DELAY",
+    "duration": 100,
+    "actualDelay": 100,
+    "timestamp": 1760391059444
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.releaseAll",
+    "arguments": [],
+    "timestamp": 1760391059444,
+    "message": "Keyboard.releaseAll()"
+  },
+  {
+    "type": "DELAY",
+    "duration": 1000,
+    "actualDelay": 1000,
+    "timestamp": 1760391059444
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.press",
+    "arguments": [
+      131
+    ],
+    "timestamp": 1760391059444,
+    "message": "Keyboard.press(131)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.press",
+    "arguments": [
+      97
+    ],
+    "timestamp": 1760391059444,
+    "message": "Keyboard.press('97')"
+  },
+  {
+    "type": "DELAY",
+    "duration": 500,
+    "actualDelay": 500,
+    "timestamp": 1760391059444
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.releaseAll",
+    "arguments": [],
+    "timestamp": 1760391059444,
+    "message": "Keyboard.releaseAll()"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.write",
+    "arguments": [
+      178
+    ],
+    "timestamp": 1760391059444,
+    "message": "Keyboard.write(178)"
+  },
+  {
+    "type": "DELAY",
+    "duration": 500,
+    "actualDelay": 500,
+    "timestamp": 1760391059444
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.println",
+    "arguments": [
+      {
+        "value": "void setup() {"
+      }
+    ],
+    "timestamp": 1760391059444,
+    "message": "Keyboard.println(\"void setup() {\")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.println",
+    "arguments": [
+      {
+        "value": "pinMode(13, 1);"
+      }
+    ],
+    "timestamp": 1760391059445,
+    "message": "Keyboard.println(\"pinMode(13, 1);\")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.println",
+    "arguments": [
+      {
+        "value": "}"
+      }
+    ],
+    "timestamp": 1760391059445,
+    "message": "Keyboard.println(\"}\")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.println",
+    "arguments": [
+      ""
+    ],
+    "timestamp": 1760391059445,
+    "message": "Keyboard.println()"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.println",
+    "arguments": [
+      {
+        "value": "void loop() {"
+      }
+    ],
+    "timestamp": 1760391059445,
+    "message": "Keyboard.println(\"void loop() {\")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.println",
+    "arguments": [
+      {
+        "value": "digitalWrite(13, 1);"
+      }
+    ],
+    "timestamp": 1760391059445,
+    "message": "Keyboard.println(\"digitalWrite(13, 1);\")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.print",
+    "arguments": [
+      {
+        "value": "delay(3000);"
+      }
+    ],
+    "timestamp": 1760391059445,
+    "message": "Keyboard.print(\"delay(3000);\")"
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1760391059445,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "keystrokes",
+    "value": 0,
+    "timestamp": 1760391059445
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1760391059445,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "DELAY",
+    "duration": 500,
+    "actualDelay": 500,
+    "timestamp": 1760391059445
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Keyboard.write",
+    "arguments": [
+      178
+    ],
+    "timestamp": 1760391059445,
+    "message": "Keyboard.write(178)"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "keystrokes",
+    "value": 1,
+    "timestamp": 1760391059445
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "phase": "end",
+    "iterations": 1,
+    "timestamp": 1760391059449,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1760391059449
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1760391059455,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391059455,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391059455,
+    "message": "Program execution stopped"
+  }
+]

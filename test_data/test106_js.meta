@@ -1,0 +1,26 @@
+name=Function_Pointers_and_Callbacks.ino
+source=unknown
+astSize=1800
+codeSize=302
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=18
+content=// Function Pointers and Callbacks
+int myFunc(int a, int b) {
+  return a + b;
+}
+
+void callFunc(int (*funcPtr)(int, int)) {
+  Serial.print("Result: ");
+  Serial.println(funcPtr(10, 20));
+}
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int (*ptr)(int, int);
+  ptr = &myFunc;
+  callFunc(ptr);
+}

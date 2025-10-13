@@ -1,0 +1,244 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1760391058878,
+    "component": "interpreter",
+    "version": "21.1.1",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1760391058878,
+    "message": "Program execution started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "pingPin",
+    "value": 7,
+    "isConst": true,
+    "timestamp": 1760391058878
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1760391058878,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.begin",
+    "arguments": [
+      9600
+    ],
+    "baudRate": 9600,
+    "timestamp": 1760391058878,
+    "message": "Serial.begin(9600)"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1760391058878,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391058878,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391058878,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1760391058878
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "duration",
+    "value": null,
+    "timestamp": 1760391058878
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "inches",
+    "value": null,
+    "timestamp": 1760391058878
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "cm",
+    "value": null,
+    "timestamp": 1760391058878
+  },
+  {
+    "type": "PIN_MODE",
+    "pin": 7,
+    "mode": 1,
+    "timestamp": 1760391058878
+  },
+  {
+    "type": "DIGITAL_WRITE",
+    "pin": 7,
+    "value": 0,
+    "timestamp": 1760391058879
+  },
+  {
+    "type": "DELAY_MICROSECONDS",
+    "duration": 2,
+    "timestamp": 1760391058879
+  },
+  {
+    "type": "DIGITAL_WRITE",
+    "pin": 7,
+    "value": 1,
+    "timestamp": 1760391058879
+  },
+  {
+    "type": "DELAY_MICROSECONDS",
+    "duration": 5,
+    "timestamp": 1760391058879
+  },
+  {
+    "type": "DIGITAL_WRITE",
+    "pin": 7,
+    "value": 0,
+    "timestamp": 1760391058879
+  },
+  {
+    "type": "PIN_MODE",
+    "pin": 7,
+    "mode": 0,
+    "timestamp": 1760391058879
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "pulseIn",
+    "arguments": [
+      7,
+      1,
+      1000000
+    ],
+    "pin": 7,
+    "value": 1,
+    "timeout": 1000000,
+    "timestamp": 1760391058879,
+    "message": "pulseIn(7, 1)"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "duration",
+    "value": 1500,
+    "timestamp": 1760391058879
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "microsecondsToInches",
+    "arguments": [
+      1500
+    ],
+    "timestamp": 1760391058879,
+    "message": "microsecondsToInches(1500)"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "inches",
+    "value": 10,
+    "timestamp": 1760391058879
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "microsecondsToCentimeters",
+    "arguments": [
+      1500
+    ],
+    "timestamp": 1760391058880,
+    "message": "microsecondsToCentimeters(1500)"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "cm",
+    "value": 25,
+    "timestamp": 1760391058880
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.print",
+    "arguments": [
+      "10"
+    ],
+    "data": "10",
+    "timestamp": 1760391058880,
+    "message": "Serial.print(10)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.print",
+    "arguments": [
+      "in, "
+    ],
+    "data": "in, ",
+    "timestamp": 1760391058880,
+    "message": "Serial.print(\"in, \")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.print",
+    "arguments": [
+      "25"
+    ],
+    "data": "25",
+    "timestamp": 1760391058880,
+    "message": "Serial.print(25)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.print",
+    "arguments": [
+      "cm"
+    ],
+    "data": "cm",
+    "timestamp": 1760391058880,
+    "message": "Serial.print(\"cm\")"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "Serial.println",
+    "arguments": [],
+    "timestamp": 1760391058880,
+    "message": "Serial.println()"
+  },
+  {
+    "type": "DELAY",
+    "duration": 100,
+    "actualDelay": 100,
+    "timestamp": 1760391058880
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1760391058880
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1760391058885,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391058885,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391058885,
+    "message": "Program execution stopped"
+  }
+]

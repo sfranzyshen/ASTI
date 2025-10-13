@@ -1,0 +1,33 @@
+name=Global_variable_declarations.ino
+source=unknown
+astSize=1828
+codeSize=494
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=24
+content=#include <Arduino.h>
+
+// Global variable declarations
+const int ledPin = 13;
+int counter = 0;
+float dutyCycle = 127.5; // Test floating point
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  for (int i = 0; i < 2; i++) {
+    digitalWrite(ledPin, HIGH);
+    delay(50);
+    digitalWrite(ledPin, LOW);
+    delay(50);
+  }
+
+  if (counter >= 5 && counter < 10) {
+    // This block should not execute on the first few loops
+  }
+
+  counter += 1; // Test compound assignment
+  delay(500);
+}

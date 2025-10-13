@@ -27,7 +27,7 @@ if (typeof conditionalLog === 'undefined') {
  *   ✅ setup() and loop() execution flow
  */
 
-const INTERPRETER_VERSION = "21.1.0";
+const INTERPRETER_VERSION = "21.1.1";
 
 // Global debugLog function for contexts where 'this' is not available
 function debugLog(...args) {

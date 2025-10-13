@@ -1,0 +1,198 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1760391058983,
+    "component": "interpreter",
+    "version": "21.1.1",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1760391058983,
+    "message": "Program execution started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "analogPin",
+    "value": 14,
+    "isConst": true,
+    "timestamp": 1760391058983
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "ledCount",
+    "value": 10,
+    "isConst": true,
+    "timestamp": 1760391058983
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "ledPins",
+    "value": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "timestamp": 1760391058983
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1760391058984,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1760391058984,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisLed",
+    "value": 0,
+    "timestamp": 1760391058984
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1760391058984,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "PIN_MODE",
+    "pin": 2,
+    "mode": 1,
+    "timestamp": 1760391058984
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisLed",
+    "value": 1,
+    "timestamp": 1760391058984
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "phase": "end",
+    "iterations": 1,
+    "timestamp": 1760391058990,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)"
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1760391058990,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391058990,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391058990,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1760391058990
+  },
+  {
+    "type": "ANALOG_READ_REQUEST",
+    "pin": 14,
+    "requestId": "analogRead_000001",
+    "timestamp": 1760391058990
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "sensorReading",
+    "value": 560,
+    "timestamp": 1760391058996
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "ledLevel",
+    "value": 5,
+    "timestamp": 1760391058996
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1760391058996,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisLed",
+    "value": 0,
+    "timestamp": 1760391058996
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1760391058996,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "IF_STATEMENT",
+    "condition": true,
+    "result": true,
+    "branch": "then",
+    "timestamp": 1760391058996
+  },
+  {
+    "type": "DIGITAL_WRITE",
+    "pin": 2,
+    "value": 1,
+    "timestamp": 1760391058996
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "thisLed",
+    "value": 1,
+    "timestamp": 1760391058996
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "phase": "end",
+    "iterations": 1,
+    "timestamp": 1760391059001,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1760391059001
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1760391059007,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391059007,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391059007,
+    "message": "Program execution stopped"
+  }
+]

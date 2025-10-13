@@ -1,0 +1,147 @@
+[
+  {
+    "type": "VERSION_INFO",
+    "timestamp": 1760391060175,
+    "component": "interpreter",
+    "version": "21.1.1",
+    "status": "started"
+  },
+  {
+    "type": "PROGRAM_START",
+    "timestamp": 1760391060175,
+    "message": "Program execution started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "ledPin",
+    "value": 13,
+    "isConst": true,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "counter",
+    "value": 0,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "dutyCycle",
+    "value": 127.5,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "SETUP_START",
+    "timestamp": 1760391060175,
+    "message": "Executing setup() function"
+  },
+  {
+    "type": "PIN_MODE",
+    "pin": 13,
+    "mode": 1,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "SETUP_END",
+    "timestamp": 1760391060175,
+    "message": "Completed setup() function"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391060175,
+    "message": "Starting loop() execution"
+  },
+  {
+    "type": "LOOP_START",
+    "timestamp": 1760391060175,
+    "message": "Starting loop iteration 1"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Executing loop() iteration 1",
+    "iteration": 1,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "start",
+    "timestamp": 1760391060175,
+    "message": "for loop started"
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "i",
+    "value": 0,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "FOR_LOOP",
+    "phase": "iteration",
+    "iteration": 0,
+    "timestamp": 1760391060175,
+    "message": "for loop iteration 0"
+  },
+  {
+    "type": "DIGITAL_WRITE",
+    "pin": 13,
+    "value": 1,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "DELAY",
+    "duration": 50,
+    "actualDelay": 50,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "DIGITAL_WRITE",
+    "pin": 13,
+    "value": 0,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "DELAY",
+    "duration": 50,
+    "actualDelay": 50,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "VAR_SET",
+    "variable": "i",
+    "value": 1,
+    "timestamp": 1760391060175
+  },
+  {
+    "type": "LOOP_LIMIT_REACHED",
+    "phase": "end",
+    "iterations": 1,
+    "timestamp": 1760391060181,
+    "message": "For loop limit reached: completed 1 iterations (max: 1)"
+  },
+  {
+    "type": "FUNCTION_CALL",
+    "function": "loop",
+    "message": "Completed loop() iteration 1",
+    "iteration": 1,
+    "completed": true,
+    "timestamp": 1760391060181
+  },
+  {
+    "type": "LOOP_END",
+    "timestamp": 1760391060187,
+    "message": "Loop limit reached: completed 1 iterations (max: 1)",
+    "iterations": 1,
+    "limitReached": true
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391060187,
+    "message": "Program completed after 1 loop iterations (limit reached)"
+  },
+  {
+    "type": "PROGRAM_END",
+    "timestamp": 1760391060187,
+    "message": "Program execution stopped"
+  }
+]

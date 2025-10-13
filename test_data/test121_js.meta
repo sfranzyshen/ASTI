@@ -1,0 +1,18 @@
+name=Variable_Declarations_in_a_for_Loop.ino
+source=unknown
+astSize=1446
+codeSize=178
+status=SUCCESS
+mode=AST_AND_COMMANDS
+commandCount=19
+content=// Variable Declarations in a for Loop
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  for (int i = 0; i < 3; i++) {
+    Serial.print("i: ");
+    Serial.println(i);
+  }
+}
