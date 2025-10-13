@@ -8,7 +8,7 @@
  * Size impact: ~10-15% reduction in MinSizeRel builds
  *
  * Version: 1.0
- * Compatible with: ASTInterpreter v18.1.0
+ * Compatible with: ASTInterpreter v20.0.0
  */
 
 #include "ArduinoDataTypes.hpp"

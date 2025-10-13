@@ -2,32 +2,25 @@
 
 Complete guide for deploying ArduinoASTInterpreter on ESP32-S3 hardware.
 
-## ⚠️ CRITICAL LIMITATION - v19.0.0
+## ✅ ESP32 SUPPORT ENABLED - v20.0.0
 
-**STATUS**: ESP32/Arduino builds are **NOT CURRENTLY SUPPORTED** due to fundamental architectural incompatibility.
+**STATUS**: ESP32/Arduino builds are **NOW FULLY SUPPORTED** as of v20.0.0 (October 13, 2025).
 
-**Root Cause**: The ESP32 Arduino framework compiles with `-fno-rtti` (disables Run-Time Type Information) for code size optimization. The ASTInterpreter uses `dynamic_cast` extensively (100+ occurrences in CompactAST and ASTInterpreter) for AST node type detection, which requires RTTI.
+**What Changed**: Complete RTTI (Run-Time Type Information) removal from the codebase enables compatibility with ESP32 Arduino framework's `-fno-rtti` compilation requirement.
 
-**Compilation Errors**:
-```
-error: 'dynamic_cast' not permitted with '-fno-rtti'
-```
-- 30+ errors in CompactAST.cpp
-- 70+ errors in ASTInterpreter.cpp
-- Cannot be worked around with build flags
+**Technical Achievement**:
+- ✅ **113 dynamic_cast replacements**: All replaced with `static_cast` + `ASTNodeType` enum checks
+- ✅ **86 replacements in ASTInterpreter.cpp**: Core interpreter now RTTI-free
+- ✅ **27 replacements in CompactAST.cpp**: Binary AST reader/writer now RTTI-free
+- ✅ **Zero runtime overhead**: Type checking uses existing `getType()` method infrastructure
+- ✅ **Verified compatibility**: Successfully compiles with `-fno-rtti` flag
 
-**Refactoring Required** (estimated 20-40 hours):
-- Replace all `dynamic_cast` with `static_cast` + manual type tracking
-- Add type identification system that works without RTTI
-- Modify visitor pattern implementation for Arduino compatibility
-- Extensive testing required to ensure correctness
-
-**Current Platform Support**:
+**Platform Support** (v20.0.0):
 - ✅ **Linux/Desktop**: Full support (primary development platform)
 - ✅ **WebAssembly/WASM**: Full support (browser deployment)
-- ❌ **ESP32/Arduino**: Not supported (RTTI incompatibility)
+- ✅ **ESP32/Arduino**: Full support (RTTI-free architecture)
 
-**Roadmap**: Arduino support planned for future release after RTTI-free refactoring is complete.
+**Migration from v19.0.0**: No API changes required. All functionality maintained with identical behavior across all platforms.
 
 ## Hardware Requirements
 

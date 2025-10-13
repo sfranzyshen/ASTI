@@ -2,9 +2,11 @@
 
 Complete guide for deploying the C++ ASTInterpreter as WebAssembly for browser and Node.js environments.
 
-## ✅ v19.0.0 STATUS - WASM BUILD SUCCESSFUL
+## ✅ v20.0.0 STATUS - WASM BUILD SUCCESSFUL
 
-**Build Status**: ✅ **PRODUCTION READY** (October 12, 2025)
+**Build Status**: ✅ **PRODUCTION READY** (October 13, 2025)
+
+**Version 20.0.0 Update**: Complete RTTI removal enables ESP32 Arduino support while maintaining full WASM compatibility.
 
 **Build Output:**
 - `arduino_interpreter.js`: 12KB (JavaScript loader)

@@ -505,7 +505,7 @@ void CompactASTReader::linkNodeChildren() {
             
             // Special handling for specific node types to set up proper structure
             if (parentNode->getType() == ASTNodeType::FUNC_DEF) {
-                auto* funcDefNode = dynamic_cast<arduino_ast::FuncDefNode*>(parentNode.get());
+                auto* funcDefNode = static_cast<arduino_ast::FuncDefNode*>(parentNode.get());
                 if (funcDefNode) {
                     
                     // Determine child role based on type - be flexible about order
@@ -525,7 +525,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::VAR_DECL) {
-                auto* varDeclNode = dynamic_cast<arduino_ast::VarDeclNode*>(parentNode.get());
+                auto* varDeclNode = static_cast<arduino_ast::VarDeclNode*>(parentNode.get());
                 if (varDeclNode) {
 
                     auto childType = childNodeRef->getType();
@@ -569,7 +569,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::EXPRESSION_STMT) {
-                auto* exprStmtNode = dynamic_cast<arduino_ast::ExpressionStatement*>(parentNode.get());
+                auto* exprStmtNode = static_cast<arduino_ast::ExpressionStatement*>(parentNode.get());
                 if (exprStmtNode) {
                     
                     // ExpressionStatement expects its first child to be the expression
@@ -582,7 +582,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::FUNC_CALL) {
-                auto* funcCallNode = dynamic_cast<arduino_ast::FuncCallNode*>(parentNode.get());
+                auto* funcCallNode = static_cast<arduino_ast::FuncCallNode*>(parentNode.get());
                 if (funcCallNode) {
 
                     // FuncCallNode expects first child as callee, rest as arguments
@@ -595,7 +595,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::CONSTRUCTOR_CALL) {
-                auto* constructorCallNode = dynamic_cast<arduino_ast::ConstructorCallNode*>(parentNode.get());
+                auto* constructorCallNode = static_cast<arduino_ast::ConstructorCallNode*>(parentNode.get());
                 if (constructorCallNode) {
 
                     // ConstructorCallNode expects first child as callee, rest as arguments (same as FuncCallNode)
@@ -608,7 +608,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::TERNARY_EXPR) {
-                auto* ternaryNode = dynamic_cast<arduino_ast::TernaryExpressionNode*>(parentNode.get());
+                auto* ternaryNode = static_cast<arduino_ast::TernaryExpressionNode*>(parentNode.get());
                 if (ternaryNode) {
                     // Count how many children this ternary already has
                     int ternaryChildCount = 0;
@@ -631,7 +631,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::ARRAY_ACCESS) {
-                auto* arrayAccessNode = dynamic_cast<arduino_ast::ArrayAccessNode*>(parentNode.get());
+                auto* arrayAccessNode = static_cast<arduino_ast::ArrayAccessNode*>(parentNode.get());
                 if (arrayAccessNode) {
 
                     // ArrayAccessNode expects 2 children in order: identifier, index
@@ -646,7 +646,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::DESIGNATED_INITIALIZER) {
-                auto* designatedInit = dynamic_cast<arduino_ast::DesignatedInitializerNode*>(parentNode.get());
+                auto* designatedInit = static_cast<arduino_ast::DesignatedInitializerNode*>(parentNode.get());
                 if (designatedInit) {
                     // DesignatedInitializerNode expects 2 children in order: field, value
                     if (!designatedInit->getField()) {
@@ -660,7 +660,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::STRUCT_MEMBER) {
-                auto* structMemberNode = dynamic_cast<arduino_ast::StructMemberNode*>(parentNode.get());
+                auto* structMemberNode = static_cast<arduino_ast::StructMemberNode*>(parentNode.get());
                 if (structMemberNode) {
                     // StructMemberNode expects 2 children: memberType, declarator
                     int memberChildCount = 0;
@@ -671,7 +671,7 @@ void CompactASTReader::linkNodeChildren() {
                         structMemberNode->setMemberType(std::move(nodes_[childIndex]));
                     } else if (memberChildCount == 1) {
                         // Second child: declarator - extract name and don't store node
-                        auto* declNode = dynamic_cast<arduino_ast::DeclaratorNode*>(nodes_[childIndex].get());
+                        auto* declNode = static_cast<arduino_ast::DeclaratorNode*>(nodes_[childIndex].get());
                         if (declNode) {
                             structMemberNode->setMemberName(declNode->getName());
                         }
@@ -683,7 +683,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::CAST_EXPR) {
-                auto* castNode = dynamic_cast<arduino_ast::CastExpression*>(parentNode.get());
+                auto* castNode = static_cast<arduino_ast::CastExpression*>(parentNode.get());
                 if (castNode) {
                     // CastExpression expects 1 child: operand (castType is in value field)
                     if (!castNode->getOperand()) {
@@ -695,7 +695,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::ARRAY_DECLARATOR) {
-                auto* arrayDeclNode = dynamic_cast<arduino_ast::ArrayDeclaratorNode*>(parentNode.get());
+                auto* arrayDeclNode = static_cast<arduino_ast::ArrayDeclaratorNode*>(parentNode.get());
                 if (arrayDeclNode) {
 
                     // ArrayDeclaratorNode expects: identifier, then multiple dimension nodes
@@ -709,7 +709,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::FUNCTION_POINTER_DECLARATOR) {
-                auto* funcPtrNode = dynamic_cast<arduino_ast::FunctionPointerDeclaratorNode*>(parentNode.get());
+                auto* funcPtrNode = static_cast<arduino_ast::FunctionPointerDeclaratorNode*>(parentNode.get());
                 if (funcPtrNode) {
 
                     // FunctionPointerDeclaratorNode expects: identifier first, then parameter nodes
@@ -724,7 +724,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::MEMBER_ACCESS) {
-                auto* memberAccessNode = dynamic_cast<arduino_ast::MemberAccessNode*>(parentNode.get());
+                auto* memberAccessNode = static_cast<arduino_ast::MemberAccessNode*>(parentNode.get());
                 if (memberAccessNode) {
 
                     // MemberAccessNode expects 2 children in order: object, property
@@ -756,7 +756,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::IF_STMT) {
-                auto* ifStmtNode = dynamic_cast<arduino_ast::IfStatement*>(parentNode.get());
+                auto* ifStmtNode = static_cast<arduino_ast::IfStatement*>(parentNode.get());
                 if (ifStmtNode) {
                     // Count how many children this if statement already has
                     int ifChildCount = 0;
@@ -779,7 +779,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::WHILE_STMT) {
-                auto* whileStmtNode = dynamic_cast<arduino_ast::WhileStatement*>(parentNode.get());
+                auto* whileStmtNode = static_cast<arduino_ast::WhileStatement*>(parentNode.get());
                 if (whileStmtNode) {
 
                     // While statements expect: condition, body
@@ -794,7 +794,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::DO_WHILE_STMT) {
-                auto* doWhileStmtNode = dynamic_cast<arduino_ast::DoWhileStatement*>(parentNode.get());
+                auto* doWhileStmtNode = static_cast<arduino_ast::DoWhileStatement*>(parentNode.get());
                 if (doWhileStmtNode) {
 
                     // Do-while statements expect: body, condition
@@ -809,7 +809,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::FOR_STMT) {
-                auto* forStmtNode = dynamic_cast<arduino_ast::ForStatement*>(parentNode.get());
+                auto* forStmtNode = static_cast<arduino_ast::ForStatement*>(parentNode.get());
                 if (forStmtNode) {
                     // Count how many children this for statement already has
                     int forChildCount = 0;
@@ -835,7 +835,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::SWITCH_STMT) {
-                auto* switchStmtNode = dynamic_cast<arduino_ast::SwitchStatement*>(parentNode.get());
+                auto* switchStmtNode = static_cast<arduino_ast::SwitchStatement*>(parentNode.get());
                 if (switchStmtNode) {
                     // Switch statements expect: discriminant (condition), then all case statements as children
                     if (!switchStmtNode->getCondition()) {
@@ -848,7 +848,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::BINARY_OP) {
-                auto* binaryOpNode = dynamic_cast<arduino_ast::BinaryOpNode*>(parentNode.get());
+                auto* binaryOpNode = static_cast<arduino_ast::BinaryOpNode*>(parentNode.get());
                 if (binaryOpNode) {
                     
                     // Binary operations expect: left, right
@@ -863,7 +863,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::UNARY_OP) {
-                auto* unaryOpNode = dynamic_cast<arduino_ast::UnaryOpNode*>(parentNode.get());
+                auto* unaryOpNode = static_cast<arduino_ast::UnaryOpNode*>(parentNode.get());
                 if (unaryOpNode) {
 
 
@@ -877,7 +877,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::SIZEOF_EXPR) {
-                auto* sizeofNode = dynamic_cast<arduino_ast::SizeofExpressionNode*>(parentNode.get());
+                auto* sizeofNode = static_cast<arduino_ast::SizeofExpressionNode*>(parentNode.get());
                 if (sizeofNode) {
                     // SizeofExpression expects: operand (type or expression)
                     if (!sizeofNode->getOperand()) {
@@ -889,7 +889,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::ASSIGNMENT) {
-                auto* assignmentNode = dynamic_cast<arduino_ast::AssignmentNode*>(parentNode.get());
+                auto* assignmentNode = static_cast<arduino_ast::AssignmentNode*>(parentNode.get());
                 if (assignmentNode) {
                     
                     // Assignment operations expect: left, right
@@ -904,7 +904,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::PARAM_NODE) {
-                auto* paramNode = dynamic_cast<arduino_ast::ParamNode*>(parentNode.get());
+                auto* paramNode = static_cast<arduino_ast::ParamNode*>(parentNode.get());
                 if (paramNode) {
                     
                     auto childType = childNodeRef->getType();
@@ -921,7 +921,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::POSTFIX_EXPRESSION) {
-                auto* postfixNode = dynamic_cast<arduino_ast::PostfixExpressionNode*>(parentNode.get());
+                auto* postfixNode = static_cast<arduino_ast::PostfixExpressionNode*>(parentNode.get());
                 if (postfixNode) {
 
                     // PostfixExpressionNode expects: operand
@@ -934,7 +934,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::CASE_STMT) {
-                auto* caseStmtNode = dynamic_cast<arduino_ast::CaseStatement*>(parentNode.get());
+                auto* caseStmtNode = static_cast<arduino_ast::CaseStatement*>(parentNode.get());
                 if (caseStmtNode) {
                     // ULTRATHINK FIX: Case statements have consequent as array in JavaScript
                     // First child is label, remaining children are consequent statements
@@ -960,7 +960,7 @@ void CompactASTReader::linkNodeChildren() {
                     parentNode->addChild(std::move(nodes_[childIndex]));
                 }
             } else if (parentNode->getType() == ASTNodeType::RETURN_STMT) {
-                auto* returnStmtNode = dynamic_cast<arduino_ast::ReturnStatement*>(parentNode.get());
+                auto* returnStmtNode = static_cast<arduino_ast::ReturnStatement*>(parentNode.get());
                 if (returnStmtNode && !returnStmtNode->getReturnValue()) {
                     if (childIndex < nodes_.size() && nodes_[childIndex]) {
                         returnStmtNode->setReturnValue(std::move(nodes_[childIndex]));
