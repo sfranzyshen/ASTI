@@ -1,5 +1,85 @@
 # RTTI Removal Assessment - Critical Analysis
 
+## 🎉 v21.1.1 UPDATE: PERFECT CROSS-PLATFORM PARITY (October 13, 2025)
+
+**COMPLETE CONSISTENCY ACHIEVED**: v21.1.1 adds RTTI-free support to WASM, completing the cross-platform parity vision. All three platforms (Linux, WASM, ESP32) now offer identical choice: RTTI default with RTTI-free opt-in.
+
+### What Changed from v21.1.0 to v21.1.1
+
+**v21.1.0 Behavior:**
+- Linux: RTTI default + RTTI-free opt-in ✅
+- WASM: RTTI required (no choice) ⚠️
+- ESP32: RTTI default + RTTI-free opt-in ✅
+
+**v21.1.1 Behavior:**
+- Linux: RTTI default + RTTI-free opt-in ✅
+- WASM: RTTI default + RTTI-free opt-in ✅ **NEW**
+- ESP32: RTTI default + RTTI-free opt-in ✅
+
+### Key Insight: Compiler vs Code RTTI
+
+The breakthrough realization for WASM:
+- **Compiler RTTI**: Emscripten embind requires `-frtti` (always enabled)
+- **Code RTTI**: Our code can use `dynamic_cast` OR `static_cast` (user choice)
+
+Even with compiler RTTI enabled, our code can use `static_cast` via `AST_NO_RTTI` flag. The compiler doesn't error - it simply provides RTTI information that we choose not to use.
+
+### WASM Configuration Matrix
+
+| Configuration | Code Flags | Compiler | Code Behavior | Size |
+|--------------|-----------|----------|---------------|------|
+| **RTTI (default)** | None | `-frtti` (embind) | dynamic_cast | 487KB |
+| **RTTI-free (opt-in)** | `-DAST_NO_RTTI` | `-frtti` (embind) | static_cast | Slightly smaller |
+
+### Updated User Experience
+
+**All Three Platforms Now Consistent:**
+
+| Platform | RTTI Mode (Default) | RTTI-Free Mode (Opt-In) |
+|----------|---------------------|-------------------------|
+| **Linux** | `cmake .. && make` | `cmake -DAST_NO_RTTI=ON .. && make` |
+| **WASM** | `./scripts/build_wasm.sh` | `AST_NO_RTTI=1 ./scripts/build_wasm.sh` |
+| **ESP32** | `pio run -e esp32-s3` | `pio run -e esp32-s3-no-rtti` |
+
+### Technical Implementation
+
+**File Modified:**
+- `scripts/build_wasm.sh` - Added `AST_NO_RTTI` environment variable support
+
+**Changes:**
+```bash
+# v21.1.0 (WASM RTTI only)
+if [ "$AST_NO_RTTI" = "1" ]; then
+    echo "ERROR: RTTI-free mode is NOT SUPPORTED for WASM builds"
+    exit 1
+fi
+
+# v21.1.1 (WASM supports both modes)
+RTTI_MODE="RTTI"
+BUILD_FLAGS=""
+if [ "$AST_NO_RTTI" = "1" ]; then
+    RTTI_MODE="RTTI-FREE"
+    BUILD_FLAGS="-D AST_NO_RTTI"
+fi
+emcc ... $BUILD_FLAGS ...  # Add flag to compilation
+```
+
+### Philosophy
+
+v21.1.0 established RTTI as universal default but left WASM as special case. v21.1.1 completes the vision by recognizing that:
+
+1. **Build requirements** (embind needs `-frtti`) are separate from **code behavior** (dynamic_cast vs static_cast)
+2. **All platforms** should offer the same choice to users
+3. **Perfect parity** means uniform configuration across Linux, WASM, and ESP32
+
+**Benefits:**
+- ✅ Complete Consistency: All three platforms offer same RTTI/RTTI-free choice
+- ✅ User Flexibility: WASM users can optimize for size if needed
+- ✅ Clear Separation: Distinguishes compiler requirements from code behavior
+- ✅ No Breaking Changes: Default behavior unchanged (RTTI mode)
+
+---
+
 ## 🔄 v21.1.0 UPDATE: UNIVERSAL RTTI DEFAULT (October 13, 2025)
 
 **MAJOR CHANGE**: v21.1.0 removes platform-specific auto-detection and establishes RTTI as the universal default for ALL platforms.

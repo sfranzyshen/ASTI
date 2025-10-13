@@ -4,7 +4,9 @@
 # This script compiles the C++ ASTInterpreter to WebAssembly for browser deployment.
 # Requires Emscripten SDK: https://emscripten.org/docs/getting_started/downloads.html
 #
-# Usage: ./build_wasm.sh
+# Usage:
+#   ./build_wasm.sh                # RTTI mode (default)
+#   AST_NO_RTTI=1 ./build_wasm.sh  # RTTI-free mode (size optimization)
 
 set -e  # Exit on error
 
@@ -31,45 +33,41 @@ fi
 echo "✅ Emscripten found: $(emcc --version | head -n 1)"
 
 # =============================================================================
-# RTTI CONFIGURATION (v21.1.0)
+# RTTI CONFIGURATION (v21.1.1)
 # =============================================================================
-# WASM REQUIREMENT: Emscripten's embind binding system REQUIRES RTTI
-# RTTI-free mode (-fno-rtti) is NOT SUPPORTED for WASM builds
+# IMPORTANT DISTINCTION:
+# - Compiler RTTI: Always enabled for WASM (embind requires it)
+# - Code RTTI: User choice (dynamic_cast vs static_cast in our code)
 #
-# v21.1.0: RTTI is the universal default for ALL platforms (Linux, WASM, ESP32)
-# WASM enforces this requirement - cannot be disabled even if requested
+# v21.1.1: All three platforms (Linux, WASM, ESP32) offer same choice:
+#   - Default: RTTI mode (dynamic_cast, runtime type safety)
+#   - Opt-in: RTTI-free mode (static_cast, size optimization)
 #
-# Reason: embind uses RTTI for type information in JavaScript bindings
-# This is documented in Emscripten's official documentation
+# COMPILER: Emscripten always compiles with RTTI enabled (for embind)
+# CODE: Our code can use RTTI (dynamic_cast) or RTTI-free (static_cast)
 #
-# RTTI-free mode (explicit opt-in) is available for:
-#  - Linux/native builds (cmake -DAST_NO_RTTI=ON)
-#  - ESP32 builds (copy build_opt_no_rtti.h.example or use PlatformIO esp32-s3-no-rtti)
+# The compiler having RTTI doesn't force our code to use it - we control
+# this via the AST_NO_RTTI preprocessor flag.
 
-# Check if user tried to disable RTTI (not supported for WASM)
+# Determine RTTI mode from environment variable
+RTTI_MODE="RTTI"
+BUILD_FLAGS=""
+CODE_BEHAVIOR="dynamic_cast (runtime type safety)"
+SIZE_NOTE="Default size"
+
 if [ "$AST_NO_RTTI" = "1" ]; then
-    echo ""
-    echo "❌ ERROR: RTTI-free mode is NOT SUPPORTED for WASM builds"
-    echo ""
-    echo "Emscripten's embind binding system requires RTTI for JavaScript interop."
-    echo "RTTI cannot be disabled when using emscripten::val and embind features."
-    echo ""
-    echo "RTTI-free mode is only available for:"
-    echo "  • Native/Linux builds: cmake -DAST_NO_RTTI=ON .."
-    echo "  • ESP32 builds: Use build_opt.h or PlatformIO esp32-s3-no-rtti"
-    echo ""
-    echo "WASM builds always use RTTI (this is acceptable as browsers have ample memory)."
-    echo ""
-    exit 1
+    RTTI_MODE="RTTI-FREE"
+    BUILD_FLAGS="-D AST_NO_RTTI"
+    CODE_BEHAVIOR="static_cast (no runtime checks)"
+    SIZE_NOTE="Size optimized"
 fi
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════════╗"
-echo "║  WASM Build: RTTI ENABLED (Required - Universal Default)      ║"
-echo "║  • Uses dynamic_cast (runtime type verification)              ║"
-echo "║  • RTTI required by Emscripten embind (cannot be disabled)    ║"
-echo "║  • Consistent with v21.1.0 universal RTTI default             ║"
-echo "║  • Size optimized with -O3 (gzip: 487KB → ~158KB)             ║"
+echo "║  WASM Build: $RTTI_MODE Mode (Cross-Platform Parity)          ║"
+echo "║  • Compiler: RTTI enabled (embind requirement)                ║"
+echo "║  • Code: $CODE_BEHAVIOR                      ║"
+echo "║  • $SIZE_NOTE with -O3 compression                            ║"
 echo "╚════════════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -105,6 +103,7 @@ emcc \
     -D __EMSCRIPTEN__ \
     -D ENABLE_DEBUG_OUTPUT=0 \
     -D ENABLE_FILE_TRACING=0 \
+    $BUILD_FLAGS \
     -s WASM=1 \
     -s EXPORTED_FUNCTIONS='["_createInterpreter","_startInterpreter","_getCommandStream","_freeString","_destroyInterpreter","_setAnalogValue","_setDigitalValue","_getInterpreterVersion","_malloc","_free"]' \
     -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap","UTF8ToString","lengthBytesUTF8","stringToUTF8","getValue","setValue"]' \

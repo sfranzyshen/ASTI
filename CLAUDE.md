@@ -2,20 +2,23 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-# 🎉 VERSION 21.1.0 - UNIVERSAL RTTI DEFAULT 🎉
+# 🎉 VERSION 21.1.1 - COMPLETE CROSS-PLATFORM PARITY 🎉
 
-## **OCTOBER 13, 2025 - RTTI AS DEFAULT FOR ALL PLATFORMS**
+## **OCTOBER 13, 2025 - ALL THREE PLATFORMS OFFER SAME CHOICE**
 
-### **MAJOR PHILOSOPHICAL SHIFT: CONSISTENCY & SAFETY FIRST**
+### **PERFECT CONSISTENCY: WASM RTTI-FREE SUPPORT ADDED**
 
-**CONSISTENCY RELEASE**: v21.1.0 establishes RTTI (runtime type safety via dynamic_cast) as the universal default for ALL platforms, with RTTI-free mode as explicit opt-in for size-constrained deployments.
+**PARITY RELEASE**: v21.1.1 completes the cross-platform consistency by adding RTTI-free mode support to WASM. All three platforms (Linux, WASM, ESP32) now offer identical choice: RTTI default with RTTI-free opt-in.
 
 **Key Achievements:**
+- ✅ **Perfect Cross-Platform Parity**: ALL three platforms (Linux, WASM, ESP32) offer same choice
+- ✅ **WASM RTTI-Free Support**: Added AST_NO_RTTI support to WASM builds (v21.1.1)
 - ✅ **Universal RTTI Default**: ALL platforms use RTTI by default (consistent behavior)
+- ✅ **Compiler vs Code Separation**: WASM compiler needs RTTI, but code can use static_cast
 - ✅ **Simplified Architecture**: Removed platform-specific auto-detection logic
 - ✅ **Safety First Philosophy**: Runtime type checking is default, size optimization is explicit choice
 - ✅ **Zero Configuration**: Arduino IDE users do nothing - `build_opt.h` committed with `-frtti`
-- ✅ **Explicit Optimization**: RTTI-free mode requires explicit copy command or flag
+- ✅ **Explicit Optimization**: RTTI-free mode requires explicit flag for all platforms
 - ✅ **100% Backward Compatible**: Existing explicit builds continue to work
 - ✅ **100% Test Parity**: All 135/135 tests pass in both RTTI and RTTI-free modes
 
@@ -36,11 +39,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - Binary size: ~4.26MB (-40KB)
   - Requires explicit flag
 
-**WASM: RTTI Required (No Choice)**
-- ✅ **Build**: `./scripts/build_wasm.sh`
-  - Uses RTTI (Emscripten embind requirement)
+**WASM: RTTI Default (Cross-Platform Parity)**
+
+⚠️ **IMPORTANT**: Emscripten embind requires compiler RTTI. However, our code can still use RTTI-free mode (static_cast) even with compiler RTTI enabled.
+
+- ✅ **RTTI Mode (default)**: `./scripts/build_wasm.sh`
+  - Uses dynamic_cast (runtime type safety)
+  - Compiler: RTTI enabled (embind requirement)
+  - Code: dynamic_cast behavior
   - Binary size: 487KB (gzipped: 158KB)
-  - Cannot be disabled
+
+- ⚙️ **RTTI-Free Mode (opt-in)**: `AST_NO_RTTI=1 ./scripts/build_wasm.sh`
+  - Uses static_cast (size optimization)
+  - Compiler: RTTI enabled (embind requirement)
+  - Code: static_cast behavior
+  - Binary size: Slightly smaller due to simplified code paths
 
 **ESP32/Arduino: RTTI Default (Requires -frtti Flag)**
 
@@ -141,14 +154,15 @@ build_flags = -DAST_NO_RTTI -fno-rtti
 **Testing Results:**
 - ✅ **Linux RTTI**: 135/135 tests passing (default)
 - ✅ **Linux RTTI-free**: 135/135 tests passing (opt-in)
-- ✅ **WASM**: Successful build (487KB)
+- ✅ **WASM RTTI**: Successful build (default, 487KB)
+- ✅ **WASM RTTI-free**: Successful build (opt-in)
 - ✅ **ESP32 RTTI**: Successful build with `-frtti` (906KB)
 - ✅ **ESP32 RTTI-free**: Successful build with `-DAST_NO_RTTI` (866KB)
 
 **Rationale:**
-v21.0.0's platform-specific auto-detection created inconsistency - ESP32 behaved differently due to `#ifdef ARDUINO` logic. v21.1.0 treats all platforms uniformly in code - RTTI is always the default. The fact that ESP32 needs `-frtti` to override its platform default is a build configuration detail, not an architecture decision. This provides consistency, safety by default, and explicit optimization choices.
+v21.0.0's platform-specific auto-detection created inconsistency - ESP32 behaved differently due to `#ifdef ARDUINO` logic. v21.1.0 treats all platforms uniformly in code - RTTI is always the default. v21.1.1 completes this vision by adding RTTI-free support to WASM, achieving perfect cross-platform parity. The fact that ESP32 needs `-frtti` or WASM compiler needs RTTI are build configuration details, not architecture decisions. All platforms now offer the same choice: RTTI default (safety) with RTTI-free opt-in (size).
 
-**Version**: ASTInterpreter 21.1.0, CompactAST 3.2.0, ArduinoParser 6.0.0
+**Version**: ASTInterpreter 21.1.1, CompactAST 3.2.0, ArduinoParser 6.0.0
 
 ---
 
