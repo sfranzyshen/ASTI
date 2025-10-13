@@ -11,7 +11,12 @@
 
 #pragma once
 
-#include "../../../src/cpp/ASTNodes.hpp"
+// Cross-platform include: Arduino vs CMake build systems
+#ifdef ARDUINO
+    #include "cpp/ASTNodes.hpp"  // Arduino: src/ is automatically included
+#else
+    #include "../../../src/cpp/ASTNodes.hpp"  // CMake: relative path from libs/CompactAST/src/
+#endif
 #include <cstdint>
 #include <vector>
 #include <string>

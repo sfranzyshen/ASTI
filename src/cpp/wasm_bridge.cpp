@@ -59,6 +59,12 @@ public:
         return 1000; // Mock pulse duration
     }
 
+    int32_t getLibrarySensorValue(const std::string& libraryName,
+                                  const std::string& methodName,
+                                  int32_t arg = 0) override {
+        return 100; // Mock library sensor value
+    }
+
     void setAnalogValue(int32_t pin, int32_t value) {
         analogValues_[pin] = value;
     }
@@ -143,7 +149,13 @@ bool startInterpreter(void* interpreterPtr) {
 
     try {
         InterpreterContext* ctx = static_cast<InterpreterContext*>(interpreterPtr);
-        return ctx->interpreter->start();
+
+        // TODO: WASM doesn't have std::cout, so command output capture needs different architecture
+        // Current OUTPUT_STREAM macro for WASM is a stub WASMOutputStream
+        // Future: Implement jsOutputCallback or memory buffer approach
+        bool result = ctx->interpreter->start();
+
+        return result;
 
     } catch (const std::exception& e) {
         return false;
@@ -165,22 +177,11 @@ const char* getCommandStream(void* interpreterPtr) {
     try {
         InterpreterContext* ctx = static_cast<InterpreterContext*>(interpreterPtr);
 
-        // Get command history from interpreter
-        const auto& commands = ctx->interpreter->getCommandHistory();
-
-        // Build JSON array
-        std::stringstream json;
-        json << "[";
-
-        for (size_t i = 0; i < commands.size(); ++i) {
-            if (i > 0) json << ",";
-            json << commands[i];  // Commands are already JSON strings
-        }
-
-        json << "]";
+        // Get JSON from captured stream
+        std::string jsonOutput = ctx->commandStream.str();
 
         // Duplicate string for JavaScript (caller must free)
-        return strdup(json.str().c_str());
+        return strdup(jsonOutput.c_str());
 
     } catch (const std::exception& e) {
         return strdup("[]");

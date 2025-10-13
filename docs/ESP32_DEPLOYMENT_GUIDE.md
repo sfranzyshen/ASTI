@@ -2,6 +2,33 @@
 
 Complete guide for deploying ArduinoASTInterpreter on ESP32-S3 hardware.
 
+## ⚠️ CRITICAL LIMITATION - v19.0.0
+
+**STATUS**: ESP32/Arduino builds are **NOT CURRENTLY SUPPORTED** due to fundamental architectural incompatibility.
+
+**Root Cause**: The ESP32 Arduino framework compiles with `-fno-rtti` (disables Run-Time Type Information) for code size optimization. The ASTInterpreter uses `dynamic_cast` extensively (100+ occurrences in CompactAST and ASTInterpreter) for AST node type detection, which requires RTTI.
+
+**Compilation Errors**:
+```
+error: 'dynamic_cast' not permitted with '-fno-rtti'
+```
+- 30+ errors in CompactAST.cpp
+- 70+ errors in ASTInterpreter.cpp
+- Cannot be worked around with build flags
+
+**Refactoring Required** (estimated 20-40 hours):
+- Replace all `dynamic_cast` with `static_cast` + manual type tracking
+- Add type identification system that works without RTTI
+- Modify visitor pattern implementation for Arduino compatibility
+- Extensive testing required to ensure correctness
+
+**Current Platform Support**:
+- ✅ **Linux/Desktop**: Full support (primary development platform)
+- ✅ **WebAssembly/WASM**: Full support (browser deployment)
+- ❌ **ESP32/Arduino**: Not supported (RTTI incompatibility)
+
+**Roadmap**: Arduino support planned for future release after RTTI-free refactoring is complete.
+
 ## Hardware Requirements
 
 - **Board**: ESP32-S3 DevKit-C (or compatible)

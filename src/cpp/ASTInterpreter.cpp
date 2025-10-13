@@ -3028,29 +3028,22 @@ void ASTInterpreter::visit(arduino_ast::TypedefDeclaration& node) {
     // Typedef declarations define type aliases (Test 116: typedef struct {...} MyPoint;)
     // Children structure: [baseType (StructDeclaration), aliasName (IdentifierNode)]
 
-    std::cerr << "[DEBUG] TypedefDeclaration visitor called! children count=" << node.getChildren().size() << std::endl;
-
     // Extract alias name from node VALUE field (typeName property from JavaScript)
     std::string aliasName;
     try {
         aliasName = node.getValueAs<std::string>();
     } catch (const std::exception& e) {
-        std::cerr << "[DEBUG] Could not get typeName from VALUE field" << std::endl;
         return;
     }
 
-    std::cerr << "[DEBUG] TypedefDeclaration aliasName: " << aliasName << std::endl;
-
     if (aliasName.empty()) {
         // No valid alias name found
-        std::cerr << "[DEBUG] aliasName is empty!" << std::endl;
         return;
     }
 
     // Extract base type from first child (baseType from JavaScript)
     const auto& children = node.getChildren();
     if (children.empty()) {
-        std::cerr << "[DEBUG] No children found for TypedefDeclaration!" << std::endl;
         return;
     }
 
@@ -3094,11 +3087,9 @@ void ASTInterpreter::visit(arduino_ast::TypedefDeclaration& node) {
 
         // Register in structTypes_ map
         structTypes_[aliasName] = structDef;
-        std::cerr << "[DEBUG] Registered struct type: " << aliasName << " with " << structDef.members.size() << " members" << std::endl;
 
         // Register in typeAliases_ map
         typeAliases_[aliasName] = "struct";
-        std::cerr << "[DEBUG] Registered type alias: " << aliasName << " -> struct" << std::endl;
 
     } else {
         // Handle other typedef cases (typedef int MyInt;)
