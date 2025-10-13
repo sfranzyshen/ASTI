@@ -2,25 +2,28 @@
 
 Complete guide for deploying ArduinoASTInterpreter on ESP32-S3 hardware.
 
-## ✅ ESP32 SUPPORT ENABLED - v20.0.0
+## ✅ ESP32 SUPPORT ENABLED - v21.1.1
 
-**STATUS**: ESP32/Arduino builds are **NOW FULLY SUPPORTED** as of v20.0.0 (October 13, 2025).
+**STATUS**: ESP32/Arduino builds are **FULLY SUPPORTED** with **RTTI FLEXIBILITY** as of v21.1.1 (October 13, 2025).
 
-**What Changed**: Complete RTTI (Run-Time Type Information) removal from the codebase enables compatibility with ESP32 Arduino framework's `-fno-rtti` compilation requirement.
+**What's New in v21.1.1**: Perfect cross-platform parity - ALL platforms (Linux, WASM, ESP32) now offer identical RTTI/RTTI-free choice with universal RTTI default.
 
-**Technical Achievement**:
-- ✅ **113 dynamic_cast replacements**: All replaced with `static_cast` + `ASTNodeType` enum checks
-- ✅ **86 replacements in ASTInterpreter.cpp**: Core interpreter now RTTI-free
-- ✅ **27 replacements in CompactAST.cpp**: Binary AST reader/writer now RTTI-free
-- ✅ **Zero runtime overhead**: Type checking uses existing `getType()` method infrastructure
-- ✅ **Verified compatibility**: Successfully compiles with `-fno-rtti` flag
+**RTTI Flexibility**:
+- ✅ **RTTI Mode (default)**: Runtime type safety with `dynamic_cast` - 906KB flash
+- ✅ **RTTI-Free Mode (opt-in)**: Size optimization with `static_cast` - 866KB flash (40KB savings)
+- ✅ **Universal Default**: RTTI enabled by default on ALL platforms (safety-first philosophy)
+- ✅ **Explicit Opt-In**: Size optimization available via explicit configuration choice
 
-**Platform Support** (v20.0.0):
-- ✅ **Linux/Desktop**: Full support (primary development platform)
-- ✅ **WebAssembly/WASM**: Full support (browser deployment)
-- ✅ **ESP32/Arduino**: Full support (RTTI-free architecture)
+**Platform Support** (v21.1.1):
+- ✅ **Linux/Desktop**: Full support with RTTI/RTTI-free choice
+- ✅ **WebAssembly/WASM**: Full support with RTTI/RTTI-free choice
+- ✅ **ESP32/Arduino**: Full support with RTTI/RTTI-free choice
 
-**Migration from v19.0.0**: No API changes required. All functionality maintained with identical behavior across all platforms.
+**Configuration Options**:
+- **Arduino IDE (RTTI default)**: Open sketch and compile - uses committed `build_opt.h`
+- **PlatformIO (RTTI-free)**: `pio run -e esp32-s3-no-rtti` for size optimization
+
+**Migration**: No API changes required. All functionality maintained with identical behavior in both RTTI modes.
 
 ## Hardware Requirements
 

@@ -2,30 +2,30 @@
 
 Complete guide for deploying the C++ ASTInterpreter as WebAssembly for browser and Node.js environments.
 
-## ✅ v20.0.0 STATUS - WASM BUILD SUCCESSFUL
+## ✅ v21.1.1 STATUS - WASM BUILD SUCCESSFUL WITH RTTI FLEXIBILITY
 
 **Build Status**: ✅ **PRODUCTION READY** (October 13, 2025)
 
-**Version 20.0.0 Update**: Complete RTTI removal enables ESP32 Arduino support while maintaining full WASM compatibility.
+**Version 21.1.1 Update**: WASM now offers RTTI/RTTI-free choice matching Linux and ESP32 - perfect cross-platform parity achieved!
+
+**RTTI Flexibility** (NEW in v21.1.1):
+- ✅ **RTTI Mode (default)**: `./scripts/build_wasm.sh` - Runtime type safety with `dynamic_cast`
+- ✅ **RTTI-Free Mode (opt-in)**: `AST_NO_RTTI=1 ./scripts/build_wasm.sh` - Size optimization with `static_cast`
+- ✅ **Universal Default**: RTTI enabled by default (safety-first philosophy)
+- ✅ **Compiler vs Code Separation**: Emscripten compiler needs RTTI (embind), but code can use `static_cast`
 
 **Build Output:**
 - `arduino_interpreter.js`: 12KB (JavaScript loader)
-- `arduino_interpreter.wasm`: 487KB (WebAssembly binary)
+- `arduino_interpreter.wasm`: 485KB RTTI mode / ~480KB RTTI-free mode
+- Gzipped: 157KB (RTTI mode) / ~155KB (RTTI-free mode)
 - Compile time: ~3 seconds with -O3 optimization
-- Emscripten SDK: v4.0.16
+- Emscripten SDK: v4.0.16+
 
-**Platform Abstraction Fixes Applied:**
-- Debug code pollution removed (7 `std::cerr` statements eliminated)
-- StringBuildStream fixed with generic manipulator fallback
-- WasmDataProvider fully implemented with all required methods
-- WASM bridge updated to match current interpreter API
-
-**Known Limitations:**
-- ⚠️ Command output capture not yet implemented (WASM has no iostream)
-- OUTPUT_STREAM currently uses stub WASMOutputStream
-- Future enhancement: Implement jsOutputCallback or memory buffer approach
-- Interpreter executes successfully, but getCommandStream returns empty array
-- Work-in-progress: Requires additional architecture for capturing emitted JSON
+**Platform Parity** (v21.1.1):
+- ✅ **Linux**: RTTI/RTTI-free choice via CMake
+- ✅ **WASM**: RTTI/RTTI-free choice via environment variable
+- ✅ **ESP32**: RTTI/RTTI-free choice via PlatformIO or build_opt.h
+- ✅ **Perfect Consistency**: All platforms offer identical configuration options
 
 ## Overview
 
