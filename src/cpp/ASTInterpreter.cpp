@@ -6642,8 +6642,8 @@ void ASTInterpreter::emitVarSet(const std::string& variable, const std::string& 
             // Emit as integers, not floats
             if (std::holds_alternative<double>(metadata.constructorArgs[i])) {
                 json << static_cast<int32_t>(std::get<double>(metadata.constructorArgs[i]));
-            } else if (std::holds_alternative<long int>(metadata.constructorArgs[i])) {
-                json << std::get<long int>(metadata.constructorArgs[i]);
+            } else if (std::holds_alternative<int32_t>(metadata.constructorArgs[i])) {
+                json << std::get<int32_t>(metadata.constructorArgs[i]);
             } else {
                 json << commandValueToJsonString(metadata.constructorArgs[i]);
             }
@@ -6858,8 +6858,8 @@ void ASTInterpreter::emitArduinoLibraryInstantiation(const std::string& libraryN
         // Emit as integers, not floating point (to match JavaScript)
         if (std::holds_alternative<double>(args[i])) {
             oss << static_cast<int32_t>(std::get<double>(args[i]));
-        } else if (std::holds_alternative<long int>(args[i])) {
-            oss << std::get<long int>(args[i]);
+        } else if (std::holds_alternative<int32_t>(args[i])) {
+            oss << std::get<int32_t>(args[i]);
         } else {
             oss << commandValueToJsonString(args[i]);
         }
@@ -8373,7 +8373,7 @@ void ASTInterpreter::visit(arduino_ast::EnumMemberNode& node) {
             g_resetEnumCounter = false; // Clear flag after reset
         }
 
-        memberValue = static_cast<long int>(enumCounter++);
+        memberValue = static_cast<int32_t>(enumCounter++);
     }
     
     // Generate FlexibleCommand matching JavaScript: {type: 'enum_member', name: memberName, value: memberValue}
@@ -8642,12 +8642,12 @@ void ASTInterpreter::visit(arduino_ast::RangeExpressionNode& node) {
     
     // Range expressions are used in range-based for loops
     std::string rangeStr = "range(";
-    if (std::holds_alternative<long int>(startValue)) {
-        rangeStr += std::to_string(std::get<long int>(startValue));
+    if (std::holds_alternative<int32_t>(startValue)) {
+        rangeStr += std::to_string(std::get<int32_t>(startValue));
     }
     rangeStr += "..";
-    if (std::holds_alternative<long int>(endValue)) {
-        rangeStr += std::to_string(std::get<long int>(endValue));
+    if (std::holds_alternative<int32_t>(endValue)) {
+        rangeStr += std::to_string(std::get<int32_t>(endValue));
     }
     rangeStr += ")";
     
@@ -8677,7 +8677,7 @@ void ASTInterpreter::visit(arduino_ast::StructMemberNode& node) {
         CommandValue initValue = lastExpressionResult_;
         
         if (options_.verbose) {
-            if (std::holds_alternative<long int>(initValue)) {
+            if (std::holds_alternative<int32_t>(initValue)) {
             } else if (std::holds_alternative<std::string>(initValue)) {
             }
         }
