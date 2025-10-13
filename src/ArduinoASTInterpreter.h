@@ -8,7 +8,7 @@
  * Usage:
  *   #include <ArduinoASTInterpreter.h>
  *
- *   const uint8_t astBinary[] = { /* CompactAST data */ };
+ *   const uint8_t astBinary[] = { ... }; // CompactAST binary data
  *   ASTInterpreter* interpreter = new ASTInterpreter(astBinary, sizeof(astBinary));
  *   interpreter->start();
  *
@@ -31,7 +31,6 @@
 using arduino_interpreter::ASTInterpreter;
 using arduino_interpreter::InterpreterOptions;
 using arduino_interpreter::SyncDataProvider;
-using arduino_interpreter::CommandValue;
 
 // Version information
 #define ARDUINO_AST_INTERPRETER_VERSION "20.0.0"

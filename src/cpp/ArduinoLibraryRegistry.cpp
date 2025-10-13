@@ -16,8 +16,8 @@ namespace arduino_interpreter {
 
 // Helper conversion functions
 static int32_t convertToInt(const CommandValue& value) {
-    if (std::holds_alternative<int>(value)) {
-        return std::get<int>(value);
+    if (std::holds_alternative<long int>(value)) {
+        return std::get<long int>(value);
     } else if (std::holds_alternative<double>(value)) {
         return static_cast<int32_t>(std::get<double>(value));
     } else if (std::holds_alternative<bool>(value)) {
@@ -240,8 +240,8 @@ void ArduinoLibraryRegistry::registerCapacitiveSensorLibrary() {
     capSensor.internalMethods["capacitiveSensor"] = [](const std::vector<CommandValue>& args, ASTInterpreter* interpreter) -> CommandValue {
         // Get sample count argument (default 30)
         int32_t sampleCount = 30;
-        if (!args.empty() && std::holds_alternative<int>(args[0])) {
-            sampleCount = std::get<int>(args[0]);
+        if (!args.empty() && std::holds_alternative<long int>(args[0])) {
+            sampleCount = std::get<long int>(args[0]);
         }
 
         // Get external value from parent app provider
@@ -257,8 +257,8 @@ void ArduinoLibraryRegistry::registerCapacitiveSensorLibrary() {
     capSensor.internalMethods["capacitiveSensorRaw"] = [](const std::vector<CommandValue>& args, ASTInterpreter* interpreter) -> CommandValue {
         // Get sample count argument (default 30)
         int32_t sampleCount = 30;
-        if (!args.empty() && std::holds_alternative<int>(args[0])) {
-            sampleCount = std::get<int>(args[0]);
+        if (!args.empty() && std::holds_alternative<long int>(args[0])) {
+            sampleCount = std::get<long int>(args[0]);
         }
 
         // Get external value from parent app provider
