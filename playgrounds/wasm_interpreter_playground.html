@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- WASM Interpreter Playground v1.0.0 - WebAssembly C++ Interpreter Demo -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASM Arduino Interpreter Playground</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #00f0ff;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .status-bar {
+            background: #2a2a3e;
+            border: 1px solid #00f0ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .status-label {
+            color: #888;
+            font-size: 0.85em;
+        }
+
+        .status-value {
+            color: #00f0ff;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .indicator-ready { background: #00ff88; }
+        .indicator-loading { background: #ffaa00; animation: pulse 1s infinite; }
+        .indicator-error { background: #ff4444; }
+        .indicator-idle { background: #666; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #00f0ff, #0080ff);
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 240, 255, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn.wasm-btn {
+            background: linear-gradient(45deg, #ff0088, #ff4444);
+        }
+
+        .btn.compare-btn {
+            background: linear-gradient(45deg, #88ff00, #44cc00);
+        }
+
+        .panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .panel {
+            background: #16213e;
+            border: 2px solid #00f0ff;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            background: #0f1419;
+            padding: 12px;
+            border-bottom: 1px solid #00f0ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            color: #00f0ff;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .panel-badge {
+            background: #ff0088;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .panel-content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            min-height: 400px;
+            max-height: 500px;
+        }
+
+        .editor {
+            width: 100%;
+            height: 100%;
+            background: #0f1419;
+            border: none;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 13px;
+            resize: none;
+            outline: none;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .output {
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .command {
+            margin: 4px 0;
+            padding: 4px 8px;
+            border-radius: 3px;
+            border-left: 3px solid;
+        }
+
+        .command.VERSION_INFO { border-color: #00f0ff; background: rgba(0, 240, 255, 0.1); }
+        .command.PIN_MODE { border-color: #00ff88; background: rgba(0, 255, 136, 0.1); }
+        .command.DIGITAL_WRITE { border-color: #00f0ff; background: rgba(0, 240, 255, 0.1); }
+        .command.DELAY { border-color: #ffaa00; background: rgba(255, 170, 0, 0.1); }
+
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .performance-table th,
+        .performance-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        .performance-table th {
+            color: #00f0ff;
+            font-weight: bold;
+        }
+
+        .winner {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        @media (max-width: 1200px) {
+            .panels {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 WASM Arduino Interpreter Playground</h1>
+        <div class="subtitle">WebAssembly C++ Interpreter vs JavaScript Interpreter</div>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-label">WASM Status</div>
+                <div class="status-value">
+                    <span class="status-indicator indicator-idle" id="wasmIndicator"></span>
+                    <span id="wasmStatus">Not Loaded</span>
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">WASM Version</div>
+                <div class="status-value" id="wasmVersion">-</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Execution Time</div>
+                <div class="status-value" id="execTime">-</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Performance</div>
+                <div class="status-value" id="performance">-</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="loadExample()">📝 Load Example</button>
+            <button class="btn wasm-btn" onclick="runWasm()" id="wasmBtn" disabled>⚡ Run WASM</button>
+            <button class="btn" onclick="runJavaScript()">🔷 Run JavaScript</button>
+            <button class="btn compare-btn" onclick="runComparison()">🔬 Compare Both</button>
+        </div>
+
+        <div class="panels">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">📝 Arduino Code</div>
+                </div>
+                <div class="panel-content">
+                    <textarea class="editor" id="codeEditor" placeholder="Enter Arduino code...">void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(1000);
+}</textarea>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">⚡ WASM Output</div>
+                    <div class="panel-badge">C++ v15.0.0</div>
+                </div>
+                <div class="panel-content">
+                    <div class="output" id="wasmOutput">WASM output will appear here...</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">🔷 JavaScript Output</div>
+                    <div class="panel-badge">JS v15.0.0</div>
+                </div>
+                <div class="panel-content">
+                    <div class="output" id="jsOutput">JavaScript output will appear here...</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">📊 Performance Comparison</div>
+                </div>
+                <div class="panel-content">
+                    <div class="output" id="perfOutput">Run comparison to see performance metrics...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load dependencies -->
+    <script src="../libs/CompactAST/src/CompactAST.js"></script>
+    <script src="../build_wasm/arduino_interpreter.js"></script>
+    <script src="../libs/ArduinoParser/src/ArduinoParser.js"></script>
+    <script src="../src/javascript/ASTInterpreter.js"></script>
+
+    <script>
+        let wasmInterpreter = null;
+        let wasmReady = false;
+
+        // Initialize WASM on page load
+        async function initWasm() {
+            const indicator = document.getElementById('wasmIndicator');
+            const status = document.getElementById('wasmStatus');
+            const version = document.getElementById('wasmVersion');
+            const btn = document.getElementById('wasmBtn');
+
+            indicator.className = 'status-indicator indicator-loading';
+            status.textContent = 'Loading...';
+
+            try {
+                const module = await createWasmModule();
+                wasmInterpreter = module;
+                wasmReady = true;
+
+                const versionPtr = module._getInterpreterVersion();
+                const versionStr = module.UTF8ToString(versionPtr);
+
+                indicator.className = 'status-indicator indicator-ready';
+                status.textContent = 'Ready';
+                version.textContent = `v${versionStr}`;
+                btn.disabled = false;
+
+                console.log('✅ WASM interpreter ready');
+            } catch (error) {
+                indicator.className = 'status-indicator indicator-error';
+                status.textContent = 'Error';
+                console.error('❌ WASM init failed:', error);
+            }
+        }
+
+        function loadExample() {
+            document.getElementById('codeEditor').value = `void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(1000);
+}`;
+        }
+
+        async function runWasm() {
+            if (!wasmReady) {
+                alert('WASM not ready. Please wait for initialization.');
+                return;
+            }
+
+            const code = document.getElementById('codeEditor').value;
+            const output = document.getElementById('wasmOutput');
+            output.innerHTML = '<div style="color:#ffaa00">⏳ Compiling and executing...</div>';
+
+            try {
+                const startTime = performance.now();
+
+                // Parse to AST
+                const ast = parse(code);
+
+                // Export to CompactAST binary
+                const astBuffer = exportCompactAST(ast);
+                const astBinary = new Uint8Array(astBuffer);
+
+                // Execute with WASM
+                const astSize = astBinary.length;
+                const astPtr = wasmInterpreter._malloc(astSize);
+
+                console.log(`📊 Allocated ${astSize} bytes at address ${astPtr}`);
+
+                // Copy binary to WASM memory - use bulk copy if available
+                if (typeof wasmInterpreter.writeArrayToMemory === 'function') {
+                    console.log('⚡ Using writeArrayToMemory (bulk copy)');
+                    wasmInterpreter.writeArrayToMemory(astBinary, astPtr);
+                } else {
+                    console.log('⏳ Using setValue loop (slower)');
+                    for (let i = 0; i < astBinary.length; i++) {
+                        wasmInterpreter.setValue(astPtr + i, astBinary[i], 'i8');
+                    }
+                }
+
+                console.log('🔨 Creating interpreter...');
+                // IMPORTANT: Use false for verbose to avoid ExecutionTracer memory explosion in browser
+                const interpreterPtr = wasmInterpreter._createInterpreter(astPtr, astSize, false);
+                console.log(`✅ Interpreter created at address ${interpreterPtr}`);
+                wasmInterpreter._free(astPtr);
+
+                const success = wasmInterpreter._startInterpreter(interpreterPtr);
+
+                const jsonPtr = wasmInterpreter._getCommandStream(interpreterPtr);
+                const jsonStr = wasmInterpreter.UTF8ToString(jsonPtr);
+                wasmInterpreter._freeString(jsonPtr);
+                wasmInterpreter._destroyInterpreter(interpreterPtr);
+
+                const endTime = performance.now();
+                const execTime = (endTime - startTime).toFixed(2);
+
+                // Parse NDJSON (newline-delimited JSON)
+                // C++ interpreter outputs one JSON object per line
+                const lines = jsonStr.trim().split('\n');
+                const commands = lines.filter(line => line.trim()).map(line => JSON.parse(line));
+
+                console.log(`✅ Parsed ${commands.length} commands from ${jsonStr.length} bytes`);
+
+                // Display results
+                output.innerHTML = '';
+                commands.forEach(cmd => {
+                    const div = document.createElement('div');
+                    div.className = `command ${cmd.type}`;
+                    div.textContent = JSON.stringify(cmd);
+                    output.appendChild(div);
+                });
+
+                document.getElementById('execTime').textContent = `${execTime}ms`;
+
+            } catch (error) {
+                output.innerHTML = `<div style="color:#ff4444">❌ Error: ${error.message}</div>`;
+                console.error('❌ WASM execution error:', error);
+                console.error('Stack trace:', error.stack);
+
+                // Log any assertion details that might be in the error
+                if (error.message && error.message.includes('Assertion')) {
+                    console.error('⚠️ ASSERTION FAILURE DETECTED - Check console for details');
+                }
+            }
+        }
+
+        async function runJavaScript() {
+            const code = document.getElementById('codeEditor').value;
+            const output = document.getElementById('jsOutput');
+            output.innerHTML = '<div style="color:#ffaa00">⏳ Executing with JavaScript...</div>';
+
+            try {
+                const startTime = performance.now();
+
+                // Parse to AST
+                const ast = parse(code);
+
+                // Create interpreter
+                const interpreter = new ASTInterpreter(ast, {
+                    verbose: false,
+                    maxLoopIterations: 3
+                });
+
+                // Set up command collection and completion tracking
+                const commands = [];
+                let done = false;
+
+                // Command handler - collects commands as they're emitted
+                interpreter.onCommand = (cmd) => {
+                    commands.push(cmd);
+
+                    // Handle hardware operation requests with mock responses
+                    if (cmd.type === 'ANALOG_READ_REQUEST') {
+                        setTimeout(() => {
+                            const mockValue = 512 + (cmd.pin || 0) * 10; // Deterministic mock
+                            interpreter.handleResponse(cmd.requestId, mockValue);
+                        }, 5);
+                    } else if (cmd.type === 'DIGITAL_READ_REQUEST') {
+                        setTimeout(() => {
+                            const mockValue = (cmd.pin || 0) % 2; // Deterministic mock
+                            interpreter.handleResponse(cmd.requestId, mockValue);
+                        }, 5);
+                    } else if (cmd.type === 'MILLIS_REQUEST') {
+                        setTimeout(() => {
+                            const mockValue = Date.now() % 1000000;
+                            interpreter.handleResponse(cmd.requestId, mockValue);
+                        }, 5);
+                    } else if (cmd.type === 'MICROS_REQUEST') {
+                        setTimeout(() => {
+                            const mockValue = (Date.now() * 1000) % 1000000;
+                            interpreter.handleResponse(cmd.requestId, mockValue);
+                        }, 5);
+                    }
+
+                    // Detect completion
+                    if (cmd.type === 'PROGRAM_END' || cmd.type === 'ERROR' ||
+                        cmd.type === 'LOOP_LIMIT_REACHED' || cmd.type === 'LOOP_END') {
+                        setTimeout(() => { done = true; }, 100);
+                    }
+                };
+
+                // Error handler
+                interpreter.onError = (error) => {
+                    console.error('Interpreter error:', error);
+                    done = true;
+                };
+
+                // Start interpreter (synchronous call, but execution continues asynchronously)
+                interpreter.start();
+
+                // Poll for completion (max 10 seconds)
+                await new Promise((resolve, reject) => {
+                    const startPoll = Date.now();
+                    const check = () => {
+                        if (done) {
+                            resolve();
+                        } else if (Date.now() - startPoll > 10000) {
+                            reject(new Error('Execution timeout (10s)'));
+                        } else {
+                            setTimeout(check, 10); // Poll every 10ms
+                        }
+                    };
+                    check();
+                });
+
+                const endTime = performance.now();
+                const execTime = (endTime - startTime).toFixed(2);
+
+                // Display results
+                output.innerHTML = '';
+                commands.forEach(cmd => {
+                    const div = document.createElement('div');
+                    div.className = `command ${cmd.type}`;
+                    div.textContent = JSON.stringify(cmd);
+                    output.appendChild(div);
+                });
+
+            } catch (error) {
+                output.innerHTML = `<div style="color:#ff4444">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        async function runComparison() {
+            if (!wasmReady) {
+                alert('WASM not ready. Please wait for initialization.');
+                return;
+            }
+
+            const perfOutput = document.getElementById('perfOutput');
+            perfOutput.innerHTML = '<div style="color:#ffaa00">⏳ Running benchmarks...</div>';
+
+            try {
+                const code = document.getElementById('codeEditor').value;
+                const ast = parse(code);
+                const astBuffer = exportCompactAST(ast);
+                const astBinary = new Uint8Array(astBuffer);
+
+                // WASM benchmark
+                const wasmStart = performance.now();
+                const astSize = astBinary.length;
+                const astPtr = wasmInterpreter._malloc(astSize);
+
+                // Copy binary to WASM memory - use bulk copy if available
+                if (typeof wasmInterpreter.writeArrayToMemory === 'function') {
+                    wasmInterpreter.writeArrayToMemory(astBinary, astPtr);
+                } else {
+                    for (let i = 0; i < astBinary.length; i++) {
+                        wasmInterpreter.setValue(astPtr + i, astBinary[i], 'i8');
+                    }
+                }
+
+                const interpreterPtr = wasmInterpreter._createInterpreter(astPtr, astSize, false);
+                wasmInterpreter._free(astPtr);
+                wasmInterpreter._startInterpreter(interpreterPtr);
+                const jsonPtr = wasmInterpreter._getCommandStream(interpreterPtr);
+                wasmInterpreter._freeString(jsonPtr);
+                wasmInterpreter._destroyInterpreter(interpreterPtr);
+                const wasmTime = performance.now() - wasmStart;
+
+                // JS benchmark
+                const jsStart = performance.now();
+                const jsInterp = new ASTInterpreter(ast, { verbose: false, maxLoopIterations: 3 });
+                jsInterp.start();
+                const jsTime = performance.now() - jsStart;
+
+                const speedup = (jsTime / wasmTime).toFixed(2);
+                const winner = wasmTime < jsTime ? 'WASM' : 'JavaScript';
+
+                perfOutput.innerHTML = `
+                    <table class="performance-table">
+                        <tr><th>Metric</th><th>WASM</th><th>JavaScript</th></tr>
+                        <tr><td>Execution Time</td><td class="${wasmTime < jsTime ? 'winner' : ''}">${wasmTime.toFixed(2)}ms</td><td class="${jsTime < wasmTime ? 'winner' : ''}">${jsTime.toFixed(2)}ms</td></tr>
+                        <tr><td>AST Size</td><td>${astBinary.length} bytes</td><td>-</td></tr>
+                        <tr><td>Winner</td><td colspan="2" class="winner">${winner} (${speedup}x)</td></tr>
+                    </table>
+                `;
+
+                document.getElementById('performance').textContent = `${speedup}x ${winner}`;
+
+            } catch (error) {
+                perfOutput.innerHTML = `<div style="color:#ff4444">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initWasm);
+    </script>
+</body>
+</html>

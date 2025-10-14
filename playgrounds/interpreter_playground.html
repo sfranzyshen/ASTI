@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Arduino Interpreter Playground v1.4.0 - Complete Platform Emulation & Preprocessor Architecture -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino Interpreter Playground</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.4;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #00f0ff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #00f0ff, #0080ff);
+            color: #1a1a2e;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 240, 255, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn.stop {
+            background: linear-gradient(45deg, #ff4444, #cc3333);
+        }
+        
+        .btn.pause {
+            background: linear-gradient(45deg, #ffaa00, #ff8800);
+        }
+        
+        .status-bar {
+            background: #2a2a3e;
+            border: 1px solid #00f0ff;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #666;
+        }
+        
+        .status-indicator.idle { background: #666; }
+        .status-indicator.running { background: #00ff88; animation: pulse 1s infinite; }
+        .status-indicator.paused { background: #ffaa00; }
+        .status-indicator.error { background: #ff4444; }
+        .status-indicator.complete { background: #00f0ff; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            height: calc(100vh - 300px);
+            min-height: 500px;
+        }
+        
+        .panel {
+            display: flex;
+            flex-direction: column;
+            background: #16213e;
+            border: 2px solid #00f0ff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            background: #0f1419;
+            padding: 12px;
+            border-bottom: 1px solid #00f0ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .panel-title {
+            color: #00f0ff;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .panel-controls {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .panel-btn {
+            background: #2a2a3e;
+            color: #00f0ff;
+            border: 1px solid #00f0ff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+        
+        .panel-btn:hover {
+            background: #00f0ff;
+            color: #1a1a2e;
+        }
+        
+        .panel-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            min-height: 0;
+        }
+        
+        .editor, .output {
+            flex: 1;
+            background-color: #0f1419;
+            border: none;
+            padding: 15px;
+            font-family: inherit;
+            font-size: 13px;
+            color: #e0e0e0;
+            resize: none;
+            outline: none;
+            overflow-y: auto;
+            overflow-x: hidden;
+            line-height: 1.5;
+            white-space: pre;
+            min-height: 0;
+        }
+        
+        .editor {
+            background-color: #1f2937;
+        }
+        
+        .editor:focus {
+            background-color: #2a3441;
+        }
+        
+        .output {
+            background-color: #0a0e1a;
+            color: #a0a0a0;
+        }
+        
+        .commands-panel .output {
+            font-size: 12px;
+            overflow-y: auto !important;
+            scroll-behavior: smooth;
+            flex: 1;
+            min-height: 0;
+        }
+        
+        .line-counter {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #888;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            pointer-events: none;
+        }
+        
+        .examples {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .example-btn {
+            background-color: #2a2a3e;
+            color: #00f0ff;
+            border: 1px solid #00f0ff;
+            padding: 6px 12px;
+            margin: 3px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+        
+        .example-btn:hover {
+            background-color: #00f0ff;
+            color: #1a1a2e;
+        }
+        
+        /* Command styling */
+        .command {
+            margin: 2px 0;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+        
+        .command.PIN_MODE { background: rgba(0, 255, 136, 0.1); border-left: 3px solid #00ff88; }
+        .command.DIGITAL_WRITE { background: rgba(0, 240, 255, 0.1); border-left: 3px solid #00f0ff; }
+        .command.ANALOG_WRITE { background: rgba(136, 0, 255, 0.1); border-left: 3px solid #8800ff; }
+        .command.DIGITAL_READ { background: rgba(255, 136, 0, 0.1); border-left: 3px solid #ff8800; }
+        .command.ANALOG_READ { background: rgba(255, 0, 136, 0.1); border-left: 3px solid #ff0088; }
+        .command.DELAY { background: rgba(255, 170, 0, 0.1); border-left: 3px solid #ffaa00; }
+        .command.SETUP_START { background: rgba(136, 255, 0, 0.1); border-left: 3px solid #88ff00; }
+        .command.SETUP_END { background: rgba(136, 255, 0, 0.1); border-left: 3px solid #88ff00; }
+        .command.LOOP_START { background: rgba(255, 0, 136, 0.1); border-left: 3px solid #ff0088; }
+        .command.LOOP_END { background: rgba(255, 0, 136, 0.1); border-left: 3px solid #ff0088; }
+        .command.FUNCTION_CALL { background: rgba(255, 170, 85, 0.1); border-left: 3px solid #ffaa55; }
+        .command.CONDITION_EVAL { background: rgba(255, 255, 0, 0.1); border-left: 3px solid #ffff00; }
+        .command.VERSION_INFO { background: rgba(0, 240, 255, 0.15); border-left: 3px solid #00f0ff; font-weight: bold; }
+        .command.ERROR { background: rgba(255, 68, 68, 0.1); border-left: 3px solid #ff4444; }
+        .command.WARNING { background: rgba(255, 170, 0, 0.1); border-left: 3px solid #ffaa00; }
+        
+        .timestamp {
+            color: #666;
+            font-size: 9px;
+        }
+        
+        @media (max-width: 1200px) {
+            .panels {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-indicator" id="statusIndicator"></div>
+                <span>Status: <span id="statusText">IDLE</span></span>
+            </div>
+            <div class="status-item">
+                <span>Commands: <span id="commandCount">0</span></span>
+            </div>
+            <div class="status-item">
+                <span>Loop Iterations: <span id="loopCount">0</span></span>
+            </div>
+            <div class="status-item">
+                <span>Variables: <span id="varCount">0</span></span>
+            </div>
+        </div>
+        
+        <!-- Combined Controls Row -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 20px; flex-wrap: wrap;">
+            <!-- Test Selection Controls (Left) -->
+            <div class="test-selection-controls" style="flex: 1; text-align: left;">
+                <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label for="categorySelect" style="color: #9ca3af; font-size: 12px;">Test Category:</label>
+                        <select id="categorySelect" onchange="updateTestOptions()" style="padding: 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff;">
+                            <option value="examples">Arduino Examples (79 tests)</option>
+                            <option value="old_tests">Comprehensive Tests (54 tests)</option>
+                            <option value="neopixel">NeoPixel Examples (2 tests)</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label for="testSelect" style="color: #9ca3af; font-size: 12px;">Select Test:</label>
+                        <select id="testSelect" style="padding: 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff; min-width: 200px;">
+                            <option value="">Select a test...</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="color: #9ca3af; font-size: 12px;">&nbsp;</label>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn" onclick="loadSelectedTest()" style="padding: 8px 16px; min-width: 100px;">Load Test</button>
+                            <button class="btn" onclick="loadRandomTest()" style="padding: 8px 16px; min-width: 100px;">Random</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Execution Controls (Right) -->
+            <div class="controls" style="text-align: right;">
+                <button class="btn" id="startBtn" onclick="startExecution()">▶️ Start</button>
+                <button class="btn pause" id="pauseBtn" onclick="pauseExecution()" disabled>⏸️ Pause</button>
+                <button class="btn" id="stepBtn" onclick="stepExecution()" disabled>📍 Step</button>
+                <button class="btn stop" id="stopBtn" onclick="stopExecution()" disabled>⏹️ Stop</button>
+                <button class="btn" id="resetBtn" onclick="resetInterpreter()">🔄 Reset</button>
+            </div>
+        </div>
+        
+        <div class="panels">
+            <!-- Code Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">📝 Arduino Code</div>
+                    <div class="panel-controls">
+                        <button class="panel-btn" onclick="clearCode()">Clear</button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <textarea class="editor" id="codeEditor" placeholder="Enter your Arduino code here...">void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(1000);
+}</textarea>
+                    <div class="line-counter" id="codeLineCounter">8 lines</div>
+                </div>
+            </div>
+            
+            
+            <!-- Commands Panel -->
+            <div class="panel commands-panel">
+                <div class="panel-header">
+                    <div class="panel-title">⚡ Generated Commands</div>
+                    <div class="panel-controls">
+                        <button class="panel-btn" onclick="clearCommands()">Clear</button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="output" id="commandOutput" style="overflow-y: auto; height: 100%;">Commands will appear here during interpretation...</div>
+                    <div class="line-counter" id="commandLineCounter">0 commands</div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Load ArduinoParser (includes CompactAST functionality) -->
+    <script src="../libs/ArduinoParser/src/ArduinoParser.js"></script>
+    <!-- Note: ArduinoParser includes CompactAST integration - no need to load CompactAST separately -->
+    <!-- Load ASTInterpreter -->
+    <script src="../src/javascript/ASTInterpreter.js"></script>
+    <!-- Load test files directly -->
+    <script src="../tests/examples.js"></script>
+    <script>
+        // Capture examples.js examplesFiles immediately
+        const examplesTestFiles = examplesFiles.slice();
+        conditionalLog(true, `Loaded ${examplesTestFiles.length} Arduino examples`);
+    </script>
+    <script src="../tests/old_test.js"></script>
+    <script>
+        // Capture old_test.js oldTestFiles immediately
+        const oldTestFilesArray = oldTestFiles.slice();
+        conditionalLog(true, `Loaded ${oldTestFilesArray.length} comprehensive tests`);
+    </script>
+    <script src="../tests/neopixel.js"></script>
+    <script>
+        // Capture neopixel.js neopixelFiles immediately
+        const neopixelTestFilesArray = neopixelFiles.slice();
+        conditionalLog(true, `Loaded ${neopixelTestFilesArray.length} NeoPixel examples`);
+        
+        // Global state
+        let currentAST = null;
+        let interpreter = null;
+        let prettyFormat = true;
+        let platformEmulation = null;
+        let preprocessor = null;
+        
+        // Initialize platform and preprocessor systems
+        function loadTestFiles() {
+            try {
+                // Initialize platform emulation system (ESP32 Nano default)
+                platformEmulation = new PlatformEmulation('ESP32_NANO');
+                conditionalLog(true, `🎯 Platform initialized: ${platformEmulation.currentPlatform.displayName}`);
+                
+                // Initialize preprocessor with platform context
+                preprocessor = new ArduinoPreprocessor({
+                    platformContext: platformEmulation
+                });
+                conditionalLog(true, '🔧 Preprocessor initialized with platform context');
+                
+            } catch (error) {
+                console.error('Failed to initialize platform/preprocessor:', error);
+            }
+            
+            // Files are already loaded, just initialize dropdowns
+            initializeTestSelectors();
+        }
+        
+        // Initialize dropdown selectors
+        function initializeTestSelectors() {
+            updateTestOptions();
+        }
+        
+        // Update test options based on selected category
+        function updateTestOptions() {
+            const categorySelect = document.getElementById('categorySelect');
+            const testSelect = document.getElementById('testSelect');
+            const category = categorySelect.value;
+            
+            // Clear existing options
+            testSelect.innerHTML = '<option value="">Select a test...</option>';
+            
+            let currentTestFiles = [];
+            
+            switch (category) {
+                case 'examples':
+                    currentTestFiles = examplesTestFiles;
+                    break;
+                case 'old_tests':
+                    currentTestFiles = oldTestFilesArray;
+                    break;
+                case 'neopixel':
+                    currentTestFiles = neopixelTestFilesArray;
+                    break;
+            }
+            
+            // Populate dropdown with tests
+            currentTestFiles.forEach((test, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = test.name;
+                testSelect.appendChild(option);
+            });
+        }
+        
+        // Load the selected test
+        function loadSelectedTest() {
+            const categorySelect = document.getElementById('categorySelect');
+            const testSelect = document.getElementById('testSelect');
+            const category = categorySelect.value;
+            const testIndex = parseInt(testSelect.value);
+            
+            if (isNaN(testIndex)) {
+                alert('Please select a test first');
+                return;
+            }
+            
+            let currentTestFiles = [];
+            
+            switch (category) {
+                case 'examples':
+                    currentTestFiles = examplesTestFiles;
+                    break;
+                case 'old_tests':
+                    currentTestFiles = oldTestFilesArray;
+                    break;
+                case 'neopixel':
+                    currentTestFiles = neopixelTestFilesArray;
+                    break;
+            }
+            
+            const selectedTest = currentTestFiles[testIndex];
+            if (selectedTest) {
+                document.getElementById('codeEditor').value = selectedTest.content;
+                updateLineCounters();
+                clearCommands();
+                resetInterpreter();
+                conditionalLog(true, `Loaded test: ${selectedTest.name}`);
+            }
+        }
+        
+        // Load a random test from current category
+        function loadRandomTest() {
+            const categorySelect = document.getElementById('categorySelect');
+            const testSelect = document.getElementById('testSelect');
+            const category = categorySelect.value;
+            
+            let currentTestFiles = [];
+            
+            switch (category) {
+                case 'examples':
+                    currentTestFiles = examplesTestFiles;
+                    break;
+                case 'old_tests':
+                    currentTestFiles = oldTestFilesArray;
+                    break;
+                case 'neopixel':
+                    currentTestFiles = neopixelTestFilesArray;
+                    break;
+            }
+            
+            if (currentTestFiles.length === 0) {
+                alert('No tests available in this category');
+                return;
+            }
+            
+            const randomIndex = Math.floor(Math.random() * currentTestFiles.length);
+            const randomTest = currentTestFiles[randomIndex];
+            
+            // Update dropdown selection
+            testSelect.value = randomIndex;
+            
+            // Load the test
+            document.getElementById('codeEditor').value = randomTest.content;
+            updateLineCounters();
+            clearCommands();
+            resetInterpreter();
+            conditionalLog(true, `Loaded random test: ${randomTest.name}`);
+        }
+        
+        // Remove the old hardcoded examples object - replaced by dynamic loading
+        
+        // Placeholder for legacy compatibility - actual test loading is now dynamic
+        
+        // Initialize interface
+        function updateLineCounters() {
+            const codeLines = document.getElementById('codeEditor').value.split('\n').length;
+            document.getElementById('codeLineCounter').textContent = `${codeLines} lines`;
+        }
+        
+        function updateStatus(state, commandCount = 0, loopCount = 0, varCount = 0) {
+            const indicator = document.getElementById('statusIndicator');
+            const text = document.getElementById('statusText');
+            
+            indicator.className = `status-indicator ${state.toLowerCase()}`;
+            text.textContent = state;
+            
+            document.getElementById('commandCount').textContent = commandCount;
+            document.getElementById('loopCount').textContent = loopCount;
+            document.getElementById('varCount').textContent = varCount;
+        }
+        
+        function updateButtons(state) {
+            const startBtn = document.getElementById('startBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const stepBtn = document.getElementById('stepBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            
+            switch (state) {
+                case 'IDLE':
+                    startBtn.textContent = '▶️ Start';
+                    startBtn.disabled = false;
+                    startBtn.onclick = () => startExecution();
+                    pauseBtn.disabled = true;
+                    stepBtn.disabled = true;
+                    stopBtn.disabled = true;
+                    break;
+                case 'RUNNING':
+                    startBtn.disabled = true;
+                    pauseBtn.disabled = false;
+                    stepBtn.disabled = true;
+                    stopBtn.disabled = false;
+                    break;
+                case 'PAUSED':
+                    startBtn.textContent = '▶️ Resume';
+                    startBtn.disabled = false;
+                    startBtn.onclick = () => { 
+                        if (interpreter) {
+                            const success = interpreter.resume();
+                            conditionalLog(true, 'Resume result:', success, 'State:', interpreter.getState());
+                        }
+                    };
+                    pauseBtn.disabled = true;
+                    stepBtn.disabled = false;
+                    stopBtn.disabled = false;
+                    break;
+                case 'ERROR':
+                case 'COMPLETE':
+                    startBtn.textContent = '▶️ Start';
+                    startBtn.disabled = false;
+                    startBtn.onclick = () => startExecution();
+                    pauseBtn.disabled = true;
+                    stepBtn.disabled = true;
+                    stopBtn.disabled = true;
+                    break;
+            }
+        }
+        
+        // Main functions
+        async function startExecution() {
+            const code = document.getElementById('codeEditor').value.trim();
+            
+            if (!code) {
+                currentAST = null;
+                clearCommands();
+                updateButtons('IDLE');
+                updateStatus('IDLE', 0, 0, 0);
+                return;
+            }
+            
+            try {
+                // Step 1: Preprocess code with platform context
+                const preprocessStartTime = performance.now();
+                const preprocessResult = preprocessor.preprocess(code);
+                const preprocessEndTime = performance.now();
+                conditionalLog(true, `Preprocessed in ${(preprocessEndTime - preprocessStartTime).toFixed(2)}ms`);
+                
+                // Step 2: Parse preprocessed code to AST
+                const parseStartTime = performance.now();
+                currentAST = parse(preprocessResult.processedCode || preprocessResult, { verbose: false });
+                const parseEndTime = performance.now();
+                conditionalLog(true, `Parsed successfully in ${(parseEndTime - parseStartTime).toFixed(2)}ms`);
+                
+                // Step 3: Immediately interpret the AST
+                await interpretAST();
+                
+            } catch (error) {
+                displayCommand({
+                    type: 'ERROR',
+                    message: `Parse Error: ${error.message}`,
+                    timestamp: Date.now()
+                });
+                currentAST = null;
+                updateButtons('IDLE');
+                updateStatus('ERROR');
+                console.error('Parse error:', error);
+            }
+        }
+        
+        async function interpretAST() {
+            if (!currentAST) {
+                alert('Please parse code first');
+                return;
+            }
+            
+            // Create new interpreter
+            interpreter = new ASTInterpreter(currentAST, {
+                verbose: true
+                // No loop limit - runs continuously like real Arduino
+            });
+            
+            // Set up event handlers
+            interpreter.onCommand = (command) => {
+                displayCommand(command);
+                
+                // Handle request-response pattern for external data functions
+                switch (command.type) {
+                    case 'ANALOG_READ_REQUEST':
+                        // Simulate realistic sensor data
+                        const analogValue = Math.floor(Math.random() * 1024);
+                        // Add small delay to prevent race condition with async Promise setup
+                        setTimeout(() => {
+                            interpreter.resumeWithValue(command.requestId, analogValue);
+                        }, 1);
+                        break;
+                        
+                    case 'DIGITAL_READ_REQUEST':  
+                        const digitalState = Math.random() > 0.5 ? 1 : 0;
+                        // Add small delay to prevent race condition with async Promise setup
+                        setTimeout(() => {
+                            interpreter.resumeWithValue(command.requestId, digitalState);
+                        }, 1);
+                        break;
+                        
+                    case 'MILLIS_REQUEST':
+                        // Add small delay to prevent race condition with async Promise setup
+                        setTimeout(() => {
+                            interpreter.resumeWithValue(command.requestId, Date.now());
+                        }, 1);
+                        break;
+                        
+                    case 'MICROS_REQUEST':
+                        // Add small delay to prevent race condition with async Promise setup
+                        setTimeout(() => {
+                            interpreter.resumeWithValue(command.requestId, Date.now() * 1000);
+                        }, 1);
+                        break;
+                        
+                    case 'LIBRARY_METHOD_REQUEST':
+                        // Handle library method requests (like numPixels)
+                        let responseValue = 0;
+                        switch (command.method) {
+                            case 'numPixels': responseValue = 60; break;
+                            case 'getBrightness': responseValue = 255; break;
+                            case 'getPixelColor': responseValue = 0; break;
+                            case 'canShow': responseValue = true; break;
+                            default: responseValue = 0; break;
+                        }
+                        // Add small delay to prevent race condition with async Promise setup
+                        setTimeout(() => {
+                            interpreter.resumeWithValue(command.requestId, responseValue);
+                        }, 1);
+                        break;
+                }
+                
+                updateStatus(
+                    interpreter.getState(),
+                    interpreter.getCommandHistory().length,
+                    interpreter.loopIterations,
+                    Object.keys(interpreter.getVariables()).length
+                );
+            };
+            
+            interpreter.onStateChange = (newState, oldState) => {
+                conditionalLog(true, `State change: ${oldState} → ${newState}`);
+                updateStatus(newState);
+                updateButtons(newState);
+            };
+            
+            interpreter.onError = (error) => {
+                displayCommand(error);
+                console.error('Interpreter error:', error);
+            };
+            
+            // Start interpretation - the state machine will handle external data requests
+            clearCommands();
+            interpreter.start();
+        }
+        
+        function pauseExecution() {
+            if (interpreter) {
+                const success = interpreter.pause();
+                conditionalLog(true, 'Pause result:', success, 'State:', interpreter.getState());
+            }
+        }
+        
+        function stepExecution() {
+            if (interpreter) {
+                const success = interpreter.step();
+                conditionalLog(true, 'Step result:', success, 'State:', interpreter.getState());
+            }
+        }
+        
+        function stopExecution() {
+            if (interpreter) {
+                const success = interpreter.stop();
+                conditionalLog(true, 'Stop result:', success, 'State:', interpreter.getState());
+            }
+        }
+        
+        function resetInterpreter() {
+            if (interpreter) {
+                interpreter.reset();
+            }
+            clearCommands();
+            updateStatus('IDLE', 0, 0, 0);
+            updateButtons('IDLE');
+        }
+
+        // Helper function to convert actual control characters back to escape sequences for display
+        function escapeForDisplay(str) {
+            if (!str) return str;
+            return str
+                .replace(/\n/g, '\\n')   // Actual newline → literal \n
+                .replace(/\t/g, '\\t')   // Actual tab → literal \t
+                .replace(/\r/g, '\\r');  // Actual carriage return → literal \r
+        }
+
+        // Display functions - completely simple, no scroll management
+        function displayCommand(command) {
+            // Only filter out truly invalid commands and redundant library instantiation
+            if (!command || command.type === undefined || command.type === 'LIBRARY_OBJECT_INSTANTIATION') {
+                return; // Skip invalid commands and redundant library instantiation (VAR_SET shows this better)
+            }
+            
+            const commandOutput = document.getElementById('commandOutput');
+            const commandEl = document.createElement('div');
+            commandEl.className = `command ${command.type}`;
+            
+            const time = command.timestamp ? new Date(command.timestamp).toLocaleTimeString() : new Date().toLocaleTimeString();
+            let content = `<span class="timestamp">[${time}]</span> `;
+            
+            switch (command.type) {
+                case 'PIN_MODE':
+                    // Display numeric values directly instead of symbolic names
+                    content += `pinMode(${command.pin}, ${command.mode})`;
+                    break;
+                case 'DIGITAL_WRITE':
+                    // Display numeric values directly instead of symbolic names
+                    content += `digitalWrite(${command.pin}, ${command.value})`;
+                    break;
+                case 'ANALOG_WRITE':
+                    content += `analogWrite(${command.pin}, ${command.value})`;
+                    break;
+                case 'DIGITAL_READ':
+                    content += `digitalRead(${command.pin})`;
+                    break;
+                case 'ANALOG_READ':
+                    content += `analogRead(${command.pin})`;
+                    break;
+                case 'DELAY':
+                    content += `delay(${command.duration})`;
+                    break;
+                case 'DELAY_MICROSECONDS':
+                    content += `delayMicroseconds(${command.duration})`;
+                    break;
+                case 'VERSION_INFO':
+                    content += `🔢 ${command.component} v${command.version} (${command.status})`;
+                    break;
+                case 'SETUP_START':
+                case 'SETUP_END':
+                case 'LOOP_START':
+                case 'LOOP_END':
+                case 'PROGRAM_START':
+                case 'PROGRAM_END':
+                    content += `${command.message || command.type}`;
+                    break;
+                case 'FUNCTION_CALL':
+                    if (command.function === 'loop') {
+                        if (command.completed) {
+                            content += `✓ ${command.message}`;
+                        } else {
+                            content += `▶ ${command.message}`;
+                        }
+                    } else {
+                        content += escapeForDisplay(command.message) || `${command.function}()`;
+                    }
+                    break;
+                case 'CONDITION_EVAL':
+                    content += `🔍 ${command.message}`;
+                    break;
+                case 'VAR_SET':
+                    // Improve object display formatting
+                    let displayValue = command.value;
+                    if (typeof displayValue === 'object' && displayValue !== null) {
+                        // Handle sanitized ArduinoObjects
+                        if (displayValue.__type === 'ArduinoObject') {
+                            const args = displayValue.constructorArgs.length > 0 ? 
+                                `(${displayValue.constructorArgs.join(', ')})` : '()';
+                            displayValue = `🔧 ${displayValue.className}${args}`;
+                        } else if (displayValue.toString && displayValue.toString() !== '[object Object]') {
+                            displayValue = displayValue.toString();
+                        } else if (displayValue.value !== undefined) {
+                            displayValue = displayValue.value; // Extract value from ArduinoNumber, etc.
+                        } else {
+                            displayValue = JSON.stringify(displayValue);
+                        }
+                    }
+                    content += `${command.variable} = ${displayValue}`;
+                    break;
+                case 'IF_STATEMENT':
+                    content += `if (${command.condition}) ${command.result ? '✓' : '✗'} → ${command.branch} branch`;
+                    break;
+                case 'SWITCH_STATEMENT':
+                    content += `${command.message}`;
+                    break;
+                case 'SWITCH_CASE':
+                    content += `case ${command.caseValue}: ${command.matched ? '✓ matched' : '✗ skipped'}`;
+                    break;
+                case 'FOR_LOOP':
+                    content += `${command.message}`;
+                    break;
+                case 'WHILE_LOOP':
+                    content += `${command.message}`;
+                    break;
+                case 'DO_WHILE_LOOP':
+                    content += `${command.message}`;
+                    break;
+                case 'BREAK_STATEMENT':
+                    content += `${command.message}`;
+                    break;
+                case 'CONTINUE_STATEMENT':
+                    content += `${command.message}`;
+                    break;
+                case 'ERROR':
+                    content += command.severity === 'error' ? `❌ ERROR: ${command.message}` : `ERROR: ${command.message}`;
+                    break;
+                case 'WARNING':
+                    content += command.severity === 'warning' ? `⚠️ WARNING: ${command.message}` : `⚠️ WARNING: ${command.message}`;
+                    break;
+                case 'LIBRARY_STATIC_METHOD_CALL':
+                    const staticDisplayName = command.variableName || command.library;
+                    if (command.calculatedValue !== undefined) {
+                        content += `${staticDisplayName}.${command.method}(${command.args.join(', ')}) → ${command.calculatedValue}`;
+                    } else {
+                        content += `${staticDisplayName}.${command.method}(${command.args.join(', ')})`;
+                    }
+                    break;
+                case 'LIBRARY_METHOD_CALL':
+                    const displayName = command.variableName || command.library;
+                    content += `${displayName}.${command.method}(${command.args.join(', ')})`;
+                    break;
+                case 'LIBRARY_METHOD_INTERNAL':
+                    // Handle internal method with calculated result
+                    const internalDisplayName = command.variableName || command.library;
+                    content += `${internalDisplayName}.${command.method}(${command.args.join(', ')}) → ${command.result}`;
+                    break;
+                case 'LIBRARY_METHOD_REQUEST':
+                    content += `⏳ Requesting ${command.library}.${command.method}()...`;
+                    break;
+                case 'LIBRARY_OBJECT_INSTANTIATION':
+                    const objectDisplayName = command.variableName || command.library;
+                    const args = command.constructorArgs && command.constructorArgs.length > 0 ? 
+                        `(${command.constructorArgs.join(', ')})` : '()';
+                    content += `🔧 Creating ${command.library} ${objectDisplayName}${args}`;
+                    break;
+                case 'ANALOG_READ_REQUEST':
+                    content += `analogRead(${command.pin})`;
+                    break;
+                case 'DIGITAL_READ_REQUEST':
+                    content += `digitalRead(${command.pin})`;
+                    break;
+                case 'MILLIS_REQUEST':
+                    content += `millis()`;
+                    break;
+                case 'MICROS_REQUEST':
+                    content += `micros()`;
+                    break;
+                case 'AVR_FUNCTION_CALL':
+                    content += `${command.function}(${command.args.join(', ')})`;
+                    break;
+                default:
+                    // Handle VERSION_INFO with new clean format
+                    if (command.type === 'VERSION_INFO') {
+                        if (command.component === 'interpreter') {
+                            content += `🤖 Arduino Interpreter v${command.version} ${command.status}`;
+                        } else if (command.component === 'parser') {
+                            content += `📝 Using Parser v${command.version}`;
+                        } else {
+                            content += `${command.component} v${command.version} ${command.status}`;
+                        }
+                    } else if (command.type === 'SWITCH_CASE') {
+                        content += `case ${command.caseValue}: ${command.matched ? '✓ matched' : '✗ skipped'}`;
+                    } else if (command.type === 'BREAK_STATEMENT' && command.action) {
+                        content += `break; ✓ ${command.action.replace('_', ' ')}`;
+                    } else if (command.type === 'IF_STATEMENT' && command.branch) {
+                        content += `if (${command.condition}) ${command.result ? '✓' : '✗'} → ${command.branch} branch`;
+                    } else {
+                        // Improved fallback handling - avoid JSON pollution
+                        if (command.message) {
+                            content += command.message;
+                        } else if (command.type) {
+                            content += `${command.type}`;
+                        } else {
+                            // Last resort - but filter out truly unhelpful content
+                            const jsonStr = JSON.stringify(command);
+                            if (jsonStr && jsonStr !== '{}' && jsonStr !== 'null' && jsonStr !== 'undefined') {
+                                content += jsonStr;
+                            } else {
+                                return; // Skip completely unhelpful commands
+                            }
+                        }
+                    }
+            }
+            
+            commandEl.innerHTML = content;
+            // Add new commands at the top so latest is always visible
+            commandOutput.insertBefore(commandEl, commandOutput.firstChild);
+            
+            // Update command counter
+            const commandCount = commandOutput.children.length;
+            document.getElementById('commandLineCounter').textContent = `${commandCount} commands`;
+        }
+        
+        function clearCommands() {
+            document.getElementById('commandOutput').innerHTML = '';
+            document.getElementById('commandLineCounter').textContent = '0 commands';
+        }
+        
+        function clearCode() {
+            document.getElementById('codeEditor').value = '';
+            updateLineCounters();
+        }
+        
+        
+        
+        // No scroll management needed - browser handles it naturally
+        
+        // Event listeners
+        document.getElementById('codeEditor').addEventListener('input', updateLineCounters);
+        
+        // Initialize
+        updateLineCounters();
+        updateStatus('IDLE', 0, 0, 0);
+        updateButtons('IDLE');
+        
+        // Load test files and initialize dropdowns
+        loadTestFiles();
+        
+        // Note: Removed auto-execution - user must click Start button
+    </script>
+</body>
+</html>
