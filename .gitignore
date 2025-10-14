@@ -8,6 +8,3 @@ test_data/*_js.arduino
 # Legacy build directory outputs (in case old paths used)
 build/test*.json
 build/test*.arduino
-
-# WASM build directory (separate from Linux build/)
-build_wasm/
