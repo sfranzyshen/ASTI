@@ -43,8 +43,8 @@ class WasmASTInterpreter {
         try {
             // Load WASM module (built by scripts/build_wasm.sh)
             const moduleUrl = typeof window !== 'undefined'
-                ? '../build/wasm/arduino_interpreter.js'  // Browser
-                : './build/wasm/arduino_interpreter.js';  // Node.js
+                ? '../build_wasm/arduino_interpreter.js'  // Browser
+                : './build_wasm/arduino_interpreter.js';  // Node.js
 
             if (typeof createWasmModule === 'undefined') {
                 // Dynamic import for Node.js or module script

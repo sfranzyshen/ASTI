@@ -13,8 +13,8 @@ echo "📊 WASM Size Validation"
 echo "======================="
 echo ""
 
-WASM_FILE="build/wasm/arduino_interpreter.wasm"
-GZIP_FILE="build/wasm/arduino_interpreter.wasm.gz"
+WASM_FILE="build_wasm/arduino_interpreter.wasm"
+GZIP_FILE="build_wasm/arduino_interpreter.wasm.gz"
 
 # Check if WASM file exists
 if [ ! -f "$WASM_FILE" ]; then

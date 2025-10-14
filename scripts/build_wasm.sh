@@ -75,7 +75,7 @@ echo ""
 # BUILD DIRECTORY SETUP
 # =============================================================================
 
-BUILD_DIR="build/wasm"
+BUILD_DIR="build_wasm"
 mkdir -p "$BUILD_DIR"
 
 echo "📁 Build directory: $BUILD_DIR"

@@ -81,7 +81,7 @@ open playgrounds/wasm_interpreter_playground.html
 ### Build Output
 
 ```
-build/wasm/
+build_wasm/
 ├── arduino_interpreter.js    # WASM loader (Emscripten-generated)
 └── arduino_interpreter.wasm  # WebAssembly binary
 ```
@@ -100,7 +100,7 @@ build/wasm/
 </head>
 <body>
     <!-- Load WASM module -->
-    <script src="build/wasm/arduino_interpreter.js"></script>
+    <script src="build_wasm/arduino_interpreter.js"></script>
 
     <!-- Load dependencies -->
     <script src="libs/ArduinoParser/src/ArduinoParser.js"></script>

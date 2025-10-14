@@ -6,6 +6,53 @@ For the current version and active development notes, see [CLAUDE.md](../CLAUDE.
 
 ---
 
+# 🏗️ BUILD SYSTEM - SEPARATE WASM BUILD DIRECTORY 🏗️
+
+## **OCTOBER 13, 2025 - BUILD ISOLATION IMPROVEMENT**
+
+### **WASM BUILD DIRECTORY SEPARATION**
+
+**INFRASTRUCTURE IMPROVEMENT**: Separated WASM build artifacts into independent `build_wasm/` directory, preventing accidental deletion when switching between Linux and WASM platforms.
+
+**Key Achievements:**
+- ✅ **Complete Build Isolation**: Linux and WASM builds now use separate directories
+- ✅ **No Accidental Deletion**: `rm -rf build/*` no longer affects WASM artifacts
+- ✅ **Both Builds Coexist**: Can maintain both Linux and WASM builds simultaneously
+- ✅ **Cleaner Project Structure**: Clear platform-specific separation
+- ✅ **Zero Functional Changes**: Pure path updates, all functionality preserved
+
+**Technical Changes:**
+
+**Core Build Scripts:**
+- `scripts/build_wasm.sh` line 78: `BUILD_DIR="build/wasm"` → `BUILD_DIR="build_wasm"`
+- `scripts/validate_wasm_size.sh` lines 16-17: Updated all file paths to `build_wasm/`
+- `.gitignore`: Added `build_wasm/` entry for WASM build artifacts
+
+**Runtime Integration:**
+- `src/javascript/WasmASTInterpreter.js` lines 46-47: Updated module URLs (browser + Node.js)
+- `playgrounds/wasm_interpreter_playground.html` line 324: Updated script src path
+
+**Documentation:**
+- `docs/WASM_DEPLOYMENT_GUIDE.md`: Updated build output directory and HTML examples
+
+**Problem Solved:**
+```bash
+# BEFORE (Problem):
+cd build && rm -rf * && cmake .. && make  # ← Deleted WASM artifacts in build/wasm/
+
+# AFTER (Solution):
+cd build && rm -rf * && cmake .. && make  # Only affects build/, WASM in build_wasm/
+```
+
+**Verification Results:**
+- ✅ WASM build successful: `build_wasm/arduino_interpreter.{js,wasm}` created (487KB + 16KB)
+- ✅ Build isolation verified: Linux rebuild didn't affect WASM artifacts
+- ✅ Both builds coexist: Linux in `build/`, WASM in `build_wasm/`
+
+**Impact**: Clean build system with complete platform isolation - Linux and WASM builds can now coexist without conflicts. Switching platforms no longer requires rebuilding both toolchains.
+
+---
+
 # 🎉 VERSION 21.1.1 - PERFECT CROSS-PLATFORM PARITY 🎉
 
 ## **OCTOBER 13, 2025 - COMPLETE RTTI FLEXIBILITY**
