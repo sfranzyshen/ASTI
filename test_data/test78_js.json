@@ -1,33 +1,33 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1760472758523,
+    "timestamp": 1760472876824,
     "component": "interpreter",
     "version": "21.2.1",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1760472758524,
+    "timestamp": 1760472876824,
     "message": "Program execution started"
   },
   {
     "type": "VAR_SET",
     "variable": "ISPError",
     "value": 0,
-    "timestamp": 1760472758524
+    "timestamp": 1760472876825
   },
   {
     "type": "VAR_SET",
     "variable": "pmode",
     "value": 0,
-    "timestamp": 1760472758524
+    "timestamp": 1760472876825
   },
   {
     "type": "VAR_SET",
     "variable": "here",
     "value": null,
-    "timestamp": 1760472758524
+    "timestamp": 1760472876825
   },
   {
     "type": "VAR_SET",
@@ -290,7 +290,7 @@
       0,
       0
     ],
-    "timestamp": 1760472758524
+    "timestamp": 1760472876825
   },
   {
     "type": "VAR_SET",
@@ -299,31 +299,31 @@
       "structName": "parameter",
       "fields": {},
       "type": "struct",
-      "structId": "struct_1760472758525_icq1k"
+      "structId": "struct_1760472876826_ogay4"
     },
-    "timestamp": 1760472758525
+    "timestamp": 1760472876826
   },
   {
     "type": "VAR_SET",
     "variable": "hbval",
     "value": 128,
-    "timestamp": 1760472758525
+    "timestamp": 1760472876826
   },
   {
     "type": "VAR_SET",
     "variable": "hbdelta",
     "value": 8,
-    "timestamp": 1760472758525
+    "timestamp": 1760472876826
   },
   {
     "type": "VAR_SET",
     "variable": "current_page",
     "value": 0,
-    "timestamp": 1760472758525
+    "timestamp": 1760472876826
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1760472758526,
+    "timestamp": 1760472876827,
     "message": "Executing setup() function"
   },
   {
@@ -333,14 +333,14 @@
       19200
     ],
     "baudRate": 19200,
-    "timestamp": 1760472758526,
+    "timestamp": 1760472876827,
     "message": "Serial.begin(19200)"
   },
   {
     "type": "PIN_MODE",
     "pin": 5,
     "mode": 1,
-    "timestamp": 1760472758526
+    "timestamp": 1760472876827
   },
   {
     "type": "FUNCTION_CALL",
@@ -349,64 +349,64 @@
       5,
       2
     ],
-    "timestamp": 1760472758526,
+    "timestamp": 1760472876827,
     "message": "pulse(5, 2)"
   },
   {
     "type": "DO_WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1760472758526,
+    "timestamp": 1760472876827,
     "message": "do-while loop started"
   },
   {
     "type": "DO_WHILE_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1760472758526,
+    "timestamp": 1760472876827,
     "message": "do-while loop iteration 0"
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 5,
     "value": 1,
-    "timestamp": 1760472758526
+    "timestamp": 1760472876827
   },
   {
     "type": "DELAY",
     "duration": 30,
     "actualDelay": 30,
-    "timestamp": 1760472758526
+    "timestamp": 1760472876827
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 5,
     "value": 0,
-    "timestamp": 1760472758526
+    "timestamp": 1760472876827
   },
   {
     "type": "DELAY",
     "duration": 30,
     "actualDelay": 30,
-    "timestamp": 1760472758526
+    "timestamp": 1760472876827
   },
   {
     "type": "VAR_SET",
     "variable": "times",
     "value": 1,
-    "timestamp": 1760472758532
+    "timestamp": 1760472876832
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1760472758532,
+    "timestamp": 1760472876832,
     "message": "Do-while loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "PIN_MODE",
     "pin": 6,
     "mode": 1,
-    "timestamp": 1760472758537
+    "timestamp": 1760472876838
   },
   {
     "type": "FUNCTION_CALL",
@@ -415,64 +415,64 @@
       6,
       2
     ],
-    "timestamp": 1760472758537,
+    "timestamp": 1760472876838,
     "message": "pulse(6, 2)"
   },
   {
     "type": "DO_WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1760472758537,
+    "timestamp": 1760472876838,
     "message": "do-while loop started"
   },
   {
     "type": "DO_WHILE_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1760472758537,
+    "timestamp": 1760472876838,
     "message": "do-while loop iteration 0"
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 6,
     "value": 1,
-    "timestamp": 1760472758537
+    "timestamp": 1760472876838
   },
   {
     "type": "DELAY",
     "duration": 30,
     "actualDelay": 30,
-    "timestamp": 1760472758537
+    "timestamp": 1760472876838
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 6,
     "value": 0,
-    "timestamp": 1760472758537
+    "timestamp": 1760472876838
   },
   {
     "type": "DELAY",
     "duration": 30,
     "actualDelay": 30,
-    "timestamp": 1760472758537
+    "timestamp": 1760472876838
   },
   {
     "type": "VAR_SET",
     "variable": "times",
     "value": 1,
-    "timestamp": 1760472758543
+    "timestamp": 1760472876844
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1760472758543,
+    "timestamp": 1760472876844,
     "message": "Do-while loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "PIN_MODE",
     "pin": 7,
     "mode": 1,
-    "timestamp": 1760472758548
+    "timestamp": 1760472876849
   },
   {
     "type": "FUNCTION_CALL",
@@ -481,72 +481,72 @@
       7,
       2
     ],
-    "timestamp": 1760472758548,
+    "timestamp": 1760472876849,
     "message": "pulse(7, 2)"
   },
   {
     "type": "DO_WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1760472758548,
+    "timestamp": 1760472876850,
     "message": "do-while loop started"
   },
   {
     "type": "DO_WHILE_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1760472758548,
+    "timestamp": 1760472876850,
     "message": "do-while loop iteration 0"
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 7,
     "value": 1,
-    "timestamp": 1760472758548
+    "timestamp": 1760472876850
   },
   {
     "type": "DELAY",
     "duration": 30,
     "actualDelay": 30,
-    "timestamp": 1760472758548
+    "timestamp": 1760472876850
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 7,
     "value": 0,
-    "timestamp": 1760472758548
+    "timestamp": 1760472876850
   },
   {
     "type": "DELAY",
     "duration": 30,
     "actualDelay": 30,
-    "timestamp": 1760472758548
+    "timestamp": 1760472876850
   },
   {
     "type": "VAR_SET",
     "variable": "times",
     "value": 1,
-    "timestamp": 1760472758553
+    "timestamp": 1760472876854
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1760472758553,
+    "timestamp": 1760472876854,
     "message": "Do-while loop limit reached: completed 1 iterations (max: 1)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1760472758558,
+    "timestamp": 1760472876860,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1760472758558,
+    "timestamp": 1760472876860,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1760472758558,
+    "timestamp": 1760472876860,
     "message": "Starting loop iteration 1"
   },
   {
@@ -554,96 +554,96 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1760472758558
+    "timestamp": 1760472876860
   },
   {
     "type": "IF_STATEMENT",
     "condition": 0,
     "result": 0,
     "branch": "else",
-    "timestamp": 1760472758558
+    "timestamp": 1760472876860
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 5,
     "value": 0,
-    "timestamp": 1760472758558
+    "timestamp": 1760472876860
   },
   {
     "type": "IF_STATEMENT",
     "condition": 0,
     "result": 0,
     "branch": "else",
-    "timestamp": 1760472758558
+    "timestamp": 1760472876860
   },
   {
     "type": "DIGITAL_WRITE",
     "pin": 6,
     "value": 0,
-    "timestamp": 1760472758558
+    "timestamp": 1760472876860
   },
   {
     "type": "FUNCTION_CALL",
     "function": "heartbeat",
     "arguments": [],
-    "timestamp": 1760472758558,
+    "timestamp": 1760472876860,
     "message": "heartbeat()"
   },
   {
     "type": "MILLIS_REQUEST",
     "requestId": "millis_000001",
-    "timestamp": 1760472758564
+    "timestamp": 1760472876866
   },
   {
     "type": "VAR_SET",
     "variable": "now",
     "value": 17807,
-    "timestamp": 1760472758570
+    "timestamp": 1760472876870
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1760472758574
+    "timestamp": 1760472876876
   },
   {
     "type": "VAR_SET",
     "variable": "last_time",
     "value": 17807,
-    "timestamp": 1760472758580
+    "timestamp": 1760472876881
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1760472758585
+    "timestamp": 1760472876886
   },
   {
     "type": "IF_STATEMENT",
     "condition": false,
     "result": false,
     "branch": "else",
-    "timestamp": 1760472758591
+    "timestamp": 1760472876892
   },
   {
     "type": "VAR_SET",
     "variable": "hbval",
     "value": 136,
-    "timestamp": 1760472758595
+    "timestamp": 1760472876896
   },
   {
     "type": "ANALOG_WRITE",
     "pin": 7,
     "value": 136,
-    "timestamp": 1760472758600
+    "timestamp": 1760472876902
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.available",
     "arguments": [],
-    "timestamp": 1760472758606,
+    "timestamp": 1760472876906,
     "message": "Serial.available()"
   },
   {
@@ -651,7 +651,7 @@
     "condition": 0,
     "result": 0,
     "branch": "else",
-    "timestamp": 1760472758606
+    "timestamp": 1760472876906
   },
   {
     "type": "FUNCTION_CALL",
@@ -659,23 +659,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1760472758606
+    "timestamp": 1760472876906
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1760472758610,
+    "timestamp": 1760472876911,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1760472758610,
+    "timestamp": 1760472876911,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1760472758610,
+    "timestamp": 1760472876911,
     "message": "Program execution stopped"
   }
 ]
