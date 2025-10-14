@@ -1,1 +1,1 @@
-/usr/bin/c++ -O3 -DNDEBUG -ffunction-sections -fdata-sections -Wl,--gc-sections -s CMakeFiles/universal_json_to_arduino.dir/tests/universal_json_to_arduino.cpp.o -o universal_json_to_arduino  libarduino_ast_interpreter.a -ldl 
+/usr/bin/c++ -g -O0 -Wall -Wextra -Wpedantic CMakeFiles/universal_json_to_arduino.dir/tests/universal_json_to_arduino.cpp.o -o universal_json_to_arduino  libarduino_ast_interpreter.a -ldl 

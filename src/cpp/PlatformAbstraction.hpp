@@ -7,7 +7,7 @@
  * - ESP32-S3/Arduino (embedded hardware deployment)
  *
  * Version: 1.0.0
- * Compatible with: ASTInterpreter v21.1.1
+ * Compatible with: ASTInterpreter v21.2.1
  */
 
 #pragma once
@@ -173,19 +173,28 @@
 #ifdef PLATFORM_ESP32
     #define OUTPUT_STREAM Serial
 #elif defined(PLATFORM_WASM)
-    // WASM: Output to JavaScript callback or memory buffer
-    // External callback function provided by WASM integration layer
-    extern void jsOutputCallback(const char*);
+    // WASM: Global command stream for output capture
+    // This pointer is set by wasm_bridge.cpp before interpreter execution
+    // and cleared after execution completes
+    #include <sstream>
+    extern std::stringstream* g_wasmCommandStream;
 
     class WASMOutputStream {
     public:
         template<typename T>
         WASMOutputStream& operator<<(const T& value) {
-            // For now, stub - will be implemented in WASM integration
+            // Write to global stream if available
+            if (g_wasmCommandStream) {
+                (*g_wasmCommandStream) << value;
+            }
             return *this;
         }
-        WASMOutputStream& operator<<(std::ostream& (*)(std::ostream&)) {
-            return *this; // Handle std::endl
+        WASMOutputStream& operator<<(std::ostream& (*manip)(std::ostream&)) {
+            // Handle manipulators like std::endl
+            if (g_wasmCommandStream) {
+                (*g_wasmCommandStream) << manip;
+            }
+            return *this;
         }
     };
     #define OUTPUT_STREAM (WASMOutputStream())

@@ -4,7 +4,7 @@
  * Provides C-style interface functions for Emscripten to export to JavaScript.
  * Enables the C++ ASTInterpreter to run in web browsers via WebAssembly.
  *
- * Version: 21.1.1
+ * Version: 21.2.1
  * Platform: WebAssembly/Emscripten
  */
 
@@ -20,6 +20,19 @@
 
 using namespace arduino_interpreter;
 using namespace arduino_ast;
+
+// =============================================================================
+// GLOBAL COMMAND STREAM POINTER (For WASM Output Capture)
+// =============================================================================
+
+/**
+ * Global stream pointer for WASM command output capture
+ *
+ * This pointer is set before interpreter execution and cleared after.
+ * WASMOutputStream (in PlatformAbstraction.hpp) writes to this stream.
+ * After execution, getCommandStream() reads the accumulated output.
+ */
+std::stringstream* g_wasmCommandStream = nullptr;
 
 // =============================================================================
 // WASM DATA PROVIDER (For Testing)
@@ -117,7 +130,7 @@ void* createInterpreter(const uint8_t* astData, size_t astSize, bool verbose) {
         opts.verbose = verbose;
         opts.debug = verbose;
         opts.syncMode = true;  // WASM uses synchronous mode
-        opts.maxLoopIterations = 1000;  // Prevent infinite loops in browser
+        opts.maxLoopIterations = 3;  // Match JavaScript playground (prevent excessive output)
 
         // Create interpreter from CompactAST binary
         ASTInterpreter* interpreter = new ASTInterpreter(astData, astSize, opts);
@@ -150,14 +163,21 @@ bool startInterpreter(void* interpreterPtr) {
     try {
         InterpreterContext* ctx = static_cast<InterpreterContext*>(interpreterPtr);
 
-        // TODO: WASM doesn't have std::cout, so command output capture needs different architecture
-        // Current OUTPUT_STREAM macro for WASM is a stub WASMOutputStream
-        // Future: Implement jsOutputCallback or memory buffer approach
+        // Set global stream pointer for WASM command output capture
+        // WASMOutputStream will write to this stream during execution
+        g_wasmCommandStream = &ctx->commandStream;
+
+        // Execute interpreter (commands written to global stream via OUTPUT_STREAM)
         bool result = ctx->interpreter->start();
+
+        // Clear global pointer after execution (safety)
+        g_wasmCommandStream = nullptr;
 
         return result;
 
     } catch (const std::exception& e) {
+        // Ensure global pointer is cleared even on exception
+        g_wasmCommandStream = nullptr;
         return false;
     }
 }
@@ -250,7 +270,7 @@ void destroyInterpreter(void* interpreterPtr) {
  */
 EMSCRIPTEN_KEEPALIVE
 const char* getInterpreterVersion() {
-    return "21.1.1";
+    return "21.2.1";
 }
 
 } // extern "C"

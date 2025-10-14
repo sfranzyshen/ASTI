@@ -321,6 +321,7 @@ void loop() {
     </div>
 
     <!-- Load dependencies -->
+    <script src="../libs/CompactAST/src/CompactAST.js"></script>
     <script src="../build_wasm/arduino_interpreter.js"></script>
     <script src="../libs/ArduinoParser/src/ArduinoParser.js"></script>
     <script src="../src/javascript/ASTInterpreter.js"></script>
@@ -390,14 +391,30 @@ void loop() {
                 const ast = parse(code);
 
                 // Export to CompactAST binary
-                const astBinary = exportCompactAST(ast);
+                const astBuffer = exportCompactAST(ast);
+                const astBinary = new Uint8Array(astBuffer);
 
                 // Execute with WASM
                 const astSize = astBinary.length;
                 const astPtr = wasmInterpreter._malloc(astSize);
-                wasmInterpreter.HEAPU8.set(astBinary, astPtr);
 
-                const interpreterPtr = wasmInterpreter._createInterpreter(astPtr, astSize, true);
+                console.log(`📊 Allocated ${astSize} bytes at address ${astPtr}`);
+
+                // Copy binary to WASM memory - use bulk copy if available
+                if (typeof wasmInterpreter.writeArrayToMemory === 'function') {
+                    console.log('⚡ Using writeArrayToMemory (bulk copy)');
+                    wasmInterpreter.writeArrayToMemory(astBinary, astPtr);
+                } else {
+                    console.log('⏳ Using setValue loop (slower)');
+                    for (let i = 0; i < astBinary.length; i++) {
+                        wasmInterpreter.setValue(astPtr + i, astBinary[i], 'i8');
+                    }
+                }
+
+                console.log('🔨 Creating interpreter...');
+                // IMPORTANT: Use false for verbose to avoid ExecutionTracer memory explosion in browser
+                const interpreterPtr = wasmInterpreter._createInterpreter(astPtr, astSize, false);
+                console.log(`✅ Interpreter created at address ${interpreterPtr}`);
                 wasmInterpreter._free(astPtr);
 
                 const success = wasmInterpreter._startInterpreter(interpreterPtr);
@@ -410,7 +427,12 @@ void loop() {
                 const endTime = performance.now();
                 const execTime = (endTime - startTime).toFixed(2);
 
-                const commands = JSON.parse(jsonStr);
+                // Parse NDJSON (newline-delimited JSON)
+                // C++ interpreter outputs one JSON object per line
+                const lines = jsonStr.trim().split('\n');
+                const commands = lines.filter(line => line.trim()).map(line => JSON.parse(line));
+
+                console.log(`✅ Parsed ${commands.length} commands from ${jsonStr.length} bytes`);
 
                 // Display results
                 output.innerHTML = '';
@@ -425,6 +447,13 @@ void loop() {
 
             } catch (error) {
                 output.innerHTML = `<div style="color:#ff4444">❌ Error: ${error.message}</div>`;
+                console.error('❌ WASM execution error:', error);
+                console.error('Stack trace:', error.stack);
+
+                // Log any assertion details that might be in the error
+                if (error.message && error.message.includes('Assertion')) {
+                    console.error('⚠️ ASSERTION FAILURE DETECTED - Check console for details');
+                }
             }
         }
 
@@ -436,21 +465,86 @@ void loop() {
             try {
                 const startTime = performance.now();
 
+                // Parse to AST
                 const ast = parse(code);
-                const interpreter = new ASTInterpreter(ast, { verbose: false, maxLoopIterations: 3 });
+
+                // Create interpreter
+                const interpreter = new ASTInterpreter(ast, {
+                    verbose: false,
+                    maxLoopIterations: 3
+                });
+
+                // Set up command collection and completion tracking
+                const commands = [];
+                let done = false;
+
+                // Command handler - collects commands as they're emitted
+                interpreter.onCommand = (cmd) => {
+                    commands.push(cmd);
+
+                    // Handle hardware operation requests with mock responses
+                    if (cmd.type === 'ANALOG_READ_REQUEST') {
+                        setTimeout(() => {
+                            const mockValue = 512 + (cmd.pin || 0) * 10; // Deterministic mock
+                            interpreter.handleResponse(cmd.requestId, mockValue);
+                        }, 5);
+                    } else if (cmd.type === 'DIGITAL_READ_REQUEST') {
+                        setTimeout(() => {
+                            const mockValue = (cmd.pin || 0) % 2; // Deterministic mock
+                            interpreter.handleResponse(cmd.requestId, mockValue);
+                        }, 5);
+                    } else if (cmd.type === 'MILLIS_REQUEST') {
+                        setTimeout(() => {
+                            const mockValue = Date.now() % 1000000;
+                            interpreter.handleResponse(cmd.requestId, mockValue);
+                        }, 5);
+                    } else if (cmd.type === 'MICROS_REQUEST') {
+                        setTimeout(() => {
+                            const mockValue = (Date.now() * 1000) % 1000000;
+                            interpreter.handleResponse(cmd.requestId, mockValue);
+                        }, 5);
+                    }
+
+                    // Detect completion
+                    if (cmd.type === 'PROGRAM_END' || cmd.type === 'ERROR' ||
+                        cmd.type === 'LOOP_LIMIT_REACHED' || cmd.type === 'LOOP_END') {
+                        setTimeout(() => { done = true; }, 100);
+                    }
+                };
+
+                // Error handler
+                interpreter.onError = (error) => {
+                    console.error('Interpreter error:', error);
+                    done = true;
+                };
+
+                // Start interpreter (synchronous call, but execution continues asynchronously)
                 interpreter.start();
+
+                // Poll for completion (max 10 seconds)
+                await new Promise((resolve, reject) => {
+                    const startPoll = Date.now();
+                    const check = () => {
+                        if (done) {
+                            resolve();
+                        } else if (Date.now() - startPoll > 10000) {
+                            reject(new Error('Execution timeout (10s)'));
+                        } else {
+                            setTimeout(check, 10); // Poll every 10ms
+                        }
+                    };
+                    check();
+                });
 
                 const endTime = performance.now();
                 const execTime = (endTime - startTime).toFixed(2);
 
-                const commands = interpreter.getCommandHistory();
-
+                // Display results
                 output.innerHTML = '';
-                commands.forEach(cmdStr => {
-                    const cmd = JSON.parse(cmdStr);
+                commands.forEach(cmd => {
                     const div = document.createElement('div');
                     div.className = `command ${cmd.type}`;
-                    div.textContent = cmdStr;
+                    div.textContent = JSON.stringify(cmd);
                     output.appendChild(div);
                 });
 
@@ -460,17 +554,40 @@ void loop() {
         }
 
         async function runComparison() {
+            if (!wasmReady) {
+                alert('WASM not ready. Please wait for initialization.');
+                return;
+            }
+
             const perfOutput = document.getElementById('perfOutput');
             perfOutput.innerHTML = '<div style="color:#ffaa00">⏳ Running benchmarks...</div>';
 
             try {
                 const code = document.getElementById('codeEditor').value;
                 const ast = parse(code);
-                const astBinary = exportCompactAST(ast);
+                const astBuffer = exportCompactAST(ast);
+                const astBinary = new Uint8Array(astBuffer);
 
                 // WASM benchmark
                 const wasmStart = performance.now();
-                // ... WASM execution ...
+                const astSize = astBinary.length;
+                const astPtr = wasmInterpreter._malloc(astSize);
+
+                // Copy binary to WASM memory - use bulk copy if available
+                if (typeof wasmInterpreter.writeArrayToMemory === 'function') {
+                    wasmInterpreter.writeArrayToMemory(astBinary, astPtr);
+                } else {
+                    for (let i = 0; i < astBinary.length; i++) {
+                        wasmInterpreter.setValue(astPtr + i, astBinary[i], 'i8');
+                    }
+                }
+
+                const interpreterPtr = wasmInterpreter._createInterpreter(astPtr, astSize, false);
+                wasmInterpreter._free(astPtr);
+                wasmInterpreter._startInterpreter(interpreterPtr);
+                const jsonPtr = wasmInterpreter._getCommandStream(interpreterPtr);
+                wasmInterpreter._freeString(jsonPtr);
+                wasmInterpreter._destroyInterpreter(interpreterPtr);
                 const wasmTime = performance.now() - wasmStart;
 
                 // JS benchmark
@@ -480,17 +597,18 @@ void loop() {
                 const jsTime = performance.now() - jsStart;
 
                 const speedup = (jsTime / wasmTime).toFixed(2);
+                const winner = wasmTime < jsTime ? 'WASM' : 'JavaScript';
 
                 perfOutput.innerHTML = `
                     <table class="performance-table">
                         <tr><th>Metric</th><th>WASM</th><th>JavaScript</th></tr>
                         <tr><td>Execution Time</td><td class="${wasmTime < jsTime ? 'winner' : ''}">${wasmTime.toFixed(2)}ms</td><td class="${jsTime < wasmTime ? 'winner' : ''}">${jsTime.toFixed(2)}ms</td></tr>
-                        <tr><td>Commands</td><td>${astBinary.length} bytes</td><td>-</td></tr>
-                        <tr><td>Speedup</td><td colspan="2" class="winner">${speedup}x faster</td></tr>
+                        <tr><td>AST Size</td><td>${astBinary.length} bytes</td><td>-</td></tr>
+                        <tr><td>Winner</td><td colspan="2" class="winner">${winner} (${speedup}x)</td></tr>
                     </table>
                 `;
 
-                document.getElementById('performance').textContent = `${speedup}x faster`;
+                document.getElementById('performance').textContent = `${speedup}x ${winner}`;
 
             } catch (error) {
                 perfOutput.innerHTML = `<div style="color:#ff4444">❌ Error: ${error.message}</div>`;

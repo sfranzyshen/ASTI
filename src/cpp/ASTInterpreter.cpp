@@ -4,7 +4,7 @@
  * Core interpreter implementation that executes AST nodes and generates
  * command streams matching JavaScript ASTInterpreter.js exactly.
  *
- * Version: 21.1.1
+ * Version: 21.2.1
  */
 
 #include "ASTInterpreter.hpp"
@@ -262,7 +262,7 @@ bool ASTInterpreter::start() {
     totalExecutionStart_ = std::chrono::steady_clock::now();
     
     // Emit VERSION_INFO first, then PROGRAM_START (matches JavaScript order)
-    emitVersionInfo("interpreter", "21.1.1", "started");
+    emitVersionInfo("interpreter", "21.2.1", "started");
     emitProgramStart();
     
     try {

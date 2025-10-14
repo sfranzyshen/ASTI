@@ -106,10 +106,10 @@ emcc \
     $BUILD_FLAGS \
     -s WASM=1 \
     -s EXPORTED_FUNCTIONS='["_createInterpreter","_startInterpreter","_getCommandStream","_freeString","_destroyInterpreter","_setAnalogValue","_setDigitalValue","_getInterpreterVersion","_malloc","_free"]' \
-    -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap","UTF8ToString","lengthBytesUTF8","stringToUTF8","getValue","setValue"]' \
+    -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap","UTF8ToString","lengthBytesUTF8","stringToUTF8","getValue","setValue","writeArrayToMemory"]' \
     -s ALLOW_MEMORY_GROWTH=1 \
     -s INITIAL_MEMORY=16MB \
-    -s MAXIMUM_MEMORY=64MB \
+    -s MAXIMUM_MEMORY=256MB \
     -s MODULARIZE=1 \
     -s EXPORT_NAME='createWasmModule' \
     -s ENVIRONMENT='web,worker,node' \

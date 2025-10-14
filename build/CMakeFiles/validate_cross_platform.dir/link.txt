@@ -1,1 +1,1 @@
-/usr/bin/c++ -O3 -DNDEBUG -ffunction-sections -fdata-sections -Wl,--gc-sections -s CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o -o validate_cross_platform  libarduino_ast_interpreter.a -ldl 
+/usr/bin/c++ -g -O0 -Wall -Wextra -Wpedantic CMakeFiles/validate_cross_platform.dir/tests/validate_cross_platform.cpp.o -o validate_cross_platform  libarduino_ast_interpreter.a -ldl 

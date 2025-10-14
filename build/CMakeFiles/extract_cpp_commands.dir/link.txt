@@ -1,1 +1,1 @@
-/usr/bin/c++ -O3 -DNDEBUG -ffunction-sections -fdata-sections -Wl,--gc-sections -s CMakeFiles/extract_cpp_commands.dir/tests/extract_cpp_commands.cpp.o -o extract_cpp_commands  libarduino_ast_interpreter.a -ldl 
+/usr/bin/c++ -g -O0 -Wall -Wextra -Wpedantic CMakeFiles/extract_cpp_commands.dir/tests/extract_cpp_commands.cpp.o -o extract_cpp_commands  libarduino_ast_interpreter.a -ldl 

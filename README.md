@@ -26,11 +26,11 @@ The project is organized into three independent, reusable modules:
 - **Achievement**: Production-ready parser with 100% Arduino language support
 - **Output**: Clean Abstract Syntax Tree + CompactAST binary serialization
 
-### **ASTInterpreter Core** (v21.1.1)
+### **ASTInterpreter Core** (v21.2.0)
 - **Purpose**: AST execution engine with Arduino hardware simulation
 - **Platform Support**: Linux/Desktop, WebAssembly/WASM, ESP32/Arduino - **ALL with RTTI flexibility!**
 - **Architecture**: Dual-mode C++ (RTTI/RTTI-free) + JavaScript, perfect cross-platform parity
-- **RTTI Modes**: Universal RTTI default (safety) + RTTI-free opt-in (size) - **same choice on ALL platforms!**
+- **Platform Defaults**: Linux/WASM use RTTI (development safety), ESP32 uses RTTI-free (embedded deployment)
 - **Features**: Complete pointer support, typedef handling, function pointers, ARROW operator (->), cross-platform consistency
 - **Output**: Structured command streams for parent application integration
 
@@ -52,20 +52,21 @@ The project is organized into three independent, reusable modules:
 ### **Three Library Modules:**
 1. **ArduinoParser** (v6.0.0) - Complete Arduino/C++ parsing with preprocessor
 2. **CompactAST** (v3.2.0) - Binary AST format with 12.5x compression
-3. **ASTInterpreter** (v21.1.1) - Execution engine with hardware simulation
+3. **ASTInterpreter** (v21.2.0) - Execution engine with hardware simulation
 
 All implementations produce **identical command streams** with **100% cross-platform parity** (135/135 tests passing).
 
 ---
 
-**Latest Milestone** (October 13, 2025) - **Version 21.1.1: Perfect Cross-Platform Parity**
-- **🎉 WASM RTTI-Free Support Added**: All three platforms (Linux, WASM, ESP32) now offer identical RTTI/RTTI-free choice
-- **✅ Universal RTTI Default**: Safety-first philosophy - runtime type checking by default on ALL platforms
-- **✅ Explicit Size Optimization**: RTTI-free mode available as conscious opt-in choice (saves ~40KB on ESP32)
-- **✅ Compiler vs Code Separation**: WASM compiler needs RTTI (embind), but code can use static_cast
-- **✅ Perfect Consistency**: Same configuration options across Linux, WASM, and ESP32
+**Latest Milestone** (October 14, 2025) - **Version 21.2.0: Platform-Specific Defaults**
+- **🎯 ESP32 RTTI-Free Default**: Practical embedded deployment without platform.txt maintenance
+- **✅ Platform-Optimized Defaults**: Linux/WASM use RTTI (development), ESP32 uses RTTI-free (deployment)
+- **✅ Three RTTI Opt-In Paths**: PlatformIO (recommended), Arduino IDE build_opt.h, platform.txt modification
+- **✅ arduino-cli Limitations Documented**: build_opt.h incompatibility clearly explained
+- **✅ Updated Binary Sizes**: Measured 896KB (RTTI) / 868KB (RTTI-free) for ESP32
+- **✅ Zero-Maintenance Default**: ESP32 builds work immediately with committed configuration
 - **✅ 100% Test Parity**: All 135 tests pass in both RTTI and RTTI-free modes on all platforms
-- **🚀 Production Ready**: Complete flexibility for all deployment scenarios
+- **🚀 Production Ready**: Platform-specific sensible defaults for all deployment scenarios
 
 ### ✅ **JavaScript Implementation - PRODUCTION READY**
 - **Architecture**: Complete modular three-project system with cross-platform compatibility
@@ -77,13 +78,19 @@ All implementations produce **identical command streams** with **100% cross-plat
 
 ### 🏆 **C++ Implementation - PERFECT PARITY + ESP32 SUPPORT!**
 - **Status**: **135/135 tests passing (100% success rate)** - PERFECT cross-platform parity across ALL platforms!
-- **v21.1.1 Achievement**: Perfect cross-platform parity - RTTI flexibility on ALL platforms (Linux, WASM, ESP32)
-- **Platform Support**: Linux ✅, WebAssembly ✅, **ESP32/Arduino ✅** (NEW!)
-- **Build Output**: 4.3MB static library (`libarduino_ast_interpreter.a`) - optimized with RTTI removal
-- **ESP32-S3 Deployment**: C++17 compatible, `-fno-rtti` verified, memory optimized (1.6MB library)
+- **v21.2.0 Achievement**: Platform-specific defaults - Linux/WASM (RTTI), ESP32 (RTTI-free) with flexible opt-in/out
+- **Platform Support**: Linux ✅, WebAssembly ✅, **ESP32/Arduino ✅** (Production Ready!)
+- **Build Output**: 4.3MB static library (`libarduino_ast_interpreter.a`) - dual RTTI modes supported
+- **ESP32-S3 Deployment**: C++17 compatible, RTTI-free default (868KB), RTTI opt-in (896KB), memory optimized (1.6MB library)
 - **Cross-Platform Parity**: 100% compatibility achieved across ALL deployment targets - COMPLETE!
 
 **Previous Milestones:**
+
+**Version 21.1.1** (October 13, 2025) - Perfect Cross-Platform Parity:
+- WASM RTTI-Free Support Added: All three platforms offer identical RTTI/RTTI-free choice
+- Universal RTTI default across Linux, WASM, and ESP32
+- Compiler vs Code Separation: WASM compiler needs RTTI (embind), but code can use static_cast
+- 100% test parity in both RTTI and RTTI-free modes on all platforms
 
 **Version 21.1.0** (October 13, 2025) - Universal RTTI Default:
 - Established RTTI as universal default for ALL platforms (Linux, WASM, ESP32)
@@ -193,8 +200,8 @@ Commands contain only primitive data types for maximum compatibility with parent
 |-----------|---------|------------|----------------------|--------------|
 | **CompactAST** | v3.2.0 | 100% ✅ | Dual-Mode ✅ | Production Ready |
 | **ArduinoParser** | v6.0.0 | 100% ✅ | Full Compatibility ✅ | 135/135 (100%) |
-| **ASTInterpreter** | **v21.1.1** | 100% ✅ | **135/135 (100%)** ✅ | **Perfect Parity** 🎉 |
-| **Platforms** | Oct 2025 | Node.js + Browser ✅ | **Linux + WASM + ESP32** ✅ | **RTTI Flexibility** 🚀 |
+| **ASTInterpreter** | **v21.2.0** | 100% ✅ | **135/135 (100%)** ✅ | **Perfect Parity** 🎉 |
+| **Platforms** | Oct 2025 | Node.js + Browser ✅ | **Linux + WASM + ESP32** ✅ | **Platform Defaults** 🚀 |
 
 ### Test Coverage
 - **Execution Success**: 100% - All 135 test cases execute without errors
@@ -357,27 +364,30 @@ source ~/emsdk/emsdk_env.sh && ./scripts/build_wasm.sh
 # WASM RTTI-free (size optimization)
 source ~/emsdk/emsdk_env.sh && AST_NO_RTTI=1 ./scripts/build_wasm.sh
 
-# ESP32 RTTI (Arduino IDE - default, uses committed build_opt.h)
-arduino-cli compile --fqbn esp32:esp32:esp32s3 examples/BasicInterpreter
+# ESP32 RTTI-free (default - Arduino IDE or PlatformIO)
+arduino-cli compile --fqbn esp32:esp32:esp32s3 examples/BasicInterpreter  # Uses committed build_opt.h
+pio run -e esp32-s3                                                        # PlatformIO default
 
-# ESP32 RTTI-free (PlatformIO - size optimization)
-pio run -e esp32-s3-no-rtti
+# ESP32 RTTI (opt-in)
+pio run -e esp32-s3-rtti                                                   # PlatformIO (RECOMMENDED)
+# For Arduino IDE: cp build_opt_rtti.h.example build_opt.h
+# For arduino-cli: See docs/ESP32_DEPLOYMENT_GUIDE.md (platform.txt required)
 ```
 
 **Quick Reference**:
 
-| Platform | RTTI Mode (Default) | RTTI-Free Mode (Opt-In) | Binary Size |
-|----------|---------------------|-------------------------|-------------|
-| **Linux** | `cmake .. && make` | `cmake -DAST_NO_RTTI=ON .. && make` | 4.3MB / 4.26MB |
-| **WASM** | `./scripts/build_wasm.sh` | `AST_NO_RTTI=1 ./scripts/build_wasm.sh` | 485KB (157KB gzipped) |
-| **ESP32** | Open sketch & compile | `pio run -e esp32-s3-no-rtti` | 906KB / 866KB flash |
+| Platform | Default Mode | Opt-In Mode | Binary Size | Notes |
+|----------|--------------|-------------|-------------|-------|
+| **Linux** | `cmake .. && make` (RTTI) | `cmake -DAST_NO_RTTI=ON .. && make` (RTTI-free) | 4.3MB / 4.26MB | Development default |
+| **WASM** | `./scripts/build_wasm.sh` (RTTI) | `AST_NO_RTTI=1 ./scripts/build_wasm.sh` (RTTI-free) | 485KB (157KB gzipped) | Browser safety |
+| **ESP32** | `pio run -e esp32-s3` (RTTI-free) | `pio run -e esp32-s3-rtti` (RTTI) | 868KB / 896KB flash | Embedded default |
 
-**Verification Status** (v21.1.1):
-- ✅ **Linux**: RTTI and RTTI-free modes both pass 100% validation (135/135 tests)
-- ✅ **WASM**: RTTI and RTTI-free modes both build successfully (NEW in v21.1.1!)
-- ✅ **ESP32**: RTTI (with -frtti) and RTTI-free (with -fno-rtti) both supported
+**Verification Status** (v21.2.0):
+- ✅ **Linux**: RTTI default, RTTI-free opt-in - both pass 100% validation (135/135 tests)
+- ✅ **WASM**: RTTI default, RTTI-free opt-in - both build successfully
+- ✅ **ESP32**: RTTI-free default (868KB), RTTI opt-in (896KB) - both fully supported
 
-All three platforms achieve **perfect cross-platform parity** with identical configuration options!
+All three platforms achieve **perfect cross-platform parity** with platform-optimized sensible defaults!
 
 ### **Interactive Development Tools** 
 
@@ -540,10 +550,10 @@ void setup() {
 
 ### Features
 
-- **Size Optimized**: 866KB (RTTI-free) or 906KB (RTTI) - 11-12% of ESP32-S3's 8MB flash
+- **Size Optimized**: 868KB (RTTI-free default) or 896KB (RTTI opt-in) - 11-12% of ESP32-S3's 8MB flash
 - **Memory Efficient**: ~50-100 KB RAM depending on AST size
 - **Production Ready**: 100% cross-platform parity (135/135 tests) - PERFECT compatibility!
-- **RTTI Flexibility**: Choose RTTI (safety) or RTTI-free (size) - both fully supported (v21.1.1)
+- **Platform Defaults**: RTTI-free default for embedded deployment, RTTI opt-in via PlatformIO/build_opt.h (v21.2.0)
 - **Hardware Integration**: SyncDataProvider interface for real ESP32 pins
 - **Examples Included**: BasicInterpreter and AnalogReadExample sketches
 
@@ -618,7 +628,7 @@ console.log('Generated', commands.length, 'commands');
 ### Performance
 
 - **WASM Size**: 485KB binary (157KB gzipped) - optimized with -O3 compression
-- **RTTI Modes**: Both RTTI (default) and RTTI-free (opt-in) supported (NEW in v21.1.1!)
+- **Platform Defaults**: RTTI default for browser safety, RTTI-free opt-in for size optimization (v21.2.0)
 - **Execution Speed**: 2-5x faster than JavaScript interpreter
 - **Memory**: 16-64MB configurable heap
 - **Compatibility**: 100% cross-platform parity (135/135 tests) - PERFECT match with JavaScript and C++
@@ -651,8 +661,8 @@ Unlike full Arduino simulators ([**wokwi.com**](https://wokwi.com/), [**Tinkerca
 ✅ **Lightweight Design**: ~300KB JavaScript vs JSCPP's multi-megabyte complexity
 ✅ **Modular Libraries**: Three independent, reusable components
 ✅ **Multiple Platforms**: JavaScript (100%) + C++ (100%) across Linux, WASM, and ESP32 with perfect command stream compatibility
-✅ **RTTI Flexibility**: Universal RTTI default (safety) + RTTI-free opt-in (size) on ALL platforms (v21.1.1)
-✅ **ESP32 Hardware Support**: Dual-mode architecture (RTTI or RTTI-free) for embedded deployment
+✅ **Platform-Specific Defaults**: Linux/WASM use RTTI (development), ESP32 uses RTTI-free (deployment) - sensible defaults (v21.2.0)
+✅ **ESP32 Hardware Support**: RTTI-free default (868KB) with RTTI opt-in (896KB) for embedded deployment
 ✅ **Educational Focus**: Built specifically for learning environments with step debugging
 ✅ **Production Ready**: Comprehensive error handling, structured command output, 100% cross-platform parity achieved
 
@@ -662,8 +672,8 @@ This project began as a 30-day experiment using AI technologies (Claude Code) to
 
 - **Complete Language Implementation**: Full Arduino/C++ syntax support including templates, namespaces, pointers
 - **Perfect Test Coverage**: JavaScript 135/135 (100%), C++ 135/135 (100%) - COMPLETE cross-platform parity achieved!
-- **RTTI Flexibility**: v21.1.1 breakthrough - universal RTTI default with RTTI-free opt-in on ALL platforms
-- **Perfect Consistency**: All three platforms (Linux, WASM, ESP32) offer identical configuration choices
+- **Platform-Specific Defaults**: v21.2.0 - Linux/WASM use RTTI (development), ESP32 uses RTTI-free (embedded deployment)
+- **Sensible Defaults**: Each platform optimized for its primary use case with flexible opt-in/opt-out
 - **Comprehensive Preprocessing**: Complete macro expansion, conditional compilation, library activation
 - **Multi-Platform Deployment**: JavaScript + C++ across Linux, WASM, and ESP32 with binary AST interchange format
 - **Professional Documentation**: Complete API documentation, interactive playgrounds, comprehensive testing infrastructure

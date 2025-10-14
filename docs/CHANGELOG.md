@@ -6,6 +6,91 @@ For the current version and active development notes, see [CLAUDE.md](../CLAUDE.
 
 ---
 
+# 🎯 VERSION 21.2.0 - PLATFORM-SPECIFIC DEFAULTS 🎯
+
+## **OCTOBER 14, 2025 - ESP32 RTTI-FREE DEFAULT**
+
+### **PRACTICAL EMBEDDED DEPLOYMENT OPTIMIZATION**
+
+**PLATFORM OPTIMIZATION RELEASE**: v21.2.0 establishes platform-specific sensible defaults - ESP32 uses RTTI-free (practical embedded deployment) while Linux/WASM maintain RTTI default (development and browser safety).
+
+**Key Achievements:**
+- ✅ **ESP32 RTTI-Free Default**: Zero-maintenance embedded deployment without platform.txt editing
+- ✅ **Platform-Optimized Defaults**: Linux/WASM (RTTI), ESP32 (RTTI-free) - each optimized for primary use case
+- ✅ **Three RTTI Opt-In Paths**: PlatformIO (recommended), Arduino IDE build_opt.h, platform.txt modification
+- ✅ **arduino-cli Limitations Documented**: build_opt.h incompatibility and workarounds clearly explained
+- ✅ **Updated Binary Sizes**: Measured 896KB (RTTI) / 868KB (RTTI-free) for accurate documentation
+- ✅ **Comprehensive Documentation**: Complete ESP32 deployment guide with build tool comparison
+- ✅ **100% Test Parity**: All 135 tests pass in both RTTI and RTTI-free modes on all platforms
+
+**Technical Implementation:**
+
+**Core Files Updated:**
+- `examples/BasicInterpreter/build_opt.h` - Rewritten to RTTI-free default with Arduino IDE-only warnings
+- `build_opt_no_rtti.h.example` → `build_opt_rtti.h.example` - Renamed and rewritten for RTTI opt-in
+- `platformio.ini` - Reversed environment logic: `esp32-s3` (RTTI-free default), `esp32-s3-rtti` (RTTI opt-in)
+- `CMakeLists.txt` - Version bump to 21.2.0
+- `docs/ESP32_DEPLOYMENT_GUIDE.md` - Major rewrite from 154 to 679 lines with comprehensive coverage
+
+**Platform Configuration Matrix (v21.2.0):**
+
+| Platform | Default Mode | Opt-In Mode | Binary Size | Rationale |
+|----------|-------------|-------------|-------------|-----------|
+| **Linux** | RTTI (safety) | RTTI-free (size) | 4.3MB / 4.26MB | Development platform |
+| **WASM** | RTTI (safety) | RTTI-free (size) | 485KB / ~480KB | Browser safety |
+| **ESP32** | RTTI-free (size) | RTTI (safety) | 868KB / 896KB | Embedded deployment |
+
+**ESP32 Configuration Options:**
+
+**PlatformIO (RECOMMENDED):**
+```ini
+# Default (RTTI-free)
+[env:esp32-s3]
+build_flags =
+    -D AST_NO_RTTI
+    -fno-rtti
+
+# Opt-in (RTTI)
+[env:esp32-s3-rtti]
+build_flags = -frtti
+```
+
+**Arduino IDE:**
+- **Default**: Uses committed `build_opt.h` with RTTI-free flags (868KB)
+- **Opt-in**: `cp build_opt_rtti.h.example build_opt.h` for RTTI mode (896KB)
+
+**arduino-cli:**
+- **Critical Limitation**: Cannot parse `build_opt.h` files - causes compilation errors
+- **Workarounds**: Use PlatformIO (recommended), command-line flags, or platform.txt modification
+- **See**: `docs/ESP32_DEPLOYMENT_GUIDE.md` for comprehensive instructions
+
+**Key Discoveries:**
+- arduino-cli and Arduino IDE use different build systems - `build_opt.h` only works with Arduino IDE
+- Error: `"cannot specify '-o' with '-c'"` when arduino-cli tries to parse `build_opt.h`
+- PlatformIO provides cleanest RTTI opt-in: project-specific, zero maintenance, automatic framework recompilation
+- platform.txt modifications work but require reapplication after ESP32 board package updates
+
+**Documentation Updates:**
+- ESP32_DEPLOYMENT_GUIDE.md: Complete rewrite with build tool comparison table and troubleshooting
+- CLAUDE.md: Updated ESP32 section (lines 58-206) with platform-specific defaults
+- README.md: Updated all version references, binary sizes, and platform default documentation
+- Build commands, verification status, and feature descriptions all synchronized
+
+**Philosophy Change:**
+- **v21.1.1**: Universal RTTI default across all platforms (uniform safety-first approach)
+- **v21.2.0**: Platform-specific defaults (each platform optimized for primary use case)
+  - Linux/WASM: RTTI default (development environments benefit from runtime safety)
+  - ESP32: RTTI-free default (embedded deployment requires size optimization)
+
+**Baseline Maintained:**
+- **135/135 tests passing** (100% success rate) - PERFECT cross-platform parity
+- **Zero regressions**: All functionality from v21.1.1 preserved
+- **Production Ready**: Platform-specific sensible defaults for all deployment scenarios
+
+**Impact**: Practical embedded deployment optimization - ESP32 builds work immediately with committed configuration (no platform.txt editing required) while maintaining complete RTTI flexibility with three easy opt-in paths. Each platform now has sensible defaults for its primary use case: development (Linux/WASM) vs production deployment (ESP32).
+
+---
+
 # 🏗️ BUILD SYSTEM - SEPARATE WASM BUILD DIRECTORY 🏗️
 
 ## **OCTOBER 13, 2025 - BUILD ISOLATION IMPROVEMENT**

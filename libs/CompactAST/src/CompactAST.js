@@ -18,16 +18,19 @@
  * @author Arduino AST Interpreter Project
  */
 
+// Wrap in IIFE to avoid global scope conflicts with ArduinoParser.js
+(function() {
+
 /**
  * Export an AST as CompactAST binary format
  * @param {Object} ast - The AST root node
  * @param {Object} options - Export options
  * @returns {ArrayBuffer} - Binary AST data
  */
-function exportCompactAST(ast, options = {}) {
+const exportCompactAST = function(ast, options = {}) {
     const exporter = new CompactASTExporter(options);
     return exporter.export(ast);
-}
+};
 
 class CompactASTExporter {
     constructor(options = {}) {
@@ -305,7 +308,7 @@ class CompactASTExporter {
         let size = 4; // String count
         for (const str of this.strings) {
             size += 2; // Length prefix
-            size += Buffer.byteLength(str, 'utf8'); // UTF-8 data
+            size += new TextEncoder().encode(str).length; // UTF-8 data (browser + Node.js compatible)
             size += 1; // Null terminator
         }
         // Align to 4-byte boundary
@@ -688,6 +691,7 @@ class CompactASTExporter {
 }
 
 // Universal module pattern - supports both Node.js and browser
+// This is inside the IIFE so it has access to exportCompactAST and CompactASTExporter
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     // Node.js environment
     module.exports = {
@@ -702,10 +706,12 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         }
         window.CompactAST.exportCompactAST = exportCompactAST;
         window.CompactAST.CompactASTExporter = CompactASTExporter;
-        
+
         // Also provide direct access for backward compatibility (will be overridden by ArduinoParser)
         if (!window.exportCompactAST) {
             window.exportCompactAST = exportCompactAST;
         }
     }
 }
+
+})(); // Close IIFE - prevents global scope conflicts with ArduinoParser.js
