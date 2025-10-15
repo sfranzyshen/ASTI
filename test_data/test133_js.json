@@ -1,14 +1,14 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1760472877799,
+    "timestamp": 1760564442283,
     "component": "interpreter",
     "version": "21.2.1",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1760472877799,
+    "timestamp": 1760564442283,
     "message": "Program execution started"
   },
   {
@@ -20,7 +20,7 @@
       6,
       82
     ],
-    "timestamp": 1760472877799,
+    "timestamp": 1760564442283,
     "message": "Adafruit_NeoPixel(60, 6, 82)"
   },
   {
@@ -34,13 +34,13 @@
         6,
         82
       ],
-      "objectId": "Adafruit_NeoPixel_1760472877799_k423vftco"
+      "objectId": "Adafruit_NeoPixel_1760564442283_ehhbby9ud"
     },
-    "timestamp": 1760472877799
+    "timestamp": 1760564442283
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1760472877800,
+    "timestamp": 1760564442284,
     "message": "Executing setup() function"
   },
   {
@@ -50,53 +50,53 @@
       0
     ],
     "message": "clock_prescale_set(0)",
-    "timestamp": 1760472877800
+    "timestamp": 1760564442284
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Adafruit_NeoPixel",
-    "object": "Adafruit_NeoPixel_1760472877799_k423vftco",
+    "object": "Adafruit_NeoPixel_1760564442283_ehhbby9ud",
     "variableName": "strip",
     "method": "begin",
     "args": [],
     "message": "strip.begin()",
-    "timestamp": 1760472877800
+    "timestamp": 1760564442284
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Adafruit_NeoPixel",
-    "object": "Adafruit_NeoPixel_1760472877799_k423vftco",
+    "object": "Adafruit_NeoPixel_1760564442283_ehhbby9ud",
     "variableName": "strip",
     "method": "show",
     "args": [],
     "message": "strip.show()",
-    "timestamp": 1760472877800
+    "timestamp": 1760564442284
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Adafruit_NeoPixel",
-    "object": "Adafruit_NeoPixel_1760472877799_k423vftco",
+    "object": "Adafruit_NeoPixel_1760564442283_ehhbby9ud",
     "variableName": "strip",
     "method": "setBrightness",
     "args": [
       50
     ],
     "message": "strip.setBrightness(50)",
-    "timestamp": 1760472877800
+    "timestamp": 1760564442284
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1760472877800,
+    "timestamp": 1760564442284,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1760472877800,
+    "timestamp": 1760564442284,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1760472877800,
+    "timestamp": 1760564442284,
     "message": "Starting loop iteration 1"
   },
   {
@@ -104,7 +104,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1760472877800
+    "timestamp": 1760564442284
   },
   {
     "type": "LIBRARY_METHOD_INTERNAL",
@@ -117,7 +117,7 @@
     ],
     "result": 65280,
     "variableName": "strip",
-    "timestamp": 1760472877800
+    "timestamp": 1760564442284
   },
   {
     "type": "FUNCTION_CALL",
@@ -126,20 +126,20 @@
       65280,
       50
     ],
-    "timestamp": 1760472877800,
+    "timestamp": 1760564442284,
     "message": "colorWipe(65280, 50)"
   },
   {
     "type": "FOR_LOOP",
     "phase": "start",
-    "timestamp": 1760472877800,
+    "timestamp": 1760564442284,
     "message": "for loop started"
   },
   {
     "type": "VAR_SET",
     "variable": "i",
     "value": 0,
-    "timestamp": 1760472877800
+    "timestamp": 1760564442284
   },
   {
     "type": "LIBRARY_METHOD_INTERNAL",
@@ -148,19 +148,19 @@
     "args": [],
     "result": 60,
     "variableName": "strip",
-    "timestamp": 1760472877800
+    "timestamp": 1760564442284
   },
   {
     "type": "FOR_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1760472877800,
+    "timestamp": 1760564442284,
     "message": "for loop iteration 0"
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Adafruit_NeoPixel",
-    "object": "Adafruit_NeoPixel_1760472877799_k423vftco",
+    "object": "Adafruit_NeoPixel_1760564442283_ehhbby9ud",
     "variableName": "strip",
     "method": "setPixelColor",
     "args": [
@@ -168,29 +168,29 @@
       65280
     ],
     "message": "strip.setPixelColor(0, 65280)",
-    "timestamp": 1760472877800
+    "timestamp": 1760564442285
   },
   {
     "type": "LIBRARY_METHOD_CALL",
     "library": "Adafruit_NeoPixel",
-    "object": "Adafruit_NeoPixel_1760472877799_k423vftco",
+    "object": "Adafruit_NeoPixel_1760564442283_ehhbby9ud",
     "variableName": "strip",
     "method": "show",
     "args": [],
     "message": "strip.show()",
-    "timestamp": 1760472877801
+    "timestamp": 1760564442285
   },
   {
     "type": "DELAY",
     "duration": 50,
     "actualDelay": 50,
-    "timestamp": 1760472877801
+    "timestamp": 1760564442285
   },
   {
     "type": "VAR_SET",
     "variable": "i",
     "value": 1,
-    "timestamp": 1760472877801
+    "timestamp": 1760564442285
   },
   {
     "type": "LIBRARY_METHOD_INTERNAL",
@@ -199,13 +199,13 @@
     "args": [],
     "result": 60,
     "variableName": "strip",
-    "timestamp": 1760472877805
+    "timestamp": 1760564442291
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1760472877805,
+    "timestamp": 1760564442291,
     "message": "For loop limit reached: completed 1 iterations (max: 1)"
   },
   {
@@ -214,23 +214,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1760472877811
+    "timestamp": 1760564442296
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1760472877816,
+    "timestamp": 1760564442301,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1760472877817,
+    "timestamp": 1760564442301,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1760472877817,
+    "timestamp": 1760564442301,
     "message": "Program execution stopped"
   }
 ]
