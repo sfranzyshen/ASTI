@@ -2,7 +2,7 @@
 
 **A complete dual-platform Arduino/C++ code interpreter system with modular library architecture**
 
-Arduino AST Interpreter is a production-ready, modular system that transforms Arduino/C++ source code into executable command streams through a sophisticated multi-stage processing pipeline. It provides full Arduino language support with hardware simulation, making it perfect for educational tools, code validation, and Arduino development environments.
+Arduino AST Interpreter is a modular system that transforms Arduino/C++ source code into executable command streams through a sophisticated multi-stage processing pipeline. It provides full Arduino language support with hardware simulation, making it perfect for educational tools, code validation, and Arduino development environments.
 
 ## 🏗️ Three-Project Modular Architecture
 
@@ -11,7 +11,7 @@ The project is organized into three independent, reusable modules:
 ```
 ├── libs/CompactAST/          # Binary AST serialization library (JavaScript + C++)
 ├── libs/ArduinoParser/       # Arduino/C++ parser with integrated preprocessor  
-└── src/javascript/           # ASTInterpreter execution engine
+└── src/                      # ASTInterpreter execution engine
 ```
 
 ### **CompactAST Library** (v3.2.0)
@@ -84,52 +84,6 @@ All implementations produce **identical command streams** with **100% cross-plat
 - **Build Output**: 4.3MB static library (`libarduino_ast_interpreter.a`) - dual RTTI modes supported
 - **ESP32-S3 Deployment**: C++17 compatible, RTTI-free default (868KB), RTTI opt-in (896KB), memory optimized
 - **Cross-Platform Parity**: 100% compatibility achieved across ALL deployment targets - COMPLETE!
-
-**Previous Milestones:**
-
-**Version 21.2.0** (October 14, 2025) - Platform-Specific Defaults:
-- ESP32 RTTI-free default for practical embedded deployment
-- Platform-optimized defaults: Linux/WASM (RTTI), ESP32 (RTTI-free)
-- Three RTTI opt-in paths: PlatformIO, Arduino IDE build_opt.h, platform.txt
-- arduino-cli limitations documented (build_opt.h incompatibility)
-- Measured binary sizes: 896KB (RTTI) / 868KB (RTTI-free) for ESP32
-- 100% test parity maintained across all platforms
-
-**Version 21.1.1** (October 13, 2025) - Perfect Cross-Platform Parity:
-- WASM RTTI-Free Support Added: All three platforms offer identical RTTI/RTTI-free choice
-- Universal RTTI default across Linux, WASM, and ESP32
-- Compiler vs Code Separation: WASM compiler needs RTTI (embind), but code can use static_cast
-- 100% test parity in both RTTI and RTTI-free modes on all platforms
-
-**Version 21.1.0** (October 13, 2025) - Universal RTTI Default:
-- Established RTTI as universal default for ALL platforms (Linux, WASM, ESP32)
-- Removed platform-specific auto-detection (#ifdef ARDUINO logic)
-- Added committed build_opt.h for Arduino IDE (zero configuration)
-- Simplified to single flag: AST_NO_RTTI for explicit opt-in
-
-**Version 21.0.0** (October 13, 2025) - Hybrid RTTI Support:
-- Conditional RTTI architecture via AST_CAST macros
-- Platform auto-detection (Linux/WASM: RTTI, ESP32: RTTI-free)
-- Verified ESP32 Arduino framework requires `-fno-rtti`
-- 100% test parity in both RTTI and RTTI-free modes
-
-**Version 20.0.0** (October 13, 2025) - ESP32 Arduino Support:
-- RTTI removal: 113 dynamic_cast → static_cast replacements
-- ESP32 compatibility with `-fno-rtti` flag
-- Complete embedded hardware deployment capability
-- 100% baseline maintained across all platforms
-
-**Version 19.0.0** (October 12, 2025) - Project Reorganization:
-- Clean separation of production code, testing infrastructure, and documentation
-- 78% documentation reduction (54 historical docs archived)
-- Production focus: src/ folder contains only core interpreter files
-- 100% baseline maintained (135/135 tests passing)
-
-**Version 18.1.0** (October 6, 2025) - 100% Cross-Platform Parity:
-- JavaScript and C++ interpreters produce identical command streams
-- JavaScript IF statement bug fixed (primitive value extraction)
-- CompactAST 3.2.0: sizeof operator + comma expression support
-- Zero regressions: All 135 tests pass with exact matching
 
 ## Funding
 We are urgently in need of funding for this project to continue the longer term goals ... We will be start a tradition funding campaign but for now we are asking for small amount donations to help keep paying for a minimal subscription to claude code ... $20 per month minimum or $100 per month maximum is what we need ... If you can help please click the button
@@ -210,7 +164,7 @@ Commands contain only primitive data types for maximum compatibility with parent
 | **CompactAST** | v3.2.0 | 100% ✅ | Dual-Mode ✅ | Production Ready |
 | **ArduinoParser** | v6.0.0 | 100% ✅ | Full Compatibility ✅ | 135/135 (100%) |
 | **ASTInterpreter** | **v21.2.1** | 100% ✅ | **135/135 (100%)** ✅ | **Perfect Parity** 🎉 |
-| **Platforms** | Oct 2025 | Node.js + Browser ✅ | **Linux + WASM + ESP32** ✅ | **WASM Production Ready** 🚀 |
+| **Platforms** | Oct 2025 | Node.js + Browser ✅ | **Linux + WASM + ESP32** ✅ | **WASM Ready** 🚀 |
 
 ### Test Coverage
 - **Execution Success**: 100% - All 135 test cases execute without errors
@@ -316,8 +270,9 @@ interpreter.start();
 
 ```bash
 # Open browser-based development environments
-open playgrounds/parser_playground.html      # Interactive parser testing
-open playgrounds/interpreter_playground.html # Interactive interpreter testing  
+open playgrounds/parser_playground.html           # Interactive parser testing
+open playgrounds/interpreter_playground.html      # Interactive interpreter testing
+open playgrounds/wasm_interpreter_playground.html # WASM Interactive interpreter testing  
 ```
 
 ## 🧪 Testing & Development
@@ -652,7 +607,7 @@ console.log('Generated', commands.length, 'commands');
 
 ## 🏆 Project Success & Positioning
 
-### **Production-Ready Educational Platform**
+### **Educational Platform**
 
 Arduino AST Interpreter has achieved **100% cross-platform parity** across all implementations - JavaScript, C++ Linux, WebAssembly, and ESP32 Arduino (135/135 tests passing), making it a reliable foundation for:
 
@@ -699,4 +654,5 @@ and **sfranzyshen.org with [GNU AGPLv3](https://github.com/sfranzyshen/ASTInterp
 
 * You may use this software under the terms of the **Source-Available License** for non-production purposes (e.g., development, testing).
 * After the Change Date of **8/26/2030**, the software will automatically be governed by the **AGPLv3**.
+
 * If you wish to use this software in a production environment before the Change Date, you must obtain a **commercial license**. Please contact us at [sfranzyshen@hotmail.com] for more details.
