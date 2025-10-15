@@ -1,0 +1,1 @@
+-DAST_NO_RTTI -fno-rtti

@@ -1,0 +1,36 @@
+#######################################
+# Syntax Coloring Map For ArduinoASTInterpreter
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ASTInterpreter	KEYWORD1
+InterpreterOptions	KEYWORD1
+SyncDataProvider	KEYWORD1
+CommandValue	KEYWORD1
+ArduinoStruct	KEYWORD1
+ArduinoPointer	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+start	KEYWORD2
+pause	KEYWORD2
+resume	KEYWORD2
+step	KEYWORD2
+isRunning	KEYWORD2
+getCommands	KEYWORD2
+setSyncDataProvider	KEYWORD2
+getAnalogReadValue	KEYWORD2
+getDigitalReadValue	KEYWORD2
+getMillisValue	KEYWORD2
+getMicrosValue	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+AST_NO_RTTI	LITERAL1

@@ -1,0 +1,183 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║  ArduinoASTInterpreter Library - Arduino IDE 2 Installation Guide   ║
+║  Version: 21.2.1                                                     ║
+║  Date: October 15, 2025                                              ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+INSTALLATION STEPS
+══════════════════════════════════════════════════════════════════════
+
+METHOD 1: MANUAL INSTALLATION (RECOMMENDED)
+────────────────────────────────────────────────────────────────────
+
+1. Locate your Arduino libraries folder:
+
+   Windows:   Documents\Arduino\libraries\
+   macOS:     ~/Documents/Arduino/libraries/
+   Linux:     ~/Arduino/libraries/
+
+2. Copy the entire "ArduinoASTInterpreter" folder to the libraries directory:
+
+   FROM: arduino_library_package/ArduinoASTInterpreter/
+   TO:   [Your Arduino libraries folder]/ArduinoASTInterpreter/
+
+3. Restart Arduino IDE 2
+
+4. Verify installation:
+   - Open Arduino IDE 2
+   - Go to: File > Examples > ArduinoASTInterpreter
+   - You should see: BasicInterpreter and AnalogReadExample
+
+
+METHOD 2: ZIP INSTALLATION
+────────────────────────────────────────────────────────────────────
+
+1. Create a ZIP file of the ArduinoASTInterpreter folder
+   (Right-click > Send to > Compressed folder on Windows)
+
+2. In Arduino IDE 2:
+   - Go to: Sketch > Include Library > Add .ZIP Library...
+   - Select the ZIP file you created
+   - Wait for installation to complete
+
+3. Restart Arduino IDE 2
+
+4. Verify installation (same as Method 1, step 4)
+
+
+BOARD SETUP
+══════════════════════════════════════════════════════════════════════
+
+For Arduino Nano ESP32:
+────────────────────────────────────────────────────────────────────
+1. Tools > Board > esp32 > Arduino Nano ESP32
+2. Tools > Port > [Select your board's COM port]
+3. Ready to compile and upload!
+
+
+For Generic ESP32-S3:
+────────────────────────────────────────────────────────────────────
+1. Tools > Board > esp32 > ESP32S3 Dev Module
+2. Tools > USB Mode > Hardware CDC and JTAG
+3. Tools > USB CDC On Boot > Enabled
+4. Tools > PSRAM > OPI PSRAM
+5. Tools > Port > [Select your board's COM port]
+6. Ready to compile and upload!
+
+
+FIRST SKETCH
+══════════════════════════════════════════════════════════════════════
+
+1. Open example:
+   File > Examples > ArduinoASTInterpreter > BasicInterpreter
+
+2. Compile:
+   Click ✓ (Verify) button or Ctrl+R
+
+3. Upload:
+   Click → (Upload) button or Ctrl+U
+
+   Note: For Arduino Nano ESP32, the IDE will automatically
+   handle DFU bootloader mode - just click Upload!
+
+4. Open Serial Monitor:
+   Click 🔍 icon or Ctrl+Shift+M
+   Set baud rate to: 115200
+
+5. You should see interpreter output!
+
+
+TROUBLESHOOTING
+══════════════════════════════════════════════════════════════════════
+
+❌ "Examples not showing"
+   ⟶ Make sure you restarted Arduino IDE after installation
+   ⟶ Check that folder is named exactly "ArduinoASTInterpreter"
+
+❌ "CompactAST.hpp not found"
+   ⟶ Verify CompactAST.cpp and CompactAST.hpp are in src/ folder
+   ⟶ Try reinstalling the library
+
+❌ "Upload fails on Nano ESP32"
+   ⟶ Arduino IDE 2 handles DFU automatically
+   ⟶ If needed, double-tap RESET button before upload
+   ⟶ Check USB cable connection
+
+❌ "Board not detected"
+   ⟶ Install ESP32 board support if not already installed:
+      Tools > Board > Boards Manager > Search "esp32" > Install
+   ⟶ Check Device Manager (Windows) for COM port
+   ⟶ Try a different USB cable or port
+
+
+WHAT'S INCLUDED
+══════════════════════════════════════════════════════════════════════
+
+✓ library.properties     - Library metadata
+✓ keywords.txt           - Syntax highlighting for Arduino IDE
+✓ README.md              - Complete library documentation
+✓ src/                   - All source files
+  ├── ArduinoASTInterpreter.h  - Main include file
+  ├── CompactAST.cpp/.hpp      - Binary AST library
+  └── cpp/               - C++ implementation (20 files)
+✓ examples/              - Example sketches
+  ├── BasicInterpreter/  - Simple demonstration
+  └── AnalogReadExample/ - Advanced example
+
+
+FILE SIZE & MEMORY
+══════════════════════════════════════════════════════════════════════
+
+Compiled sketch size:    ~900KB (28% of 3.1MB flash)
+RAM usage:               ~26KB (7% of 320KB)
+Free flash:              ~7.1MB available
+PSRAM:                   8MB available for data
+
+
+SUPPORT & DOCUMENTATION
+══════════════════════════════════════════════════════════════════════
+
+📖 Full Documentation:
+   See README.md in library folder
+
+🔧 API Reference:
+   src/ArduinoASTInterpreter.h (header comments)
+
+🐛 Issues & Support:
+   https://github.com/sfranzyshen/ASTInterpreter/issues
+
+💬 Repository:
+   https://github.com/sfranzyshen/ASTInterpreter
+
+
+CONFIGURATION OPTIONS
+══════════════════════════════════════════════════════════════════════
+
+RTTI Mode (default - smaller binary):
+   File exists: examples/BasicInterpreter/build_opt.h
+   Binary size: ~868KB
+   No action required!
+
+RTTI-free mode (opt-in):
+   Delete or rename build_opt.h
+   Binary size: ~896KB (+28KB)
+   Runtime type checking enabled
+
+
+VERSION INFORMATION
+══════════════════════════════════════════════════════════════════════
+
+Library Version:         21.2.1
+Release Date:            October 15, 2025
+Compatible Arduino IDE:  2.0.0 or later
+ESP32 Core Required:     3.0.0 or later
+Board Support:           Arduino Nano ESP32, ESP32-S3 boards
+
+
+═══════════════════════════════════════════════════════════════════════
+
+Ready to get started? Open the BasicInterpreter example and upload!
+
+File > Examples > ArduinoASTInterpreter > BasicInterpreter
+
+═══════════════════════════════════════════════════════════════════════

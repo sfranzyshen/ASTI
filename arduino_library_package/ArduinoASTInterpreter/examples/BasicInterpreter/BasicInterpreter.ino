@@ -11,7 +11,7 @@
  * Arduino IDE: Install ESP32 board support first
  *
  * Expected Output:
- *   Arduino AST Interpreter 21.2.1
+ *   Arduino AST Interpreter v21.2.1
  *   Platform: ESP32-S3
  *   AST Binary Size: 1132 bytes
  *   Starting interpreter...
@@ -157,7 +157,7 @@ void setup() {
     Serial.begin(115200);
     delay(1000);  // Give serial time to initialize
 
-    Serial.println("=== Arduino AST Interpreter 21.2.1 ===");
+    Serial.println("=== Arduino AST Interpreter v21.2.1 ===");
     Serial.print("Platform: ");
     Serial.println(PLATFORM_NAME);
     Serial.print("AST Binary Size: ");
