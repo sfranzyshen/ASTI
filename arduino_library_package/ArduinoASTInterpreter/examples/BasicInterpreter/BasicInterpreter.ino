@@ -30,6 +30,7 @@
  */
 
 #include <ArduinoASTInterpreter.h>
+#include "FS.h"
 #include <LittleFS.h>
 
 // ============================================================================
@@ -40,8 +41,7 @@
 #define USE_FILESYSTEM false
 
 // LittleFS filesystem configuration
-#define LITTLEFS_MOUNT_PATH "/"
-#define LITTLEFS_FORMAT_ON_FAIL false  // Set true to auto-format on mount failure
+#define LITTLEFS_FORMAT_ON_FAIL true  // Auto-format on first use
 
 // Default AST file to load (filesystem mode only)
 #define DEFAULT_AST_FILE "/bareMinimum.ast"
@@ -195,7 +195,7 @@ uint8_t* astBuffer = nullptr;  // Dynamically allocated AST buffer (filesystem m
 bool initFilesystem() {
     Serial.println("Initializing LittleFS filesystem...");
 
-    if (!LittleFS.begin(LITTLEFS_FORMAT_ON_FAIL, LITTLEFS_MOUNT_PATH)) {
+    if (!LittleFS.begin(LITTLEFS_FORMAT_ON_FAIL)) {
         Serial.println("✗ ERROR: LittleFS mount failed");
         Serial.println("  Make sure you uploaded data files using:");
         Serial.println("  Tools > ESP32 Sketch Data Upload");
