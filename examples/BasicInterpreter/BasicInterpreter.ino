@@ -6,13 +6,13 @@
  *
  * DUAL-MODE OPERATION:
  * - Embedded Mode (USE_FILESYSTEM=false): Uses PROGMEM array (default)
- * - Filesystem Mode (USE_FILESYSTEM=true): Loads AST from FFat filesystem
+ * - Filesystem Mode (USE_FILESYSTEM=true): Loads AST from LittleFS filesystem
  *
  * This example runs the BareMinimum.ino sketch (setup + empty loop) to
  * demonstrate the interpreter integration without any hardware dependencies.
  *
  * Hardware: Arduino Nano ESP32 (FQBN: arduino:esp32:nano_nora)
- *           8MB Flash, 8MB PSRAM, FFat partition (~1.4MB)
+ *           8MB Flash, 8MB PSRAM, LittleFS partition
  * Arduino IDE: Install ESP32 board support first
  *
  * FILESYSTEM MODE SETUP:
@@ -30,21 +30,21 @@
  */
 
 #include <ArduinoASTInterpreter.h>
-#include <FFat.h>
+#include <LittleFS.h>
 
 // ============================================================================
 // CONFIGURATION
 // ============================================================================
 
-// Set to true to load AST from FFat filesystem, false for embedded mode
+// Set to true to load AST from LittleFS filesystem, false for embedded mode
 #define USE_FILESYSTEM false
 
-// FFat filesystem configuration
-#define FFAT_MOUNT_PATH "/ffat"
-#define FFAT_FORMAT_ON_FAIL false  // Set true to auto-format on mount failure
+// LittleFS filesystem configuration
+#define LITTLEFS_MOUNT_PATH "/"
+#define LITTLEFS_FORMAT_ON_FAIL false  // Set true to auto-format on mount failure
 
 // Default AST file to load (filesystem mode only)
-#define DEFAULT_AST_FILE "/ffat/bareMinimum.ast"
+#define DEFAULT_AST_FILE "/bareMinimum.ast"
 
 // ============================================================================
 // EMBEDDED MODE AST BINARY
@@ -189,24 +189,24 @@ uint8_t* astBuffer = nullptr;  // Dynamically allocated AST buffer (filesystem m
 // ============================================================================
 
 /**
- * Initialize FFat filesystem
+ * Initialize LittleFS filesystem
  * Returns: true on success, false on failure
  */
 bool initFilesystem() {
-    Serial.println("Initializing FFat filesystem...");
+    Serial.println("Initializing LittleFS filesystem...");
 
-    if (!FFat.begin(FFAT_FORMAT_ON_FAIL, FFAT_MOUNT_PATH)) {
-        Serial.println("✗ ERROR: FFat mount failed");
+    if (!LittleFS.begin(LITTLEFS_FORMAT_ON_FAIL, LITTLEFS_MOUNT_PATH)) {
+        Serial.println("✗ ERROR: LittleFS mount failed");
         Serial.println("  Make sure you uploaded data files using:");
         Serial.println("  Tools > ESP32 Sketch Data Upload");
         return false;
     }
 
-    Serial.println("✓ FFat mounted successfully");
+    Serial.println("✓ LittleFS mounted successfully");
 
     // Print filesystem info
-    size_t totalBytes = FFat.totalBytes();
-    size_t usedBytes = FFat.usedBytes();
+    size_t totalBytes = LittleFS.totalBytes();
+    size_t usedBytes = LittleFS.usedBytes();
     size_t freeBytes = totalBytes - usedBytes;
 
     Serial.print("  Total: ");
@@ -226,12 +226,12 @@ bool initFilesystem() {
 }
 
 /**
- * List all files in FFat filesystem
+ * List all files in LittleFS filesystem
  */
 void listFilesystem() {
-    Serial.println("Files in FFat:");
+    Serial.println("Files in LittleFS:");
 
-    File root = FFat.open("/");
+    File root = LittleFS.open("/");
     if (!root || !root.isDirectory()) {
         Serial.println("  ERROR: Failed to open root directory");
         return;
@@ -263,9 +263,9 @@ void listFilesystem() {
 }
 
 /**
- * Read AST file from FFat filesystem
+ * Read AST file from LittleFS filesystem
  *
- * @param path File path (e.g., "/ffat/bareMinimum.ast")
+ * @param path File path (e.g., "/bareMinimum.ast")
  * @param size Output parameter for file size
  * @return Pointer to allocated buffer containing AST data, or nullptr on failure
  *
@@ -275,7 +275,7 @@ uint8_t* readASTFromFile(const char* path, size_t* size) {
     Serial.print("Reading AST file: ");
     Serial.println(path);
 
-    File file = FFat.open(path, "r");
+    File file = LittleFS.open(path, "r");
     if (!file) {
         Serial.println("✗ ERROR: Failed to open file");
         return nullptr;

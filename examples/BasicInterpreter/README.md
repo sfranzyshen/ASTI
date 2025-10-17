@@ -7,23 +7,23 @@ Basic example demonstrating the ArduinoASTInterpreter library on ESP32 with dual
 This example executes pre-compiled Arduino programs from CompactAST binary format with two operating modes:
 
 - **Embedded Mode (default)**: AST binary stored in PROGMEM array
-- **Filesystem Mode**: AST files loaded from FFat flash filesystem
+- **Filesystem Mode**: AST files loaded from LittleFS flash filesystem
 
 Features demonstrated:
 - How to include the library
 - Dual-mode operation (embedded vs filesystem)
-- FFat filesystem integration
+- LittleFS filesystem integration
 - Simple SyncDataProvider implementation
 - Interpreter configuration and execution
 
 ## Hardware Requirements
 
 - **Arduino Nano ESP32** (FQBN: arduino:esp32:nano_nora)
-  - 8MB Flash (with FFat partition ~1.4MB)
+  - 8MB Flash (with LittleFS partition)
   - 8MB PSRAM (for large AST files)
 - USB-C cable for programming and serial monitor
 
-Compatible with other ESP32 boards with FFat support (ESP32-S3, ESP32-S2, etc.)
+Compatible with other ESP32 boards with LittleFS support (ESP32-S3, ESP32-S2, etc.)
 
 ## Setup
 
@@ -72,7 +72,7 @@ Just upload and run!
 
 ### Filesystem Mode
 
-Loads AST files from FFat flash filesystem - allows changing programs without recompiling.
+Loads AST files from LittleFS flash filesystem - allows changing programs without recompiling.
 
 **Advantages:**
 - Change programs without recompiling sketch
@@ -92,13 +92,13 @@ Loads AST files from FFat flash filesystem - allows changing programs without re
 2. **Configure Sketch:**
    ```cpp
    #define USE_FILESYSTEM true
-   #define DEFAULT_AST_FILE "/ffat/bareMinimum.ast"  // Or blink.ast, digitalReadSerial.ast
+   #define DEFAULT_AST_FILE "/bareMinimum.ast"  // Or blink.ast, digitalReadSerial.ast
    ```
 
 3. **Upload Data Files:**
    - Tools → ESP32 Sketch Data Upload
    - Wait for upload to complete
-   - (Files from data/ folder will be uploaded to FFat)
+   - (Files from data/ folder will be uploaded to LittleFS)
 
 4. **Upload Sketch:**
    - Upload as normal
@@ -116,7 +116,7 @@ The data/ folder includes three pre-compiled Arduino examples:
 
 To use different programs, change `DEFAULT_AST_FILE` in the sketch:
 ```cpp
-#define DEFAULT_AST_FILE "/ffat/blink.ast"
+#define DEFAULT_AST_FILE "/blink.ast"
 ```
 
 ## Expected Output
@@ -148,19 +148,19 @@ To use filesystem mode:
 Platform: ESP32
 Mode: Filesystem
 
-Initializing FFat filesystem...
-✓ FFat mounted successfully
+Initializing LittleFS filesystem...
+✓ LittleFS mounted successfully
   Total: 1408 KB
   Used: 5 KB
   Free: 1403 KB
 
-Files in FFat:
+Files in LittleFS:
   /bareMinimum.ast (1132 bytes)
   /blink.ast (1389 bytes)
   /digitalReadSerial.ast (1494 bytes)
   Total: 3 files
 
-Reading AST file: /ffat/bareMinimum.ast
+Reading AST file: /bareMinimum.ast
   File size: 1132 bytes
   Allocating from heap...
 ✓ File read successfully
@@ -181,7 +181,7 @@ Starting interpreter...
 4. **Execution**: Calls `start()` to run the program
 
 ### Filesystem Mode
-1. **FFat Mount**: Mounts flash FAT filesystem at `/ffat`
+1. **LittleFS Mount**: Mounts LittleFS filesystem at `/`
 2. **File Listing**: Shows available AST files for debugging
 3. **File Read**: Loads AST file into RAM (uses PSRAM for files >10KB)
 4. **Interpreter Creation**: Creates interpreter with loaded data
@@ -191,7 +191,7 @@ Starting interpreter...
 ## Graceful Fallback
 
 Filesystem mode includes automatic fallback to embedded mode if:
-- FFat mount fails
+- LittleFS mount fails
 - AST file not found
 - File read errors
 - Memory allocation fails
@@ -224,17 +224,17 @@ See `docs/ESP32_DEPLOYMENT_GUIDE.md` for detailed instructions.
 
 ### Compile Errors
 
-**Error: "FFat.h: No such file or directory"**
-- Solution: Make sure ESP32 board support is installed (FFat is ESP32-specific)
+**Error: "LittleFS.h: No such file or directory"**
+- Solution: Make sure ESP32 board support is installed (LittleFS is ESP32-specific)
 
 **Error: "PLATFORM_NAME was not declared"**
 - Solution: Update to latest ArduinoASTInterpreter library version
 
 ### Filesystem Issues
 
-**Error: "FFat mount failed"**
+**Error: "LittleFS mount failed"**
 - Solution: Upload data files using Tools → ESP32 Sketch Data Upload
-- Alternative: Set `FFAT_FORMAT_ON_FAIL true` to auto-format on first boot
+- Alternative: Set `LITTLEFS_FORMAT_ON_FAIL true` to auto-format on first boot
 
 **Error: "Failed to open AST file"**
 - Solution: Verify file exists by checking Serial output file listing

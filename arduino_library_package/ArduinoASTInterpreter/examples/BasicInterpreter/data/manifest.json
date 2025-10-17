@@ -2,8 +2,8 @@
   "version": "21.2.1",
   "generatedDate": "2025-10-16",
   "targetBoard": "arduino:esp32:nano_nora",
-  "filesystem": "FFat",
-  "partitionScheme": "With FAT partition (default)",
+  "filesystem": "LittleFS",
+  "partitionScheme": "Default (includes LittleFS)",
   "totalSize": 4115,
   "files": [
     {
@@ -66,16 +66,16 @@
     },
     "method2": {
       "name": "esptool.py Manual",
-      "tool": "mkfatfs + esptool.py",
+      "tool": "mklittlefs + esptool.py",
       "steps": [
-        "mkfatfs -c data/ -s 1441792 ffat.bin",
-        "esptool.py --chip esp32 --port /dev/ttyACM0 write_flash 0x310000 ffat.bin"
+        "mklittlefs -c data/ -s 1441792 littlefs.bin",
+        "esptool.py --chip esp32 --port /dev/ttyACM0 write_flash 0x310000 littlefs.bin"
       ]
     },
     "method3": {
       "name": "PlatformIO",
       "tool": "pio run --target uploadfs",
-      "config": "board_build.filesystem = fatfs",
+      "config": "board_build.filesystem = littlefs",
       "steps": [
         "Add config to platformio.ini",
         "Place .ast files in data/",
@@ -89,6 +89,6 @@
     "minArduinoParserVersion": "6.0.0",
     "boardFlash": "8MB",
     "boardPSRAM": "8MB",
-    "ffatPartitionSize": "1.4MB"
+    "littlefsPartitionSize": "available"
   }
 }

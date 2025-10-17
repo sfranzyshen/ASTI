@@ -1,5 +1,5 @@
 ===============================================================================
-ASTInterpreter ESP32 FFat Data Files
+ASTInterpreter ESP32 LittleFS Data Files
 Arduino Nano ESP32 (FQBN: arduino:esp32:nano_nora)
 ===============================================================================
 
@@ -36,24 +36,24 @@ METHOD 1: Arduino IDE 2.x with ESP32 Filesystem Uploader Plugin
 
 3. In Arduino IDE: Tools > ESP32 Sketch Data Upload
 
-4. Wait for upload to complete (FFat partition will be formatted automatically)
+4. Wait for upload to complete (LittleFS partition will be formatted automatically)
 
 5. Open Serial Monitor and reset the board to see filesystem contents
 
 METHOD 2: esptool.py Manual Upload (Advanced)
 ----------------------------------------------------------------
-1. Create FFat filesystem image:
-   mkfatfs -c data/ -s 1441792 ffat.bin
+1. Create LittleFS filesystem image:
+   mklittlefs -c data/ -s 1441792 littlefs.bin
 
 2. Upload to ESP32:
-   esptool.py --chip esp32 --port /dev/ttyACM0 write_flash 0x310000 ffat.bin
+   esptool.py --chip esp32 --port /dev/ttyACM0 write_flash 0x310000 littlefs.bin
 
 3. Adjust partition address based on your partition table
 
 METHOD 3: PlatformIO (Recommended for Development)
 ----------------------------------------------------------------
 1. Add to platformio.ini:
-   board_build.filesystem = fatfs
+   board_build.filesystem = littlefs
 
 2. Place .ast files in data/ folder
 
@@ -68,7 +68,7 @@ USING FILESYSTEM MODE IN SKETCH
    #define USE_FILESYSTEM true
 
 3. (Optional) Change the default AST file:
-   #define DEFAULT_AST_FILE "/ffat/blink.ast"
+   #define DEFAULT_AST_FILE "/blink.ast"
 
 4. Upload sketch to ESP32
 
@@ -77,9 +77,9 @@ USING FILESYSTEM MODE IN SKETCH
 TROUBLESHOOTING
 ===============================================================================
 
-Error: "FFat Mount Failed"
+Error: "LittleFS Mount Failed"
 - Ensure filesystem was uploaded using one of the methods above
-- Try reformatting by setting FFAT_FORMAT_ON_FAIL to true
+- Try reformatting by setting LITTLEFS_FORMAT_ON_FAIL to true
 - Check Serial output for specific error codes
 
 Error: "Failed to open AST file"
@@ -139,8 +139,8 @@ CompactAST: v3.2.0
 ArduinoParser: v6.0.0
 
 Compatible with Arduino Nano ESP32:
-- Flash: 8MB (FFat partition: ~1.4MB available)
+- Flash: 8MB (LittleFS partition available)
 - PSRAM: 8MB (for large AST files)
-- Default partition: "With FAT partition"
+- Default partition: "Default (includes LittleFS)"
 
 ===============================================================================
