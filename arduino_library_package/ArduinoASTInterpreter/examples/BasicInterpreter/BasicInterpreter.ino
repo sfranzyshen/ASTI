@@ -4,21 +4,51 @@
  * Basic example of using ArduinoASTInterpreter library on ESP32-S3.
  * Executes a pre-compiled Arduino program from CompactAST binary format.
  *
+ * DUAL-MODE OPERATION:
+ * - Embedded Mode (USE_FILESYSTEM=false): Uses PROGMEM array (default)
+ * - Filesystem Mode (USE_FILESYSTEM=true): Loads AST from FFat filesystem
+ *
  * This example runs the BareMinimum.ino sketch (setup + empty loop) to
  * demonstrate the interpreter integration without any hardware dependencies.
  *
- * Hardware: ESP32-S3 DevKit-C (or compatible)
+ * Hardware: Arduino Nano ESP32 (FQBN: arduino:esp32:nano_nora)
+ *           8MB Flash, 8MB PSRAM, FFat partition (~1.4MB)
  * Arduino IDE: Install ESP32 board support first
  *
+ * FILESYSTEM MODE SETUP:
+ * 1. Upload AST files to data/ folder using ESP32 Sketch Data Upload plugin
+ * 2. Set USE_FILESYSTEM=true below
+ * 3. Upload sketch
+ *
  * Expected Output:
- *   Arduino AST Interpreter v21.2.1
- *   Platform: ESP32-S3
+ *   Arduino AST Interpreter 21.2.1
+ *   Platform: ESP32
+ *   Mode: [Embedded|Filesystem]
  *   AST Binary Size: 1132 bytes
  *   Starting interpreter...
  *   Program started successfully!
  */
 
 #include <ArduinoASTInterpreter.h>
+#include <FFat.h>
+
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
+
+// Set to true to load AST from FFat filesystem, false for embedded mode
+#define USE_FILESYSTEM false
+
+// FFat filesystem configuration
+#define FFAT_MOUNT_PATH "/ffat"
+#define FFAT_FORMAT_ON_FAIL false  // Set true to auto-format on mount failure
+
+// Default AST file to load (filesystem mode only)
+#define DEFAULT_AST_FILE "/ffat/bareMinimum.ast"
+
+// ============================================================================
+// EMBEDDED MODE AST BINARY
+// ============================================================================
 
 // Pre-compiled CompactAST binary for BareMinimum.ino:
 //   void setup() { }
@@ -152,17 +182,171 @@ public:
 
 SimpleDataProvider dataProvider;
 ASTInterpreter* interpreter = nullptr;
+uint8_t* astBuffer = nullptr;  // Dynamically allocated AST buffer (filesystem mode)
+
+// ============================================================================
+// FILESYSTEM HELPER FUNCTIONS
+// ============================================================================
+
+/**
+ * Initialize FFat filesystem
+ * Returns: true on success, false on failure
+ */
+bool initFilesystem() {
+    Serial.println("Initializing FFat filesystem...");
+
+    if (!FFat.begin(FFAT_FORMAT_ON_FAIL, FFAT_MOUNT_PATH)) {
+        Serial.println("✗ ERROR: FFat mount failed");
+        Serial.println("  Make sure you uploaded data files using:");
+        Serial.println("  Tools > ESP32 Sketch Data Upload");
+        return false;
+    }
+
+    Serial.println("✓ FFat mounted successfully");
+
+    // Print filesystem info
+    size_t totalBytes = FFat.totalBytes();
+    size_t usedBytes = FFat.usedBytes();
+    size_t freeBytes = totalBytes - usedBytes;
+
+    Serial.print("  Total: ");
+    Serial.print(totalBytes / 1024);
+    Serial.println(" KB");
+
+    Serial.print("  Used: ");
+    Serial.print(usedBytes / 1024);
+    Serial.println(" KB");
+
+    Serial.print("  Free: ");
+    Serial.print(freeBytes / 1024);
+    Serial.println(" KB");
+    Serial.println();
+
+    return true;
+}
+
+/**
+ * List all files in FFat filesystem
+ */
+void listFilesystem() {
+    Serial.println("Files in FFat:");
+
+    File root = FFat.open("/");
+    if (!root || !root.isDirectory()) {
+        Serial.println("  ERROR: Failed to open root directory");
+        return;
+    }
+
+    File file = root.openNextFile();
+    int fileCount = 0;
+
+    while (file) {
+        if (!file.isDirectory()) {
+            Serial.print("  ");
+            Serial.print(file.name());
+            Serial.print(" (");
+            Serial.print(file.size());
+            Serial.println(" bytes)");
+            fileCount++;
+        }
+        file = root.openNextFile();
+    }
+
+    if (fileCount == 0) {
+        Serial.println("  No files found");
+    } else {
+        Serial.print("  Total: ");
+        Serial.print(fileCount);
+        Serial.println(" files");
+    }
+    Serial.println();
+}
+
+/**
+ * Read AST file from FFat filesystem
+ *
+ * @param path File path (e.g., "/ffat/bareMinimum.ast")
+ * @param size Output parameter for file size
+ * @return Pointer to allocated buffer containing AST data, or nullptr on failure
+ *
+ * IMPORTANT: Caller must free() the returned buffer after use
+ */
+uint8_t* readASTFromFile(const char* path, size_t* size) {
+    Serial.print("Reading AST file: ");
+    Serial.println(path);
+
+    File file = FFat.open(path, "r");
+    if (!file) {
+        Serial.println("✗ ERROR: Failed to open file");
+        return nullptr;
+    }
+
+    *size = file.size();
+    Serial.print("  File size: ");
+    Serial.print(*size);
+    Serial.println(" bytes");
+
+    // Use PSRAM for large files (>10KB), regular heap for smaller files
+    uint8_t* buffer;
+    if (*size > 10240) {
+        Serial.println("  Allocating from PSRAM...");
+        buffer = (uint8_t*)ps_malloc(*size);
+    } else {
+        Serial.println("  Allocating from heap...");
+        buffer = (uint8_t*)malloc(*size);
+    }
+
+    if (!buffer) {
+        Serial.println("✗ ERROR: Memory allocation failed");
+        file.close();
+        return nullptr;
+    }
+
+    // Read file into buffer
+    size_t bytesRead = file.read(buffer, *size);
+    file.close();
+
+    if (bytesRead != *size) {
+        Serial.print("✗ ERROR: Read mismatch (got ");
+        Serial.print(bytesRead);
+        Serial.print(" bytes, expected ");
+        Serial.print(*size);
+        Serial.println(" bytes)");
+        free(buffer);
+        return nullptr;
+    }
+
+    Serial.println("✓ File read successfully");
+    return buffer;
+}
+
+/**
+ * Free AST buffer (handles both PSRAM and heap allocations)
+ */
+void freeASTBuffer(uint8_t* buffer) {
+    if (buffer) {
+        free(buffer);  // free() works for both ps_malloc() and malloc()
+    }
+}
+
+// ============================================================================
+// SETUP
+// ============================================================================
 
 void setup() {
     Serial.begin(115200);
     delay(1000);  // Give serial time to initialize
 
-    Serial.println("=== Arduino AST Interpreter v21.2.1 ===");
+    Serial.println("=== Arduino AST Interpreter 21.2.1 ===");
     Serial.print("Platform: ");
     Serial.println(PLATFORM_NAME);
-    Serial.print("AST Binary Size: ");
-    Serial.print(sizeof(astBinary));
-    Serial.println(" bytes");
+
+    #if USE_FILESYSTEM
+        Serial.println("Mode: Filesystem");
+    #else
+        Serial.println("Mode: Embedded");
+    #endif
+
     Serial.println();
 
     // Configure interpreter options
@@ -172,28 +356,99 @@ void setup() {
     opts.maxLoopIterations = 1;  // Run loop once
     opts.syncMode = true;     // Use synchronous data provider
 
-    // Create interpreter from embedded CompactAST binary
+    const uint8_t* astData = nullptr;
+    size_t astSize = 0;
+    bool useFilesystem = USE_FILESYSTEM;
+
+    // ========================================================================
+    // FILESYSTEM MODE
+    // ========================================================================
+    #if USE_FILESYSTEM
+    {
+        // Try to initialize filesystem
+        if (!initFilesystem()) {
+            Serial.println("⚠ WARNING: Falling back to embedded mode");
+            useFilesystem = false;
+        } else {
+            // List files for debugging
+            listFilesystem();
+
+            // Read AST file
+            astBuffer = readASTFromFile(DEFAULT_AST_FILE, &astSize);
+
+            if (astBuffer) {
+                Serial.print("AST Size: ");
+                Serial.print(astSize);
+                Serial.println(" bytes");
+                Serial.println();
+                astData = astBuffer;
+            } else {
+                Serial.println("⚠ WARNING: Failed to load AST from file");
+                Serial.println("⚠ WARNING: Falling back to embedded mode");
+                useFilesystem = false;
+            }
+        }
+    }
+    #endif
+
+    // ========================================================================
+    // EMBEDDED MODE (default or fallback)
+    // ========================================================================
+    if (!useFilesystem) {
+        Serial.print("AST Binary Size: ");
+        Serial.print(sizeof(astBinary));
+        Serial.println(" bytes");
+        Serial.println();
+
+        astData = astBinary;
+        astSize = sizeof(astBinary);
+    }
+
+    // ========================================================================
+    // CREATE INTERPRETER
+    // ========================================================================
     Serial.println("Creating interpreter...");
-    interpreter = new ASTInterpreter(astBinary, sizeof(astBinary), opts);
+    interpreter = new ASTInterpreter(astData, astSize, opts);
+
+    // Free filesystem buffer if used (interpreter makes internal copy)
+    if (useFilesystem && astBuffer) {
+        freeASTBuffer(astBuffer);
+        astBuffer = nullptr;
+        Serial.println("✓ AST buffer freed (interpreter has internal copy)");
+    }
 
     // Connect data provider
     interpreter->setSyncDataProvider(&dataProvider);
 
-    // Start execution
+    // ========================================================================
+    // START EXECUTION
+    // ========================================================================
     Serial.println("Starting interpreter...");
     if (interpreter->start()) {
         Serial.println("✓ Program started successfully!");
         Serial.println();
-        Serial.println("This example runs BareMinimum.ino:");
-        Serial.println("  void setup() { }");
-        Serial.println("  void loop() { }");
+
+        if (!useFilesystem) {
+            Serial.println("Running embedded BareMinimum.ino:");
+            Serial.println("  void setup() { }");
+            Serial.println("  void loop() { }");
+            Serial.println();
+            Serial.println("To use filesystem mode:");
+            Serial.println("  1. Upload data files: Tools > ESP32 Sketch Data Upload");
+            Serial.println("  2. Set USE_FILESYSTEM=true in sketch");
+            Serial.println("  3. Re-upload sketch");
+        }
     } else {
         Serial.println("✗ ERROR: Failed to start program");
     }
 }
 
+// ============================================================================
+// LOOP
+// ============================================================================
+
 void loop() {
     // Interpreter runs to completion in setup()
-    // For more complex programs, you could call interpreter->resume() here
+    // For more complex programs with async operations, call interpreter->resume() here
     delay(1000);
 }
