@@ -150,6 +150,20 @@ const uint8_t PROGMEM astBinary[] = {
   0x00, 0x00, 0x00, 0x00
 };
 
+// ============================================================================
+// COMMAND HANDLER - Prints interpreter commands to Serial
+// ============================================================================
+
+class SerialCommandHandler : public CommandCallback {
+public:
+    void onCommand(const std::string& jsonCommand) override {
+        // Simply print commands to Serial Monitor
+        Serial.println(jsonCommand.c_str());
+    }
+};
+
+SerialCommandHandler commandHandler;
+
 // Simple data provider for testing (no external sensors needed)
 class SimpleDataProvider : public SyncDataProvider {
 public:
@@ -417,8 +431,9 @@ void setup() {
         Serial.println("✓ AST buffer freed (interpreter has internal copy)");
     }
 
-    // Connect data provider
+    // Connect data provider and command handler
     interpreter->setSyncDataProvider(&dataProvider);
+    interpreter->setCommandCallback(&commandHandler);
 
     // ========================================================================
     // START EXECUTION

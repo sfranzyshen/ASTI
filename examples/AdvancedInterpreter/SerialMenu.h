@@ -21,7 +21,8 @@ enum MenuCommand {
     CMD_PAUSE = 2,
     CMD_RESET = 3,
     CMD_STATUS = 4,
-    CMD_HELP = 5
+    CMD_HELP = 5,
+    CMD_STEP = 6  // Execute one command (step mode)
 };
 
 // ============================================================================
@@ -70,9 +71,10 @@ public:
         Serial.println("3. Reset Program");
         Serial.println("4. Show Status");
         Serial.println("5. Help (this menu)");
+        Serial.println("6. Step (execute one command)");
         Serial.println("====================================");
         Serial.println();
-        Serial.print("Enter command (1-5): ");
+        Serial.print("Enter command (1-6): ");
     }
 
     /**
@@ -98,7 +100,7 @@ public:
 
         // Check if it's a number
         int cmd = input.toInt();
-        if (cmd >= CMD_RUN_RESUME && cmd <= CMD_HELP) {
+        if (cmd >= CMD_RUN_RESUME && cmd <= CMD_STEP) {
             return (MenuCommand)cmd;
         }
 
@@ -121,6 +123,9 @@ public:
             case 'H':
             case '?':
                 return CMD_HELP;
+            case 't':
+            case 'T':
+                return CMD_STEP;
             default:
                 Serial.print("Unknown command: ");
                 Serial.println(input);
@@ -262,11 +267,13 @@ public:
         Serial.println("  3 or X - Reset program");
         Serial.println("  4 or S - Show status");
         Serial.println("  5 or H - Show this help");
+        Serial.println("  6 or T - Step (execute one command)");
         Serial.println();
         Serial.println("Notes:");
         Serial.println("  - Program runs infinitely when started");
         Serial.println("  - Use Pause to stop execution");
         Serial.println("  - Use Reset to restart from beginning");
+        Serial.println("  - Use Step for command-by-command debugging");
         Serial.println("  - Status shows iteration count and LED state");
         Serial.println("====================================");
         Serial.println();

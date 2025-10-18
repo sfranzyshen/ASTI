@@ -1,12 +1,15 @@
 # AdvancedInterpreter Example
 
-Advanced demonstration of ArduinoASTInterpreter with continuous execution and menu-driven control.
+Advanced demonstration of ArduinoASTInterpreter with continuous execution, real command processing, and menu-driven control.
 
 ## Overview
 
-This example extends BasicInterpreter to provide:
+This example demonstrates **production-ready** interpreter usage with:
+- **Real Interpreter Execution**: Hosts actual ASTInterpreter instance
+- **Real Command Processing**: Executes pinMode, digitalWrite, delay on real hardware
 - **Continuous Loop Execution**: Runs infinitely (not just once)
-- **Menu-Driven Interface**: Serial Monitor control (Run/Pause/Reset/Status/Help)
+- **Menu-Driven Interface**: Serial Monitor control (Run/Pause/Reset/Status/Step)
+- **Step Mode**: Execute one command at a time for debugging
 - **Status Updates**: Periodic iteration count and uptime display
 - **Real Hardware**: Blinks LED_BUILTIN at 1Hz
 - **Dual Modes**: Embedded (PROGMEM) and Filesystem (LittleFS) modes
@@ -20,6 +23,7 @@ This example extends BasicInterpreter to provide:
 3 or X - Reset program
 4 or S - Show detailed status
 5 or H - Show help menu
+6 or T - Step (execute one command)
 ```
 
 ### Serial Monitor Output Example
@@ -38,24 +42,28 @@ Program: Blink (LED_BUILTIN)
 3. Reset Program
 4. Show Status
 5. Help (this menu)
+6. Step (execute one command)
 ====================================
 
-Enter command (1-5): 1
+Enter command (1-6): 1
 
 [RUNNING] Execution started
 
-[STATUS] Iteration: 100 | Uptime: 100.2s
-[STATUS] Iteration: 200 | Uptime: 200.5s
+[STATUS] Iteration: 1 | Uptime: 2.0s
+[STATUS] Iteration: 2 | Uptime: 4.1s
 
-Enter command (1-5): 2
-[PAUSED] Paused at iteration 234
+Enter command (1-6): 2
+[PAUSED] Paused at iteration 3
 
-Enter command (1-5): 4
+Enter command (1-6): 6
+[STEP] Executed: {"type":"DIGITAL_WRITE","pin":13,"value":"HIGH"}
+
+Enter command (1-6): 4
 ========== STATUS ==========
-  State: PAUSED
-  Iterations: 234
-  Uptime: 3m 54s
-  Commands: 936
+  State: STEP
+  Iterations: 3
+  Uptime: 6.5s
+  Commands: 15
   LED: HIGH
 ============================
 ```
@@ -88,9 +96,10 @@ Enter command (1-5): 4
 
 ```
 AdvancedInterpreter/
-├── AdvancedInterpreter.ino    # Main sketch
-├── CommandBuffer.h            # Command stream capture
-├── CommandExecutor.h          # Hardware execution engine
+├── AdvancedInterpreter.ino    # Main sketch with real interpreter
+├── CommandQueue.h             # Command queue (CommandCallback impl)
+├── CommandExecutor.h          # Hardware execution engine (JSON → GPIO)
+├── ESP32DataProvider.h        # Real sensor data (SyncDataProvider impl)
 ├── SerialMenu.h               # Menu interface
 ├── data/                      # LittleFS files
 │   ├── blink.ast             # Blink program AST
@@ -103,9 +112,58 @@ AdvancedInterpreter/
 ### Architecture
 
 ```
-User Input → Serial Menu → Execution Control → LED Blink
-                              ↓
-                         Status Updates
+                        ┌─────────────────────┐
+                        │  ASTInterpreter     │
+                        │  (Blink Program)    │
+                        └──────────┬──────────┘
+                                   │ CommandCallback
+                                   ▼
+                        ┌─────────────────────┐
+                        │  CommandQueue       │
+                        │  (onCommand)        │
+                        └──────────┬──────────┘
+                                   │ JSON Commands
+                                   ▼
+┌──────────────┐     ┌─────────────────────┐     ┌──────────────┐
+│ Serial Menu  │────▶│ Execution Control   │────▶│ Command      │
+│ (User Input) │     │ (State Machine)     │     │ Executor     │
+└──────────────┘     └─────────────────────┘     └──────┬───────┘
+                                                          │ pinMode()
+                                                          │ digitalWrite()
+                                                          │ delay()
+                                                          ▼
+                                                  ┌──────────────┐
+                                                  │ LED_BUILTIN  │
+                                                  │ (Real HW)    │
+                                                  └──────────────┘
+```
+
+### Real Command Flow
+
+1. **Interpreter Generates Commands**:
+   - `interpreter->start()` executes setup()
+   - `interpreter->resume()` executes loop()
+   - Commands passed to CommandQueue via callback
+
+2. **Commands Queued**:
+   - CommandQueue::onCommand() receives JSON
+   - Queue stores commands for processing
+   - Parent app controls execution rate
+
+3. **Commands Executed**:
+   - CommandExecutor parses JSON
+   - Calls real Arduino functions (pinMode, digitalWrite, delay)
+   - LED blinks on real hardware
+
+### Execution States
+
+```cpp
+enum ExecutionState {
+    STATE_STOPPED,      // Interpreter not running
+    STATE_RUNNING,      // Continuous execution
+    STATE_PAUSED,       // Execution halted, state preserved
+    STATE_STEP_MODE     // Execute one command at a time
+};
 ```
 
 ### Execution Flow
@@ -114,19 +172,31 @@ User Input → Serial Menu → Execution Control → LED Blink
    - Initialize Serial Monitor (115200 baud)
    - Configure LED_BUILTIN as OUTPUT
    - Load AST (embedded or filesystem)
+   - Create interpreter instance
+   - Connect CommandQueue (callback)
+   - Connect ESP32DataProvider (sensor data)
    - Display menu
 
 2. **Loop** (when RUNNING):
    - Check for serial commands
-   - Execute Blink logic (toggle LED every second)
+   - Generate commands: `interpreter->resume()`
+   - Execute queued commands on real hardware
    - Update iteration count
    - Display periodic status
 
-3. **Menu Handling**:
+3. **Loop** (when STEP_MODE):
+   - Wait for step command
+   - Generate one command batch
+   - Execute ONE command only
+   - Display executed command
+   - Wait for next step
+
+4. **Menu Handling**:
    - Run/Resume: Start/continue execution
    - Pause: Stop execution, maintain state
-   - Reset: Clear state, restart from beginning
+   - Reset: Delete interpreter, recreate from scratch
    - Status: Show detailed execution info
+   - Step: Execute single command (debug mode)
    - Help: Display command reference
 
 ## Usage
@@ -155,14 +225,29 @@ pio run -t upload
 
 - Press `1` or type `R` and press Enter
 - LED should start blinking
-- Status updates appear every 100 iterations
+- Status updates appear every 10 seconds
+- Each iteration = one loop() execution
 
 ### 4. Control Execution
 
 - Press `2` or `P` to pause
 - Press `1` or `R` to resume
-- Press `3` or `X` to reset
-- Press `4` or `S` for status
+- Press `3` or `X` to reset (recreates interpreter)
+- Press `4` or `S` for detailed status
+- Press `6` or `T` for step-by-step debugging
+
+### 5. Step Mode Debugging
+
+```
+Enter command: 6
+[STEP] Executed: {"type":"DIGITAL_WRITE","pin":13,"value":"HIGH"}
+
+Enter command: 6
+[STEP] Executed: {"type":"DELAY","ms":1000}
+
+Enter command: 6
+[STEP] Executed: {"type":"DIGITAL_WRITE","pin":13,"value":"LOW"}
+```
 
 ## Filesystem Mode Setup
 
@@ -190,43 +275,62 @@ pio run -t upload
 
 ## Technical Notes
 
-### Why Manual Blink Implementation?
+### Real Interpreter Execution
 
-This demonstration uses manual LED control instead of parsing interpreter commands because:
+This example demonstrates **production architecture** for ESP32 deployment:
 
-1. **OUTPUT_STREAM Complexity**: ESP32's OUTPUT_STREAM (std::cout → Serial) is difficult to redirect at runtime
-2. **Pragmatic Demonstration**: Shows the CONCEPT of continuous execution and menu control
-3. **Production Path**: A full implementation would:
-   - Modify PlatformAbstraction.hpp to add custom stream
-   - Capture JSON command stream
-   - Parse with CommandExecutor
-   - Execute on real hardware
+1. **CommandCallback Pattern**: Interpreter NEVER outputs to Serial directly
+   - Calls `commandCallback->onCommand(jsonString)`
+   - Parent app receives commands via callback
+   - Decouples interpreter from I/O handling
+
+2. **CommandQueue**: Implements CommandCallback interface
+   - Queues commands for parent app to process
+   - Allows rate control (step mode, pause/resume)
+   - Prevents command overflow
+
+3. **CommandExecutor**: Parses JSON and executes on hardware
+   - `{"type":"PIN_MODE","pin":13,"mode":"OUTPUT"}` → `pinMode(13, OUTPUT)`
+   - `{"type":"DIGITAL_WRITE","pin":13,"value":"HIGH"}` → `digitalWrite(13, HIGH)`
+   - `{"type":"DELAY","ms":1000}` → `delay(1000)`
+
+4. **ESP32DataProvider**: Real sensor data for interpreter
+   - Implements SyncDataProvider interface
+   - Returns real values from `analogRead()`, `digitalRead()`, etc.
+   - Enables interpreter to interact with physical world
 
 ### Command Processing Components
 
-While not used in this simplified demo, the included headers demonstrate production architecture:
+**Active Production Components**:
+- **CommandQueue.h**: Command callback implementation (receives from interpreter)
+- **CommandExecutor.h**: JSON parser and hardware executor (executes on ESP32)
+- **ESP32DataProvider.h**: Real hardware sensor data provider
+- **SerialMenu.h**: Menu interface (user control)
 
-- **CommandBuffer.h**: Captures interpreter JSON output
-- **CommandExecutor.h**: Parses JSON and executes hardware operations
-- **SerialMenu.h**: Menu interface (actively used)
+This is a **complete, working implementation** - not a simulation!
 
-These provide a foundation for full command-processing implementations.
+### Why This Architecture?
+
+1. **Separation of Concerns**:
+   - Interpreter: AST execution logic
+   - Parent App: I/O, command processing, user interface
+
+2. **Flexibility**:
+   - Commands can be printed (BasicInterpreter)
+   - Commands can be executed (AdvancedInterpreter)
+   - Commands can be logged, transmitted, etc.
+
+3. **Cross-Platform**:
+   - Same pattern as WASM (stringstream capture)
+   - Same pattern as test tools (stdout redirect)
+   - Unified architecture across all platforms
 
 ## Customization
-
-### Change Blink Rate
-
-Modify the cycle time in `loop()`:
-```cpp
-unsigned long cycleTime = currentTime % 2000;  // 2-second cycle (2000ms)
-```
-
-Change to 4000 for 2-second blink, 1000 for 0.5-second blink, etc.
 
 ### Change Status Interval
 
 ```cpp
-#define STATUS_UPDATE_INTERVAL 100  // Status every 100 iterations
+#define STATUS_UPDATE_INTERVAL 10000  // Status every 10 seconds
 ```
 
 ### Different LED Pin
@@ -235,12 +339,25 @@ Change to 4000 for 2-second blink, 1000 for 0.5-second blink, etc.
 #define BLINK_LED LED_BUILTIN  // Change to any GPIO pin
 ```
 
+### Add Custom Commands
+
+Extend `CommandExecutor.h` to handle additional command types:
+```cpp
+if (type == "ANALOG_WRITE") {
+    int pin = extractIntField(jsonObj, "pin");
+    int value = extractIntField(jsonObj, "value");
+    analogWrite(pin, value);
+    return true;
+}
+```
+
 ## Troubleshooting
 
 ### LED Doesn't Blink
+- Check Serial Monitor for command output in step mode
 - Verify LED_BUILTIN is correctly defined for your board
 - Check LED connection if using external LED
-- Try different LED pin
+- Try step mode to see exact commands being executed
 
 ### Menu Not Responding
 - Check Serial Monitor baud rate (must be 115200)
@@ -252,16 +369,21 @@ Change to 4000 for 2-second blink, 1000 for 0.5-second blink, etc.
 - Set `USE_FILESYSTEM=false` to use embedded mode
 - Check board has 8MB flash with LittleFS partition
 
+### Commands Not Executing
+- Enable step mode to see exact JSON commands
+- Check CommandExecutor.h for supported command types
+- Verify pin numbers match your board
+
 ## Next Steps
 
 - **Add Custom Programs**: Replace blink.ast with your own AST files
-- **Implement Full Command Processing**: Use CommandBuffer + CommandExecutor
+- **Add More Commands**: Extend CommandExecutor for analogWrite, tone, etc.
 - **Add Web Interface**: Serve controls over WiFi
-- **Log to SD Card**: Record execution history
+- **Log to SD Card**: Record execution history and commands
+- **Multi-Program Support**: Load different AST files dynamically
 
 ## See Also
 
-- `examples/BasicInterpreter/` - Simple one-shot execution example
+- `examples/BasicInterpreter/` - Simple one-shot execution example (prints commands)
 - `docs/ESP32_DEPLOYMENT_GUIDE.md` - Comprehensive ESP32 setup guide
 - Main README.md - Project overview and architecture
-
