@@ -136,6 +136,10 @@ public:
         String type = extractString(jsonCommand, "type");
         if (type.length() == 0) return false;
 
+        // DEBUG: Show ALL commands being executed
+        Serial.print("[EXEC] type=");
+        Serial.println(type);
+
         // Update statistics
         lastCommandType_ = type;
         lastCommandTime_ = millis();
@@ -161,6 +165,8 @@ public:
         }
 
         // Unknown command type
+        Serial.print("[EXEC] UNKNOWN type=");
+        Serial.println(type);
         return false;
     }
 
