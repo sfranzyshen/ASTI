@@ -6277,7 +6277,7 @@ bool ASTInterpreter::isNumeric(const CommandValue& value) {
 
 // Simple JSON emission methods (replacing FlexibleCommand)
 void ASTInterpreter::emitJSON(const std::string& jsonString) {
-    // Direct JSON output - captured by test infrastructure
+    // Direct JSON output - captured by test infrastructure or callback
     // Update statistics
     commandsGenerated_++;
     currentCommandMemory_ += jsonString.length();
@@ -6285,12 +6285,18 @@ void ASTInterpreter::emitJSON(const std::string& jsonString) {
         peakCommandMemory_ = currentCommandMemory_;
     }
 
-    // Direct output for extract_cpp_commands
-    #ifdef PLATFORM_ESP32
-        OUTPUT_STREAM.println(jsonString.c_str());
-    #else
-        OUTPUT_STREAM << jsonString << std::endl;
-    #endif
+    // Output handling: callback (if set) or direct OUTPUT_STREAM (backward compatible)
+    if (commandCallback_) {
+        // NEW: Callback mode - parent app handles command
+        commandCallback_->onCommand(jsonString);
+    } else {
+        // FALLBACK: Direct output (backward compatible)
+        #ifdef PLATFORM_ESP32
+            OUTPUT_STREAM.println(jsonString.c_str());
+        #else
+            OUTPUT_STREAM << jsonString << std::endl;
+        #endif
+    }
 }
 
 void ASTInterpreter::emitVersionInfo(const std::string& component, const std::string& version, const std::string& status) {

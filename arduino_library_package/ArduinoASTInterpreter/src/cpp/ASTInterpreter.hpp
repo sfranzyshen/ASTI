@@ -41,6 +41,40 @@ class ArduinoLibraryInterface;
 class EnhancedScopeManager;
 
 // =============================================================================
+// COMMAND CALLBACK INTERFACE
+// =============================================================================
+
+/**
+ * Command callback interface for parent app integration
+ *
+ * Parent applications (sketches, test tools, playgrounds) implement this interface
+ * to receive commands from the interpreter. This provides proper separation of concerns:
+ * - Interpreter: Generates commands
+ * - Parent App: Receives and processes commands (print, execute, log, etc.)
+ *
+ * The interpreter should NEVER directly output to Serial/stdout - that's the
+ * parent app's responsibility.
+ */
+class CommandCallback {
+public:
+    virtual ~CommandCallback() = default;
+
+    /**
+     * Called by interpreter when a command is generated
+     *
+     * @param jsonCommand JSON string of the command (e.g., {"type":"DIGITAL_WRITE","pin":13,"value":1})
+     *
+     * Parent app decides what to do with command:
+     * - Print to Serial (BasicInterpreter)
+     * - Queue and execute (AdvancedInterpreter)
+     * - Log to file
+     * - Send over network
+     * - etc.
+     */
+    virtual void onCommand(const std::string& jsonCommand) = 0;
+};
+
+// =============================================================================
 // INTERPRETER CONFIGURATION
 // =============================================================================
 
@@ -389,6 +423,7 @@ private:
     // Command handling
     ResponseHandler* responseHandler_;
     SyncDataProvider* dataProvider_;  // Parent app provides external data (hardware, test data, etc.)
+    CommandCallback* commandCallback_;  // Parent app receives commands (optional - if not set, uses OUTPUT_STREAM)
 
     // ULTRATHINK FIX: Context-Aware Execution Control Stack
     class ExecutionControlStack {
@@ -707,6 +742,20 @@ public:
      * Get synchronous data provider (for library registry access)
      */
     SyncDataProvider* getSyncDataProvider() const { return dataProvider_; }
+
+    /**
+     * Set command callback (optional)
+     *
+     * Parent app implements CommandCallback to receive commands from interpreter.
+     * This provides proper separation of concerns:
+     * - Interpreter generates commands
+     * - Parent app decides what to do with them
+     *
+     * If callback is not set, commands are sent to OUTPUT_STREAM (backward compatible).
+     *
+     * @param callback Pointer to CommandCallback implementation (or nullptr to disable)
+     */
+    void setCommandCallback(CommandCallback* callback) { commandCallback_ = callback; }
 
     /**
      * Handle response from external system
