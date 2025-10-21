@@ -305,6 +305,10 @@ void ASTInterpreter::pause() {
 void ASTInterpreter::resume() {
     if (state_ == ExecutionState::PAUSED) {
         state_ = ExecutionState::RUNNING;
+    } else if (state_ == ExecutionState::COMPLETE) {
+        // Restart loop execution for continuous operation
+        state_ = ExecutionState::RUNNING;
+        executeLoop();
     }
 }
 

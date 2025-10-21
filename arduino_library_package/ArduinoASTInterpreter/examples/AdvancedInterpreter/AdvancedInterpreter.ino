@@ -261,7 +261,7 @@ void resetInterpreter() {
     InterpreterOptions opts;
     opts.verbose = false;     // Status-only mode (no command stream to Serial)
     opts.debug = false;
-    opts.maxLoopIterations = 0;  // Infinite loop (0 = no limit)
+    opts.maxLoopIterations = 1;  // Run ONE iteration per call (parent controls repetition)
     opts.syncMode = true;
 
     const uint8_t* astData = nullptr;
