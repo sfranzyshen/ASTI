@@ -200,6 +200,11 @@ public:
 
         digitalWrite(pin, value ? HIGH : LOW);
 
+        Serial.print("[DWRITE] pin=");
+        Serial.print(pin);
+        Serial.print(" val=");
+        Serial.println(value);
+
         lastPin_ = pin;
         lastValue_ = value;
         if (pin == LED_BUILTIN) {
@@ -233,6 +238,9 @@ public:
      */
     bool executeDelay(const String& json) {
         unsigned long duration = extractULong(json, "duration");
+
+        Serial.print("[DELAY] duration=");
+        Serial.println(duration);
 
         if (duration > 0) {
             delay(duration);
