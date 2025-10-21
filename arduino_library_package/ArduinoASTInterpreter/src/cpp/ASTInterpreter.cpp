@@ -308,6 +308,7 @@ void ASTInterpreter::resume() {
     } else if (state_ == ExecutionState::COMPLETE) {
         // Restart loop execution for continuous operation
         state_ = ExecutionState::RUNNING;
+        currentLoopIteration_ = 0;  // Reset counter for next iteration
         executeLoop();
     }
 }
