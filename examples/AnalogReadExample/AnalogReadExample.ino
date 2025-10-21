@@ -22,7 +22,7 @@
 // In production, embed the full CompactAST binary from test_data/example_000.ast
 
 // Hardware data provider connecting to real ESP32 pins
-class HardwareDataProvider : public SyncDataProvider {
+class HardwareDataProvider : public arduino_interpreter::SyncDataProvider {
 public:
     int32_t getAnalogReadValue(int32_t pin) override {
         // Map Arduino pin numbers to ESP32 GPIO

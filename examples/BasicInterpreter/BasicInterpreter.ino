@@ -154,7 +154,7 @@ const uint8_t PROGMEM astBinary[] = {
 // COMMAND HANDLER - Prints interpreter commands to Serial
 // ============================================================================
 
-class SerialCommandHandler : public CommandCallback {
+class SerialCommandHandler : public arduino_interpreter::CommandCallback {
 public:
     void onCommand(const std::string& jsonCommand) override {
         // Simply print commands to Serial Monitor
@@ -165,7 +165,7 @@ public:
 SerialCommandHandler commandHandler;
 
 // Simple data provider for testing (no external sensors needed)
-class SimpleDataProvider : public SyncDataProvider {
+class SimpleDataProvider : public arduino_interpreter::SyncDataProvider {
 public:
     int32_t getAnalogReadValue(int32_t pin) override {
         return 512; // Mid-range analog value (0-1023)

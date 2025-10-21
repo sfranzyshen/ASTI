@@ -30,7 +30,7 @@ UPLOADING TO ESP32 FLASH
 METHOD 1: Arduino IDE 2.x with ESP32 Filesystem Uploader Plugin
 ----------------------------------------------------------------
 1. Install the plugin from:
-   https://github.com/earlephilhower/arduino-littlefs-upload
+   https://github.com/me-no-dev/arduino-esp32fs-plugin
 
 2. Place your .ast files in this data/ folder
 
@@ -144,4 +144,3 @@ Compatible with Arduino Nano ESP32:
 - Default partition: "Default (includes LittleFS)"
 
 ===============================================================================
-
