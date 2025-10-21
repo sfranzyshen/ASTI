@@ -306,6 +306,10 @@ void ASTInterpreter::resume() {
     if (state_ == ExecutionState::PAUSED) {
         state_ = ExecutionState::RUNNING;
     } else if (state_ == ExecutionState::COMPLETE) {
+        // Clean up any accumulated state from previous iterations
+        executionControl_.clear();  // Clear execution control stack
+        shouldContinueExecution_ = true;  // Reset execution flag
+
         // Restart loop execution for continuous operation
         state_ = ExecutionState::RUNNING;
         currentLoopIteration_ = 0;  // Reset counter for next iteration
