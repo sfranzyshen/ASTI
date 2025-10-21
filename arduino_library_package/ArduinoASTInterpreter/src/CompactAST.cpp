@@ -7,12 +7,8 @@
  * Version: 1.0 (v21.0.0 conditional RTTI support)
  */
 
-// Cross-platform include: Arduino vs CMake build systems
-#ifdef ARDUINO
-    #include "cpp/ASTNodes.hpp"  // Arduino: src/ is automatically included
-#else
-    #include "../../../src/cpp/ASTNodes.hpp"  // CMake: relative path from libs/CompactAST/src/
-#endif
+#include "CompactAST.hpp"
+#include "cpp/ASTCast.hpp"  // v21.0.0: Conditional RTTI support
 #include <cstring>
 #include <algorithm>
 #include <sstream>
