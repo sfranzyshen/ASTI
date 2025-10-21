@@ -310,6 +310,11 @@ void ASTInterpreter::resume() {
         state_ = ExecutionState::RUNNING;
         currentLoopIteration_ = 0;  // Reset counter for next iteration
         executeLoop();
+
+        // Set state back to COMPLETE so next resume() call will work
+        if (state_ == ExecutionState::RUNNING) {
+            state_ = ExecutionState::COMPLETE;
+        }
     }
 }
 
