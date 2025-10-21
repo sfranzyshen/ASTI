@@ -31,6 +31,7 @@
 using arduino_interpreter::ASTInterpreter;
 using arduino_interpreter::InterpreterOptions;
 using arduino_interpreter::SyncDataProvider;
+using arduino_interpreter::CommandCallback;
 
 // Version information
 #define ARDUINO_AST_INTERPRETER_VERSION "21.2.1"
