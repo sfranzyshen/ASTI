@@ -411,8 +411,9 @@ void ASTInterpreter::executeLoop() {
             
             // Emit main loop start command
             emitLoopStart("main", 0);
-            
-            while (state_ == ExecutionState::RUNNING && currentLoopIteration_ < maxLoopIterations_) {
+
+            // 0 = infinite loop, otherwise check limit
+            while (state_ == ExecutionState::RUNNING && (maxLoopIterations_ == 0 || currentLoopIteration_ < maxLoopIterations_)) {
                 // Increment iteration counter BEFORE processing (to match JS 1-based counting)
                 currentLoopIteration_++;
 
