@@ -91,14 +91,14 @@ const uint8_t PROGMEM astBinary[] = {
 // ============================================================================
 
 // Execution state
-enum ExecutionState {
+enum AppExecutionState {
     STATE_STOPPED,
     STATE_RUNNING,
     STATE_PAUSED,
     STATE_STEP_MODE
 };
 
-ExecutionState state = STATE_STOPPED;
+AppExecutionState state = STATE_STOPPED;
 unsigned long loopIteration = 0;
 unsigned long startTime = 0;
 unsigned long commandsExecuted = 0;

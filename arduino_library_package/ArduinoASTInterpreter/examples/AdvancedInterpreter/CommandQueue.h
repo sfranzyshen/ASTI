@@ -15,7 +15,7 @@
 #include <vector>
 #include <string>
 
-class CommandQueue : public CommandCallback {
+class CommandQueue : public arduino_interpreter::CommandCallback {
 private:
     std::vector<std::string> queue_;
     size_t maxSize_;

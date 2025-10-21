@@ -14,7 +14,7 @@
 #include <ArduinoASTInterpreter.h>
 #include <Arduino.h>
 
-class ESP32DataProvider : public SyncDataProvider {
+class ESP32DataProvider : public arduino_interpreter::SyncDataProvider {
 public:
     /**
      * Read analog value from ESP32 ADC
