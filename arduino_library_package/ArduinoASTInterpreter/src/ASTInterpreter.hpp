@@ -12,12 +12,12 @@
 
 #pragma once
 
-#include "ASTNodes.hpp"
+#include "cpp/ASTNodes.hpp"
 #include "CompactAST.hpp"
-#include "EnhancedInterpreter.hpp"
-#include "ArduinoLibraryRegistry.hpp"
-#include "InterpreterConfig.hpp"
-#include "SyncDataProvider.hpp"
+#include "cpp/EnhancedInterpreter.hpp"
+#include "cpp/ArduinoLibraryRegistry.hpp"
+#include "cpp/InterpreterConfig.hpp"
+#include "cpp/SyncDataProvider.hpp"
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>

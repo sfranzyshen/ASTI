@@ -8,7 +8,7 @@
  */
 
 #include "ASTInterpreter.hpp"
-#include "ASTCast.hpp"  // v21.0.0: Conditional RTTI support (dynamic_cast default, static_cast optional)
+#include "cpp/ASTCast.hpp"  // v21.0.0: Conditional RTTI support (dynamic_cast default, static_cast optional)
 
 // Global reset flags for static state variables (must be at global scope)
 static bool g_resetTimingCounters = false;
@@ -16,7 +16,7 @@ static bool g_resetSerialPortCounters = false;
 static bool g_resetEnumCounter = false;
 
 // Includes
-#include "ExecutionTracer.hpp"
+#include "cpp/ExecutionTracer.hpp"
 #include <bitset>
 #include <iomanip>
 #include <cmath>
