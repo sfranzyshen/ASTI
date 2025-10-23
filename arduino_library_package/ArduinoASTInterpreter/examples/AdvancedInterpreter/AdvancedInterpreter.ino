@@ -475,6 +475,7 @@ void loop() {
         if (interpreter) {
             interpreter->resume();
             loopIteration++;
+            Serial.printf("Iteration: %lu\n", loopIteration);
             commandsExecuted = immediateExecutor.getTotalExecuted();
         }
 
