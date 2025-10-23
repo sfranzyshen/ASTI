@@ -31,7 +31,7 @@
 #include <ArduinoASTInterpreter.h>
 #include "FS.h"
 #include <LittleFS.h>
-#include "CommandQueue.h"
+#include "ImmediateCommandExecutor.h"
 #include "CommandExecutor.h"
 #include "ESP32DataProvider.h"
 #include "SerialMenu.h"
@@ -183,8 +183,8 @@ unsigned long lastStatusTime = 0;
 
 // Components
 SerialMenu menu;
-CommandQueue commandQueue;
 CommandExecutor executor;
+ImmediateCommandExecutor immediateExecutor(&executor);  // Zero-copy command execution
 ESP32DataProvider dataProvider;
 ASTInterpreter* interpreter = nullptr;
 uint8_t* astBuffer = nullptr;
@@ -252,7 +252,7 @@ void resetInterpreter() {
         interpreter = nullptr;
     }
 
-    commandQueue.clear();
+    immediateExecutor.resetStats();
     loopIteration = 0;
     commandsExecuted = 0;
     startTime = millis();
@@ -312,7 +312,7 @@ void resetInterpreter() {
 
     // Connect providers
     interpreter->setSyncDataProvider(&dataProvider);
-    interpreter->setCommandCallback(&commandQueue);
+    interpreter->setCommandCallback(&immediateExecutor);
 
     Serial.println("✓ Interpreter reset complete");
 }
@@ -363,23 +363,17 @@ void resumeExecution() {
 }
 
 void executeOneCommand() {
-    if (!commandQueue.hasCommands()) {
-        // No commands queued - ask interpreter to resume and generate more
-        if (interpreter) {
-            interpreter->resume();
-            loopIteration++;
-        }
-    }
+    // With immediate execution, we just call resume() once
+    // Commands execute automatically via callback
+    if (interpreter) {
+        size_t beforeCount = immediateExecutor.getTotalExecuted();
+        interpreter->resume();
+        loopIteration++;
+        size_t afterCount = immediateExecutor.getTotalExecuted();
 
-    if (commandQueue.hasCommands()) {
-        String cmd = commandQueue.pop();
-        executor.execute(cmd);
-        commandsExecuted++;
-
-        Serial.print("[STEP] Executed: ");
-        Serial.println(cmd);
-    } else {
-        Serial.println("[STEP] No commands available");
+        Serial.print("[STEP] Executed ");
+        Serial.print(afterCount - beforeCount);
+        Serial.println(" commands");
     }
 }
 
@@ -390,6 +384,13 @@ void executeOneCommand() {
 void setup() {
     Serial.begin(115200);
     delay(1000);
+
+    // ========================================================================
+    // MEMORY DIAGNOSTICS - Arduino-compatible heap analysis
+    // ========================================================================
+    Serial.println("\n=== MEMORY DIAGNOSTICS ENABLED ===");
+    Serial.println("Will show detailed memory stats at iterations 50 and 100");
+    Serial.println("==================================\n");
 
     // Configure LED pin
     pinMode(BLINK_LED, OUTPUT);
@@ -469,19 +470,12 @@ void loop() {
 
     // Process execution based on state
     if (state == STATE_RUNNING) {
-        // Generate commands if queue is empty
-        if (!commandQueue.hasCommands()) {
-            if (interpreter) {
-                interpreter->resume();  // Generate next loop iteration
-                loopIteration++;
-            }
-        }
-
-        // Execute all queued commands
-        while (commandQueue.hasCommands()) {
-            String cmd = commandQueue.pop();
-            executor.execute(cmd);
-            commandsExecuted++;
+        // With immediate execution, just call resume()
+        // Commands execute automatically via callback
+        if (interpreter) {
+            interpreter->resume();
+            loopIteration++;
+            commandsExecuted = immediateExecutor.getTotalExecuted();
         }
 
         // Periodic status updates
