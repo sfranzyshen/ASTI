@@ -48,7 +48,7 @@ namespace arduino_interpreter {
 
 ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOptions& options)
     : ast_(std::move(ast)), options_(options), state_(ExecutionState::IDLE),
-      responseHandler_(nullptr), dataProvider_(nullptr),
+      commandCallback_(nullptr), responseHandler_(nullptr), dataProvider_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
       maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
@@ -87,7 +87,7 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
 
 ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const InterpreterOptions& options)
     : options_(options), state_(ExecutionState::IDLE),
-      responseHandler_(nullptr), dataProvider_(nullptr),
+      commandCallback_(nullptr), responseHandler_(nullptr), dataProvider_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
       maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
@@ -306,9 +306,38 @@ void ASTInterpreter::resume() {
     if (state_ == ExecutionState::PAUSED) {
         state_ = ExecutionState::RUNNING;
     } else if (state_ == ExecutionState::COMPLETE) {
-        // Clean up any accumulated state from previous iterations
+        // Clean up ALL accumulated state from previous iterations
         executionControl_.clear();  // Clear execution control stack
         shouldContinueExecution_ = true;  // Reset execution flag
+
+        // Clear function call tracking
+        callStack_.clear();
+
+        // Clear request-response queues (prevent memory accumulation)
+        while (!responseQueue_.empty()) {
+            responseQueue_.pop();
+        }
+        pendingResponseValues_.clear();
+
+        // Reset memory tracking counters (prevent unbounded growth)
+        currentCommandMemory_ = 0;
+
+        // CRITICAL FIX: Reset scope manager to only global scope
+        // Without this, scopes accumulate and cause heap exhaustion after ~138 iterations
+        scopeManager_->resetToGlobalScope();
+
+        // CRITICAL FIX: Clear statistics maps that accumulate indefinitely
+        // These hash maps grow unbounded and cause heap fragmentation
+        commandTypeCounters_.clear();
+        functionCallCounters_.clear();
+        functionExecutionTimes_.clear();
+        loopTypeCounters_.clear();
+
+        // CRITICAL FIX: Clear execution tracer to prevent trace vector growth
+        // Without this, ExecutionTracer::trace_ accumulates memory every iteration
+        #ifdef ENABLE_FILE_TRACING
+        arduino_interpreter::g_tracer.clear();
+        #endif
 
         // Restart loop execution for continuous operation
         state_ = ExecutionState::RUNNING;
@@ -422,7 +451,6 @@ void ASTInterpreter::executeLoop() {
     if (userFunctionNames_.count("loop") > 0) {
         auto* loopFunc = findFunctionInAST("loop");
         if (loopFunc) {
-            
             // Emit main loop start command
             emitLoopStart("main", 0);
 
@@ -470,13 +498,13 @@ void ASTInterpreter::executeLoop() {
                 if (!shouldContinueExecution_) {
                     break;
                 }
-                
+
                 // CROSS-PLATFORM FIX: Don't emit duplicate loop function call (JavaScript doesn't emit this)
-                
+
                 // Handle step delay - for Arduino, delays should be handled by parent application
                 // The tick() method should return quickly and let the parent handle timing
                 // Note: stepDelay is available in options_ if parent needs it
-                
+
                 // Process any pending requests
                 processResponseQueue();
             } // End while loop
@@ -497,6 +525,11 @@ void ASTInterpreter::executeLoop() {
         emitLoopEnd("Loop limit reached: completed " + std::to_string(currentLoopIteration_) + " iterations (max: " + std::to_string(maxLoopIterations_) + ")", currentLoopIteration_);
     } else {
     }
+
+    #ifdef PLATFORM_ESP32
+    OUTPUT_STREAM.println("[EXECUTELOOP] EXIT - Returning from executeLoop()");
+    OUTPUT_STREAM.flush();
+    #endif
 }
 
 // =============================================================================

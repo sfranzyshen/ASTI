@@ -370,6 +370,15 @@ if(BUILD_TESTS)
         
         add_test(NAME MemoryPerformanceTest COMMAND test_memory_performance)
     endif()
+
+    # Continuous execution test for memory leak debugging
+    add_executable(continuous_test
+        tests/continuous_execution_test.cpp
+    )
+
+    target_link_libraries(continuous_test
+        PRIVATE arduino_ast_interpreter
+    )
 endif()
 
 # =============================================================================
