@@ -1,0 +1,1433 @@
+
+===========================================
+  CONTINUOUS EXECUTION TEST (Linux)
+===========================================
+Testing memory leak reproduction
+Max iterations: 150
+===========================================
+
+Creating interpreter...
+Starting interpreter...
+{"type":"VERSION_INFO","timestamp":0,"component":"interpreter","version":"21.2.1","status":"started"}
+{"type":"PROGRAM_START","timestamp":0,"message":"Program execution started"}
+{"type":"SETUP_START","timestamp":0,"message":"Executing setup() function"}
+{"type":"PIN_MODE","timestamp":0,"pin":13,"mode":1}
+{"type":"SETUP_END","timestamp":0,"message":"Completed setup() function"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program completed after 1 loop iterations (limit reached)"}
+{"type":"PROGRAM_END","timestamp":0,"message":"Program execution stopped"}
+Initial Memory: 5784 KB
+
+Beginning continuous execution...
+
+  Iter  Memory(KB)   Delta(KB) Leak/Iter(KB)
+------------------------------------------------------
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+     1        5784           0           0.00
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+     2        5784           0           0.00
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+     5        5784           0           0.00
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+    10        5784           0           0.00
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+    20        5784           0           0.00
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+    30        5784           0           0.00
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+    40        5784           0           0.00
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+    50        6272         488           9.76
+
+========== CHECKPOINT (Iteration 50) ==========
+Memory: 6272 KB
+Total growth: 488 KB
+Average leak/iter: 9.76 KB
+================================================
+
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+    60        6712         928          15.47
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+    70        7224        1440          20.57
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+    80        7864        2080          26.00
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+    90        8504        2720          30.22
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+   100        9400        3616          36.16
+
+========== CHECKPOINT (Iteration 100) ==========
+Memory: 9400 KB
+Total growth: 3616 KB
+Average leak/iter: 36.16 KB
+================================================
+
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+   110       10172        4388          39.89
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+   120       11068        5284          44.03
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+   130       12092        6308          48.52
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+   140       13116        7332          52.37
+
+========== CHECKPOINT (Iteration 140) ==========
+Memory: 13116 KB
+Total growth: 7332 KB
+Average leak/iter: 52.37 KB
+================================================
+
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop() execution"}
+{"type":"LOOP_START","timestamp":0,"message":"Starting loop iteration 1"}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Executing loop() iteration 1","iteration":1}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":1}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"DIGITAL_WRITE","timestamp":0,"pin":13,"value":0}
+{"type":"DELAY","timestamp":0,"duration":1000,"actualDelay":1000}
+{"type":"FUNCTION_CALL","timestamp":0,"function":"loop","message":"Completed loop() iteration 1","iteration":1,"completed":true}
+{"type":"LOOP_END","timestamp":0,"message":"Loop limit reached: completed 1 iterations (max: 1)","iterations":1,"limitReached":true}
+   150       14268        8484          56.56
+
+===========================================
+  TEST COMPLETE
+===========================================
+Initial Memory: 5784 KB
+Final Memory: 14268 KB
+Total Leak: 8484 KB
+Average Leak/Iteration: 56.56 KB
+===========================================
+
+⚠️  MEMORY LEAK CONFIRMED!
+Leak is CROSS-PLATFORM (affects Linux, WASM, ESP32)

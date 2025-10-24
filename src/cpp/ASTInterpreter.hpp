@@ -5,8 +5,8 @@
  * identical to the JavaScript ASTInterpreter.js implementation. Designed for
  * ESP32-S3 memory constraints and cross-platform compatibility.
  *
- * Version: 21.2.1
- * Compatible with: ASTInterpreter.js v21.2.1
+ * Version: 22.0.0
+ * Compatible with: ASTInterpreter.js v22.0.0
  * Command Protocol: CommandProtocol.hpp v1.0
  */
 
@@ -90,7 +90,7 @@ struct InterpreterOptions {
     bool enableSerial = true;       // Enable Serial commands
     bool enablePins = true;         // Enable pin operations
     bool syncMode = false;          // Test mode: immediate sync responses for digitalRead/analogRead
-    std::string version = "21.2.1";  // Interpreter version
+    std::string version = "22.0.0";  // Interpreter version
 };
 
 /**
@@ -326,7 +326,14 @@ public:
     }
     
     bool isGlobalScope() const { return scopes_.size() == 1; }
-    
+
+    // Reset to only global scope (for resume() between iterations)
+    void resetToGlobalScope() {
+        while (scopes_.size() > 1) {
+            scopes_.pop_back();
+        }
+    }
+
     void markCurrentScopeAsGlobal() {
         // Mark all variables in current scope as global
         if (!scopes_.empty()) {

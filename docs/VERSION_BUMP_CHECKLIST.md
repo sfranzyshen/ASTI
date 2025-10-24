@@ -85,6 +85,36 @@ When bumping from `X.Y.Z` → `X2.Y2.Z2`:
 
 ---
 
+### Phase 1A: Arduino Library Package Version Bump
+
+When bumping from `X.Y.Z` → `X2.Y2.Z2`:
+
+- [ ] **arduino_library_package/ArduinoASTInterpreter/library.properties** (line 2)
+  ```
+  version=X2.Y2.Z2
+  ```
+
+- [ ] **arduino_library_package/ArduinoASTInterpreter/src/ArduinoASTInterpreter.h**
+  - Line 15: `* Version: X2.Y2.Z2`
+  - Line 37: `#define ARDUINO_AST_INTERPRETER_VERSION "X2.Y2.Z2"`
+  - Line 38: `#define ARDUINO_AST_INTERPRETER_VERSION_MAJOR X2`
+  - Line 39: `#define ARDUINO_AST_INTERPRETER_VERSION_MINOR Y2`
+  - Line 40: `#define ARDUINO_AST_INTERPRETER_VERSION_PATCH Z2`
+
+- [ ] **arduino_library_package/ArduinoASTInterpreter/src/cpp/ASTInterpreter.hpp**
+  - Line 8: `* Version: X2.Y2.Z2`
+  - Line 9: `* Compatible with: ASTInterpreter.js vX2.Y2.Z2`
+
+- [ ] **arduino_library_package/ArduinoASTInterpreter/src/cpp/ASTInterpreter.cpp**
+  - Line 7: `* Version: X2.Y2.Z2`
+  - Line ~264: `emitVersionInfo("interpreter", "X2.Y2.Z2", "started");`
+
+**Total: 4 files for Arduino Library Package**
+
+**Grand Total: 21 files for ASTInterpreter (17 main + 4 Arduino library)**
+
+---
+
 ### Phase 2: CompactAST Library Version Bump
 
 When bumping from `A.B.C` → `A2.B2.C2`:

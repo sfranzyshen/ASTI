@@ -92,7 +92,9 @@
       "Bash(export AST_NO_RTTI=1)",
       "Read(//home/user/emsdk/**)",
       "Bash(chmod:*)",
-      "Bash(./scripts/build_wasm_debug.sh:*)"
+      "Bash(./scripts/build_wasm_debug.sh:*)",
+      "Bash(./continuous_test:*)",
+      "Bash(tee:*)"
     ],
     "deny": [],
     "ask": [],

@@ -245,9 +245,6 @@ public:
     bool executeDelay(const String& json) {
         unsigned long duration = extractULong(json, "duration");
 
-        Serial.print("[DELAY] duration=");
-        Serial.println(duration);
-
         if (duration > 0) {
             delay(duration);
         }

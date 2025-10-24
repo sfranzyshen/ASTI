@@ -244,6 +244,19 @@ universal_json_to_arduino/fast:
 .PHONY : universal_json_to_arduino/fast
 
 #=============================================================================
+# Target rules for targets named continuous_test
+
+# Build rule for target.
+continuous_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 continuous_test
+.PHONY : continuous_test
+
+# fast build rule for target.
+continuous_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/continuous_test.dir/build.make CMakeFiles/continuous_test.dir/build
+.PHONY : continuous_test/fast
+
+#=============================================================================
 # Target rules for targets named strip_library
 
 # Build rule for target.
@@ -463,6 +476,30 @@ src/cpp/ExecutionTracer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/arduino_ast_interpreter.dir/build.make CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ExecutionTracer.cpp.s
 .PHONY : src/cpp/ExecutionTracer.cpp.s
 
+tests/continuous_execution_test.o: tests/continuous_execution_test.cpp.o
+.PHONY : tests/continuous_execution_test.o
+
+# target to build an object file
+tests/continuous_execution_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/continuous_test.dir/build.make CMakeFiles/continuous_test.dir/tests/continuous_execution_test.cpp.o
+.PHONY : tests/continuous_execution_test.cpp.o
+
+tests/continuous_execution_test.i: tests/continuous_execution_test.cpp.i
+.PHONY : tests/continuous_execution_test.i
+
+# target to preprocess a source file
+tests/continuous_execution_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/continuous_test.dir/build.make CMakeFiles/continuous_test.dir/tests/continuous_execution_test.cpp.i
+.PHONY : tests/continuous_execution_test.cpp.i
+
+tests/continuous_execution_test.s: tests/continuous_execution_test.cpp.s
+.PHONY : tests/continuous_execution_test.s
+
+# target to generate assembly for a file
+tests/continuous_execution_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/continuous_test.dir/build.make CMakeFiles/continuous_test.dir/tests/continuous_execution_test.cpp.s
+.PHONY : tests/continuous_execution_test.cpp.s
+
 tests/extract_cpp_commands.o: tests/extract_cpp_commands.cpp.o
 .PHONY : tests/extract_cpp_commands.o
 
@@ -555,6 +592,7 @@ help:
 	@echo "... strip_library"
 	@echo "... strip_tools"
 	@echo "... arduino_ast_interpreter"
+	@echo "... continuous_test"
 	@echo "... extract_cpp_commands"
 	@echo "... universal_json_to_arduino"
 	@echo "... validate_cross_platform"
@@ -579,6 +617,9 @@ help:
 	@echo "... src/cpp/ExecutionTracer.o"
 	@echo "... src/cpp/ExecutionTracer.i"
 	@echo "... src/cpp/ExecutionTracer.s"
+	@echo "... tests/continuous_execution_test.o"
+	@echo "... tests/continuous_execution_test.i"
+	@echo "... tests/continuous_execution_test.s"
 	@echo "... tests/extract_cpp_commands.o"
 	@echo "... tests/extract_cpp_commands.i"
 	@echo "... tests/extract_cpp_commands.s"

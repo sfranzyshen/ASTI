@@ -61,6 +61,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/extract_cpp_commands.dir/DependInfo.cmake"
   "CMakeFiles/validate_cross_platform.dir/DependInfo.cmake"
   "CMakeFiles/universal_json_to_arduino.dir/DependInfo.cmake"
+  "CMakeFiles/continuous_test.dir/DependInfo.cmake"
   "CMakeFiles/strip_library.dir/DependInfo.cmake"
   "CMakeFiles/strip_tools.dir/DependInfo.cmake"
   "CMakeFiles/strip_all.dir/DependInfo.cmake"
