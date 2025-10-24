@@ -385,13 +385,6 @@ void setup() {
     Serial.begin(115200);
     delay(1000);
 
-    // ========================================================================
-    // MEMORY DIAGNOSTICS - Arduino-compatible heap analysis
-    // ========================================================================
-    Serial.println("\n=== MEMORY DIAGNOSTICS ENABLED ===");
-    Serial.println("Will show detailed memory stats at iterations 50 and 100");
-    Serial.println("==================================\n");
-
     // Configure LED pin
     pinMode(BLINK_LED, OUTPUT);
     digitalWrite(BLINK_LED, LOW);
