@@ -29,7 +29,7 @@ This example demonstrates **production-ready** interpreter usage with:
 ### Serial Monitor Output Example
 ```
 =================================================
-   Arduino Advanced AST Interpreter 21.2.1
+   Arduino Advanced AST Interpreter 22.0.0
 =================================================
 Platform: ESP32
 Mode: Embedded

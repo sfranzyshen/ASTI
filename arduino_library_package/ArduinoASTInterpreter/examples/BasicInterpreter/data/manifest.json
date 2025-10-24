@@ -1,5 +1,5 @@
 {
-  "version": "21.2.1",
+  "version": "22.0.0",
   "generatedDate": "2025-10-16",
   "targetBoard": "arduino:esp32:nano_nora",
   "filesystem": "LittleFS",

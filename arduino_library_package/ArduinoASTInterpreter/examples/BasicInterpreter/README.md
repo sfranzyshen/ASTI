@@ -123,7 +123,7 @@ To use different programs, change `DEFAULT_AST_FILE` in the sketch:
 
 ### Embedded Mode
 ```
-=== Arduino AST Interpreter 21.2.1 ===
+=== Arduino AST Interpreter 22.0.0 ===
 Platform: ESP32
 Mode: Embedded
 AST Binary Size: 1132 bytes
@@ -144,7 +144,7 @@ To use filesystem mode:
 
 ### Filesystem Mode
 ```
-=== Arduino AST Interpreter 21.2.1 ===
+=== Arduino AST Interpreter 22.0.0 ===
 Platform: ESP32
 Mode: Filesystem
 
@@ -277,7 +277,7 @@ See `docs/ESP32_DEPLOYMENT_GUIDE.md` for detailed instructions.
 
 ## Version Information
 
-- **ASTInterpreter**: v21.2.1
+- **ASTInterpreter**: v22.0.0
 - **CompactAST**: v3.2.0
 - **ArduinoParser**: v6.0.0
 - **Target Board**: Arduino Nano ESP32 (8MB Flash, 8MB PSRAM)

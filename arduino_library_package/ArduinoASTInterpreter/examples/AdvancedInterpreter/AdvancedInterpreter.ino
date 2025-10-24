@@ -398,9 +398,9 @@ void setup() {
 
     // Print banner
     #if USE_FILESYSTEM
-        menu.printBanner("21.2.1", PLATFORM_NAME, "Filesystem", "Blink (LED_BUILTIN)");
+        menu.printBanner("22.0.0", PLATFORM_NAME, "Filesystem", "Blink (LED_BUILTIN)");
     #else
-        menu.printBanner("21.2.1", PLATFORM_NAME, "Embedded", "Blink (LED_BUILTIN)");
+        menu.printBanner("22.0.0", PLATFORM_NAME, "Embedded", "Blink (LED_BUILTIN)");
     #endif
 
     // Initialize interpreter

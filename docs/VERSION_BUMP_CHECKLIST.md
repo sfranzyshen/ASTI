@@ -111,7 +111,39 @@ When bumping from `X.Y.Z` → `X2.Y2.Z2`:
 
 **Total: 4 files for Arduino Library Package**
 
-**Grand Total: 21 files for ASTInterpreter (17 main + 4 Arduino library)**
+---
+
+### Phase 1B: Arduino Example Sketches Version Bump
+
+When bumping from `X.Y.Z` → `X2.Y2.Z2`:
+
+- [ ] **arduino_library_package/ArduinoASTInterpreter/examples/AdvancedInterpreter/AdvancedInterpreter.ino**
+  - Line 401: `menu.printBanner("X.Y.Z", ...)` → `"X2.Y2.Z2"`
+  - Line 403: `menu.printBanner("X.Y.Z", ...)` → `"X2.Y2.Z2"`
+
+- [ ] **arduino_library_package/ArduinoASTInterpreter/examples/AdvancedInterpreter/README.md**
+  - Line 32: `Arduino Advanced AST Interpreter X.Y.Z` → `X2.Y2.Z2`
+
+- [ ] **arduino_library_package/ArduinoASTInterpreter/examples/BasicInterpreter/BasicInterpreter.ino**
+  - Line 24: `* Arduino AST Interpreter X.Y.Z` → `X2.Y2.Z2`
+  - Line 354: `Serial.println("=== Arduino AST Interpreter X.Y.Z ===");` → `X2.Y2.Z2`
+
+- [ ] **arduino_library_package/ArduinoASTInterpreter/examples/BasicInterpreter/README.md**
+  - Line 126: `=== Arduino AST Interpreter X.Y.Z ===` → `X2.Y2.Z2`
+  - Line 147: `=== Arduino AST Interpreter X.Y.Z ===` → `X2.Y2.Z2`
+  - Line 280: `- **ASTInterpreter**: vX.Y.Z` → `vX2.Y2.Z2`
+
+- [ ] **arduino_library_package/ArduinoASTInterpreter/examples/BasicInterpreter/data/manifest.json**
+  - Line 2: `"version": "X.Y.Z"` → `"X2.Y2.Z2"`
+
+- [ ] **arduino_library_package/ArduinoASTInterpreter/examples/BasicInterpreter/data/README.txt**
+  - Line 137: `ASTInterpreter: vX.Y.Z` → `vX2.Y2.Z2`
+
+**Total: 6 files for Arduino Example Sketches**
+
+---
+
+**Grand Total: 27 files for ASTInterpreter (17 main + 4 Arduino library + 6 example sketches)**
 
 ---
 

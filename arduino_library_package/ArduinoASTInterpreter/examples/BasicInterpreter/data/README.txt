@@ -134,7 +134,7 @@ For format details, see: libs/CompactAST/README.md
 VERSION INFORMATION
 ===============================================================================
 
-ASTInterpreter: v21.2.1
+ASTInterpreter: v22.0.0
 CompactAST: v3.2.0
 ArduinoParser: v6.0.0
 
