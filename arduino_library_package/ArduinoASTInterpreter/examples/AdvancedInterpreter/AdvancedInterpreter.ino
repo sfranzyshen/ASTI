@@ -233,6 +233,22 @@
  * - CLAUDE.md: Project-wide documentation and version history
  */
 
+// ============================================================================
+// EXECUTION STATE ENUM (must be defined before includes)
+// ============================================================================
+
+// Execution state
+enum AppExecutionState {
+    STATE_STOPPED,
+    STATE_RUNNING,
+    STATE_PAUSED,
+    STATE_STEP_MODE
+};
+
+// ============================================================================
+// INCLUDES
+// ============================================================================
+
 #include <ArduinoASTInterpreter.h>
 #include "FS.h"
 #include <LittleFS.h>
@@ -376,14 +392,6 @@ const uint8_t PROGMEM astBinary[] = {
 // ============================================================================
 // GLOBAL STATE
 // ============================================================================
-
-// Execution state
-enum AppExecutionState {
-    STATE_STOPPED,
-    STATE_RUNNING,
-    STATE_PAUSED,
-    STATE_STEP_MODE
-};
 
 AppExecutionState state = STATE_STOPPED;
 unsigned long loopIteration = 0;
