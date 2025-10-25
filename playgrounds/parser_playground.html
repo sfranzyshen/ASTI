@@ -51,7 +51,18 @@
         .parse-btn:active {
             transform: translateY(0);
         }
-        
+
+        .parse-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: linear-gradient(45deg, #555, #777);
+        }
+
+        .parse-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
         .options {
             margin: 20px 0;
             text-align: center;
@@ -236,6 +247,7 @@
     <div class="container">
         <div class="controls">
             <button class="parse-btn" onclick="parseCode()" style="margin-bottom: 20px;">Parse Code</button>
+            <button class="parse-btn" id="saveASTBtn" onclick="downloadAST()" style="margin-bottom: 20px; margin-left: 10px;" disabled>Save AST</button>
         </div>
         
         <!-- Test Suite Selection Controls -->
@@ -322,9 +334,10 @@ void loop() {
         
     </div>
 
-    <!-- Load ArduinoParser (includes CompactAST functionality) -->
+    <!-- Load CompactAST first (required by ArduinoParser in browser) -->
+    <script src="../libs/CompactAST/src/CompactAST.js"></script>
+    <!-- Load ArduinoParser (uses CompactAST for binary export) -->
     <script src="../libs/ArduinoParser/src/ArduinoParser.js"></script>
-    <!-- Note: ArduinoParser includes CompactAST integration - no need to load CompactAST separately -->
     <!-- Load test files directly -->
     <script src="../tests/examples.js"></script>
     <script>
@@ -343,10 +356,16 @@ void loop() {
         // Capture neopixel.js neopixelFiles immediately
         const neopixelTestFilesArray = neopixelFiles.slice();
         console.log(`Loaded ${neopixelTestFilesArray.length} NeoPixel examples`);
-        
+
         // Global state for platform and preprocessor
         let platformEmulation = null;
         let preprocessor = null;
+
+        // Global state for AST saving
+        let currentAST = null;
+        let currentCompactAST = null;
+        let currentTestName = null;
+        let parseHadErrors = false;
         
         // Initialize platform and preprocessor systems
         function loadTestFiles() {
@@ -437,6 +456,8 @@ void loop() {
                 document.getElementById('codeInput').value = selectedTest.content;
                 updateInputStatus();
                 updateLineNumbers();
+                // Store test name for filename generation
+                currentTestName = selectedTest.name;
                 console.log(`Loaded test: ${selectedTest.name}`);
                 // Auto-parse the loaded test
                 parseCode();
@@ -470,14 +491,16 @@ void loop() {
             
             const randomIndex = Math.floor(Math.random() * currentTestFiles.length);
             const randomTest = currentTestFiles[randomIndex];
-            
+
             // Update dropdown selection
             testSelect.value = randomIndex;
-            
+
             // Load the test
             document.getElementById('codeInput').value = randomTest.content;
             updateInputStatus();
             updateLineNumbers();
+            // Store test name for filename generation
+            currentTestName = randomTest.name;
             console.log(`Loaded random test: ${randomTest.name}`);
             // Auto-parse the loaded test
             parseCode();
@@ -575,6 +598,12 @@ void setup() {
                 updateASTLineNumbers(); // Update line numbers for empty output
                 outputStatus.textContent = 'No code to parse';
                 outputStatus.className = 'status';
+
+                // Clear state when no code
+                currentAST = null;
+                currentCompactAST = null;
+                parseHadErrors = false;
+                updateSaveButtonState();
                 return;
             }
             
@@ -596,7 +625,23 @@ void setup() {
                 const ast = parse(preprocessResult.processedCode || preprocessResult, options);
                 const endTime = performance.now();
                 const parseTime = (endTime - startTime).toFixed(2);
-                
+
+                // Step 3: Export CompactAST binary for saving
+                try {
+                    currentAST = ast;
+                    // Check if exportCompactAST is available
+                    if (typeof window.exportCompactAST === 'function') {
+                        currentCompactAST = window.exportCompactAST(ast);
+                        console.log(`CompactAST exported: ${currentCompactAST.byteLength} bytes`);
+                    } else {
+                        console.warn('exportCompactAST not available yet - will retry on next parse');
+                        currentCompactAST = null;
+                    }
+                } catch (compactError) {
+                    console.error('Failed to export CompactAST:', compactError);
+                    currentCompactAST = null;
+                }
+
                 // Format output with headers
                 const timestamp = new Date().toLocaleString();
                 const parserVersion = typeof PARSER_VERSION !== 'undefined' ? PARSER_VERSION : '5.0.0';
@@ -618,19 +663,31 @@ void setup() {
                 
                 // Check for errors in the AST
                 const hasErrors = containsErrors(ast);
-                
+                parseHadErrors = hasErrors;
+
                 astOutput.value = output;
                 updateASTLineNumbers(); // Update line numbers for AST output
-                
+
                 if (hasErrors) {
                     astOutput.className = 'ast-output error code-input-with-lines';
                     outputStatus.textContent = `⚠️ Parsed with errors (${parseTime}ms)`;
                     outputStatus.className = 'status error';
+                    // Clear CompactAST on errors
+                    currentCompactAST = null;
                 } else {
                     astOutput.className = 'ast-output success code-input-with-lines';
-                    outputStatus.textContent = `✅ Successfully parsed (${parseTime}ms)`;
+                    // Show file size in status
+                    if (currentCompactAST) {
+                        const sizeKB = (currentCompactAST.byteLength / 1024).toFixed(1);
+                        outputStatus.textContent = `✅ Successfully parsed (${parseTime}ms) - CompactAST: ${sizeKB} KB`;
+                    } else {
+                        outputStatus.textContent = `✅ Successfully parsed (${parseTime}ms)`;
+                    }
                     outputStatus.className = 'status success';
                 }
+
+                // Update save button state
+                updateSaveButtonState();
                 
             } catch (error) {
                 astOutput.value = `Parse Error: ${error.message}\\n\\nStack trace:\\n${error.stack}`;
@@ -638,32 +695,140 @@ void setup() {
                 updateASTLineNumbers(); // Update line numbers for error output
                 outputStatus.textContent = '❌ Parse failed with exception';
                 outputStatus.className = 'status error';
+
+                // Clear state on parse failure
+                currentAST = null;
+                currentCompactAST = null;
+                parseHadErrors = true;
+                updateSaveButtonState();
             }
         }
         
         function containsErrors(node) {
             if (!node || typeof node !== 'object') return false;
-            
+
             if (node.type === 'ErrorNode') return true;
-            
+
             // Check children array
             if (node.children && Array.isArray(node.children)) {
                 for (const child of node.children) {
                     if (containsErrors(child)) return true;
                 }
             }
-            
+
             // Check all object properties
             for (const key in node) {
                 if (typeof node[key] === 'object' && node[key] !== null) {
                     if (containsErrors(node[key])) return true;
                 }
             }
-            
+
             return false;
         }
-        
-        
+
+        // Download CompactAST binary as .ast file
+        function downloadAST() {
+            // Check if CompactAST is available
+            if (!currentCompactAST) {
+                alert('No AST available to save. Please parse code first.');
+                return;
+            }
+
+            if (parseHadErrors) {
+                const proceed = confirm('The AST contains parsing errors. Do you want to save it anyway?');
+                if (!proceed) {
+                    return;
+                }
+            }
+
+            try {
+                // Generate filename
+                const filename = getASTFilename();
+
+                // Create Blob from ArrayBuffer
+                const blob = new Blob([currentCompactAST], { type: 'application/octet-stream' });
+
+                // Create download link
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+
+                // Trigger download
+                a.click();
+
+                // Cleanup
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+
+                console.log(`Downloaded ${filename} (${currentCompactAST.byteLength} bytes)`);
+
+            } catch (error) {
+                console.error('Failed to download AST:', error);
+                alert('Failed to download AST file: ' + error.message);
+            }
+        }
+
+        // Generate filename for AST download
+        function getASTFilename() {
+            if (currentTestName) {
+                // Use test name if available
+                // Sanitize test name: remove special characters, replace spaces with underscores
+                const sanitized = currentTestName
+                    .replace(/[^a-zA-Z0-9_\-]/g, '_')
+                    .replace(/_{2,}/g, '_')
+                    .replace(/^_+|_+$/g, '');
+
+                return sanitized + '.ast';
+            } else {
+                // Use timestamp for manual code
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+
+                return `sketch_${year}${month}${day}_${hours}${minutes}${seconds}.ast`;
+            }
+        }
+
+        // Update Save AST button state and display
+        function updateSaveButtonState() {
+            const saveBtn = document.getElementById('saveASTBtn');
+            if (!saveBtn) return;
+
+            // Enable button if CompactAST exists and no errors (or user accepts errors)
+            if (currentCompactAST && !parseHadErrors) {
+                saveBtn.disabled = false;
+
+                // Update button text with file size
+                const sizeKB = (currentCompactAST.byteLength / 1024).toFixed(1);
+                if (currentCompactAST.byteLength < 1024) {
+                    saveBtn.textContent = `Save AST (${currentCompactAST.byteLength} bytes)`;
+                } else if (currentCompactAST.byteLength < 1024 * 1024) {
+                    saveBtn.textContent = `Save AST (${sizeKB} KB)`;
+                } else {
+                    const sizeMB = (currentCompactAST.byteLength / (1024 * 1024)).toFixed(1);
+                    saveBtn.textContent = `Save AST (${sizeMB} MB)`;
+                }
+            } else if (currentCompactAST && parseHadErrors) {
+                // Enable but warn about errors
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save AST (⚠️ has errors)';
+            } else {
+                // Disable if no AST available
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'Save AST';
+            }
+        }
+
+
         // Line number management
         function updateLineNumbers() {
             const codeInput = document.getElementById('codeInput');
@@ -765,6 +930,8 @@ void setup() {
         codeInput.addEventListener('input', function() {
             updateInputStatus();
             updateLineNumbers();
+            // Clear test name when user manually edits code
+            currentTestName = null;
         });
         
         // Sync scrolling between line numbers and code
@@ -800,7 +967,18 @@ void setup() {
         // Load test files and initialize
         setTimeout(() => {
             loadTestFiles();
-            parseCode();
+
+            // Verify exportCompactAST is available
+            if (typeof window.exportCompactAST === 'function') {
+                console.log('✅ exportCompactAST is available and ready');
+            } else {
+                console.warn('⚠️ exportCompactAST not available - AST saving will not work until next parse');
+            }
+
+            // Wait a bit longer for exportCompactAST to be available
+            setTimeout(() => {
+                parseCode();
+            }, 50);
         }, 100);
     </script>
 </body>

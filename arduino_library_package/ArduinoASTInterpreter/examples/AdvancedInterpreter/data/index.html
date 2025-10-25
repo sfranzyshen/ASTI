@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino AST Interpreter - Web Control</title>
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --primary-color: #2196F3;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --danger-color: #F44336;
+            --dark-bg: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ===== GLOBAL STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .connection-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(76, 175, 80, 0.2);
+            font-size: 14px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ===== CARD COMPONENT ===== */
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        /* ===== STATUS PANEL ===== */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .status-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .status-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .status-value.running { color: var(--success-color); }
+        .status-value.paused { color: var(--warning-color); }
+        .status-value.stopped { color: var(--danger-color); }
+
+        /* ===== CONTROL BUTTONS ===== */
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #45a049);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color), #fb8c00);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color), #d32f2f);
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #1976D2);
+            color: white;
+        }
+
+        .btn-icon {
+            font-size: 24px;
+        }
+
+        /* ===== FILE MANAGER ===== */
+        .file-list {
+            margin-top: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .file-item.active {
+            border-left: 4px solid var(--success-color);
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+            min-height: auto;
+        }
+
+        /* ===== CONFIG PANEL ===== */
+        .config-item {
+            margin-bottom: 20px;
+        }
+
+        .config-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        select option {
+            background: var(--dark-bg);
+        }
+
+        /* ===== TOAST NOTIFICATIONS ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger-color);
+        }
+
+        .toast.success {
+            border-left-color: var(--success-color);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .control-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .file-actions {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .btn-small {
+                flex: 1;
+            }
+        }
+
+        /* ===== SCROLLBAR STYLING ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🔧 Arduino AST Interpreter</h1>
+            <div class="connection-status">
+                <span class="status-dot" id="connectionDot"></span>
+                <span id="connectionText">Connecting...</span>
+            </div>
+        </div>
+
+        <!-- Status Panel -->
+        <div class="card">
+            <div class="card-title">📊 Status Panel</div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-label">State</div>
+                    <div class="status-value" id="statusState">stopped</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Iteration</div>
+                    <div class="status-value" id="statusIteration">0</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Uptime</div>
+                    <div class="status-value" id="statusUptime">0.0s</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Commands</div>
+                    <div class="status-value" id="statusCommands">0</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Memory Free</div>
+                    <div class="status-value" id="statusMemory">0 KB</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="card">
+            <div class="card-title">⚙️ Execution Control</div>
+            <div class="control-grid">
+                <button class="btn btn-success" onclick="sendControlCommand('run')">
+                    <span class="btn-icon">▶</span>
+                    <span>RUN</span>
+                </button>
+                <button class="btn btn-warning" onclick="sendControlCommand('pause')">
+                    <span class="btn-icon">⏸</span>
+                    <span>PAUSE</span>
+                </button>
+                <button class="btn btn-danger" onclick="sendControlCommand('reset')">
+                    <span class="btn-icon">⟳</span>
+                    <span>RESET</span>
+                </button>
+                <button class="btn btn-primary" onclick="sendControlCommand('step')">
+                    <span class="btn-icon">⏭</span>
+                    <span>STEP</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- File Manager -->
+        <div class="card">
+            <div class="card-title">📁 File Manager</div>
+            <div id="fileStats" style="color: var(--text-secondary); margin-bottom: 10px;"></div>
+            <div class="file-list" id="fileList">
+                <div style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                    <div class="loading"></div>
+                    <p style="margin-top: 10px;">Loading files...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration -->
+        <div class="card">
+            <div class="card-title">⚙️ Configuration</div>
+            <div class="config-item">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="configAutoStart">
+                    <span>Auto-start on power-up</span>
+                </label>
+            </div>
+            <div class="config-item">
+                <label class="config-label">Default AST File</label>
+                <select id="configDefaultFile">
+                    <option value="/blink.ast">/blink.ast</option>
+                </select>
+            </div>
+            <div class="config-item">
+                <label class="config-label">Status Update Interval (ms)</label>
+                <input type="number" id="configInterval" value="1000" min="100" max="60000" step="100">
+            </div>
+            <button class="btn btn-primary" onclick="saveConfiguration()" style="width: 100%; margin-top: 10px;">
+                <span>💾 Save Configuration</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ===== GLOBAL STATE =====
+        let ws = null;
+        let wsReconnectTimer = null;
+        let httpFallbackTimer = null;
+        let currentFiles = [];
+        let currentConfig = {};
+
+        // ===== WEBSOCKET MANAGEMENT =====
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws`;
+
+            console.log('Connecting to WebSocket:', wsUrl);
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                console.log('WebSocket connected');
+                updateConnectionStatus(true);
+                clearInterval(httpFallbackTimer);
+                httpFallbackTimer = null;
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleWebSocketMessage(data);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket disconnected');
+                updateConnectionStatus(false);
+                scheduleReconnect();
+                startHTTPFallback();
+            };
+        }
+
+        function scheduleReconnect() {
+            if (wsReconnectTimer) return;
+            wsReconnectTimer = setTimeout(() => {
+                wsReconnectTimer = null;
+                connectWebSocket();
+            }, 3000);
+        }
+
+        function startHTTPFallback() {
+            if (httpFallbackTimer) return;
+            httpFallbackTimer = setInterval(() => {
+                fetchStatus();
+            }, 2000);
+        }
+
+        function handleWebSocketMessage(data) {
+            console.log('WebSocket message:', data.type);
+
+            switch (data.type) {
+                case 'status_update':
+                    updateStatus(data.data);
+                    break;
+                case 'file_loaded':
+                    showToast(`File loaded: ${data.data.filename}`, 'success');
+                    loadFiles();
+                    break;
+                case 'error':
+                    showToast(data.message, 'error');
+                    break;
+                case 'connection_info':
+                    console.log('Connection info:', data);
+                    break;
+            }
+        }
+
+        function updateConnectionStatus(connected) {
+            const dot = document.getElementById('connectionDot');
+            const text = document.getElementById('connectionText');
+
+            if (connected) {
+                dot.style.background = 'var(--success-color)';
+                text.textContent = 'Connected';
+            } else {
+                dot.style.background = 'var(--danger-color)';
+                dot.style.animation = 'none';
+                text.textContent = 'Disconnected';
+            }
+        }
+
+        // ===== HTTP API =====
+        async function apiCall(endpoint, method = 'GET', body = null) {
+            try {
+                const options = {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(endpoint, options);
+                return await response.json();
+            } catch (error) {
+                console.error('API call failed:', error);
+                showToast('Network error: ' + error.message, 'error');
+                return null;
+            }
+        }
+
+        async function fetchStatus() {
+            const data = await apiCall('/api/status');
+            if (data) {
+                updateStatus(data);
+            }
+        }
+
+        async function sendControlCommand(action) {
+            const data = await apiCall(`/api/control/${action}`, 'POST');
+            if (data && data.success) {
+                showToast(`Command sent: ${action}`, 'success');
+                setTimeout(fetchStatus, 500);
+            }
+        }
+
+        async function loadFiles() {
+            const data = await apiCall('/api/files');
+            if (data && data.files) {
+                currentFiles = data.files;
+                renderFileList(data.files);
+                updateFileSelect(data.files);
+
+                const stats = document.getElementById('fileStats');
+                const totalSize = data.files.reduce((sum, f) => sum + f.size, 0);
+                stats.textContent = `${data.count} files, ${formatBytes(totalSize)} total`;
+            }
+        }
+
+        async function loadFile(filename) {
+            if (!confirm(`Load file: ${filename}?`)) return;
+
+            const data = await apiCall('/api/files/load', 'POST', { filename });
+            if (data && data.success) {
+                showToast(`Loaded: ${filename}`, 'success');
+                loadFiles();
+            }
+        }
+
+        async function deleteFile(filename) {
+            if (!confirm(`Delete file: ${filename}?\n\nThis action cannot be undone.`)) return;
+
+            const data = await apiCall(`/api/files/delete?name=${encodeURIComponent(filename)}`, 'DELETE');
+            if (data && data.success) {
+                showToast(`Deleted: ${filename}`, 'success');
+                loadFiles();
+            }
+        }
+
+        async function loadConfiguration() {
+            const data = await apiCall('/api/config');
+            if (data) {
+                currentConfig = data;
+                document.getElementById('configAutoStart').checked = data.autoStart;
+                document.getElementById('configDefaultFile').value = data.defaultFile;
+                document.getElementById('configInterval').value = data.statusInterval;
+            }
+        }
+
+        async function saveConfiguration() {
+            const config = {
+                autoStart: document.getElementById('configAutoStart').checked,
+                defaultFile: document.getElementById('configDefaultFile').value,
+                statusInterval: parseInt(document.getElementById('configInterval').value)
+            };
+
+            const data = await apiCall('/api/config', 'POST', config);
+            if (data && data.success) {
+                showToast('Configuration saved', 'success');
+                currentConfig = config;
+            }
+        }
+
+        // ===== UI UPDATES =====
+        function updateStatus(status) {
+            document.getElementById('statusState').textContent = status.state;
+            document.getElementById('statusState').className = `status-value ${status.state}`;
+            document.getElementById('statusIteration').textContent = status.iteration.toLocaleString();
+            document.getElementById('statusUptime').textContent = status.uptimeStr;
+            document.getElementById('statusCommands').textContent = status.commandsExecuted.toLocaleString();
+            document.getElementById('statusMemory').textContent = formatBytes(status.memoryFree);
+        }
+
+        function renderFileList(files) {
+            const container = document.getElementById('fileList');
+
+            if (files.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                        <p>No .ast files found</p>
+                        <p style="font-size: 12px; margin-top: 10px;">Upload files using LittleFS data upload tool</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = files.map(file => `
+                <div class="file-item">
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatBytes(file.size)}</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn btn-primary btn-small" onclick="loadFile('${file.path}')">
+                            🔄 Load
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="deleteFile('${file.path}')">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateFileSelect(files) {
+            const select = document.getElementById('configDefaultFile');
+            select.innerHTML = files.map(file =>
+                `<option value="${file.path}">${file.name}</option>`
+            ).join('');
+
+            if (currentConfig.defaultFile) {
+                select.value = currentConfig.defaultFile;
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // ===== INITIALIZATION =====
+        window.addEventListener('load', () => {
+            console.log('Initializing web interface...');
+            connectWebSocket();
+            fetchStatus();
+            loadFiles();
+            loadConfiguration();
+        });
+    </script>
+</body>
+</html>

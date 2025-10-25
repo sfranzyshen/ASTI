@@ -1,31 +1,31 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1761313769111,
+    "timestamp": 1761322422721,
     "component": "interpreter",
     "version": "22.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1761313769111,
+    "timestamp": 1761322422721,
     "message": "Program execution started"
   },
   {
     "type": "VAR_SET",
     "variable": "stringOne",
     "value": null,
-    "timestamp": 1761313769111
+    "timestamp": 1761322422721
   },
   {
     "type": "VAR_SET",
     "variable": "stringTwo",
     "value": null,
-    "timestamp": 1761313769111
+    "timestamp": 1761322422721
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1761313769111,
+    "timestamp": 1761322422722,
     "message": "Executing setup() function"
   },
   {
@@ -35,20 +35,20 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1761313769111,
+    "timestamp": 1761322422722,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1761313769111,
+    "timestamp": 1761322422722,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "end",
     "iterations": 0,
-    "timestamp": 1761313769111,
+    "timestamp": 1761322422722,
     "message": "while loop completed (0 iterations)"
   },
   {
@@ -57,7 +57,7 @@
     "value": {
       "value": "Sensor value for input 650: 560"
     },
-    "timestamp": 1761313769112
+    "timestamp": 1761322422722
   },
   {
     "type": "VAR_SET",
@@ -65,7 +65,7 @@
     "value": {
       "value": "value"
     },
-    "timestamp": 1761313769112
+    "timestamp": 1761322422722
   },
   {
     "type": "FUNCTION_CALL",
@@ -74,29 +74,29 @@
       "\n\nAppending to a String:"
     ],
     "data": "\n\nAppending to a String:",
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Serial.println(\"\n\nAppending to a String:\")"
   },
   {
     "type": "FUNCTION_CALL",
     "function": "Serial.println",
     "arguments": [],
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Serial.println()"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Starting loop iteration 1"
   },
   {
@@ -104,7 +104,7 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1761313769112
+    "timestamp": 1761322422722
   },
   {
     "type": "FUNCTION_CALL",
@@ -113,7 +113,7 @@
       "Sensor "
     ],
     "data": "Sensor ",
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Serial.println(\"Sensor \")"
   },
   {
@@ -122,7 +122,7 @@
     "value": {
       "value": "Sensor value for input 650: 560"
     },
-    "timestamp": 1761313769112
+    "timestamp": 1761322422722
   },
   {
     "type": "FUNCTION_CALL",
@@ -131,7 +131,7 @@
       "Sensor value"
     ],
     "data": "Sensor value",
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Serial.println(\"Sensor value\")"
   },
   {
@@ -140,7 +140,7 @@
     "value": {
       "value": "Sensor value for input 650: 560"
     },
-    "timestamp": 1761313769112
+    "timestamp": 1761322422722
   },
   {
     "type": "FUNCTION_CALL",
@@ -149,7 +149,7 @@
       "Sensor value for input "
     ],
     "data": "Sensor value for input ",
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Serial.println(\"Sensor value for input \")"
   },
   {
@@ -158,7 +158,7 @@
     "value": {
       "value": "Sensor value for input 650: 560"
     },
-    "timestamp": 1761313769112
+    "timestamp": 1761322422722
   },
   {
     "type": "FUNCTION_CALL",
@@ -167,7 +167,7 @@
       "Sensor value for input 65"
     ],
     "data": "Sensor value for input 65",
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Serial.println(\"Sensor value for input 65\")"
   },
   {
@@ -176,7 +176,7 @@
     "value": {
       "value": "Sensor value for input 650: 560"
     },
-    "timestamp": 1761313769112
+    "timestamp": 1761322422722
   },
   {
     "type": "FUNCTION_CALL",
@@ -185,7 +185,7 @@
       "Sensor value for input 650"
     ],
     "data": "Sensor value for input 650",
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Serial.println(\"Sensor value for input 650\")"
   },
   {
@@ -194,7 +194,7 @@
     "value": {
       "value": "Sensor value for input 650: 560"
     },
-    "timestamp": 1761313769112
+    "timestamp": 1761322422722
   },
   {
     "type": "FUNCTION_CALL",
@@ -203,14 +203,14 @@
       "Sensor value for input 650: "
     ],
     "data": "Sensor value for input 650: ",
-    "timestamp": 1761313769112,
+    "timestamp": 1761322422722,
     "message": "Serial.println(\"Sensor value for input 650: \")"
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
     "requestId": "analogRead_000001",
-    "timestamp": 1761313769112
+    "timestamp": 1761322422722
   },
   {
     "type": "VAR_SET",
@@ -218,7 +218,7 @@
     "value": {
       "value": "Sensor value for input 650: 560"
     },
-    "timestamp": 1761313769117
+    "timestamp": 1761322422727
   },
   {
     "type": "FUNCTION_CALL",
@@ -227,7 +227,7 @@
       "Sensor value for input 650: 560"
     ],
     "data": "Sensor value for input 650: 560",
-    "timestamp": 1761313769117,
+    "timestamp": 1761322422727,
     "message": "Serial.println(\"Sensor value for input 650: 560\")"
   },
   {
@@ -237,7 +237,7 @@
       "\n\nchanging the Strings' values"
     ],
     "data": "\n\nchanging the Strings' values",
-    "timestamp": 1761313769117,
+    "timestamp": 1761322422727,
     "message": "Serial.println(\"\n\nchanging the Strings' values\")"
   },
   {
@@ -246,7 +246,7 @@
     "value": {
       "value": "A long integer: 123456789"
     },
-    "timestamp": 1761313769117
+    "timestamp": 1761322422727
   },
   {
     "type": "VAR_SET",
@@ -254,7 +254,7 @@
     "value": {
       "value": "The millis(): 17807"
     },
-    "timestamp": 1761313769117
+    "timestamp": 1761322422727
   },
   {
     "type": "VAR_SET",
@@ -262,7 +262,7 @@
     "value": {
       "value": "A long integer: 123456789"
     },
-    "timestamp": 1761313769117
+    "timestamp": 1761322422727
   },
   {
     "type": "FUNCTION_CALL",
@@ -271,13 +271,13 @@
       "A long integer: 123456789"
     ],
     "data": "A long integer: 123456789",
-    "timestamp": 1761313769117,
+    "timestamp": 1761322422727,
     "message": "Serial.println(\"A long integer: 123456789\")"
   },
   {
     "type": "MILLIS_REQUEST",
     "requestId": "millis_000002",
-    "timestamp": 1761313769117
+    "timestamp": 1761322422727
   },
   {
     "type": "FUNCTION_CALL",
@@ -286,27 +286,27 @@
       "The millis(): 17807"
     ],
     "data": "The millis(): 17807",
-    "timestamp": 1761313769123,
+    "timestamp": 1761322422732,
     "message": "Serial.println(\"The millis(): 17807\")"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "start",
-    "timestamp": 1761313769123,
+    "timestamp": 1761322422732,
     "message": "while loop started"
   },
   {
     "type": "WHILE_LOOP",
     "phase": "iteration",
     "iteration": 0,
-    "timestamp": 1761313769123,
+    "timestamp": 1761322422732,
     "message": "while loop iteration 0"
   },
   {
     "type": "LOOP_LIMIT_REACHED",
     "phase": "end",
     "iterations": 1,
-    "timestamp": 1761313769128,
+    "timestamp": 1761322422737,
     "message": "While loop limit reached: completed 1 iterations (max: 1)"
   },
   {
@@ -315,23 +315,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1761313769128
+    "timestamp": 1761322422737
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1761313769134,
+    "timestamp": 1761322422743,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1761313769134,
+    "timestamp": 1761322422743,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1761313769134,
+    "timestamp": 1761322422743,
     "message": "Program execution stopped"
   }
 ]

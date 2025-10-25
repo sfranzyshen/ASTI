@@ -94,7 +94,8 @@
       "Bash(chmod:*)",
       "Bash(./scripts/build_wasm_debug.sh:*)",
       "Bash(./continuous_test:*)",
-      "Bash(tee:*)"
+      "Bash(tee:*)",
+      "Bash(Interpreter 22.0.0\" version string to users.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": [],

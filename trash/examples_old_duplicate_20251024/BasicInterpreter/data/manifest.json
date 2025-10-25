@@ -1,0 +1,94 @@
+{
+  "version": "21.2.1",
+  "generatedDate": "2025-10-16",
+  "targetBoard": "arduino:esp32:nano_nora",
+  "filesystem": "LittleFS",
+  "partitionScheme": "Default (includes LittleFS)",
+  "totalSize": 4115,
+  "files": [
+    {
+      "filename": "bareMinimum.ast",
+      "source": "BareMinimum.ino",
+      "description": "Minimal Arduino sketch with empty setup() and loop()",
+      "size": 1132,
+      "astVersion": "3.2.0",
+      "commandCount": 11,
+      "category": "01.Basics",
+      "features": [
+        "basic_structure",
+        "empty_functions"
+      ]
+    },
+    {
+      "filename": "blink.ast",
+      "source": "Blink.ino",
+      "description": "Classic LED blink example using LED_BUILTIN",
+      "size": 1389,
+      "astVersion": "3.2.0",
+      "commandCount": 16,
+      "category": "01.Basics",
+      "features": [
+        "digital_output",
+        "pinMode",
+        "digitalWrite",
+        "delay"
+      ]
+    },
+    {
+      "filename": "digitalReadSerial.ast",
+      "source": "DigitalReadSerial.ino",
+      "description": "Reads digital input and prints to Serial",
+      "size": 1494,
+      "astVersion": "3.2.0",
+      "commandCount": 18,
+      "category": "01.Basics",
+      "features": [
+        "digital_input",
+        "serial_output",
+        "pinMode",
+        "digitalRead",
+        "Serial.begin",
+        "Serial.println"
+      ]
+    }
+  ],
+  "uploadInstructions": {
+    "method1": {
+      "name": "Arduino IDE 2.x Plugin",
+      "tool": "ESP32 Sketch Data Upload",
+      "url": "https://github.com/me-no-dev/arduino-esp32fs-plugin",
+      "steps": [
+        "Install ESP32 Filesystem Uploader plugin",
+        "Place .ast files in data/ folder",
+        "Tools > ESP32 Sketch Data Upload",
+        "Wait for completion"
+      ]
+    },
+    "method2": {
+      "name": "esptool.py Manual",
+      "tool": "mklittlefs + esptool.py",
+      "steps": [
+        "mklittlefs -c data/ -s 1441792 littlefs.bin",
+        "esptool.py --chip esp32 --port /dev/ttyACM0 write_flash 0x310000 littlefs.bin"
+      ]
+    },
+    "method3": {
+      "name": "PlatformIO",
+      "tool": "pio run --target uploadfs",
+      "config": "board_build.filesystem = littlefs",
+      "steps": [
+        "Add config to platformio.ini",
+        "Place .ast files in data/",
+        "pio run --target uploadfs"
+      ]
+    }
+  },
+  "compatibility": {
+    "minInterpreterVersion": "21.0.0",
+    "minCompactASTVersion": "3.2.0",
+    "minArduinoParserVersion": "6.0.0",
+    "boardFlash": "8MB",
+    "boardPSRAM": "8MB",
+    "littlefsPartitionSize": "available"
+  }
+}

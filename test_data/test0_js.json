@@ -1,19 +1,19 @@
 [
   {
     "type": "VERSION_INFO",
-    "timestamp": 1761313763993,
+    "timestamp": 1761322420061,
     "component": "interpreter",
     "version": "22.0.0",
     "status": "started"
   },
   {
     "type": "PROGRAM_START",
-    "timestamp": 1761313763994,
+    "timestamp": 1761322420062,
     "message": "Program execution started"
   },
   {
     "type": "SETUP_START",
-    "timestamp": 1761313764005,
+    "timestamp": 1761322420063,
     "message": "Executing setup() function"
   },
   {
@@ -23,22 +23,22 @@
       9600
     ],
     "baudRate": 9600,
-    "timestamp": 1761313764009,
+    "timestamp": 1761322420066,
     "message": "Serial.begin(9600)"
   },
   {
     "type": "SETUP_END",
-    "timestamp": 1761313764009,
+    "timestamp": 1761322420066,
     "message": "Completed setup() function"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1761313764009,
+    "timestamp": 1761322420066,
     "message": "Starting loop() execution"
   },
   {
     "type": "LOOP_START",
-    "timestamp": 1761313764009,
+    "timestamp": 1761322420066,
     "message": "Starting loop iteration 1"
   },
   {
@@ -46,19 +46,19 @@
     "function": "loop",
     "message": "Executing loop() iteration 1",
     "iteration": 1,
-    "timestamp": 1761313764009
+    "timestamp": 1761322420066
   },
   {
     "type": "ANALOG_READ_REQUEST",
     "pin": 14,
     "requestId": "analogRead_000001",
-    "timestamp": 1761313764010
+    "timestamp": 1761322420068
   },
   {
     "type": "VAR_SET",
     "variable": "sensorValue",
     "value": 560,
-    "timestamp": 1761313764016
+    "timestamp": 1761322420075
   },
   {
     "type": "FUNCTION_CALL",
@@ -67,14 +67,14 @@
       "560"
     ],
     "data": "560",
-    "timestamp": 1761313764017,
+    "timestamp": 1761322420075,
     "message": "Serial.println(560)"
   },
   {
     "type": "DELAY",
     "duration": 1,
     "actualDelay": 1,
-    "timestamp": 1761313764017
+    "timestamp": 1761322420075
   },
   {
     "type": "FUNCTION_CALL",
@@ -82,23 +82,23 @@
     "message": "Completed loop() iteration 1",
     "iteration": 1,
     "completed": true,
-    "timestamp": 1761313764017
+    "timestamp": 1761322420075
   },
   {
     "type": "LOOP_END",
-    "timestamp": 1761313764022,
+    "timestamp": 1761322420081,
     "message": "Loop limit reached: completed 1 iterations (max: 1)",
     "iterations": 1,
     "limitReached": true
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1761313764022,
+    "timestamp": 1761322420081,
     "message": "Program completed after 1 loop iterations (limit reached)"
   },
   {
     "type": "PROGRAM_END",
-    "timestamp": 1761313764022,
+    "timestamp": 1761322420081,
     "message": "Program execution stopped"
   }
 ]
