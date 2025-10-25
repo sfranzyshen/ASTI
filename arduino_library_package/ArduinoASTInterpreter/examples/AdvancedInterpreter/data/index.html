@@ -443,6 +443,28 @@
         <div class="card">
             <div class="card-title">📁 File Manager</div>
             <div id="fileStats" style="color: var(--text-secondary); margin-bottom: 10px;"></div>
+
+            <!-- Upload Section -->
+            <div id="uploadSection" style="margin-bottom: 20px;">
+                <input type="file" id="fileInput" accept=".ast" style="display: none;" onchange="handleFileSelect(event)">
+                <div id="uploadDropZone"
+                     style="border: 2px dashed var(--border-color); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s ease;"
+                     onclick="document.getElementById('fileInput').click()"
+                     ondragover="handleDragOver(event)"
+                     ondragleave="handleDragLeave(event)"
+                     ondrop="handleDrop(event)">
+                    <div style="font-size: 48px; margin-bottom: 10px;">📤</div>
+                    <div style="font-size: 16px; margin-bottom: 5px;">Click to select or drag & drop .ast file</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Only .ast files are supported</div>
+                </div>
+                <div id="uploadProgress" style="display: none; margin-top: 10px;">
+                    <div style="background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden;">
+                        <div id="uploadProgressBar" style="height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--success-color)); width: 0%; transition: width 0.3s ease;"></div>
+                    </div>
+                    <div id="uploadStatus" style="text-align: center; margin-top: 5px; font-size: 14px; color: var(--text-secondary);"></div>
+                </div>
+            </div>
+
             <div class="file-list" id="fileList">
                 <div style="text-align: center; padding: 20px; color: var(--text-secondary);">
                     <div class="loading"></div>
@@ -641,6 +663,117 @@
             }
         }
 
+        // ===== FILE UPLOAD HANDLING =====
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                uploadFile(file);
+            }
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const dropZone = document.getElementById('uploadDropZone');
+            dropZone.style.borderColor = 'var(--primary-color)';
+            dropZone.style.background = 'rgba(33, 150, 243, 0.1)';
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const dropZone = document.getElementById('uploadDropZone');
+            dropZone.style.borderColor = 'var(--border-color)';
+            dropZone.style.background = 'transparent';
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            handleDragLeave(event);
+
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.name.endsWith('.ast')) {
+                    uploadFile(file);
+                } else {
+                    showToast('Only .ast files are supported', 'error');
+                }
+            }
+        }
+
+        async function uploadFile(file) {
+            // Check filesystem availability
+            if (!filesystemEnabled) {
+                showToast('Filesystem not available. Enable USE_FILESYSTEM=true.', 'error');
+                return;
+            }
+
+            // Show progress
+            const progressDiv = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('uploadProgressBar');
+            const statusText = document.getElementById('uploadStatus');
+
+            progressDiv.style.display = 'block';
+            progressBar.style.width = '0%';
+            statusText.textContent = `Uploading ${file.name}...`;
+
+            // Create form data
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                // Simulate progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 10;
+                    if (progress <= 90) {
+                        progressBar.style.width = `${progress}%`;
+                    }
+                }, 100);
+
+                // Upload file
+                const response = await fetch('/api/files/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+
+                const data = await response.json();
+
+                if (data.success) {
+                    statusText.textContent = `✓ Upload complete: ${file.name}`;
+                    statusText.style.color = 'var(--success-color)';
+                    showToast(`Uploaded: ${file.name}`, 'success');
+
+                    // Reset file input
+                    document.getElementById('fileInput').value = '';
+
+                    // Reload file list after short delay
+                    setTimeout(() => {
+                        progressDiv.style.display = 'none';
+                        loadFiles();
+                    }, 2000);
+                } else {
+                    throw new Error(data.error || 'Upload failed');
+                }
+            } catch (error) {
+                progressBar.style.width = '100%';
+                progressBar.style.background = 'var(--danger-color)';
+                statusText.textContent = `✗ Upload failed: ${error.message}`;
+                statusText.style.color = 'var(--danger-color)';
+                showToast(`Upload failed: ${error.message}`, 'error');
+
+                setTimeout(() => {
+                    progressDiv.style.display = 'none';
+                    progressBar.style.background = 'linear-gradient(90deg, var(--primary-color), var(--success-color))';
+                }, 3000);
+            }
+        }
+
         async function loadConfiguration() {
             const data = await apiCall('/api/config');
             if (data) {
@@ -682,9 +815,13 @@
 
         function renderFileList(files) {
             const container = document.getElementById('fileList');
+            const uploadSection = document.getElementById('uploadSection');
 
             // Check if filesystem is disabled
             if (!filesystemEnabled) {
+                // Hide upload section when filesystem is disabled
+                uploadSection.style.display = 'none';
+
                 container.innerHTML = `
                     <div style="text-align: center; padding: 20px; color: var(--text-secondary);">
                         <p style="color: var(--warning-color); font-weight: bold;">⚠ Filesystem Not Available</p>
@@ -701,11 +838,14 @@
                 return;
             }
 
+            // Show upload section when filesystem is enabled
+            uploadSection.style.display = 'block';
+
             if (files.length === 0) {
                 container.innerHTML = `
                     <div style="text-align: center; padding: 20px; color: var(--text-secondary);">
                         <p>No .ast files found</p>
-                        <p style="font-size: 12px; margin-top: 10px;">Upload files using LittleFS data upload tool</p>
+                        <p style="font-size: 12px; margin-top: 10px;">Upload .ast files using the upload section above</p>
                     </div>
                 `;
                 return;

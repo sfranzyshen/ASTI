@@ -366,6 +366,86 @@ private:
     }
 
     /**
+     * Upload file endpoint: POST /api/files/upload
+     * Handles multipart/form-data file upload
+     */
+    void handleUploadFile(AsyncWebServerRequest* request, String filename, size_t index,
+                         uint8_t* data, size_t len, bool final) {
+        // Check if filesystem is available
+        if (!filesystemEnabled_) {
+            if (final) {
+                auto response = request->beginResponse(503, "application/json",
+                                                      createErrorJSON("Filesystem not available. Set USE_FILESYSTEM=true and upload files to enable file management."));
+                addCORSHeaders(response);
+                request->send(response);
+            }
+            return;
+        }
+
+        // Validate file extension
+        if (index == 0) {
+            if (!filename.endsWith(".ast")) {
+                if (final) {
+                    auto response = request->beginResponse(400, "application/json",
+                                                          createErrorJSON("Only .ast files are allowed"));
+                    addCORSHeaders(response);
+                    request->send(response);
+                }
+                return;
+            }
+
+            // Add leading slash if not present
+            if (!filename.startsWith("/")) {
+                filename = "/" + filename;
+            }
+
+            Serial.print("[API] Uploading file: ");
+            Serial.println(filename);
+        }
+
+        // Open file for writing (create or append)
+        File file = LittleFS.open(filename, index == 0 ? "w" : "a");
+        if (!file) {
+            if (final) {
+                auto response = request->beginResponse(500, "application/json",
+                                                      createErrorJSON("Failed to open file for writing"));
+                addCORSHeaders(response);
+                request->send(response);
+            }
+            return;
+        }
+
+        // Write data chunk
+        if (len) {
+            if (file.write(data, len) != len) {
+                file.close();
+                if (final) {
+                    auto response = request->beginResponse(500, "application/json",
+                                                          createErrorJSON("Write error"));
+                    addCORSHeaders(response);
+                    request->send(response);
+                }
+                return;
+            }
+        }
+        file.close();
+
+        // Send response when upload is complete
+        if (final) {
+            Serial.print("[API] Upload complete: ");
+            Serial.print(filename);
+            Serial.print(" (");
+            Serial.print(index + len);
+            Serial.println(" bytes)");
+
+            auto response = request->beginResponse(200, "application/json",
+                                                  createSuccessJSON("File uploaded: " + filename));
+            addCORSHeaders(response);
+            request->send(response);
+        }
+    }
+
+    /**
      * Get config endpoint: GET /api/config
      */
     void handleGetConfig(AsyncWebServerRequest* request) {
@@ -488,6 +568,15 @@ public:
             handleDeleteFile(request);
         });
 
+        // Files upload endpoint (multipart/form-data)
+        server_->on("/api/files/upload", HTTP_POST,
+                   [](AsyncWebServerRequest* request) {},
+                   [this](AsyncWebServerRequest* request, String filename, size_t index,
+                         uint8_t* data, size_t len, bool final) {
+            handleUploadFile(request, filename, index, data, len, final);
+        },
+                   nullptr);
+
         // Config endpoints
         server_->on("/api/config", HTTP_GET, [this](AsyncWebServerRequest* request) {
             handleGetConfig(request);
@@ -510,6 +599,7 @@ public:
         Serial.println("  - GET  /api/files");
         Serial.println("  - POST /api/files/load");
         Serial.println("  - DELETE /api/files/delete");
+        Serial.println("  - POST /api/files/upload");
         Serial.println("  - GET  /api/config");
         Serial.println("  - POST /api/config");
         Serial.println("=================================================");
