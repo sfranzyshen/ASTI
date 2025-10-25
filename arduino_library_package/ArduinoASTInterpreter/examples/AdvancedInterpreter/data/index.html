@@ -483,6 +483,7 @@
         let httpFallbackTimer = null;
         let currentFiles = [];
         let currentConfig = {};
+        let filesystemEnabled = false;
 
         // ===== WEBSOCKET MANAGEMENT =====
         function connectWebSocket() {
@@ -614,6 +615,9 @@
                 const stats = document.getElementById('fileStats');
                 const totalSize = data.files.reduce((sum, f) => sum + f.size, 0);
                 stats.textContent = `${data.count} files, ${formatBytes(totalSize)} total`;
+            } else if (data && data.error) {
+                // Filesystem not available - render appropriate message
+                renderFileList([]);
             }
         }
 
@@ -669,10 +673,33 @@
             document.getElementById('statusUptime').textContent = status.uptimeStr;
             document.getElementById('statusCommands').textContent = status.commandsExecuted.toLocaleString();
             document.getElementById('statusMemory').textContent = formatBytes(status.memoryFree);
+
+            // Update filesystem availability
+            if (status.filesystemEnabled !== undefined) {
+                filesystemEnabled = status.filesystemEnabled;
+            }
         }
 
         function renderFileList(files) {
             const container = document.getElementById('fileList');
+
+            // Check if filesystem is disabled
+            if (!filesystemEnabled) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                        <p style="color: var(--warning-color); font-weight: bold;">⚠ Filesystem Not Available</p>
+                        <p style="font-size: 14px; margin-top: 10px;">File management requires filesystem mode.</p>
+                        <p style="font-size: 12px; margin-top: 10px;">
+                            To enable:<br>
+                            1. Set <code style="background: var(--bg-tertiary); padding: 2px 6px; border-radius: 3px;">USE_FILESYSTEM=true</code> in sketch<br>
+                            2. Upload .ast files to LittleFS<br>
+                            3. Recompile and upload sketch
+                        </p>
+                    </div>
+                `;
+                document.getElementById('fileStats').textContent = 'Filesystem disabled';
+                return;
+            }
 
             if (files.length === 0) {
                 container.innerHTML = `

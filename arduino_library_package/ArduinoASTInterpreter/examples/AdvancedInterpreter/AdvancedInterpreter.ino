@@ -635,6 +635,13 @@ void setup() {
             // Initialize Web API
             webAPI.begin(webServer.getServer());
 
+            // Enable filesystem support in API if USE_FILESYSTEM is enabled
+            #if USE_FILESYSTEM
+                webAPI.setFilesystemEnabled(true);
+            #else
+                webAPI.setFilesystemEnabled(false);
+            #endif
+
             // Print access URLs
             Serial.println();
             Serial.println("========================================");

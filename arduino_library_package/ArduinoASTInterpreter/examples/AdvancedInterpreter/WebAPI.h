@@ -51,6 +51,7 @@ extern void executeOneCommand();
 class WebAPI {
 private:
     AsyncWebServer* server_;
+    bool filesystemEnabled_;
 
     /**
      * Add CORS headers to response
@@ -136,6 +137,7 @@ private:
         doc["uptimeStr"] = formatUptime(millis() - startTime);
         doc["commandsExecuted"] = commandsExecuted;
         doc["memoryFree"] = ESP.getFreeHeap();
+        doc["filesystemEnabled"] = filesystemEnabled_;
         doc["timestamp"] = millis();
 
         String output;
@@ -204,6 +206,15 @@ private:
      * Get files endpoint: GET /api/files
      */
     void handleGetFiles(AsyncWebServerRequest* request) {
+        // Check if filesystem is available
+        if (!filesystemEnabled_) {
+            auto response = request->beginResponse(503, "application/json",
+                                                  createErrorJSON("Filesystem not available. Set USE_FILESYSTEM=true and upload files to enable file management."));
+            addCORSHeaders(response);
+            request->send(response);
+            return;
+        }
+
         DynamicJsonDocument doc(2048);
         JsonArray files = doc.createNestedArray("files");
 
@@ -248,6 +259,15 @@ private:
      */
     void handleLoadFile(AsyncWebServerRequest* request, uint8_t* data, size_t len,
                        size_t index, size_t total) {
+        // Check if filesystem is available
+        if (!filesystemEnabled_) {
+            auto response = request->beginResponse(503, "application/json",
+                                                  createErrorJSON("Filesystem not available. Set USE_FILESYSTEM=true and upload files to enable file management."));
+            addCORSHeaders(response);
+            request->send(response);
+            return;
+        }
+
         // This will be called with the complete body
         // Parse JSON body
         StaticJsonDocument<256> doc;
@@ -294,6 +314,15 @@ private:
      * Delete file endpoint: DELETE /api/files/:name
      */
     void handleDeleteFile(AsyncWebServerRequest* request) {
+        // Check if filesystem is available
+        if (!filesystemEnabled_) {
+            auto response = request->beginResponse(503, "application/json",
+                                                  createErrorJSON("Filesystem not available. Set USE_FILESYSTEM=true and upload files to enable file management."));
+            addCORSHeaders(response);
+            request->send(response);
+            return;
+        }
+
         if (!request->hasParam("name")) {
             auto response = request->beginResponse(400, "application/json",
                                                   createErrorJSON("Missing filename"));
@@ -405,7 +434,7 @@ private:
     }
 
 public:
-    WebAPI() : server_(nullptr) {}
+    WebAPI() : server_(nullptr), filesystemEnabled_(false) {}
 
     /**
      * Initialize API handlers
@@ -485,5 +514,15 @@ public:
         Serial.println("  - POST /api/config");
         Serial.println("=================================================");
         Serial.println();
+    }
+
+    /**
+     * Set filesystem availability
+     * Call this after LittleFS mount to enable file management endpoints
+     */
+    void setFilesystemEnabled(bool enabled) {
+        filesystemEnabled_ = enabled;
+        Serial.print("[WebAPI] Filesystem support: ");
+        Serial.println(enabled ? "ENABLED" : "DISABLED");
     }
 };
