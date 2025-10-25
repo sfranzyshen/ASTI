@@ -469,6 +469,97 @@ uint8_t* readASTFromFile(const char* path, size_t* size) {
 // INTERPRETER MANAGEMENT
 // ============================================================================
 
+/**
+ * Load a specific AST file from filesystem
+ * Stops current execution and loads the specified file
+ * Returns true on success, false on failure
+ */
+bool loadASTFile(const char* filename) {
+    Serial.print("[LOAD] Loading AST file: ");
+    Serial.println(filename);
+
+    #if !USE_FILESYSTEM
+    Serial.println("✗ ERROR: Filesystem not enabled (USE_FILESYSTEM=false)");
+    return false;
+    #else
+
+    // Check if filesystem is initialized
+    if (!initFilesystem()) {
+        Serial.println("✗ ERROR: Filesystem initialization failed");
+        return false;
+    }
+
+    // Check if file exists
+    if (!LittleFS.exists(filename)) {
+        Serial.println("✗ ERROR: File not found");
+        return false;
+    }
+
+    // Stop current execution
+    if (state == STATE_RUNNING) {
+        Serial.println("  Stopping current execution...");
+        state = STATE_STOPPED;
+    }
+
+    // Delete old interpreter
+    if (interpreter) {
+        delete interpreter;
+        interpreter = nullptr;
+    }
+
+    // Free old AST buffer
+    if (astBuffer) {
+        free(astBuffer);
+        astBuffer = nullptr;
+    }
+
+    // Reset statistics
+    immediateExecutor.resetStats();
+    loopIteration = 0;
+    commandsExecuted = 0;
+    startTime = millis();
+
+    // Load new AST file
+    size_t astSize = 0;
+    astBuffer = readASTFromFile(filename, &astSize);
+
+    if (!astBuffer) {
+        Serial.println("✗ ERROR: Failed to read AST file");
+        return false;
+    }
+
+    // Configure interpreter options
+    InterpreterOptions opts;
+    opts.verbose = false;     // Status-only mode
+    opts.debug = false;
+    opts.maxLoopIterations = 1;  // Run ONE iteration per call
+    opts.syncMode = true;
+
+    // Create new interpreter
+    Serial.println("  Creating interpreter...");
+    interpreter = new ASTInterpreter(astBuffer, astSize, opts);
+
+    if (!interpreter) {
+        Serial.println("✗ ERROR: Failed to create interpreter");
+        free(astBuffer);
+        astBuffer = nullptr;
+        return false;
+    }
+
+    // Free filesystem buffer (interpreter has internal copy)
+    free(astBuffer);
+    astBuffer = nullptr;
+
+    // Connect providers
+    interpreter->setSyncDataProvider(&dataProvider);
+    interpreter->setCommandCallback(&immediateExecutor);
+
+    Serial.println("✓ File loaded successfully");
+    return true;
+
+    #endif
+}
+
 void resetInterpreter() {
     Serial.println("[RESET] Resetting interpreter state...");
 
@@ -502,7 +593,12 @@ void resetInterpreter() {
         }
 
         if (initFilesystem()) {
-            astBuffer = readASTFromFile(DEFAULT_AST_FILE, &astSize);
+            // Use configured default file instead of hardcoded constant
+            String defaultFile = configManager.getDefaultFile();
+            Serial.print("[RESET] Loading configured default file: ");
+            Serial.println(defaultFile);
+
+            astBuffer = readASTFromFile(defaultFile.c_str(), &astSize);
             if (astBuffer) {
                 astData = astBuffer;
             } else {

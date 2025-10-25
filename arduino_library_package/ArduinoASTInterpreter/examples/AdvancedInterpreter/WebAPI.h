@@ -40,6 +40,7 @@ extern void pauseExecution();
 extern void resumeExecution();
 extern void resetInterpreter();
 extern void executeOneCommand();
+extern bool loadASTFile(const char* filename);
 
 // ============================================================================
 // WEB API CLASS
@@ -302,13 +303,21 @@ private:
             return;
         }
 
-        // Reset and reload interpreter with new file
-        // TODO: Implement file loading logic in main sketch
+        // Load the file into interpreter
         Serial.print("[API] Loading file: ");
         Serial.println(filename);
 
-        auto response = request->beginResponse(200, "application/json",
-                                              createSuccessJSON("File loaded: " + filename));
+        bool success = loadASTFile(filename.c_str());
+
+        AsyncWebServerResponse* response;
+        if (success) {
+            response = request->beginResponse(200, "application/json",
+                                            createSuccessJSON("File loaded: " + filename));
+        } else {
+            response = request->beginResponse(500, "application/json",
+                                            createErrorJSON("Failed to load file"));
+        }
+
         addCORSHeaders(response);
         request->send(response);
     }
