@@ -52,6 +52,9 @@ class WebAPI {
 private:
     AsyncWebServer* server_;
     bool filesystemEnabled_;
+    String currentUploadFilename_;  // Store filename with leading slash across chunks
+    bool uploadSuccess_;            // Track upload success/failure
+    String uploadError_;            // Store error message if upload fails
 
     /**
      * Add CORS headers to response
@@ -367,81 +370,75 @@ private:
 
     /**
      * Upload file endpoint: POST /api/files/upload
-     * Handles multipart/form-data file upload
+     * Handles multipart/form-data file upload chunks
+     * NOTE: Does not send response - that's handled by request handler
      */
     void handleUploadFile(AsyncWebServerRequest* request, String filename, size_t index,
                          uint8_t* data, size_t len, bool final) {
-        // Check if filesystem is available
-        if (!filesystemEnabled_) {
-            if (final) {
-                auto response = request->beginResponse(503, "application/json",
-                                                      createErrorJSON("Filesystem not available. Set USE_FILESYSTEM=true and upload files to enable file management."));
-                addCORSHeaders(response);
-                request->send(response);
-            }
-            return;
-        }
-
-        // Validate file extension
+        // First chunk - initialize upload
         if (index == 0) {
-            if (!filename.endsWith(".ast")) {
-                if (final) {
-                    auto response = request->beginResponse(400, "application/json",
-                                                          createErrorJSON("Only .ast files are allowed"));
-                    addCORSHeaders(response);
-                    request->send(response);
-                }
+            uploadSuccess_ = true;
+            uploadError_ = "";
+
+            // Check if filesystem is available
+            if (!filesystemEnabled_) {
+                uploadSuccess_ = false;
+                uploadError_ = "Filesystem not available. Set USE_FILESYSTEM=true and upload files to enable file management.";
                 return;
             }
 
-            // Add leading slash if not present
-            if (!filename.startsWith("/")) {
-                filename = "/" + filename;
+            // Validate file extension
+            if (!filename.endsWith(".ast")) {
+                uploadSuccess_ = false;
+                uploadError_ = "Only .ast files are allowed";
+                return;
+            }
+
+            // Store filename with leading slash
+            if (filename.startsWith("/")) {
+                currentUploadFilename_ = filename;
+            } else {
+                currentUploadFilename_ = "/" + filename;
             }
 
             Serial.print("[API] Uploading file: ");
-            Serial.println(filename);
+            Serial.println(currentUploadFilename_);
         }
 
-        // Open file for writing (create or append)
-        File file = LittleFS.open(filename, index == 0 ? "w" : "a");
+        // If upload already failed, skip processing
+        if (!uploadSuccess_) {
+            return;
+        }
+
+        // Open file for writing (create on first chunk, append on subsequent)
+        File file = LittleFS.open(currentUploadFilename_, index == 0 ? "w" : "a");
         if (!file) {
-            if (final) {
-                auto response = request->beginResponse(500, "application/json",
-                                                      createErrorJSON("Failed to open file for writing"));
-                addCORSHeaders(response);
-                request->send(response);
-            }
+            uploadSuccess_ = false;
+            uploadError_ = "Failed to open file for writing";
+            Serial.println("[API] ERROR: Failed to open file");
             return;
         }
 
         // Write data chunk
-        if (len) {
-            if (file.write(data, len) != len) {
+        if (len > 0) {
+            size_t written = file.write(data, len);
+            if (written != len) {
                 file.close();
-                if (final) {
-                    auto response = request->beginResponse(500, "application/json",
-                                                          createErrorJSON("Write error"));
-                    addCORSHeaders(response);
-                    request->send(response);
-                }
+                uploadSuccess_ = false;
+                uploadError_ = "Write error";
+                Serial.println("[API] ERROR: Write failed");
                 return;
             }
         }
         file.close();
 
-        // Send response when upload is complete
-        if (final) {
+        // Log completion
+        if (final && uploadSuccess_) {
             Serial.print("[API] Upload complete: ");
-            Serial.print(filename);
+            Serial.print(currentUploadFilename_);
             Serial.print(" (");
             Serial.print(index + len);
             Serial.println(" bytes)");
-
-            auto response = request->beginResponse(200, "application/json",
-                                                  createSuccessJSON("File uploaded: " + filename));
-            addCORSHeaders(response);
-            request->send(response);
         }
     }
 
@@ -514,7 +511,8 @@ private:
     }
 
 public:
-    WebAPI() : server_(nullptr), filesystemEnabled_(false) {}
+    WebAPI() : server_(nullptr), filesystemEnabled_(false),
+               currentUploadFilename_(""), uploadSuccess_(true), uploadError_("") {}
 
     /**
      * Initialize API handlers
@@ -570,9 +568,25 @@ public:
 
         // Files upload endpoint (multipart/form-data)
         server_->on("/api/files/upload", HTTP_POST,
-                   [](AsyncWebServerRequest* request) {},
+                   [this](AsyncWebServerRequest* request) {
+            // This is called after upload is complete
+            // Send response based on upload state
+            AsyncWebServerResponse* response;
+
+            if (uploadSuccess_) {
+                response = request->beginResponse(200, "application/json",
+                                                createSuccessJSON("File uploaded: " + currentUploadFilename_));
+            } else {
+                response = request->beginResponse(400, "application/json",
+                                                createErrorJSON(uploadError_));
+            }
+
+            addCORSHeaders(response);
+            request->send(response);
+        },
                    [this](AsyncWebServerRequest* request, String filename, size_t index,
                          uint8_t* data, size_t len, bool final) {
+            // This handles the upload chunks
             handleUploadFile(request, filename, index, data, len, final);
         },
                    nullptr);
