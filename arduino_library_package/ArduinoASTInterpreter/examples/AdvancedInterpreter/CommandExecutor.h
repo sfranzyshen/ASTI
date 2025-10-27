@@ -253,8 +253,9 @@ public:
             unsigned long startTime = millis();
 
             while (millis() - startTime < duration) {
-                yield();  // Let Arduino scheduler run
-                vTaskDelay(1 / portTICK_PERIOD_MS);  // FreeRTOS native delay - 1ms chunks
+                //yield();  // Let Arduino scheduler run
+				//vTaskDelay(1);
+                //vTaskDelay(10 / portTICK_PERIOD_MS);  // FreeRTOS native delay - 1ms chunks
             }
         }
 
@@ -272,8 +273,9 @@ public:
             // For long delays (> 5ms), use FreeRTOS vTaskDelay for proper task scheduling
             unsigned long startTime = micros();
             while (micros() - startTime < duration) {
-                yield();  // Let Arduino scheduler run
-                vTaskDelay(1 / portTICK_PERIOD_MS);  // FreeRTOS native delay
+                //yield();  // Let Arduino scheduler run
+				//vTaskDelay(1);
+                //vTaskDelay(10 / portTICK_PERIOD_MS);  // FreeRTOS native delay
             }
         } else if (duration > 0) {
             // For short delays (< 5ms), use direct delayMicroseconds for precision

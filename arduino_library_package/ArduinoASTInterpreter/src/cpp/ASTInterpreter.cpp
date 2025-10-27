@@ -754,11 +754,11 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
 
         // ESP32: Granular yield BEFORE body execution for async_tcp task scheduling
         #ifdef ARDUINO
-        yield();  // Give async_tcp opportunity before intensive body execution
+        //yield();  // Give async_tcp opportunity before intensive body execution
+
         // Periodic longer delay every 10 iterations for better task scheduling
-        if (iteration % 10 == 0) {
-            vTaskDelay(1 / portTICK_PERIOD_MS);  // FreeRTOS native delay for async_tcp
-        }
+		//vTaskDelay(1);
+        //vTaskDelay(10 / portTICK_PERIOD_MS);  // FreeRTOS native delay for async_tcp
         #endif
 
         const_cast<arduino_ast::ASTNode*>(node.getBody())->accept(*this);
@@ -841,11 +841,11 @@ void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
 
         // ESP32: Granular yield BEFORE body execution for async_tcp task scheduling
         #ifdef ARDUINO
-        yield();  // Give async_tcp opportunity before intensive body execution
+        //yield();  // Give async_tcp opportunity before intensive body execution
+
         // Periodic longer delay every 10 iterations for better task scheduling
-        if (iteration % 10 == 0) {
-            vTaskDelay(1 / portTICK_PERIOD_MS);  // FreeRTOS native delay for async_tcp
-        }
+        //vTaskDelay(10 / portTICK_PERIOD_MS);  // FreeRTOS native delay for async_tcp
+		//vTaskDelay(1);
         #endif
 
         const_cast<arduino_ast::ASTNode*>(node.getBody())->accept(*this);
@@ -945,11 +945,11 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
 
         // ESP32: Granular yield BEFORE body execution for async_tcp task scheduling
         #ifdef ARDUINO
-        yield();  // Give async_tcp opportunity before intensive body execution
+        //yield();  // Give async_tcp opportunity before intensive body execution
+
         // Periodic longer delay every 10 iterations for better task scheduling
-        if (iteration % 10 == 0) {
-            vTaskDelay(1 / portTICK_PERIOD_MS);  // FreeRTOS native delay for async_tcp
-        }
+        //vTaskDelay(10 / portTICK_PERIOD_MS);  // FreeRTOS native delay for async_tcp
+		//vTaskDelay(1);
         #endif
 
         // Execute body
