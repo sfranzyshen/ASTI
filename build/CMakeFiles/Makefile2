@@ -68,6 +68,9 @@ all: CMakeFiles/extract_cpp_commands.dir/all
 all: CMakeFiles/validate_cross_platform.dir/all
 all: CMakeFiles/universal_json_to_arduino.dir/all
 all: CMakeFiles/continuous_test.dir/all
+all: CMakeFiles/loop_memory_test.dir/all
+all: CMakeFiles/comprehensive_loop_memory_test.dir/all
+all: CMakeFiles/extended_continuous_test.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -80,6 +83,9 @@ clean: CMakeFiles/extract_cpp_commands.dir/clean
 clean: CMakeFiles/validate_cross_platform.dir/clean
 clean: CMakeFiles/universal_json_to_arduino.dir/clean
 clean: CMakeFiles/continuous_test.dir/clean
+clean: CMakeFiles/loop_memory_test.dir/clean
+clean: CMakeFiles/comprehensive_loop_memory_test.dir/clean
+clean: CMakeFiles/extended_continuous_test.dir/clean
 clean: CMakeFiles/strip_library.dir/clean
 clean: CMakeFiles/strip_tools.dir/clean
 clean: CMakeFiles/strip_all.dir/clean
@@ -119,7 +125,7 @@ CMakeFiles/arduino_ast_interpreter.dir/clean:
 CMakeFiles/extract_cpp_commands.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extract_cpp_commands.dir/build.make CMakeFiles/extract_cpp_commands.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extract_cpp_commands.dir/build.make CMakeFiles/extract_cpp_commands.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=11,12 "Built target extract_cpp_commands"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=15,16 "Built target extract_cpp_commands"
 .PHONY : CMakeFiles/extract_cpp_commands.dir/all
 
 # Build rule for subdir invocation for target.
@@ -145,7 +151,7 @@ CMakeFiles/extract_cpp_commands.dir/clean:
 CMakeFiles/validate_cross_platform.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/validate_cross_platform.dir/build.make CMakeFiles/validate_cross_platform.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=19,20 "Built target validate_cross_platform"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=25,26 "Built target validate_cross_platform"
 .PHONY : CMakeFiles/validate_cross_platform.dir/all
 
 # Build rule for subdir invocation for target.
@@ -171,7 +177,7 @@ CMakeFiles/validate_cross_platform.dir/clean:
 CMakeFiles/universal_json_to_arduino.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/universal_json_to_arduino.dir/build.make CMakeFiles/universal_json_to_arduino.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/universal_json_to_arduino.dir/build.make CMakeFiles/universal_json_to_arduino.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=17,18 "Built target universal_json_to_arduino"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=23,24 "Built target universal_json_to_arduino"
 .PHONY : CMakeFiles/universal_json_to_arduino.dir/all
 
 # Build rule for subdir invocation for target.
@@ -197,7 +203,7 @@ CMakeFiles/universal_json_to_arduino.dir/clean:
 CMakeFiles/continuous_test.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/continuous_test.dir/build.make CMakeFiles/continuous_test.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/continuous_test.dir/build.make CMakeFiles/continuous_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=9,10 "Built target continuous_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=11,12 "Built target continuous_test"
 .PHONY : CMakeFiles/continuous_test.dir/all
 
 # Build rule for subdir invocation for target.
@@ -217,13 +223,91 @@ CMakeFiles/continuous_test.dir/clean:
 .PHONY : CMakeFiles/continuous_test.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/loop_memory_test.dir
+
+# All Build rule for target.
+CMakeFiles/loop_memory_test.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/loop_memory_test.dir/build.make CMakeFiles/loop_memory_test.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/loop_memory_test.dir/build.make CMakeFiles/loop_memory_test.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=17,18 "Built target loop_memory_test"
+.PHONY : CMakeFiles/loop_memory_test.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/loop_memory_test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 10
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/loop_memory_test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
+.PHONY : CMakeFiles/loop_memory_test.dir/rule
+
+# Convenience name for target.
+loop_memory_test: CMakeFiles/loop_memory_test.dir/rule
+.PHONY : loop_memory_test
+
+# clean rule for target.
+CMakeFiles/loop_memory_test.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/loop_memory_test.dir/build.make CMakeFiles/loop_memory_test.dir/clean
+.PHONY : CMakeFiles/loop_memory_test.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/comprehensive_loop_memory_test.dir
+
+# All Build rule for target.
+CMakeFiles/comprehensive_loop_memory_test.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_loop_memory_test.dir/build.make CMakeFiles/comprehensive_loop_memory_test.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_loop_memory_test.dir/build.make CMakeFiles/comprehensive_loop_memory_test.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=9,10 "Built target comprehensive_loop_memory_test"
+.PHONY : CMakeFiles/comprehensive_loop_memory_test.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/comprehensive_loop_memory_test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 10
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/comprehensive_loop_memory_test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
+.PHONY : CMakeFiles/comprehensive_loop_memory_test.dir/rule
+
+# Convenience name for target.
+comprehensive_loop_memory_test: CMakeFiles/comprehensive_loop_memory_test.dir/rule
+.PHONY : comprehensive_loop_memory_test
+
+# clean rule for target.
+CMakeFiles/comprehensive_loop_memory_test.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_loop_memory_test.dir/build.make CMakeFiles/comprehensive_loop_memory_test.dir/clean
+.PHONY : CMakeFiles/comprehensive_loop_memory_test.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/extended_continuous_test.dir
+
+# All Build rule for target.
+CMakeFiles/extended_continuous_test.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/extended_continuous_test.dir/build.make CMakeFiles/extended_continuous_test.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/extended_continuous_test.dir/build.make CMakeFiles/extended_continuous_test.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=13,14 "Built target extended_continuous_test"
+.PHONY : CMakeFiles/extended_continuous_test.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/extended_continuous_test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 10
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/extended_continuous_test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/d/Devel/ASTInterpreter/build/CMakeFiles 0
+.PHONY : CMakeFiles/extended_continuous_test.dir/rule
+
+# Convenience name for target.
+extended_continuous_test: CMakeFiles/extended_continuous_test.dir/rule
+.PHONY : extended_continuous_test
+
+# clean rule for target.
+CMakeFiles/extended_continuous_test.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/extended_continuous_test.dir/build.make CMakeFiles/extended_continuous_test.dir/clean
+.PHONY : CMakeFiles/extended_continuous_test.dir/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/strip_library.dir
 
 # All Build rule for target.
 CMakeFiles/strip_library.dir/all: CMakeFiles/arduino_ast_interpreter.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_library.dir/build.make CMakeFiles/strip_library.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_library.dir/build.make CMakeFiles/strip_library.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=15 "Built target strip_library"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=21 "Built target strip_library"
 .PHONY : CMakeFiles/strip_library.dir/all
 
 # Build rule for subdir invocation for target.
@@ -246,11 +330,11 @@ CMakeFiles/strip_library.dir/clean:
 # Target rules for target CMakeFiles/strip_tools.dir
 
 # All Build rule for target.
-CMakeFiles/strip_tools.dir/all: CMakeFiles/extract_cpp_commands.dir/all
 CMakeFiles/strip_tools.dir/all: CMakeFiles/validate_cross_platform.dir/all
+CMakeFiles/strip_tools.dir/all: CMakeFiles/extract_cpp_commands.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_tools.dir/build.make CMakeFiles/strip_tools.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_tools.dir/build.make CMakeFiles/strip_tools.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=16 "Built target strip_tools"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=22 "Built target strip_tools"
 .PHONY : CMakeFiles/strip_tools.dir/all
 
 # Build rule for subdir invocation for target.
@@ -277,7 +361,7 @@ CMakeFiles/strip_all.dir/all: CMakeFiles/strip_library.dir/all
 CMakeFiles/strip_all.dir/all: CMakeFiles/strip_tools.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_all.dir/build.make CMakeFiles/strip_all.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/strip_all.dir/build.make CMakeFiles/strip_all.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=14 "Built target strip_all"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=20 "Built target strip_all"
 .PHONY : CMakeFiles/strip_all.dir/all
 
 # Build rule for subdir invocation for target.
@@ -303,7 +387,7 @@ CMakeFiles/strip_all.dir/clean:
 CMakeFiles/size_report.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/size_report.dir/build.make CMakeFiles/size_report.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/size_report.dir/build.make CMakeFiles/size_report.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=13 "Built target size_report"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/d/Devel/ASTInterpreter/build/CMakeFiles --progress-num=19 "Built target size_report"
 .PHONY : CMakeFiles/size_report.dir/all
 
 # Build rule for subdir invocation for target.

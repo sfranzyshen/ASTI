@@ -90,6 +90,7 @@ struct InterpreterOptions {
     bool enableSerial = true;       // Enable Serial commands
     bool enablePins = true;         // Enable pin operations
     bool syncMode = false;          // Test mode: immediate sync responses for digitalRead/analogRead
+    bool enforceLoopLimitsOnInternalLoops = true;  // Apply maxLoopIterations to for/while/do-while loops (default true for test parity)
     std::string version = "22.0.0";  // Interpreter version
 };
 
@@ -501,6 +502,7 @@ private:
     bool inLoop_;
     uint32_t currentLoopIteration_;
     uint32_t maxLoopIterations_;
+    bool enforceLoopLimitsOnInternalLoops_;  // Apply maxLoopIterations to for/while/do-while loops
     ExecutionControlStack executionControl_;  // ULTRATHINK: Replace shouldContinueExecution_ with context-aware system
     bool shouldContinueExecution_;  // Keep for backward compatibility during transition
     std::chrono::steady_clock::time_point executionStart_;

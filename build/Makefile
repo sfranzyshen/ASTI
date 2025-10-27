@@ -257,6 +257,45 @@ continuous_test/fast:
 .PHONY : continuous_test/fast
 
 #=============================================================================
+# Target rules for targets named loop_memory_test
+
+# Build rule for target.
+loop_memory_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 loop_memory_test
+.PHONY : loop_memory_test
+
+# fast build rule for target.
+loop_memory_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/loop_memory_test.dir/build.make CMakeFiles/loop_memory_test.dir/build
+.PHONY : loop_memory_test/fast
+
+#=============================================================================
+# Target rules for targets named comprehensive_loop_memory_test
+
+# Build rule for target.
+comprehensive_loop_memory_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 comprehensive_loop_memory_test
+.PHONY : comprehensive_loop_memory_test
+
+# fast build rule for target.
+comprehensive_loop_memory_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_loop_memory_test.dir/build.make CMakeFiles/comprehensive_loop_memory_test.dir/build
+.PHONY : comprehensive_loop_memory_test/fast
+
+#=============================================================================
+# Target rules for targets named extended_continuous_test
+
+# Build rule for target.
+extended_continuous_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 extended_continuous_test
+.PHONY : extended_continuous_test
+
+# fast build rule for target.
+extended_continuous_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/extended_continuous_test.dir/build.make CMakeFiles/extended_continuous_test.dir/build
+.PHONY : extended_continuous_test/fast
+
+#=============================================================================
 # Target rules for targets named strip_library
 
 # Build rule for target.
@@ -476,6 +515,30 @@ src/cpp/ExecutionTracer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/arduino_ast_interpreter.dir/build.make CMakeFiles/arduino_ast_interpreter.dir/src/cpp/ExecutionTracer.cpp.s
 .PHONY : src/cpp/ExecutionTracer.cpp.s
 
+tests/comprehensive_loop_memory_test.o: tests/comprehensive_loop_memory_test.cpp.o
+.PHONY : tests/comprehensive_loop_memory_test.o
+
+# target to build an object file
+tests/comprehensive_loop_memory_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_loop_memory_test.dir/build.make CMakeFiles/comprehensive_loop_memory_test.dir/tests/comprehensive_loop_memory_test.cpp.o
+.PHONY : tests/comprehensive_loop_memory_test.cpp.o
+
+tests/comprehensive_loop_memory_test.i: tests/comprehensive_loop_memory_test.cpp.i
+.PHONY : tests/comprehensive_loop_memory_test.i
+
+# target to preprocess a source file
+tests/comprehensive_loop_memory_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_loop_memory_test.dir/build.make CMakeFiles/comprehensive_loop_memory_test.dir/tests/comprehensive_loop_memory_test.cpp.i
+.PHONY : tests/comprehensive_loop_memory_test.cpp.i
+
+tests/comprehensive_loop_memory_test.s: tests/comprehensive_loop_memory_test.cpp.s
+.PHONY : tests/comprehensive_loop_memory_test.s
+
+# target to generate assembly for a file
+tests/comprehensive_loop_memory_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_loop_memory_test.dir/build.make CMakeFiles/comprehensive_loop_memory_test.dir/tests/comprehensive_loop_memory_test.cpp.s
+.PHONY : tests/comprehensive_loop_memory_test.cpp.s
+
 tests/continuous_execution_test.o: tests/continuous_execution_test.cpp.o
 .PHONY : tests/continuous_execution_test.o
 
@@ -500,6 +563,30 @@ tests/continuous_execution_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/continuous_test.dir/build.make CMakeFiles/continuous_test.dir/tests/continuous_execution_test.cpp.s
 .PHONY : tests/continuous_execution_test.cpp.s
 
+tests/extended_continuous_test.o: tests/extended_continuous_test.cpp.o
+.PHONY : tests/extended_continuous_test.o
+
+# target to build an object file
+tests/extended_continuous_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/extended_continuous_test.dir/build.make CMakeFiles/extended_continuous_test.dir/tests/extended_continuous_test.cpp.o
+.PHONY : tests/extended_continuous_test.cpp.o
+
+tests/extended_continuous_test.i: tests/extended_continuous_test.cpp.i
+.PHONY : tests/extended_continuous_test.i
+
+# target to preprocess a source file
+tests/extended_continuous_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/extended_continuous_test.dir/build.make CMakeFiles/extended_continuous_test.dir/tests/extended_continuous_test.cpp.i
+.PHONY : tests/extended_continuous_test.cpp.i
+
+tests/extended_continuous_test.s: tests/extended_continuous_test.cpp.s
+.PHONY : tests/extended_continuous_test.s
+
+# target to generate assembly for a file
+tests/extended_continuous_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/extended_continuous_test.dir/build.make CMakeFiles/extended_continuous_test.dir/tests/extended_continuous_test.cpp.s
+.PHONY : tests/extended_continuous_test.cpp.s
+
 tests/extract_cpp_commands.o: tests/extract_cpp_commands.cpp.o
 .PHONY : tests/extract_cpp_commands.o
 
@@ -523,6 +610,30 @@ tests/extract_cpp_commands.s: tests/extract_cpp_commands.cpp.s
 tests/extract_cpp_commands.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extract_cpp_commands.dir/build.make CMakeFiles/extract_cpp_commands.dir/tests/extract_cpp_commands.cpp.s
 .PHONY : tests/extract_cpp_commands.cpp.s
+
+tests/loop_memory_test.o: tests/loop_memory_test.cpp.o
+.PHONY : tests/loop_memory_test.o
+
+# target to build an object file
+tests/loop_memory_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/loop_memory_test.dir/build.make CMakeFiles/loop_memory_test.dir/tests/loop_memory_test.cpp.o
+.PHONY : tests/loop_memory_test.cpp.o
+
+tests/loop_memory_test.i: tests/loop_memory_test.cpp.i
+.PHONY : tests/loop_memory_test.i
+
+# target to preprocess a source file
+tests/loop_memory_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/loop_memory_test.dir/build.make CMakeFiles/loop_memory_test.dir/tests/loop_memory_test.cpp.i
+.PHONY : tests/loop_memory_test.cpp.i
+
+tests/loop_memory_test.s: tests/loop_memory_test.cpp.s
+.PHONY : tests/loop_memory_test.s
+
+# target to generate assembly for a file
+tests/loop_memory_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/loop_memory_test.dir/build.make CMakeFiles/loop_memory_test.dir/tests/loop_memory_test.cpp.s
+.PHONY : tests/loop_memory_test.cpp.s
 
 tests/universal_json_to_arduino.o: tests/universal_json_to_arduino.cpp.o
 .PHONY : tests/universal_json_to_arduino.o
@@ -592,8 +703,11 @@ help:
 	@echo "... strip_library"
 	@echo "... strip_tools"
 	@echo "... arduino_ast_interpreter"
+	@echo "... comprehensive_loop_memory_test"
 	@echo "... continuous_test"
+	@echo "... extended_continuous_test"
 	@echo "... extract_cpp_commands"
+	@echo "... loop_memory_test"
 	@echo "... universal_json_to_arduino"
 	@echo "... validate_cross_platform"
 	@echo "... libs/CompactAST/src/CompactAST.o"
@@ -617,12 +731,21 @@ help:
 	@echo "... src/cpp/ExecutionTracer.o"
 	@echo "... src/cpp/ExecutionTracer.i"
 	@echo "... src/cpp/ExecutionTracer.s"
+	@echo "... tests/comprehensive_loop_memory_test.o"
+	@echo "... tests/comprehensive_loop_memory_test.i"
+	@echo "... tests/comprehensive_loop_memory_test.s"
 	@echo "... tests/continuous_execution_test.o"
 	@echo "... tests/continuous_execution_test.i"
 	@echo "... tests/continuous_execution_test.s"
+	@echo "... tests/extended_continuous_test.o"
+	@echo "... tests/extended_continuous_test.i"
+	@echo "... tests/extended_continuous_test.s"
 	@echo "... tests/extract_cpp_commands.o"
 	@echo "... tests/extract_cpp_commands.i"
 	@echo "... tests/extract_cpp_commands.s"
+	@echo "... tests/loop_memory_test.o"
+	@echo "... tests/loop_memory_test.i"
+	@echo "... tests/loop_memory_test.s"
 	@echo "... tests/universal_json_to_arduino.o"
 	@echo "... tests/universal_json_to_arduino.i"
 	@echo "... tests/universal_json_to_arduino.s"

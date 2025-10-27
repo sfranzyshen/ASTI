@@ -29,6 +29,12 @@ static bool g_resetEnumCounter = false;
 #include <chrono>
 #include <random>
 
+// ESP32: FreeRTOS headers for vTaskDelay()
+#ifdef ARDUINO
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#endif
+
 // Execution termination exception used to immediately unwind interpreter stack when loop limits are reached
 struct ExecutionTerminated : public std::exception {
     const char* what() const noexcept override {
@@ -50,7 +56,7 @@ ASTInterpreter::ASTInterpreter(arduino_ast::ASTNodePtr ast, const InterpreterOpt
     : ast_(std::move(ast)), options_(options), state_(ExecutionState::IDLE),
       commandCallback_(nullptr), responseHandler_(nullptr), dataProvider_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
-      maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
+      maxLoopIterations_(options.maxLoopIterations), enforceLoopLimitsOnInternalLoops_(options.enforceLoopLimitsOnInternalLoops), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
       currentSwitchValue_(std::monostate{}), inSwitchFallthrough_(false),
       suspendedNode_(nullptr), suspendedChildIndex_(-1), currentCompoundNode_(nullptr), currentChildIndex_(-1),
@@ -89,7 +95,7 @@ ASTInterpreter::ASTInterpreter(const uint8_t* compactAST, size_t size, const Int
     : options_(options), state_(ExecutionState::IDLE),
       commandCallback_(nullptr), responseHandler_(nullptr), dataProvider_(nullptr),
       setupCalled_(false), inLoop_(false), currentLoopIteration_(0),
-      maxLoopIterations_(options.maxLoopIterations), shouldContinueExecution_(true), currentFunction_(nullptr),
+      maxLoopIterations_(options.maxLoopIterations), enforceLoopLimitsOnInternalLoops_(options.enforceLoopLimitsOnInternalLoops), shouldContinueExecution_(true), currentFunction_(nullptr),
       shouldBreak_(false), shouldContinue_(false), shouldReturn_(false),
       currentSwitchValue_(std::monostate{}), inSwitchFallthrough_(false),
       suspendedNode_(nullptr), suspendedChildIndex_(-1), currentCompoundNode_(nullptr), currentChildIndex_(-1),
@@ -732,7 +738,8 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
     // CROSS-PLATFORM FIX: Emit WHILE_LOOP phase start to match JavaScript
     emitWhileLoopStart();
 
-    while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING && iteration < maxLoopIterations_) {
+    while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING &&
+           (!enforceLoopLimitsOnInternalLoops_ || iteration < maxLoopIterations_)) {
         CommandValue conditionValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getCondition()));
         bool shouldContinueLoop = convertToBool(conditionValue);
 
@@ -744,6 +751,15 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
         scopeManager_->pushScope();
         shouldBreak_ = false;
         shouldContinue_ = false;
+
+        // ESP32: Granular yield BEFORE body execution for async_tcp task scheduling
+        #ifdef ARDUINO
+        yield();  // Give async_tcp opportunity before intensive body execution
+        // Periodic longer delay every 10 iterations for better task scheduling
+        if (iteration % 10 == 0) {
+            vTaskDelay(1 / portTICK_PERIOD_MS);  // FreeRTOS native delay for async_tcp
+        }
+        #endif
 
         const_cast<arduino_ast::ASTNode*>(node.getBody())->accept(*this);
 
@@ -761,10 +777,25 @@ void ASTInterpreter::visit(arduino_ast::WhileStatement& node) {
         }
 
         iteration++;
+
+        // Memory leak fix: Clear statistics ONLY in ESP32 mode (unlimited internal loops)
+        // Test data generation needs statistics preserved for final output
+        if (!enforceLoopLimitsOnInternalLoops_) {
+            resetStatistics();
+            #ifdef ENABLE_FILE_TRACING
+            arduino_interpreter::g_tracer.clear();
+            #endif
+        }
+
+        // ESP32: Feed watchdog timer to prevent reboot during long loops
+        #ifdef ARDUINO
+        yield();  // Allow ESP32 to handle WiFi, watchdog, etc.
+        delayMicroseconds(1000);  // 1ms delay for better watchdog feeding and task scheduling
+        #endif
     }
 
     // ULTRATHINK FIX: Match JavaScript behavior exactly
-    if (iteration >= maxLoopIterations_) {
+    if (enforceLoopLimitsOnInternalLoops_ && iteration >= maxLoopIterations_) {
         // JavaScript behavior: evaluate condition one more time when limit reached (emits Serial.available())
         CommandValue conditionValue = evaluateExpression(const_cast<arduino_ast::ASTNode*>(node.getCondition()));
 
@@ -808,6 +839,15 @@ void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
         shouldBreak_ = false;
         shouldContinue_ = false;
 
+        // ESP32: Granular yield BEFORE body execution for async_tcp task scheduling
+        #ifdef ARDUINO
+        yield();  // Give async_tcp opportunity before intensive body execution
+        // Periodic longer delay every 10 iterations for better task scheduling
+        if (iteration % 10 == 0) {
+            vTaskDelay(1 / portTICK_PERIOD_MS);  // FreeRTOS native delay for async_tcp
+        }
+        #endif
+
         const_cast<arduino_ast::ASTNode*>(node.getBody())->accept(*this);
 
         scopeManager_->popScope();
@@ -830,10 +870,26 @@ void ASTInterpreter::visit(arduino_ast::DoWhileStatement& node) {
 
         iteration++;
 
-    } while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING && iteration < maxLoopIterations_);
+        // Memory leak fix: Clear statistics ONLY in ESP32 mode (unlimited internal loops)
+        // Test data generation needs statistics preserved for final output
+        if (!enforceLoopLimitsOnInternalLoops_) {
+            resetStatistics();
+            #ifdef ENABLE_FILE_TRACING
+            arduino_interpreter::g_tracer.clear();
+            #endif
+        }
+
+        // ESP32: Feed watchdog timer to prevent reboot during long loops
+        #ifdef ARDUINO
+        yield();  // Allow ESP32 to handle WiFi, watchdog, etc.
+        delayMicroseconds(1000);  // 1ms delay for better watchdog feeding and task scheduling
+        #endif
+
+    } while (shouldContinueExecution_ && state_ == ExecutionState::RUNNING &&
+             (!enforceLoopLimitsOnInternalLoops_ || iteration < maxLoopIterations_));
 
     // CROSS-PLATFORM FIX: Emit LOOP_LIMIT_REACHED when limit hit, otherwise DO_WHILE_LOOP end
-    bool limitReached = (iteration >= maxLoopIterations_);
+    bool limitReached = (enforceLoopLimitsOnInternalLoops_ && iteration >= maxLoopIterations_);
     if (limitReached) {
         // Match JavaScript: emit LOOP_LIMIT_REACHED and stop execution
         StringBuildStream json;
@@ -878,13 +934,23 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
         if (!shouldContinueLoop) break;
 
         // Check iteration limit AFTER condition check but BEFORE body execution
-        if (iteration >= maxLoopIterations_) break;
+        // Only enforce limit if enabled (ESP32 production needs unlimited for loops)
+        if (enforceLoopLimitsOnInternalLoops_ && iteration >= maxLoopIterations_) break;
 
         // CROSS-PLATFORM FIX: Emit FOR_LOOP phase iteration to match JavaScript
         emitForLoopIteration(iteration);
 
         shouldBreak_ = false;
         shouldContinue_ = false;
+
+        // ESP32: Granular yield BEFORE body execution for async_tcp task scheduling
+        #ifdef ARDUINO
+        yield();  // Give async_tcp opportunity before intensive body execution
+        // Periodic longer delay every 10 iterations for better task scheduling
+        if (iteration % 10 == 0) {
+            vTaskDelay(1 / portTICK_PERIOD_MS);  // FreeRTOS native delay for async_tcp
+        }
+        #endif
 
         // Execute body
         if (node.getBody()) {
@@ -910,15 +976,31 @@ void ASTInterpreter::visit(arduino_ast::ForStatement& node) {
 
         iteration++;
 
-        // CRITICAL FIX: Check iteration limit AFTER increment to allow increment on final iteration
-        if (iteration >= maxLoopIterations_) break;
+        // Memory leak fix: Clear statistics ONLY in ESP32 mode (unlimited internal loops)
+        // Test data generation needs statistics preserved for final output
+        if (!enforceLoopLimitsOnInternalLoops_) {
+            resetStatistics();
+            #ifdef ENABLE_FILE_TRACING
+            arduino_interpreter::g_tracer.clear();
+            #endif
+        }
+
+        // ESP32: Feed watchdog timer to prevent reboot during long loops
+        #ifdef ARDUINO
+        yield();  // Allow ESP32 to handle WiFi, watchdog, etc.
+        delayMicroseconds(1000);  // 1ms delay for better watchdog feeding and task scheduling
+        #endif
+
+        // Check iteration limit AFTER increment to allow increment on final iteration
+        // Only enforce limit if enabled (ESP32 production needs unlimited for loops)
+        if (enforceLoopLimitsOnInternalLoops_ && iteration >= maxLoopIterations_) break;
     }
 
     executionControl_.popContext();
     scopeManager_->popScope();
 
     // CROSS-PLATFORM FIX: Emit single FOR_LOOP end event to match JavaScript
-    const bool limitReached = iteration >= maxLoopIterations_;
+    const bool limitReached = enforceLoopLimitsOnInternalLoops_ && iteration >= maxLoopIterations_;
     emitForLoopEnd(iteration, maxLoopIterations_);
 
     // ULTRATHINK: Always stop execution when loop limit reached (like JavaScript)

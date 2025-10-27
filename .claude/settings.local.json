@@ -1,7 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(./build/extract_cpp_commands:*)",
+      "Bash(make:*)",
+      "Bash(test:*)",
+      "Bash(./build/loop_memory_test:*)",
+      "Bash(./loop_memory_test)",
+      "Bash(valgrind:*)",
+      "Bash(cmake:*)",
+      "Bash(./build/comprehensive_loop_memory_test)"
     ],
     "deny": [],
     "ask": [],

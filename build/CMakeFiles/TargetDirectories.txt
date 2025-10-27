@@ -3,6 +3,9 @@
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/validate_cross_platform.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/universal_json_to_arduino.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/continuous_test.dir
+/mnt/d/Devel/ASTInterpreter/build/CMakeFiles/loop_memory_test.dir
+/mnt/d/Devel/ASTInterpreter/build/CMakeFiles/comprehensive_loop_memory_test.dir
+/mnt/d/Devel/ASTInterpreter/build/CMakeFiles/extended_continuous_test.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/strip_library.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/strip_tools.dir
 /mnt/d/Devel/ASTInterpreter/build/CMakeFiles/strip_all.dir

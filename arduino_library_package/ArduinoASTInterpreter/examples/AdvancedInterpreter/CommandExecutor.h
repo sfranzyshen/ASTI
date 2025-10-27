@@ -10,6 +10,8 @@
 #pragma once
 
 #include <Arduino.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 // ============================================================================
 // SIMPLE JSON PARSER
@@ -246,7 +248,14 @@ public:
         unsigned long duration = extractULong(json, "duration");
 
         if (duration > 0) {
-            delay(duration);
+            // ESP32: Use FreeRTOS vTaskDelay for proper task scheduling
+            // This gives async_tcp task proper FreeRTOS scheduling opportunities
+            unsigned long startTime = millis();
+
+            while (millis() - startTime < duration) {
+                yield();  // Let Arduino scheduler run
+                vTaskDelay(1 / portTICK_PERIOD_MS);  // FreeRTOS native delay - 1ms chunks
+            }
         }
 
         return true;
@@ -259,7 +268,16 @@ public:
     bool executeDelayMicroseconds(const String& json) {
         unsigned long duration = extractULong(json, "duration");
 
-        if (duration > 0) {
+        if (duration > 5000) {
+            // For long delays (> 5ms), use FreeRTOS vTaskDelay for proper task scheduling
+            unsigned long startTime = micros();
+            while (micros() - startTime < duration) {
+                yield();  // Let Arduino scheduler run
+                vTaskDelay(1 / portTICK_PERIOD_MS);  // FreeRTOS native delay
+            }
+        } else if (duration > 0) {
+            // For short delays (< 5ms), use direct delayMicroseconds for precision
+            // These are too short to cause watchdog issues and need accurate timing
             delayMicroseconds(duration);
         }
 

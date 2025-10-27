@@ -261,6 +261,7 @@ enum AppExecutionState {
 #include "WebServerManager.h"
 #include "WebAPI.h"
 #include "WebSocketHandler.h"
+#include "esp_task_wdt.h"  // Task watchdog timer configuration
 
 // ============================================================================
 // CONFIGURATION
@@ -533,6 +534,7 @@ bool loadASTFile(const char* filename) {
     opts.verbose = false;     // Status-only mode
     opts.debug = false;
     opts.maxLoopIterations = 1;  // Run ONE iteration per call
+    opts.enforceLoopLimitsOnInternalLoops = false;  // Allow unlimited for/while/do-while loops
     opts.syncMode = true;
 
     // Create new interpreter
@@ -578,6 +580,7 @@ void resetInterpreter() {
     opts.verbose = false;     // Status-only mode (no command stream to Serial)
     opts.debug = false;
     opts.maxLoopIterations = 1;  // Run ONE iteration per call (parent controls repetition)
+    opts.enforceLoopLimitsOnInternalLoops = false;  // Allow unlimited for/while/do-while loops
     opts.syncMode = true;
 
     const uint8_t* astData = nullptr;
@@ -705,6 +708,24 @@ void executeOneCommand() {
 void setup() {
     Serial.begin(115200);
     delay(1000);
+
+    // CRITICAL: Configure Task Watchdog Timer
+    // ESP32 default is ~5 seconds, we need more for intensive interpreter loops
+    // Rainbow with i++ takes ~7.68 seconds, so we set 15 seconds to be safe
+    esp_task_wdt_config_t wdt_config = {
+        .timeout_ms = 15000,      // 15 second timeout (in milliseconds)
+        .idle_core_mask = 0,      // Don't watch idle tasks
+        .trigger_panic = true     // Panic on timeout (for debugging)
+    };
+    esp_task_wdt_init(&wdt_config);
+
+    Serial.println("========================================");
+    Serial.println("  TASK WATCHDOG CONFIGURATION");
+    Serial.println("========================================");
+    Serial.println("  Timeout: 15 seconds");
+    Serial.println("  Allows long interpreter loops without reboot");
+    Serial.println("========================================");
+    Serial.println();
 
     // Configure LED pin
     pinMode(BLINK_LED, OUTPUT);

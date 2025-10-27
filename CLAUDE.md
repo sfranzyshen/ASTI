@@ -53,6 +53,77 @@ Result: IDENTICAL - Zero memory leak confirmed
 
 ---
 
+## **OCTOBER 26, 2025 - ASYNC_TCP TASK WATCHDOG INVESTIGATION**
+
+### **CRITICAL DISCOVERY: ESP32 Task Scheduling Issue Identified**
+
+**POST-DEPLOYMENT INVESTIGATION**: After v22.0.0 validation, extended ESP32 testing revealed **async_tcp task watchdog timeout** causing reboots during intensive loop operations (rainbow example).
+
+**Key Findings:**
+- ✅ **Memory Leak Completely Fixed**: Extended test confirms 0 KB growth over 52,000 internal loop iterations
+- ✅ **Valgrind Perfect**: 1,684,922 allocations = 1,684,922 frees (no leaks)
+- ⚠️ **New Issue Discovered**: async_tcp FreeRTOS task starved during intensive RGB calculations
+- ✅ **Root Cause Identified**: Coredump analysis reveals Task Watchdog timeout in async_tcp (CPU 0/1)
+
+**Coredump Analysis:**
+```
+ESP_PANIC_DETAILS
+Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:
+ - async_tcp (CPU 0/1)
+```
+
+**Technical Analysis:**
+- **async_tcp**: ESP32 WiFi/network background task requiring regular CPU scheduling
+- **Rainbow code**: 256+ iteration RGB calculations monopolize CPU between yields
+- **Previous yields**: Sufficient for Fading.ino (52 iterations) but inadequate for rainbow intensity
+- **Progress indicator**: "Rainbow got a little further" proves memory fix helped, but exposed scheduling issue
+
+**Solution Implemented: Granular Yield Strategy**
+
+**Enhanced Yielding for All Loop Types (for, while, do-while):**
+
+1. **Double Yield Frequency**: Added yield() BEFORE body execution (in addition to existing yield AFTER increment)
+   ```cpp
+   // ESP32: Granular yield BEFORE body execution for async_tcp task scheduling
+   #ifdef ARDUINO
+   yield();  // Give async_tcp opportunity before intensive body execution
+   #endif
+   ```
+
+2. **Periodic Longer Delays**: Every 50 iterations, add 1ms delay for substantial task scheduling
+   ```cpp
+   if (iteration % 50 == 0) {
+       delay(1);  // 1ms delay gives async_tcp substantial CPU time
+   }
+   ```
+
+3. **Enhanced Watchdog Feeding**: Increased delayMicroseconds from 100 to 1000 microseconds
+   ```cpp
+   delayMicroseconds(1000);  // 1ms delay for better watchdog feeding and task scheduling
+   ```
+
+**Files Modified:**
+- `arduino_library_package/ArduinoASTInterpreter/src/cpp/ASTInterpreter.cpp`:
+  - For loop: Lines 922-929 (yield before body), Line 964 (increased delay)
+  - While loop: Lines 749-756 (yield before body), Line 786 (increased delay)
+  - Do-while loop: Lines 836-843 (yield before body), Line 871 (increased delay)
+- `src/cpp/ASTInterpreter.cpp`: Synchronized changes for all three loop types
+
+**Testing Evidence:**
+- Extended continuous test (500 iterations): 0 KB memory growth confirmed
+- Valgrind validation: Perfect allocation/free balance maintained
+- Rainbow example: Ready for ESP32 testing with enhanced task scheduling
+
+**Expected Impact:**
+- Doubled yield frequency gives async_tcp more scheduling opportunities
+- Periodic 1ms delays prevent CPU monopolization during intensive calculations
+- Enhanced watchdog feeding provides better timing margin
+- Maintains memory leak fix while addressing task starvation
+
+**Next Steps**: Test rainbow example on ESP32 to validate async_tcp task scheduling improvements prevent watchdog timeouts.
+
+---
+
 # 🎉 VERSION 21.2.2 - MEMORY LEAK FIX + ESP32 STABILITY 🎉
 
 ## **OCTOBER 22, 2025 - CRITICAL MEMORY LEAK RESOLUTION**

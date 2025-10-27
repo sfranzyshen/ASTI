@@ -379,6 +379,33 @@ if(BUILD_TESTS)
     target_link_libraries(continuous_test
         PRIVATE arduino_ast_interpreter
     )
+
+    # Loop memory test for internal for/while/do-while loops
+    add_executable(loop_memory_test
+        tests/loop_memory_test.cpp
+    )
+
+    target_link_libraries(loop_memory_test
+        PRIVATE arduino_ast_interpreter
+    )
+
+    # Comprehensive loop memory test (all three loop types)
+    add_executable(comprehensive_loop_memory_test
+        tests/comprehensive_loop_memory_test.cpp
+    )
+
+    target_link_libraries(comprehensive_loop_memory_test
+        PRIVATE arduino_ast_interpreter
+    )
+
+    # Extended continuous test (500+ iterations, ESP32 mode)
+    add_executable(extended_continuous_test
+        tests/extended_continuous_test.cpp
+    )
+
+    target_link_libraries(extended_continuous_test
+        PRIVATE arduino_ast_interpreter
+    )
 endif()
 
 # =============================================================================
