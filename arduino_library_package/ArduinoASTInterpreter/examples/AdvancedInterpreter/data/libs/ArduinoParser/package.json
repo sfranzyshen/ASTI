@@ -1,0 +1,43 @@
+{
+  "name": "@arduino-ast-interpreter/arduino-parser",
+  "version": "6.0.0",
+  "description": "Complete Arduino C++ parser with preprocessor and platform emulation support",
+  "main": "src/ArduinoParser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "arduino",
+    "parser",
+    "ast",
+    "preprocessor",
+    "cpp",
+    "c++",
+    "platform-emulation",
+    "esp32",
+    "lexer",
+    "syntax-analysis",
+    "compilation"
+  ],
+  "author": "Arduino AST Interpreter Project",
+  "license": "MIT",
+  "dependencies": {
+    "@arduino-ast-interpreter/compact-ast": "^3.0.0"
+  },
+  "devDependencies": {},
+  "files": [
+    "src/",
+    "tests/", 
+    "examples/",
+    "docs/",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sfranzyshen/ArduinoInterpreter.git",
+    "directory": "libs/ArduinoParser"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "@arduino-ast-interpreter/compact-ast",
+  "version": "3.2.0",
+  "description": "Cross-platform AST binary serialization library with 12.5x compression for embedded deployment",
+  "main": "src/CompactAST.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ast",
+    "serialization", 
+    "binary",
+    "compression",
+    "embedded",
+    "esp32",
+    "arduino",
+    "cross-platform",
+    "cpp",
+    "javascript"
+  ],
+  "author": "Arduino AST Interpreter Project",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "files": [
+    "src/",
+    "docs/",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sfranzyshen/ArduinoInterpreter.git",
+    "directory": "libs/CompactAST"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
