@@ -81,7 +81,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            height: calc(100vh - 200px);
+            height: calc(100vh - 150px); /* Adjusted height after removing test selection controls */
         }
         
         .panel {
@@ -250,32 +250,7 @@
             <button class="parse-btn" id="saveASTBtn" onclick="downloadAST()" style="margin-bottom: 20px; margin-left: 10px;" disabled>Save AST</button>
         </div>
         
-        <!-- Test Suite Selection Controls -->
-        <div class="test-selection-controls" style="text-align: center; margin-bottom: 20px;">
-            <div style="display: flex; gap: 15px; align-items: center; justify-content: center; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column; gap: 5px;">
-                    <label for="categorySelect" style="color: #9ca3af; font-size: 12px;">Test Category:</label>
-                    <select id="categorySelect" onchange="updateTestOptions()" style="padding: 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff;">
-                        <option value="examples">Arduino Examples (79 tests)</option>
-                        <option value="old_tests">Comprehensive Tests (54 tests)</option>
-                        <option value="neopixel">NeoPixel Examples (2 tests)</option>
-                    </select>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 5px;">
-                    <label for="testSelect" style="color: #9ca3af; font-size: 12px;">Select Test:</label>
-                    <select id="testSelect" style="padding: 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff; min-width: 200px;">
-                        <option value="">Select a test...</option>
-                    </select>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 5px;">
-                    <label style="color: #9ca3af; font-size: 12px;">&nbsp;</label>
-                    <div style="display: flex; gap: 5px;">
-                        <button class="parse-btn" onclick="loadSelectedTest()" style="padding: 8px 16px; min-width: 100px; font-size: 14px;">Load Test</button>
-                        <button class="parse-btn" onclick="loadRandomTest()" style="padding: 8px 16px; min-width: 100px; font-size: 14px;">Random</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         
         <div class="options">
             <label>
@@ -372,7 +347,7 @@ void loop() {
             try {
                 // Initialize platform emulation system (ESP32 Nano default)
                 platformEmulation = new PlatformEmulation('ESP32_NANO');
-                console.log(`🎯 Platform initialized: ${platformEmulation.currentPlatform.displayName}`);
+                console.log(`🌈 Platform initialized: ${platformEmulation.currentPlatform.displayName}`);
                 
                 // Initialize preprocessor with platform context
                 preprocessor = new ArduinoPreprocessor({
@@ -690,7 +665,7 @@ void setup() {
                 updateSaveButtonState();
                 
             } catch (error) {
-                astOutput.value = `Parse Error: ${error.message}\\n\\nStack trace:\\n${error.stack}`;
+                astOutput.value = `Parse Error: ${error.message}\n\nStack trace:\n${error.stack}`;
                 astOutput.className = 'ast-output error code-input-with-lines';
                 updateASTLineNumbers(); // Update line numbers for error output
                 outputStatus.textContent = '❌ Parse failed with exception';
@@ -784,7 +759,8 @@ void setup() {
                     .replace(/^_+|_+$/g, '');
 
                 return sanitized + '.ast';
-            } else {
+            }
+            else {
                 // Use timestamp for manual code
                 const now = new Date();
                 const year = now.getFullYear();

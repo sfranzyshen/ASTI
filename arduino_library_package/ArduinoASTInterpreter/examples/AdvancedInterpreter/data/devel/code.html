@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino Code Sections</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 1em;
+        }
+        h1 {
+            color: #005252;
+        }
+        /* Style for each <div> container */
+        div {
+            background-color: #ffffff;
+            border: 1px solid #d1d1d1;
+            border-radius: 8px;
+            margin-bottom: 1.5em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            overflow: hidden; /* To contain the <pre> tag's rounding */
+        }
+        /* Style for the <pre> tag (preserves formatting) */
+        pre {
+            margin: 0; /* Remove default margin */
+            padding: 1.2em;
+            overflow-x: auto; /* Add horizontal scrollbar if code is too wide */
+            background-color: #fdfdfd; /* Slight off-white for code block */
+        }
+        /* Style for the <code> tag (monospaced font) */
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            color: #24292e;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Arduino Code Examples</h1>
+
+    <div>
+        <pre><code>
+// bink.ino
+
+void setup() {
+&nbsp; pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+&nbsp; digitalWrite(LED_BUILTIN, HIGH);
+&nbsp; delay(1000);
+&nbsp; digitalWrite(LED_BUILTIN, LOW);
+&nbsp; delay(1000);
+}
+        </code></pre>
+    </div>
+
+    <div>
+        <pre><code>
+// fade.ino
+
+int led = LED_BUILTIN;
+int brightness = 0;
+int fadeAmount = 5;
+
+void setup() {
+&nbsp; pinMode(led, OUTPUT);
+}
+
+void loop() {
+&nbsp; analogWrite(led, brightness);
+&nbsp; brightness = brightness + fadeAmount;
+
+&nbsp; if (brightness &lt;= 0 || brightness &gt;= 255) {
+&nbsp; &nbsp; fadeAmount = -fadeAmount;
+&nbsp; }
+&nbsp; delay(30);
+}
+        </code></pre>
+    </div>
+
+    <div>
+        <pre><code>
+// rgb.ino
+
+void setup() {
+&nbsp; pinMode(14, OUTPUT);
+&nbsp; pinMode(15, OUTPUT);
+&nbsp; pinMode(16, OUTPUT);
+&nbsp; pinMode(13, OUTPUT);
+}
+
+void loop() {
+&nbsp; digitalWrite(14, LOW);
+&nbsp; digitalWrite(15, HIGH);
+&nbsp; digitalWrite(16, HIGH);
+&nbsp; digitalWrite(13, HIGH);
+&nbsp; delay(500);
+
+&nbsp; digitalWrite(14, HIGH);
+&nbsp; digitalWrite(15, LOW);
+&nbsp; digitalWrite(16, HIGH);
+&nbsp; delay(500);
+
+&nbsp; digitalWrite(14,HIGH );
+&nbsp; digitalWrite(15, HIGH);
+&nbsp; digitalWrite(16, LOW);
+&nbsp; digitalWrite(13, LOW);
+&nbsp; delay(500);
+}
+        </code></pre>
+    </div>
+
+    <div>
+        <pre><code>
+// rainbow.ino
+
+const int redPin = 14;
+const int greenPin = 16;
+const int bluePin = 15;
+int speed = 1;
+int steps = 2;
+
+void setup() {
+&nbsp; pinMode(redPin, OUTPUT);
+&nbsp; pinMode(greenPin, OUTPUT);
+&nbsp; pinMode(bluePin, OUTPUT);
+}
+
+void loop() {
+&nbsp; fade(255, 0, 0, 255, 255, 0);
+&nbsp; fade(255, 255, 0, 0, 255, 0);
+&nbsp; fade(0, 255, 0, 0, 255, 255);
+&nbsp; fade(0, 255, 255, 0, 0, 255);
+&nbsp; fade(0, 0, 255, 255, 0, 255);
+&nbsp; fade(255, 0, 255, 255, 0, 0);
+}
+
+void fade(int r1, int g1, int b1, int r2, int g2, int b2) {
+&nbsp; for (int i = 0; i &lt;= 255; i += steps) {
+&nbsp; &nbsp; int r = map(i, 0, 255, r1, r2);
+&nbsp; &nbsp; int g = map(i, 0, 255, g1, g2);
+&nbsp; &nbsp; int b = map(i, 0, 255, b1, b2);
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; analogWrite(redPin, r);
+&nbsp; &nbsp; analogWrite(greenPin, g);
+&nbsp; &nbsp; analogWrite(bluePin, b);
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; delay(speed);
+&nbsp; }
+}
+        </code></pre>
+    </div>

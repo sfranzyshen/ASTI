@@ -242,6 +242,45 @@
             background-color: #00f0ff;
             color: #1a1a2e;
         }
+
+        /* Line number styling for code editor */
+        .editor-container {
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .editor-wrapper {
+            position: relative;
+            flex: 1;
+            display: flex;
+        }
+        
+        .line-numbers {
+            background-color: #111827;
+            color: #6b7280;
+            border: 2px solid #00f0ff;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            padding: 15px 8px 15px 15px;
+            font-family: inherit;
+            font-size: 13px;
+            line-height: 1.5;
+            width: 40px;
+            text-align: right;
+            white-space: pre;
+            overflow: hidden;
+            user-select: none;
+            resize: none;
+            outline: none;
+        }
+        
+        .code-input-with-lines {
+            border-radius: 0 8px 8px 0;
+            border-left: none;
+            flex: 1;
+        }
         
         /* Command styling */
         .command {
@@ -270,6 +309,40 @@
         .timestamp {
             color: #666;
             font-size: 9px;
+        }
+
+        /* ===== TOAST NOTIFICATIONS ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger-color);
+        }
+
+        .toast.success {
+            border-left-color: var(--success-color);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
         
         @media (max-width: 1200px) {
@@ -303,14 +376,7 @@
             <!-- Test Selection Controls (Left) -->
             <div class="test-selection-controls" style="flex: 1; text-align: left;">
                 <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <label for="categorySelect" style="color: #9ca3af; font-size: 12px;">Test Category:</label>
-                        <select id="categorySelect" onchange="updateTestOptions()" style="padding: 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff;">
-                            <option value="examples">Arduino Examples (79 tests)</option>
-                            <option value="old_tests">Comprehensive Tests (54 tests)</option>
-                            <option value="neopixel">NeoPixel Examples (2 tests)</option>
-                        </select>
-                    </div>
+
                     <div style="display: flex; flex-direction: column; gap: 5px;">
                         <label for="testSelect" style="color: #9ca3af; font-size: 12px;">Select Test:</label>
                         <select id="testSelect" style="padding: 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff; min-width: 200px;">
@@ -327,6 +393,13 @@
                 </div>
             </div>
             
+            <!-- AST Controls -->
+            <div class="controls" style="text-align: left;">
+                <button class="btn" id="parseBtn" onclick="parseCode()">Parse Code</button>
+                <button class="btn" id="uploadASTBtn" onclick="uploadCurrentAST()" style="margin-left: 10px;" disabled>Upload AST</button>
+                <button class="btn" id="saveASTBtn" onclick="downloadAST()" style="margin-left: 10px;" disabled>Save AST</button>
+            </div>
+
             <!-- Execution Controls (Right) -->
             <div class="controls" style="text-align: right;">
                 <button class="btn" id="startBtn" onclick="startExecution()">▶️ Start</button>
@@ -335,6 +408,14 @@
                 <button class="btn stop" id="stopBtn" onclick="stopExecution()" disabled>⏹️ Stop</button>
                 <button class="btn" id="resetBtn" onclick="resetInterpreter()">🔄 Reset</button>
             </div>
+        </div>
+
+        <!-- Upload Progress -->
+        <div id="uploadProgress" style="display: none; margin-top: 10px;">
+            <div style="background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden;">
+                <div id="uploadProgressBar" style="height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--success-color)); width: 0%; transition: width 0.3s ease;"></div>
+            </div>
+            <div id="uploadStatus" style="text-align: center; margin-top: 5px; font-size: 14px; color: var(--text-secondary);"></div>
         </div>
         
         <div class="panels">
@@ -346,8 +427,10 @@
                         <button class="panel-btn" onclick="clearCode()">Clear</button>
                     </div>
                 </div>
-                <div class="panel-content">
-                    <textarea class="editor" id="codeEditor" placeholder="Enter your Arduino code here...">void setup() {
+                <div class="panel-content editor-container">
+                    <div class="editor-wrapper">
+                        <textarea class="line-numbers" id="lineNumbers" readonly>1</textarea>
+                        <textarea class="editor code-input-with-lines" id="codeEditor" placeholder="Enter your Arduino code here...">void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 }
 
@@ -357,6 +440,7 @@ void loop() {
   digitalWrite(LED_BUILTIN, LOW);
   delay(1000);
 }</textarea>
+                    </div>
                     <div class="line-counter" id="codeLineCounter">8 lines</div>
                 </div>
             </div>
@@ -379,6 +463,8 @@ void loop() {
         
     </div>
 
+    <!-- Load CompactAST first (required by ArduinoParser in browser) -->
+    <script src="../libs/CompactAST/src/CompactAST.js"></script>
     <!-- Load ArduinoParser (includes CompactAST functionality) -->
     <script src="../libs/ArduinoParser/src/ArduinoParser.js"></script>
     <!-- Note: ArduinoParser includes CompactAST integration - no need to load CompactAST separately -->
@@ -391,17 +477,10 @@ void loop() {
         const examplesTestFiles = examplesFiles.slice();
         conditionalLog(true, `Loaded ${examplesTestFiles.length} Arduino examples`);
     </script>
-    <script src="../tests/old_test.js"></script>
-    <script>
-        // Capture old_test.js oldTestFiles immediately
-        const oldTestFilesArray = oldTestFiles.slice();
-        conditionalLog(true, `Loaded ${oldTestFilesArray.length} comprehensive tests`);
-    </script>
-    <script src="../tests/neopixel.js"></script>
+
     <script>
         // Capture neopixel.js neopixelFiles immediately
-        const neopixelTestFilesArray = neopixelFiles.slice();
-        conditionalLog(true, `Loaded ${neopixelTestFilesArray.length} NeoPixel examples`);
+
         
         // Global state
         let currentAST = null;
@@ -409,6 +488,9 @@ void loop() {
         let prettyFormat = true;
         let platformEmulation = null;
         let preprocessor = null;
+        let currentCompactAST = null;
+        let currentTestName = null;
+        let parseHadErrors = false;
         
         // Initialize platform and preprocessor systems
         function loadTestFiles() {
@@ -438,41 +520,29 @@ void loop() {
         
         // Update test options based on selected category
         function updateTestOptions() {
-            const categorySelect = document.getElementById('categorySelect');
             const testSelect = document.getElementById('testSelect');
-            const category = categorySelect.value;
             
             // Clear existing options
-            testSelect.innerHTML = '<option value="">Select a test...</option>';
-            
-            let currentTestFiles = [];
-            
-            switch (category) {
-                case 'examples':
-                    currentTestFiles = examplesTestFiles;
-                    break;
-                case 'old_tests':
-                    currentTestFiles = oldTestFilesArray;
-                    break;
-                case 'neopixel':
-                    currentTestFiles = neopixelTestFilesArray;
-                    break;
-            }
+            testSelect.innerHTML = '';
             
             // Populate dropdown with tests
-            currentTestFiles.forEach((test, index) => {
+            examplesTestFiles.forEach((test, index) => {
                 const option = document.createElement('option');
                 option.value = index;
                 option.textContent = test.name;
                 testSelect.appendChild(option);
             });
+
+            // Default to the first entry and load it
+            if (examplesTestFiles.length > 0) {
+                testSelect.value = 0;
+                loadSelectedTest();
+            }
         }
         
         // Load the selected test
         function loadSelectedTest() {
-            const categorySelect = document.getElementById('categorySelect');
             const testSelect = document.getElementById('testSelect');
-            const category = categorySelect.value;
             const testIndex = parseInt(testSelect.value);
             
             if (isNaN(testIndex)) {
@@ -480,24 +550,12 @@ void loop() {
                 return;
             }
             
-            let currentTestFiles = [];
-            
-            switch (category) {
-                case 'examples':
-                    currentTestFiles = examplesTestFiles;
-                    break;
-                case 'old_tests':
-                    currentTestFiles = oldTestFilesArray;
-                    break;
-                case 'neopixel':
-                    currentTestFiles = neopixelTestFilesArray;
-                    break;
-            }
-            
-            const selectedTest = currentTestFiles[testIndex];
+            const selectedTest = examplesTestFiles[testIndex];
             if (selectedTest) {
                 document.getElementById('codeEditor').value = selectedTest.content;
+                currentTestName = selectedTest.name;
                 updateLineCounters();
+                updateLineNumbers();
                 clearCommands();
                 resetInterpreter();
                 conditionalLog(true, `Loaded test: ${selectedTest.name}`);
@@ -506,38 +564,18 @@ void loop() {
         
         // Load a random test from current category
         function loadRandomTest() {
-            const categorySelect = document.getElementById('categorySelect');
             const testSelect = document.getElementById('testSelect');
-            const category = categorySelect.value;
-            
-            let currentTestFiles = [];
-            
-            switch (category) {
-                case 'examples':
-                    currentTestFiles = examplesTestFiles;
-                    break;
-                case 'old_tests':
-                    currentTestFiles = oldTestFilesArray;
-                    break;
-                case 'neopixel':
-                    currentTestFiles = neopixelTestFilesArray;
-                    break;
-            }
-            
-            if (currentTestFiles.length === 0) {
-                alert('No tests available in this category');
-                return;
-            }
-            
-            const randomIndex = Math.floor(Math.random() * currentTestFiles.length);
-            const randomTest = currentTestFiles[randomIndex];
+            const randomIndex = Math.floor(Math.random() * examplesTestFiles.length);
+            const randomTest = examplesTestFiles[randomIndex];
             
             // Update dropdown selection
             testSelect.value = randomIndex;
             
             // Load the test
             document.getElementById('codeEditor').value = randomTest.content;
+            currentTestName = randomTest.name;
             updateLineCounters();
+            updateLineNumbers();
             clearCommands();
             resetInterpreter();
             conditionalLog(true, `Loaded random test: ${randomTest.name}`);
@@ -612,43 +650,75 @@ void loop() {
         }
         
         // Main functions
-        async function startExecution() {
+        async function parseCode() {
+            clearCommands();
             const code = document.getElementById('codeEditor').value.trim();
             
             if (!code) {
                 currentAST = null;
-                clearCommands();
-                updateButtons('IDLE');
-                updateStatus('IDLE', 0, 0, 0);
-                return;
+                currentCompactAST = null;
+                parseHadErrors = false;
+                updateSaveButtonState();
+                updateUploadButtonState();
+                return false; // Indicate failure
             }
             
             try {
-                // Step 1: Preprocess code with platform context
-                const preprocessStartTime = performance.now();
+                // Step 1: Preprocess code
                 const preprocessResult = preprocessor.preprocess(code);
-                const preprocessEndTime = performance.now();
-                conditionalLog(true, `Preprocessed in ${(preprocessEndTime - preprocessStartTime).toFixed(2)}ms`);
                 
                 // Step 2: Parse preprocessed code to AST
-                const parseStartTime = performance.now();
                 currentAST = parse(preprocessResult.processedCode || preprocessResult, { verbose: false });
-                const parseEndTime = performance.now();
-                conditionalLog(true, `Parsed successfully in ${(parseEndTime - parseStartTime).toFixed(2)}ms`);
-                
-                // Step 3: Immediately interpret the AST
-                await interpretAST();
-                
+
+                // Step 3: Export CompactAST
+                if (typeof window.exportCompactAST === 'function') {
+                    currentCompactAST = window.exportCompactAST(currentAST);
+                } else {
+                    currentCompactAST = null;
+                }
+
+                // Step 4: Check for errors
+                const errors = getParseErrors(currentAST);
+                parseHadErrors = errors.length > 0;
+
+                if (parseHadErrors) {
+                    currentCompactAST = null;
+                    const errorMessages = errors.join('\n');
+                    alert(`Parsing failed with the following errors:\n\n${errorMessages}`);
+                    // also display in the command output
+                    for (const error of errors) {
+                        displayCommand({ type: 'ERROR', message: error, timestamp: Date.now() });
+                    }
+                }
+
+                // Step 5: Update button states
+                updateSaveButtonState();
+                updateUploadButtonState();
+
+                if (parseHadErrors) {
+                    showToast('Parsing failed with errors.', 'error');
+                    return false; // Indicate failure
+                } else {
+                    showToast('Code parsed successfully!', 'success');
+                    return true; // Indicate success
+                }
+
             } catch (error) {
-                displayCommand({
-                    type: 'ERROR',
-                    message: `Parse Error: ${error.message}`,
-                    timestamp: Date.now()
-                });
+                const errorMessage = `Parse Error: ${error.message}`;
+                displayCommand({ type: 'ERROR', message: errorMessage, timestamp: Date.now() });
+                alert(errorMessage);
                 currentAST = null;
-                updateButtons('IDLE');
-                updateStatus('ERROR');
-                console.error('Parse error:', error);
+                currentCompactAST = null;
+                parseHadErrors = true;
+                updateSaveButtonState();
+                updateUploadButtonState();
+                return false; // Indicate failure
+            }
+        }
+
+        async function startExecution() {
+            if (await parseCode()) {
+                await interpretAST();
             }
         }
         
@@ -770,6 +840,270 @@ void loop() {
             clearCommands();
             updateStatus('IDLE', 0, 0, 0);
             updateButtons('IDLE');
+            currentCompactAST = null;
+            parseHadErrors = false;
+            updateSaveButtonState();
+            updateUploadButtonState();
+        }
+
+        // Download CompactAST binary as .ast file
+        function downloadAST() {
+            // Check if CompactAST is available
+            if (!currentCompactAST) {
+                alert('No AST available to save. Please parse code first.');
+                return;
+            }
+
+            if (parseHadErrors) {
+                const proceed = confirm('The AST contains parsing errors. Do you want to save it anyway?');
+                if (!proceed) {
+                    return;
+                }
+            }
+
+            try {
+                // Generate filename
+                const filename = getASTFilename();
+
+                // Create Blob from ArrayBuffer
+                const blob = new Blob([currentCompactAST], { type: 'application/octet-stream' });
+
+                // Create download link
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+
+                // Trigger download
+                a.click();
+
+                // Cleanup
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+
+                console.log(`Downloaded ${filename} (${currentCompactAST.byteLength} bytes)`);
+
+            } catch (error) {
+                console.error('Failed to download AST:', error);
+                alert('Failed to download AST file: ' + error.message);
+            }
+        }
+
+        // Generate filename for AST download
+        function getASTFilename() {
+            if (currentTestName) {
+                // Use test name if available
+                let filename = currentTestName;
+                if (filename.endsWith('.ino')) {
+                    filename = filename.slice(0, -4);
+                }
+
+                // Sanitize test name: remove special characters, replace spaces with underscores
+                const sanitized = filename
+                    .replace(/[^a-zA-Z0-9_\-]/g, '_')
+                    .replace(/_{2,}/g, '_')
+                    .replace(/^_ + | _ + $/g, '');
+
+                return sanitized + '.ast';
+            } else {
+                // Use timestamp for manual code
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+
+                return `sketch_${year}${month}${day}_${hours}${minutes}${seconds}.ast`;
+            }
+        }
+
+        // Update Save AST button state and display
+        function updateSaveButtonState() {
+            const saveBtn = document.getElementById('saveASTBtn');
+            if (!saveBtn) return;
+
+            // Enable button if CompactAST exists and no errors (or user accepts errors)
+            if (currentCompactAST && !parseHadErrors) {
+                saveBtn.disabled = false;
+
+                // Update button text with file size
+                const sizeKB = (currentCompactAST.byteLength / 1024).toFixed(1);
+                if (currentCompactAST.byteLength < 1024) {
+                    saveBtn.textContent = `Save AST (${currentCompactAST.byteLength} bytes)`;
+                } else if (currentCompactAST.byteLength < 1024 * 1024) {
+                    saveBtn.textContent = `Save AST (${sizeKB} KB)`;
+                } else {
+                    const sizeMB = (currentCompactAST.byteLength / (1024 * 1024)).toFixed(1);
+                    saveBtn.textContent = `Save AST (${sizeMB} MB)`;
+                }
+            } else if (currentCompactAST && parseHadErrors) {
+                // Enable but warn about errors
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save AST (⚠️ has errors)';
+            } else {
+                // Disable if no AST available
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'Save AST';
+            }
+        }
+
+        // Update Upload AST button state and display
+        function updateUploadButtonState() {
+            const uploadBtn = document.getElementById('uploadASTBtn');
+            if (!uploadBtn) return;
+
+            if (currentCompactAST && !parseHadErrors) {
+                uploadBtn.disabled = false;
+            } else {
+                uploadBtn.disabled = true;
+            }
+        }
+
+        function containsErrors(node) {
+            if (!node || typeof node !== 'object') return false;
+
+            if (node.type === 'ErrorNode') return true;
+
+            // Check children array
+            if (node.children && Array.isArray(node.children)) {
+                for (const child of node.children) {
+                    if (containsErrors(child)) return true;
+                }
+            }
+
+            // Check all object properties
+            for (const key in node) {
+                if (typeof node[key] === 'object' && node[key] !== null) {
+                    if (containsErrors(node[key])) return true;
+                }
+            }
+
+            return false;
+        }
+
+        function getParseErrors(node) {
+            let errors = [];
+            if (!node || typeof node !== 'object') return errors;
+
+            if (node.type === 'ErrorNode') {
+                errors.push(JSON.stringify(node));
+            }
+
+            // Check children array
+            if (node.children && Array.isArray(node.children)) {
+                for (const child of node.children) {
+                    errors = errors.concat(getParseErrors(child));
+                }
+            }
+
+            // Check all object properties
+            for (const key in node) {
+                if (typeof node[key] === 'object' && node[key] !== null) {
+                    errors = errors.concat(getParseErrors(node[key]));
+                }
+            }
+
+            return errors;
+        }
+
+        // ===== FILE UPLOAD HANDLING =====
+        function uploadCurrentAST() {
+            if (!currentCompactAST) {
+                alert('No AST available to upload. Please parse code first.');
+                return;
+            }
+
+            if (parseHadErrors) {
+                const proceed = confirm('The AST contains parsing errors. Do you want to upload it anyway?');
+                if (!proceed) {
+                    return;
+                }
+            }
+
+            const blob = new Blob([currentCompactAST], { type: 'application/octet-stream' });
+            const file = new File([blob], getASTFilename(), { type: 'application/octet-stream' });
+            uploadFile(file);
+        }
+
+        async function uploadFile(file) {
+            // Show progress
+            const progressDiv = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('uploadProgressBar');
+            const statusText = document.getElementById('uploadStatus');
+
+            progressDiv.style.display = 'block';
+            progressBar.style.width = '0%';
+            statusText.textContent = `Uploading ${file.name}...`;
+
+            // Create form data
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                // Simulate progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 10;
+                    if (progress <= 90) {
+                        progressBar.style.width = `${progress}%`;
+                    }
+                }, 100);
+
+                // Upload file
+                const response = await fetch('/api/files/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+
+                const data = await response.json();
+
+                if (data.success) {
+                    statusText.textContent = `✓ Upload complete: ${file.name}`;
+                    statusText.style.color = 'var(--success-color)';
+                    showToast(`Uploaded: ${file.name}`, 'success');
+
+                    // Reset file input
+                    document.getElementById('fileInput').value = '';
+
+                    // Reload file list after short delay
+                    setTimeout(() => {
+                        progressDiv.style.display = 'none';
+                    }, 2000);
+                } else {
+                    throw new Error(data.error || 'Upload failed');
+                }
+            } catch (error) {
+                progressBar.style.width = '100%';
+                progressBar.style.background = 'var(--danger-color)';
+                statusText.textContent = `✗ Upload failed: ${error.message}`;
+                statusText.style.color = 'var(--danger-color)';
+                showToast(`Upload failed: ${error.message}`, 'error');
+
+                setTimeout(() => {
+                    progressDiv.style.display = 'none';
+                    progressBar.style.background = 'linear-gradient(90deg, var(--primary-color), var(--success-color))';
+                }, 3000);
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
         }
 
         // Helper function to convert actual control characters back to escape sequences for display
@@ -986,16 +1320,43 @@ void loop() {
             document.getElementById('codeEditor').value = '';
             updateLineCounters();
         }
+
+        // Line number management
+        function updateLineNumbers() {
+            const codeInput = document.getElementById('codeEditor');
+            const lineNumbers = document.getElementById('lineNumbers');
+            const lines = codeInput.value.split('\n');
+            const lineCount = lines.length;
+            
+            let lineNumberText = '';
+            for (let i = 1; i <= lineCount; i++) {
+                lineNumberText += i + (i < lineCount ? '\n' : '');
+            }
+            lineNumbers.value = lineNumberText;
+        }
+        
+        // Synchronize scrolling between line numbers and code
+        function syncScroll() {
+            const codeInput = document.getElementById('codeEditor');
+            const lineNumbers = document.getElementById('lineNumbers');
+            lineNumbers.scrollTop = codeInput.scrollTop;
+        }
         
         
         
         // No scroll management needed - browser handles it naturally
         
         // Event listeners
-        document.getElementById('codeEditor').addEventListener('input', updateLineCounters);
+        const codeEditor = document.getElementById('codeEditor');
+        codeEditor.addEventListener('input', () => {
+            updateLineCounters();
+            updateLineNumbers();
+        });
+        codeEditor.addEventListener('scroll', syncScroll);
         
         // Initialize
         updateLineCounters();
+        updateLineNumbers();
         updateStatus('IDLE', 0, 0, 0);
         updateButtons('IDLE');
         

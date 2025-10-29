@@ -46,7 +46,9 @@
             border-radius: 12px;
             margin-bottom: 20px;
             box-shadow: var(--shadow);
-            text-align: center;
+            display: flex; /* Added for flexbox layout */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Space out items: h1 left, button right */
         }
 
         .header h1 {
@@ -187,6 +189,22 @@
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color), #1976D2);
             color: white;
+        }
+
+        .btn-header {
+            padding: 8px 15px;
+            background-color: var(--primary-color); /* Using a CSS variable for consistency */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-header:hover {
+            background-color: #1976D2; /* A slightly darker shade for hover effect */
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .btn-icon {
@@ -381,13 +399,10 @@
 <body>
     <div class="container">
         <!-- Header -->
-        <div class="header">
-            <h1>🔧 Arduino AST Interpreter</h1>
-            <div class="connection-status">
-                <span class="status-dot" id="connectionDot"></span>
-                <span id="connectionText">Connecting...</span>
-            </div>
-        </div>
+<div class="header">
+    <h1>Arduino AST Interpreter</h1>
+    <a href="devel/index.html" target="_blank" class="btn-header">Open Devel</a>
+</div>
 
         <!-- Status Panel -->
         <div class="card">
