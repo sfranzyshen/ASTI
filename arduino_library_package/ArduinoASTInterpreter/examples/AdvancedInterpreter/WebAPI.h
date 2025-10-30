@@ -450,6 +450,9 @@ private:
             Serial.print(" (");
             Serial.print(index + len);
             Serial.println(" bytes)");
+        } else if (final && !uploadSuccess_) {
+            Serial.print("[API] Upload failed: ");
+            Serial.println(uploadError_);
         }
     }
 
@@ -664,8 +667,7 @@ public:
                          uint8_t* data, size_t len, bool final) {
             // This handles the upload chunks
             handleUploadFile(request, filename, index, data, len, final);
-        },
-                   nullptr);
+        });
 
         // Config endpoints
         server_->on("/api/config", HTTP_GET, [this](AsyncWebServerRequest* request) {

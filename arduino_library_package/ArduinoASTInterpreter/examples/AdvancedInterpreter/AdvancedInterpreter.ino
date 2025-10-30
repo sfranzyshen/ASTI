@@ -815,9 +815,7 @@ void setup() {
 
             Serial.println("⚠ WARNING: Web server initialization failed");
 
-        }");
         }
-    }
 
     // Initialize interpreter
     resetInterpreter();

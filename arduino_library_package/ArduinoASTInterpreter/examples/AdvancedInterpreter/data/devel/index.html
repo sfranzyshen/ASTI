@@ -399,15 +399,15 @@
                 <button class="btn stop" id="stopBtn" onclick="stopExecution()" disabled>⏹️ Stop</button>
                 <button class="btn" id="resetBtn" onclick="resetInterpreter()">🔄 Reset</button>
             </div>
-        </div>
-
-        <!-- Upload Progress -->
+        </div>        <!-- Upload Progress -->
         <div id="uploadProgress" style="display: none; margin-top: 10px;">
             <div style="background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden;">
                 <div id="uploadProgressBar" style="height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--success-color)); width: 0%; transition: width 0.3s ease;"></div>
             </div>
             <div id="uploadStatus" style="text-align: center; margin-top: 5px; font-size: 14px; color: var(--text-secondary);"></div>
         </div>
+
+
         
         <div class="panels">
             <!-- Code Panel -->
@@ -1043,9 +1043,6 @@ void loop() {
                     statusText.textContent = `✓ Upload complete: ${file.name}`;
                     statusText.style.color = 'var(--success-color)';
                     showToast(`Uploaded: ${file.name}`, 'success');
-
-                    // Reset file input
-                    document.getElementById('fileInput').value = '';
 
                     // Reload file list after short delay
                     setTimeout(() => {
