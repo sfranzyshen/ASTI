@@ -488,6 +488,22 @@
             </div>
         </div>
 
+        <!-- WiFi Configuration -->
+        <div class="card">
+            <div class="card-title">🌐 WiFi Configuration</div>
+            <div class="config-item">
+                <label class="config-label" for="wifiSSID">WiFi Network (SSID)</label>
+                <input type="text" id="wifiSSID" placeholder="Enter SSID">
+            </div>
+            <div class="config-item">
+                <label class="config-label" for="wifiPassword">Password</label>
+                <input type="password" id="wifiPassword" placeholder="Enter Password">
+            </div>
+            <button class="btn btn-primary" onclick="saveWifiConfiguration()" style="width: 100%; margin-top: 10px;">
+                <span>💾 Save & Reboot</span>
+            </button>
+        </div>
+
         <!-- Configuration -->
         <div class="card">
             <div class="card-title">⚙️ Configuration</div>
@@ -813,6 +829,35 @@
             }
         }
 
+        async function loadWifiConfiguration() {
+            const data = await apiCall('/api/wifi/config');
+            if (data) {
+                document.getElementById('wifiSSID').value = data.ssid;
+            }
+        }
+
+        async function saveWifiConfiguration() {
+            const ssid = document.getElementById('wifiSSID').value;
+            const password = document.getElementById('wifiPassword').value;
+
+            if (!ssid) {
+                showToast('SSID cannot be empty', 'error');
+                return;
+            }
+
+            const data = await apiCall('/api/wifi/config', 'POST', { ssid, password });
+            if (data && data.success) {
+                showToast('WiFi configuration saved. Rebooting...', 'success');
+                setTimeout(() => {
+                    // Give the toast time to show before rebooting
+                    apiCall('/api/system/reboot', 'POST');
+                }, 1000);
+            } else {
+                showToast('Failed to save WiFi configuration', 'error');
+            }
+        }
+
+
         // ===== UI UPDATES =====
         function updateStatus(status) {
             document.getElementById('statusState').textContent = status.state;
@@ -921,6 +966,7 @@
             fetchStatus();
             loadFiles();
             loadConfiguration();
+            loadWifiConfiguration();
         });
     </script>
 </body>

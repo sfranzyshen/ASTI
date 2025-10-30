@@ -11,46 +11,19 @@
  * - mDNS responder for easy access (e.g., http://astinterpreter.local)
  * - Connection recovery on disconnect
  * - IP address displayed in Serial Monitor
+ * - AP mode for initial configuration
  */
 
 #pragma once
 
 #include <WiFi.h>
 #include <ESPmDNS.h>
-
-// ============================================================================
-// WIFI CONFIGURATION (MODIFY THESE VALUES)
-// ============================================================================
-
-namespace WiFiConfig {
-
-// WiFi Credentials
-const char* WIFI_SSID = "YOUR_WIFI_SSID";           // Change to your WiFi SSID
-const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";   // Change to your WiFi password
-
-// mDNS Configuration
-const char* MDNS_HOSTNAME = "astinterpreter";       // Access via http://astinterpreter.local
-
-// Connection Settings
-const unsigned long CONNECT_TIMEOUT = 20000;        // 20 seconds connection timeout
-const unsigned long RECONNECT_INTERVAL = 30000;     // 30 seconds between reconnect attempts
-const uint8_t MAX_CONNECT_RETRIES = 3;              // Maximum connection retries
-
-// Network Configuration Notes:
-// - IP address automatically assigned by DHCP
-// - No manual IP configuration needed
-// - Assigned IP shown in Serial Monitor after connection
-// - Use mDNS hostname for consistent access regardless of IP
-
-} // namespace WiFiConfig
+#include <Preferences.h>
 
 // ============================================================================
 // WIFI MANAGER CLASS
 // ============================================================================
 
-/**
- * Manages WiFi connection and mDNS setup
- */
 class WiFiManager {
 private:
     bool connected_;
@@ -58,60 +31,69 @@ private:
     uint8_t retryCount_;
     String localIP_;
     String mdnsURL_;
+    String ssid_;
+    String password_;
+    Preferences preferences_;
 
-    /**
-     * Setup mDNS responder
-     */
+    const char* ap_ssid_ = "ASTInterpreter-Setup";
+
     bool setupMDNS() {
-        if (!MDNS.begin(WiFiConfig::MDNS_HOSTNAME)) {
+        if (!MDNS.begin("astinterpreter")) {
             Serial.println("✗ ERROR: Failed to start mDNS responder");
             return false;
         }
 
-        mdnsURL_ = "http://";
-        mdnsURL_ += WiFiConfig::MDNS_HOSTNAME;
-        mdnsURL_ += ".local";
+        mdnsURL_ = "http://astinterpreter.local";
 
         Serial.println("✓ mDNS responder started");
-        Serial.print("  Hostname: ");
-        Serial.println(WiFiConfig::MDNS_HOSTNAME);
+        Serial.print("  Hostname: astinterpreter");
         Serial.print("  URL: ");
         Serial.println(mdnsURL_);
 
-        // Add service to mDNS-SD
         MDNS.addService("http", "tcp", 80);
 
         return true;
     }
 
+    void loadCredentials() {
+        preferences_.begin("wifi-config", false);
+        ssid_ = preferences_.getString("ssid", "");
+        password_ = preferences_.getString("password", "");
+        preferences_.end();
+    }
+
 public:
     WiFiManager() : connected_(false), lastConnectAttempt_(0), retryCount_(0) {}
 
-    /**
-     * Initialize WiFi and connect to network
-     */
     bool begin() {
+        loadCredentials();
+
+        if (ssid_ == "") {
+            startAPMode();
+            return false; // Not connected to a station, but AP is running
+        } else {
+            return connectToWiFi();
+        }
+    }
+
+    bool connectToWiFi() {
         Serial.println();
         Serial.println("=================================================");
         Serial.println("   WiFi Configuration (DHCP)");
         Serial.println("=================================================");
 
-        // Set WiFi mode to station
         WiFi.mode(WIFI_STA);
-        WiFi.setHostname(WiFiConfig::MDNS_HOSTNAME);
+        WiFi.setHostname("astinterpreter");
 
-        // Connect to WiFi (DHCP automatic)
         Serial.println();
         Serial.print("Connecting to WiFi: ");
-        Serial.println(WiFiConfig::WIFI_SSID);
+        Serial.println(ssid_);
         Serial.println("Using DHCP for IP assignment...");
 
-        WiFi.begin(WiFiConfig::WIFI_SSID, WiFiConfig::WIFI_PASSWORD);
+        WiFi.begin(ssid_.c_str(), password_.c_str());
 
-        // Wait for connection
         unsigned long startTime = millis();
-        while (WiFi.status() != WL_CONNECTED &&
-               millis() - startTime < WiFiConfig::CONNECT_TIMEOUT) {
+        while (WiFi.status() != WL_CONNECTED && millis() - startTime < 20000) {
             delay(500);
             Serial.print(".");
         }
@@ -121,6 +103,7 @@ public:
             Serial.println("✗ ERROR: WiFi connection failed");
             Serial.print("  Status: ");
             Serial.println(getStatusString());
+            startAPMode(); // Fallback to AP mode
             return false;
         }
 
@@ -130,20 +113,9 @@ public:
         Serial.println("✓ WiFi connected successfully");
         Serial.print("  IP Address (DHCP): ");
         Serial.println(localIP_);
-        Serial.print("  Gateway: ");
-        Serial.println(WiFi.gatewayIP().toString());
-        Serial.print("  Subnet: ");
-        Serial.println(WiFi.subnetMask().toString());
-        Serial.print("  DNS: ");
-        Serial.println(WiFi.dnsIP().toString());
-        Serial.print("  Signal Strength: ");
-        Serial.print(WiFi.RSSI());
-        Serial.println(" dBm");
 
-        // Setup mDNS
         if (!setupMDNS()) {
             Serial.println("⚠ WARNING: mDNS setup failed, use IP address instead");
-            // Continue anyway - can still use IP address
         }
 
         Serial.println("=================================================");
@@ -152,134 +124,98 @@ public:
         return true;
     }
 
-    /**
-     * Check and maintain WiFi connection
-     * Call this periodically in loop()
-     */
-    void maintain() {
-        // Check if we're connected
-        if (WiFi.status() == WL_CONNECTED) {
-            if (!connected_) {
-                // Reconnected
-                connected_ = true;
-                retryCount_ = 0;
-                localIP_ = WiFi.localIP().toString();
-                Serial.println("[WiFi] Reconnected to network");
-                Serial.print("  IP Address (DHCP): ");
-                Serial.println(localIP_);
-            }
-            return;
-        }
+    void startAPMode() {
+        Serial.println();
+        Serial.println("=================================================");
+        Serial.println("   WiFi Access Point Mode");
+        Serial.println("=================================================");
 
-        // We're disconnected
-        if (connected_) {
-            connected_ = false;
-            Serial.println("[WiFi] Connection lost");
-        }
+        WiFi.mode(WIFI_AP);
+        WiFi.softAP(ap_ssid_);
 
-        // Attempt reconnection if enough time has passed
-        unsigned long now = millis();
-        if (now - lastConnectAttempt_ < WiFiConfig::RECONNECT_INTERVAL) {
-            return;
-        }
-
-        lastConnectAttempt_ = now;
-        retryCount_++;
-
-        if (retryCount_ > WiFiConfig::MAX_CONNECT_RETRIES) {
-            Serial.println("[WiFi] Max retries reached, waiting before next attempt...");
-            retryCount_ = 0;
-            return;
-        }
-
-        Serial.println("[WiFi] Attempting to reconnect...");
-        WiFi.disconnect();
-        WiFi.reconnect();
+        localIP_ = WiFi.softAPIP().toString();
+        Serial.print("  AP SSID: ");
+        Serial.println(ap_ssid_);
+        Serial.print("  AP IP Address: ");
+        Serial.println(localIP_);
+        Serial.println("  Connect to this network to configure WiFi.");
+        Serial.println("=================================================");
+        Serial.println();
+        connected_ = false;
     }
 
-    /**
-     * Get connection status
-     */
+    void maintain() {
+        if (ssid_ != "" && WiFi.status() != WL_CONNECTED) {
+            if (millis() - lastConnectAttempt_ > 30000) {
+                lastConnectAttempt_ = millis();
+                Serial.println("[WiFi] Connection lost. Attempting to reconnect...");
+                WiFi.disconnect();
+                WiFi.reconnect();
+            }
+        }
+    }
+
+    void saveCredentials(const String& ssid, const String& password) {
+        preferences_.begin("wifi-config", false);
+        preferences_.putString("ssid", ssid);
+        preferences_.putString("password", password);
+        preferences_.end();
+        ssid_ = ssid;
+        password_ = password;
+    }
+
+    String getSSID() {
+        return ssid_;
+    }
+
     bool isConnected() const {
         return connected_ && WiFi.status() == WL_CONNECTED;
     }
 
-    /**
-     * Get local IP address as string
-     */
     String getLocalIP() const {
         return localIP_;
     }
 
-    /**
-     * Get mDNS URL
-     */
     String getMDNSURL() const {
         return mdnsURL_;
     }
 
-    /**
-     * Get WiFi signal strength in dBm
-     */
-    int getRSSI() const {
-        return WiFi.RSSI();
-    }
-
-    /**
-     * Get human-readable status string
-     */
     String getStatusString() const {
         switch (WiFi.status()) {
-            case WL_IDLE_STATUS:
-                return "Idle";
-            case WL_NO_SSID_AVAIL:
-                return "No SSID Available";
-            case WL_SCAN_COMPLETED:
-                return "Scan Completed";
-            case WL_CONNECTED:
-                return "Connected";
-            case WL_CONNECT_FAILED:
-                return "Connection Failed";
-            case WL_CONNECTION_LOST:
-                return "Connection Lost";
-            case WL_DISCONNECTED:
-                return "Disconnected";
-            default:
-                return "Unknown";
+            case WL_IDLE_STATUS: return "Idle";
+            case WL_NO_SSID_AVAIL: return "No SSID Available";
+            case WL_SCAN_COMPLETED: return "Scan Completed";
+            case WL_CONNECTED: return "Connected";
+            case WL_CONNECT_FAILED: return "Connection Failed";
+            case WL_CONNECTION_LOST: return "Connection Lost";
+            case WL_DISCONNECTED: return "Disconnected";
+            default: return "Unknown";
         }
     }
 
-    /**
-     * Print connection information
-     */
     void printInfo() const {
         Serial.println();
         Serial.println("========== WiFi Status ==========");
+        Serial.print("  Mode: ");
+        Serial.println(WiFi.getMode() == WIFI_AP ? "Access Point" : "Station");
         Serial.print("  Status: ");
         Serial.println(getStatusString());
 
         if (isConnected()) {
+            Serial.print("  SSID: ");
+            Serial.println(ssid_);
             Serial.print("  IP Address (DHCP): ");
             Serial.println(localIP_);
             Serial.print("  mDNS URL: ");
             Serial.println(mdnsURL_);
-            Serial.print("  Signal Strength: ");
-            Serial.print(getRSSI());
-            Serial.println(" dBm");
+        } else if (WiFi.getMode() == WIFI_AP) {
+            Serial.print("  AP SSID: ");
+            Serial.println(ap_ssid_);
+            Serial.print("  AP IP Address: ");
+            Serial.println(localIP_);
         }
 
         Serial.println("=================================");
         Serial.println();
-    }
-
-    /**
-     * Disconnect from WiFi
-     */
-    void disconnect() {
-        if (connected_) {
-            WiFi.disconnect();
-            connected_ = false;
-            Serial.println("[WiFi] Disconnected");
-        }
     }
 };

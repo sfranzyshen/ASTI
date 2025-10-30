@@ -24,6 +24,7 @@
 #include <LittleFS.h>
 #include <ArduinoJson.h>
 #include "ConfigManager.h"
+#include "WiFiConfig.h"
 
 // Forward declarations (these will be defined in AdvancedInterpreter.ino)
 extern AppExecutionState state;
@@ -33,6 +34,7 @@ extern unsigned long commandsExecuted;
 extern ASTInterpreter* interpreter;
 extern ConfigManager configManager;
 extern ImmediateCommandExecutor immediateExecutor;
+extern WiFiManager wifiManager;
 
 // Function pointers for control actions (will be set by AdvancedInterpreter.ino)
 extern void startExecution();
@@ -519,6 +521,71 @@ private:
         request->send(response);
     }
 
+    /**
+     * Get WiFi config endpoint: GET /api/wifi/config
+     */
+    void handleGetWifiConfig(AsyncWebServerRequest* request) {
+        StaticJsonDocument<256> doc;
+        doc["ssid"] = wifiManager.getSSID();
+
+        String output;
+        serializeJson(doc, output);
+
+        auto response = request->beginResponse(200, "application/json", output);
+        addCORSHeaders(response);
+        request->send(response);
+    }
+
+    /**
+     * Update WiFi config endpoint: POST /api/wifi/config
+     * Body: {"ssid": "MyNetwork", "password": "MyPassword"}
+     */
+    void handleUpdateWifiConfig(AsyncWebServerRequest* request, uint8_t* data, size_t len,
+                               size_t index, size_t total) {
+        StaticJsonDocument<256> doc;
+        DeserializationError error = deserializeJson(doc, data, len);
+
+        if (error) {
+            auto response = request->beginResponse(400, "application/json",
+                                                  createErrorJSON("Invalid JSON"));
+            addCORSHeaders(response);
+            request->send(response);
+            return;
+        }
+
+        String ssid = doc["ssid"] | "";
+        String password = doc["password"] | "";
+
+        if (ssid.length() == 0) {
+            auto response = request->beginResponse(400, "application/json",
+                                                  createErrorJSON("Missing SSID"));
+            addCORSHeaders(response);
+            request->send(response);
+            return;
+        }
+
+        wifiManager.saveCredentials(ssid, password);
+
+        auto response = request->beginResponse(200, "application/json",
+                                              createSuccessJSON("WiFi configuration updated"));
+        addCORSHeaders(response);
+        request->send(response);
+    }
+
+    /**
+     * System reboot endpoint: POST /api/system/reboot
+     */
+    void handleSystemReboot(AsyncWebServerRequest* request) {
+        auto response = request->beginResponse(200, "application/json",
+                                              createSuccessJSON("Rebooting..."));
+        addCORSHeaders(response);
+        request->send(response);
+
+        // Delay to allow response to be sent
+        delay(100);
+        ESP.restart();
+    }
+
 public:
     WebAPI() : server_(nullptr), filesystemEnabled_(false),
                currentUploadFilename_(""), uploadSuccess_(true), uploadError_("") {}
@@ -611,6 +678,24 @@ public:
                    [this](AsyncWebServerRequest* request, uint8_t* data, size_t len,
                          size_t index, size_t total) {
             handleUpdateConfig(request, data, len, index, total);
+        });
+
+        // WiFi config endpoints
+        server_->on("/api/wifi/config", HTTP_GET, [this](AsyncWebServerRequest* request) {
+            handleGetWifiConfig(request);
+        });
+
+        server_->on("/api/wifi/config", HTTP_POST,
+                   [](AsyncWebServerRequest* request) {},
+                   nullptr,
+                   [this](AsyncWebServerRequest* request, uint8_t* data, size_t len,
+                         size_t index, size_t total) {
+            handleUpdateWifiConfig(request, data, len, index, total);
+        });
+
+        // System reboot endpoint
+        server_->on("/api/system/reboot", HTTP_POST, [this](AsyncWebServerRequest* request) {
+            handleSystemReboot(request);
         });
 
         Serial.println("✓ API endpoints registered:");

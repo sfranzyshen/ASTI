@@ -732,9 +732,13 @@ void setup() {
         // Generate filename for AST download
         function getASTFilename() {
             if (currentTestName) {
-                // Use test name if available
+                // Use test name if available, remove .ino extension
+                const baseName = currentTestName.endsWith('.ino') 
+                    ? currentTestName.slice(0, -4) 
+                    : currentTestName;
+
                 // Sanitize test name: remove special characters, replace spaces with underscores
-                const sanitized = currentTestName
+                const sanitized = baseName
                     .replace(/[^a-zA-Z0-9_\-]/g, '_')
                     .replace(/_{2,}/g, '_')
                     .replace(/^_+|_+$/g, '');

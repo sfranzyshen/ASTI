@@ -256,7 +256,7 @@ enum AppExecutionState {
 #include "CommandExecutor.h"
 #include "ESP32DataProvider.h"
 #include "SerialMenu.h"
-#include "WiFiConfig.h"
+
 #include "ConfigManager.h"
 #include "WebServerManager.h"
 #include "WebAPI.h"
@@ -743,43 +743,79 @@ void setup() {
         Serial.println("⚠ WARNING: Failed to initialize configuration, using defaults");
     }
 
-    // Initialize WiFi and mDNS
-    if (!wifiManager.begin()) {
-        Serial.println("⚠ WARNING: WiFi connection failed");
-        Serial.println("   Web interface will not be available");
-        Serial.println("   Serial interface will continue to work");
-    } else {
-        // WiFi connected successfully
-        wifiManager.printInfo();
+        // Initialize WiFi and mDNS
+
+        wifiManager.begin();
+
+    
 
         // Initialize web server
+
         if (webServer.begin()) {
+
             // Initialize WebSocket handler
+
             webSocket.begin(webServer.getServer());
 
+    
+
             // Initialize Web API
+
             webAPI.begin(webServer.getServer());
 
+    
+
             // Enable filesystem support in API if USE_FILESYSTEM is enabled
+
             #if USE_FILESYSTEM
+
                 webAPI.setFilesystemEnabled(true);
+
             #else
+
                 webAPI.setFilesystemEnabled(false);
+
             #endif
 
+    
+
             // Print access URLs
+
             Serial.println();
+
             Serial.println("========================================");
+
             Serial.println("   WEB INTERFACE READY");
+
             Serial.println("========================================");
-            Serial.print("   ");
-            Serial.println(wifiManager.getMDNSURL());
-            Serial.print("   http://");
-            Serial.println(wifiManager.getLocalIP());
+
+            if (wifiManager.isConnected()) {
+
+                Serial.print("   ");
+
+                Serial.println(wifiManager.getMDNSURL());
+
+                Serial.print("   http://");
+
+                Serial.println(wifiManager.getLocalIP());
+
+            } else {
+
+                Serial.print("   http://");
+
+                Serial.println(wifiManager.getLocalIP());
+
+            }
+
             Serial.println("========================================");
+
             Serial.println();
+
         } else {
+
             Serial.println("⚠ WARNING: Web server initialization failed");
+
+        }");
         }
     }
 
