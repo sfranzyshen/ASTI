@@ -66,10 +66,14 @@
         .options {
             margin: 20px 0;
             text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
         }
         
         .options label {
-            margin: 0 15px;
+            margin: 0;
             cursor: pointer;
         }
         
@@ -81,7 +85,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            height: calc(100vh - 150px); /* Adjusted height after removing test selection controls */
+            height: calc(100vh - 200px);
         }
         
         .panel {
@@ -241,6 +245,40 @@
             background-color: #00f0ff;
             color: #1a1a2e;
         }
+
+        /* ===== TOAST NOTIFICATIONS ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2a2a3e;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid #00f0ff;
+        }
+
+        .toast.error {
+            border-left-color: #ff4444;
+        }
+
+        .toast.success {
+            border-left-color: #00ff88;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -248,11 +286,24 @@
         <div class="controls">
             <button class="parse-btn" onclick="parseCode()" style="margin-bottom: 20px;">Parse Code</button>
             <button class="parse-btn" id="saveASTBtn" onclick="downloadAST()" style="margin-bottom: 20px; margin-left: 10px;" disabled>Save AST</button>
+            <button class="parse-btn" id="uploadASTBtn" onclick="uploadCurrentAST()" style="margin-bottom: 20px; margin-left: 10px;" disabled>Upload AST</button>
+        </div>
+
+        <!-- Upload Progress -->
+        <div id="uploadProgress" style="display: none; margin-top: 10px;">
+            <div style="background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden;">
+                <div id="uploadProgressBar" style="height: 4px; background: linear-gradient(90deg, #00f0ff, #00ff88); width: 0%; transition: width 0.3s ease;"></div>
+            </div>
+            <div id="uploadStatus" style="text-align: center; margin-top: 5px; font-size: 14px; color: #a0a0a0;"></div>
         </div>
         
-
         
         <div class="options">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label for="testSelect" style="color: #9ca3af; font-size: 12px;">Select Test:</label>
+                <select id="testSelect" onchange="loadSelectedTest()" style="padding: 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff; min-width: 200px;">
+                </select>
+            </div>
             <label>
                 <input type="checkbox" id="verbose" checked> Verbose Output
             </label>
@@ -319,18 +370,6 @@ void loop() {
         // Capture examples.js examplesFiles immediately
         const examplesTestFiles = examplesFiles.slice();
         console.log(`Loaded ${examplesTestFiles.length} Arduino examples`);
-    </script>
-    <script src="../tests/old_test.js"></script>
-    <script>
-        // Capture old_test.js oldTestFiles immediately
-        const oldTestFilesArray = oldTestFiles.slice();
-        console.log(`Loaded ${oldTestFilesArray.length} comprehensive tests`);
-    </script>
-    <script src="../tests/neopixel.js"></script>
-    <script>
-        // Capture neopixel.js neopixelFiles immediately
-        const neopixelTestFilesArray = neopixelFiles.slice();
-        console.log(`Loaded ${neopixelTestFilesArray.length} NeoPixel examples`);
 
         // Global state for platform and preprocessor
         let platformEmulation = null;
@@ -347,7 +386,7 @@ void loop() {
             try {
                 // Initialize platform emulation system (ESP32 Nano default)
                 platformEmulation = new PlatformEmulation('ESP32_NANO');
-                console.log(`🌈 Platform initialized: ${platformEmulation.currentPlatform.displayName}`);
+                console.log(`🎯 Platform initialized: ${platformEmulation.currentPlatform.displayName}`);
                 
                 // Initialize preprocessor with platform context
                 preprocessor = new ArduinoPreprocessor({
@@ -370,63 +409,38 @@ void loop() {
         
         // Update test options based on selected category
         function updateTestOptions() {
-            const categorySelect = document.getElementById('categorySelect');
             const testSelect = document.getElementById('testSelect');
-            const category = categorySelect.value;
             
             // Clear existing options
-            testSelect.innerHTML = '<option value="">Select a test...</option>';
+            testSelect.innerHTML = '';
             
-            let currentTestFiles = [];
-            
-            switch (category) {
-                case 'examples':
-                    currentTestFiles = examplesTestFiles;
-                    break;
-                case 'old_tests':
-                    currentTestFiles = oldTestFilesArray;
-                    break;
-                case 'neopixel':
-                    currentTestFiles = neopixelTestFilesArray;
-                    break;
-            }
-            
+            let blinkIndex = -1;
             // Populate dropdown with tests
-            currentTestFiles.forEach((test, index) => {
+            examplesTestFiles.forEach((test, index) => {
                 const option = document.createElement('option');
                 option.value = index;
                 option.textContent = test.name;
                 testSelect.appendChild(option);
+                if (test.name === 'blink.ino') {
+                    blinkIndex = index;
+                }
             });
+
+            if (blinkIndex !== -1) {
+                testSelect.selectedIndex = blinkIndex;
+            }
         }
         
         // Load the selected test
         function loadSelectedTest() {
-            const categorySelect = document.getElementById('categorySelect');
             const testSelect = document.getElementById('testSelect');
-            const category = categorySelect.value;
             const testIndex = parseInt(testSelect.value);
             
             if (isNaN(testIndex)) {
-                alert('Please select a test first');
                 return;
             }
             
-            let currentTestFiles = [];
-            
-            switch (category) {
-                case 'examples':
-                    currentTestFiles = examplesTestFiles;
-                    break;
-                case 'old_tests':
-                    currentTestFiles = oldTestFilesArray;
-                    break;
-                case 'neopixel':
-                    currentTestFiles = neopixelTestFilesArray;
-                    break;
-            }
-            
-            const selectedTest = currentTestFiles[testIndex];
+            const selectedTest = examplesTestFiles[testIndex];
             if (selectedTest) {
                 document.getElementById('codeInput').value = selectedTest.content;
                 updateInputStatus();
@@ -439,47 +453,7 @@ void loop() {
             }
         }
         
-        // Load a random test from current category
-        function loadRandomTest() {
-            const categorySelect = document.getElementById('categorySelect');
-            const testSelect = document.getElementById('testSelect');
-            const category = categorySelect.value;
-            
-            let currentTestFiles = [];
-            
-            switch (category) {
-                case 'examples':
-                    currentTestFiles = examplesTestFiles;
-                    break;
-                case 'old_tests':
-                    currentTestFiles = oldTestFilesArray;
-                    break;
-                case 'neopixel':
-                    currentTestFiles = neopixelTestFilesArray;
-                    break;
-            }
-            
-            if (currentTestFiles.length === 0) {
-                alert('No tests available in this category');
-                return;
-            }
-            
-            const randomIndex = Math.floor(Math.random() * currentTestFiles.length);
-            const randomTest = currentTestFiles[randomIndex];
 
-            // Update dropdown selection
-            testSelect.value = randomIndex;
-
-            // Load the test
-            document.getElementById('codeInput').value = randomTest.content;
-            updateInputStatus();
-            updateLineNumbers();
-            // Store test name for filename generation
-            currentTestName = randomTest.name;
-            console.log(`Loaded random test: ${randomTest.name}`);
-            // Auto-parse the loaded test
-            parseCode();
-        }
         
         const examples = {
             basic: `void setup() {
@@ -579,6 +553,7 @@ void setup() {
                 currentCompactAST = null;
                 parseHadErrors = false;
                 updateSaveButtonState();
+                updateUploadButtonState();
                 return;
             }
             
@@ -637,18 +612,19 @@ void setup() {
                 output += `${'='.repeat(60)}`;
                 
                 // Check for errors in the AST
-                const hasErrors = containsErrors(ast);
-                parseHadErrors = hasErrors;
+                const errorNode = findErrorNode(ast);
+                parseHadErrors = !!errorNode;
 
                 astOutput.value = output;
                 updateASTLineNumbers(); // Update line numbers for AST output
 
-                if (hasErrors) {
+                if (errorNode) {
                     astOutput.className = 'ast-output error code-input-with-lines';
                     outputStatus.textContent = `⚠️ Parsed with errors (${parseTime}ms)`;
                     outputStatus.className = 'status error';
                     // Clear CompactAST on errors
                     currentCompactAST = null;
+                    alert(`Parse Error: ${errorNode.value}`);
                 } else {
                     astOutput.className = 'ast-output success code-input-with-lines';
                     // Show file size in status
@@ -663,42 +639,47 @@ void setup() {
 
                 // Update save button state
                 updateSaveButtonState();
+                updateUploadButtonState();
                 
             } catch (error) {
-                astOutput.value = `Parse Error: ${error.message}\n\nStack trace:\n${error.stack}`;
+                astOutput.value = `Parse Error: ${error.message}\\n\\nStack trace:\\n${error.stack}`;
                 astOutput.className = 'ast-output error code-input-with-lines';
                 updateASTLineNumbers(); // Update line numbers for error output
                 outputStatus.textContent = '❌ Parse failed with exception';
                 outputStatus.className = 'status error';
+                alert(`Parse Error: ${error.message}`);
 
                 // Clear state on parse failure
                 currentAST = null;
                 currentCompactAST = null;
                 parseHadErrors = true;
                 updateSaveButtonState();
+                updateUploadButtonState();
             }
         }
         
-        function containsErrors(node) {
-            if (!node || typeof node !== 'object') return false;
+        function findErrorNode(node) {
+            if (!node || typeof node !== 'object') return null;
 
-            if (node.type === 'ErrorNode') return true;
+            if (node.type === 'ErrorNode') return node;
 
             // Check children array
             if (node.children && Array.isArray(node.children)) {
                 for (const child of node.children) {
-                    if (containsErrors(child)) return true;
+                    const errorNode = findErrorNode(child);
+                    if (errorNode) return errorNode;
                 }
             }
 
             // Check all object properties
             for (const key in node) {
                 if (typeof node[key] === 'object' && node[key] !== null) {
-                    if (containsErrors(node[key])) return true;
+                    const errorNode = findErrorNode(node[key]);
+                    if (errorNode) return errorNode;
                 }
             }
 
-            return false;
+            return null;
         }
 
         // Download CompactAST binary as .ast file
@@ -759,8 +740,7 @@ void setup() {
                     .replace(/^_+|_+$/g, '');
 
                 return sanitized + '.ast';
-            }
-            else {
+            } else {
                 // Use timestamp for manual code
                 const now = new Date();
                 const year = now.getFullYear();
@@ -802,6 +782,109 @@ void setup() {
                 saveBtn.disabled = true;
                 saveBtn.textContent = 'Save AST';
             }
+        }
+
+        // Update Upload AST button state and display
+        function updateUploadButtonState() {
+            const uploadBtn = document.getElementById('uploadASTBtn');
+            if (!uploadBtn) return;
+
+            if (currentCompactAST && !parseHadErrors) {
+                uploadBtn.disabled = false;
+            } else {
+                uploadBtn.disabled = true;
+            }
+        }
+
+        // ===== FILE UPLOAD HANDLING =====
+        function uploadCurrentAST() {
+            if (!currentCompactAST) {
+                alert('No AST available to upload. Please parse code first.');
+                return;
+            }
+
+            if (parseHadErrors) {
+                const proceed = confirm('The AST contains parsing errors. Do you want to upload it anyway?');
+                if (!proceed) {
+                    return;
+                }
+            }
+
+            const blob = new Blob([currentCompactAST], { type: 'application/octet-stream' });
+            const file = new File([blob], getASTFilename(), { type: 'application/octet-stream' });
+            uploadFile(file);
+        }
+
+        async function uploadFile(file) {
+            // Show progress
+            const progressDiv = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('uploadProgressBar');
+            const statusText = document.getElementById('uploadStatus');
+
+            progressDiv.style.display = 'block';
+            progressBar.style.width = '0%';
+            statusText.textContent = `Uploading ${file.name}...`;
+
+            // Create form data
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                // Simulate progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 10;
+                    if (progress <= 90) {
+                        progressBar.style.width = `${progress}%`;
+                    }
+                }, 100);
+
+                // Upload file
+                const response = await fetch('/api/files/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+
+                const data = await response.json();
+
+                if (data.success) {
+                    statusText.textContent = `✓ Upload complete: ${file.name}`;
+                    statusText.style.color = '#00ff88';
+                    showToast(`Uploaded: ${file.name}`, 'success');
+
+                    // Reload file list after short delay
+                    setTimeout(() => {
+                        progressDiv.style.display = 'none';
+                    }, 2000);
+                } else {
+                    throw new Error(data.error || 'Upload failed');
+                }
+            } catch (error) {
+                progressBar.style.width = '100%';
+                progressBar.style.background = '#ff4444';
+                statusText.textContent = `✗ Upload failed: ${error.message}`;
+                statusText.style.color = '#ff4444';
+                showToast(`Upload failed: ${error.message}`, 'error');
+
+                setTimeout(() => {
+                    progressDiv.style.display = 'none';
+                    progressBar.style.background = 'linear-gradient(90deg, #00f0ff, #00ff88)';
+                }, 3000);
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
         }
 
 
@@ -953,7 +1036,7 @@ void setup() {
 
             // Wait a bit longer for exportCompactAST to be available
             setTimeout(() => {
-                parseCode();
+                loadSelectedTest();
             }, 50);
         }, 100);
     </script>

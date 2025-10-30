@@ -260,9 +260,8 @@
         .line-numbers {
             background-color: #111827;
             color: #6b7280;
-            border: 2px solid #00f0ff;
-            border-right: none;
-            border-radius: 8px 0 0 8px;
+            border: none;
+            border-radius: 0;
             padding: 15px 8px 15px 15px;
             font-family: inherit;
             font-size: 13px;
@@ -379,16 +378,8 @@
 
                     <div style="display: flex; flex-direction: column; gap: 5px;">
                         <label for="testSelect" style="color: #9ca3af; font-size: 12px;">Select Test:</label>
-                        <select id="testSelect" style="padding: 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff; min-width: 200px;">
-                            <option value="">Select a test...</option>
+                        <select id="testSelect" onchange="loadSelectedTest()" style="padding: 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff; min-width: 200px;">
                         </select>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <label style="color: #9ca3af; font-size: 12px;">&nbsp;</label>
-                        <div style="display: flex; gap: 5px;">
-                            <button class="btn" onclick="loadSelectedTest()" style="padding: 8px 16px; min-width: 100px;">Load Test</button>
-                            <button class="btn" onclick="loadRandomTest()" style="padding: 8px 16px; min-width: 100px;">Random</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -546,7 +537,6 @@ void loop() {
             const testIndex = parseInt(testSelect.value);
             
             if (isNaN(testIndex)) {
-                alert('Please select a test first');
                 return;
             }
             
@@ -562,24 +552,7 @@ void loop() {
             }
         }
         
-        // Load a random test from current category
-        function loadRandomTest() {
-            const testSelect = document.getElementById('testSelect');
-            const randomIndex = Math.floor(Math.random() * examplesTestFiles.length);
-            const randomTest = examplesTestFiles[randomIndex];
-            
-            // Update dropdown selection
-            testSelect.value = randomIndex;
-            
-            // Load the test
-            document.getElementById('codeEditor').value = randomTest.content;
-            currentTestName = randomTest.name;
-            updateLineCounters();
-            updateLineNumbers();
-            clearCommands();
-            resetInterpreter();
-            conditionalLog(true, `Loaded random test: ${randomTest.name}`);
-        }
+
         
         // Remove the old hardcoded examples object - replaced by dynamic loading
         
