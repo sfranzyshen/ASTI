@@ -678,7 +678,7 @@
             const state = document.getElementById('statusState').textContent;
             if (state === 'running') {
                 await sendControlCommand('pause');
-                await new Promise(resolve => setTimeout(resolve, 500)); // wait for pause to register
+                await new Promise(resolve => setTimeout(resolve, 2000)); // wait for pause to register
                 await sendControlCommand('reset');
             } else {
                 await sendControlCommand('reset');
@@ -691,9 +691,9 @@
             const state = document.getElementById('statusState').textContent;
             if (state === 'running' || state === 'paused') {
                 await sendControlCommand('pause');
-                await new Promise(resolve => setTimeout(resolve, 500));
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 await sendControlCommand('reset');
-                await new Promise(resolve => setTimeout(resolve, 500));
+                await new Promise(resolve => setTimeout(resolve, 2000));
             }
 
             const data = await apiCall('/api/files/load', 'POST', { filename });
