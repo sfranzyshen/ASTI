@@ -379,9 +379,9 @@
             <!-- Test Selection Controls (Left) -->
             <div class="test-selection-controls">
                         <div class="controls" style="text-align: left;">
-                            <select id="testSelect" onchange="loadSelectedTest()" style="padding: 10px 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff; min-width: 200px;"><option value="0">blink.ino</option><option value="1">fade.ino</option><option value="2">rainbow.ino</option><option value="3">rgb.ino</option></select><button class="btn" id="parseBtn" onclick="parseCode()">Verify</button>
-                            <button class="btn" id="uploadASTBtn" onclick="uploadCurrentAST()" style="margin-left: 10px;">Upload</button>
-                            <button class="btn" id="saveASTBtn" onclick="downloadAST()" style="margin-left: 10px;">Save</button>
+                            <select id="testSelect" onchange="loadSelectedTest()" style="padding: 10px 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff; min-width: 200px;"><option value="0">blink.ino</option><option value="1">fade.ino</option><option value="2">rainbow.ino</option><option value="3">rgb.ino</option></select><button class="btn" id="newBtn" onclick="newSketch()">🆕 New</button><button class="btn" id="parseBtn" onclick="parseCode()">✅ Verify</button>
+                            <button class="btn" id="uploadASTBtn" onclick="uploadCurrentAST()" style="margin-left: 10px;">➡️ Upload</button>
+                            <button class="btn" id="saveASTBtn" onclick="downloadAST()" style="margin-left: 10px;">📄 Save</button>
                         </div>
                      </div>
 
@@ -389,9 +389,9 @@
             <div class="controls" style="text-align: right;">
                 <button class="btn" id="startBtn" onclick="startExecution()">▶️ Start</button>
                 <button class="btn pause" id="pauseBtn" onclick="pauseExecution()" disabled="">⏸️ Pause</button>
-                <button class="btn" id="stepBtn" onclick="stepExecution()" disabled="">📍 Step</button>
+                <button class="btn" id="stepBtn" onclick="stepExecution()" disabled="">↩️ Step</button>
                 <button class="btn stop" id="stopBtn" onclick="stopExecution()" disabled="">⏹️ Stop</button>
-                <button class="btn" id="resetBtn" onclick="resetInterpreter()">🔄 Reset</button>
+                <button class="btn" id="resetBtn" onclick="resetInterpreter()">🔃 Reset</button>
             </div>
         </div>        <!-- Upload Progress -->
         <div id="uploadProgress" style="display: none; margin-top: 10px;">
@@ -407,7 +407,7 @@
             <!-- Code Panel -->
             <div class="panel">
                 <div class="panel-header">
-                    <div class="panel-title">📝 Arduino Code</div>
+                    <div class="panel-title" id="arduinoCodePanelTitle">📝 Arduino Code</div>
                     <div class="panel-controls">
                         <button class="panel-btn" onclick="clearCode()">Clear</button>
                     </div>
@@ -477,6 +477,39 @@ void loop() {
         let currentTestName = null;
         let parseHadErrors = false;
         
+        function generateSketchName() {
+            const now = new Date();
+            const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+            const month = months[now.getMonth()];
+            const day = now.getDate();
+            const letter = String.fromCharCode(97 + (now.getHours() % 26)); // Simple letter based on hour
+            return `sketch_${month}${day}${letter}.ino`;
+        }
+
+        function newSketch() {
+            const defaultName = generateSketchName();
+            const sketchName = prompt("Enter a name for the new sketch:", defaultName);
+
+            if (sketchName) {
+                currentTestName = sketchName;
+                updateSketchName();
+                const codeEditor = document.getElementById('codeEditor');
+                codeEditor.value = `void setup() {\n  // put your setup code here, to run once:\n\n}\n\nvoid loop() {\n  // put your main code here, to run repeatedly:\n\n}`;
+                updateLineCounters();
+                updateLineNumbers();
+                clearCommands();
+                resetInterpreter();
+                showToast(`New sketch created: ${sketchName}`, 'success');
+            }
+        }
+
+        function updateSketchName() {
+            const panelTitle = document.getElementById('arduinoCodePanelTitle');
+            if (panelTitle) {
+                panelTitle.innerHTML = `📝 Arduino Code - ${currentTestName}`;
+            }
+        }
+
         // Initialize platform and preprocessor systems
         function loadTestFiles() {
             try {
@@ -538,6 +571,7 @@ void loop() {
             if (selectedTest) {
                 document.getElementById('codeEditor').value = selectedTest.content;
                 currentTestName = selectedTest.name;
+                updateSketchName();
                 updateLineCounters();
                 updateLineNumbers();
                 clearCommands();
