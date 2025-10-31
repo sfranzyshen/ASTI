@@ -8,8 +8,8 @@
     <style>
         body {
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            background-color: #1a1a2e;
-            color: #e0e0e0;
+            background-color: #ffffff;
+            color: #000000;
             margin: 0;
             padding: 20px;
             line-height: 1.4;
@@ -21,7 +21,7 @@
         }
         
         h1 {
-            color: #00f0ff;
+            color: #000000;
             text-align: center;
             margin-bottom: 20px;
             font-size: 2em;
@@ -37,8 +37,8 @@
         }
         
         .btn {
-            background: linear-gradient(45deg, #00f0ff, #0080ff);
-            color: #1a1a2e;
+            background: #006468;
+            color: #ffffff;
             border: none;
             padding: 10px 20px;
             font-size: 14px;
@@ -51,7 +51,7 @@
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 240, 255, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         
         .btn:active {
@@ -59,24 +59,24 @@
         }
         
         .btn:disabled {
-            background: #444;
-            color: #888;
+            background: #c0c0c0;
+            color: #808080;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
         
         .btn.stop {
-            background: linear-gradient(45deg, #ff4444, #cc3333);
+            background: #E34C00;
         }
         
         .btn.pause {
-            background: linear-gradient(45deg, #ffaa00, #ff8800);
+            background: #F1B500;
         }
         
         .status-bar {
-            background: #2a2a3e;
-            border: 1px solid #00f0ff;
+            background: #006468;
+            border: 1px solid #002325;
             border-radius: 8px;
             padding: 10px;
             margin-bottom: 20px;
@@ -85,6 +85,7 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
+            color: #ffffff;
         }
         
         .status-item {
@@ -102,9 +103,9 @@
         
         .status-indicator.idle { background: #666; }
         .status-indicator.running { background: #00ff88; animation: pulse 1s infinite; }
-        .status-indicator.paused { background: #ffaa00; }
-        .status-indicator.error { background: #ff4444; }
-        .status-indicator.complete { background: #00f0ff; }
+        .status-indicator.paused { background: #F1B500; }
+        .status-indicator.error { background: #E34C00; }
+        .status-indicator.complete { background: #17A1A5; }
         
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -122,23 +123,23 @@
         .panel {
             display: flex;
             flex-direction: column;
-            background: #16213e;
-            border: 2px solid #00f0ff;
+            background: #ffffff;
+            border: 1px solid #c0c0c0;
             border-radius: 8px;
             overflow: hidden;
         }
         
         .panel-header {
-            background: #0f1419;
+            background: #17A1A5;
             padding: 12px;
-            border-bottom: 1px solid #00f0ff;
+            border-bottom: 1px solid #005B5B;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .panel-title {
-            color: #00f0ff;
+            color: #002325;
             font-weight: bold;
             font-size: 14px;
         }
@@ -149,9 +150,9 @@
         }
         
         .panel-btn {
-            background: #2a2a3e;
-            color: #00f0ff;
-            border: 1px solid #00f0ff;
+            background: #006468;
+            color: #ffffff;
+            border: 1px solid #002325;
             padding: 4px 8px;
             border-radius: 4px;
             cursor: pointer;
@@ -159,8 +160,7 @@
         }
         
         .panel-btn:hover {
-            background: #00f0ff;
-            color: #1a1a2e;
+            background: #00979C;
         }
         
         .panel-content {
@@ -173,12 +173,12 @@
         
         .editor, .output {
             flex: 1;
-            background-color: #0f1419;
+            background-color: #ffffff;
             border: none;
             padding: 15px;
             font-family: inherit;
             font-size: 13px;
-            color: #e0e0e0;
+            color: #000000;
             resize: none;
             outline: none;
             overflow-y: auto;
@@ -189,16 +189,16 @@
         }
         
         .editor {
-            background-color: #1f2937;
+            background-color: #ffffff;
         }
         
         .editor:focus {
-            background-color: #2a3441;
+            background-color: #e2e2e2;
         }
         
         .output {
-            background-color: #0a0e1a;
-            color: #a0a0a0;
+            background-color: #eeeeee;
+            color: #000000;
         }
         
         .commands-panel .output {
@@ -213,7 +213,7 @@
             position: absolute;
             right: 10px;
             bottom: 10px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.1);
             color: #888;
             padding: 4px 8px;
             border-radius: 4px;
@@ -227,9 +227,9 @@
         }
         
         .example-btn {
-            background-color: #2a2a3e;
-            color: #00f0ff;
-            border: 1px solid #00f0ff;
+            background-color: #006468;
+            color: #ffffff;
+            border: 1px solid #002325;
             padding: 6px 12px;
             margin: 3px;
             border-radius: 4px;
@@ -239,8 +239,7 @@
         }
         
         .example-btn:hover {
-            background-color: #00f0ff;
-            color: #1a1a2e;
+            background-color: #00979C;
         }
 
         /* Line number styling for code editor */
@@ -258,8 +257,8 @@
         }
         
         .line-numbers {
-            background-color: #111827;
-            color: #6b7280;
+            background-color: #f0f0f0;
+            color: #808080;
             border: none;
             border-radius: 0;
             padding: 15px 8px 15px 15px;
@@ -289,24 +288,24 @@
             font-size: 11px;
         }
         
-        .command.PIN_MODE { background: rgba(0, 255, 136, 0.1); border-left: 3px solid #00ff88; }
-        .command.DIGITAL_WRITE { background: rgba(0, 240, 255, 0.1); border-left: 3px solid #00f0ff; }
-        .command.ANALOG_WRITE { background: rgba(136, 0, 255, 0.1); border-left: 3px solid #8800ff; }
-        .command.DIGITAL_READ { background: rgba(255, 136, 0, 0.1); border-left: 3px solid #ff8800; }
-        .command.ANALOG_READ { background: rgba(255, 0, 136, 0.1); border-left: 3px solid #ff0088; }
-        .command.DELAY { background: rgba(255, 170, 0, 0.1); border-left: 3px solid #ffaa00; }
-        .command.SETUP_START { background: rgba(136, 255, 0, 0.1); border-left: 3px solid #88ff00; }
-        .command.SETUP_END { background: rgba(136, 255, 0, 0.1); border-left: 3px solid #88ff00; }
-        .command.LOOP_START { background: rgba(255, 0, 136, 0.1); border-left: 3px solid #ff0088; }
-        .command.LOOP_END { background: rgba(255, 0, 136, 0.1); border-left: 3px solid #ff0088; }
-        .command.FUNCTION_CALL { background: rgba(255, 170, 85, 0.1); border-left: 3px solid #ffaa55; }
-        .command.CONDITION_EVAL { background: rgba(255, 255, 0, 0.1); border-left: 3px solid #ffff00; }
-        .command.VERSION_INFO { background: rgba(0, 240, 255, 0.15); border-left: 3px solid #00f0ff; font-weight: bold; }
-        .command.ERROR { background: rgba(255, 68, 68, 0.1); border-left: 3px solid #ff4444; }
-        .command.WARNING { background: rgba(255, 170, 0, 0.1); border-left: 3px solid #ffaa00; }
+        .command.PIN_MODE { background: rgba(114, 142, 0, 0.1); border-left: 3px solid #728E00; }
+        .command.DIGITAL_WRITE { background: rgba(211, 84, 0, 0.1); border-left: 3px solid #D35400; }
+        .command.ANALOG_WRITE { background: rgba(211, 84, 0, 0.1); border-left: 3px solid #D35400; }
+        .command.DIGITAL_READ { background: rgba(0, 151, 156, 0.1); border-left: 3px solid #00979C; }
+        .command.ANALOG_READ { background: rgba(0, 151, 156, 0.1); border-left: 3px solid #00979C; }
+        .command.DELAY { background: rgba(211, 84, 0, 0.1); border-left: 3px solid #D35400; }
+        .command.SETUP_START { background: rgba(114, 142, 0, 0.1); border-left: 3px solid #728E00; }
+        .command.SETUP_END { background: rgba(114, 142, 0, 0.1); border-left: 3px solid #728E00; }
+        .command.LOOP_START { background: rgba(114, 142, 0, 0.1); border-left: 3px solid #728E00; }
+        .command.LOOP_END { background: rgba(114, 142, 0, 0.1); border-left: 3px solid #728E00; }
+        .command.FUNCTION_CALL { background: rgba(211, 84, 0, 0.1); border-left: 3px solid #D35400; }
+        .command.CONDITION_EVAL { background: rgba(114, 142, 0, 0.1); border-left: 3px solid #728E00; }
+        .command.VERSION_INFO { background: rgba(0, 151, 156, 0.1); border-left: 3px solid #00979C; font-weight: bold; }
+        .command.ERROR { background: rgba(166, 23, 23, 0.1); border-left: 3px solid #A61717; }
+        .command.WARNING { background: rgba(241, 181, 0, 0.1); border-left: 3px solid #F1B500; }
         
         .timestamp {
-            color: #666;
+            color: #95A5A6;
             font-size: 9px;
         }
 
@@ -315,22 +314,27 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: var(--card-bg);
+            background: #17A1A5;
             padding: 15px 20px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             z-index: 1000;
             min-width: 300px;
             animation: slideIn 0.3s ease;
-            border-left: 4px solid var(--primary-color);
+            border-left: 4px solid #002325;
+            color: #002325;
         }
 
         .toast.error {
-            border-left-color: var(--danger-color);
+            background: #E34C00;
+            border-left-color: #A61717;
+            color: #FFFFFF;
         }
 
         .toast.success {
-            border-left-color: var(--success-color);
+            background: #17A1A5;
+            border-left-color: #002325;
+            color: #002325;
         }
 
         @keyframes slideIn {
