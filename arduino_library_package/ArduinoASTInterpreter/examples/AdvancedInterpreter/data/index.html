@@ -443,7 +443,7 @@
                     <span class="btn-icon">⏸</span>
                     <span>PAUSE</span>
                 </button>
-                <button class="btn btn-danger" onclick="sendControlCommand('reset')">
+                <button class="btn btn-danger" onclick="handleResetClick()">
                     <span class="btn-icon">⟳</span>
                     <span>RESET</span>
                 </button>
@@ -674,8 +674,27 @@
             }
         }
 
+        async function handleResetClick() {
+            const state = document.getElementById('statusState').textContent;
+            if (state === 'running') {
+                await sendControlCommand('pause');
+                await new Promise(resolve => setTimeout(resolve, 500)); // wait for pause to register
+                await sendControlCommand('reset');
+            } else {
+                await sendControlCommand('reset');
+            }
+        }
+
         async function loadFile(filename) {
             if (!confirm(`Load file: ${filename}?`)) return;
+
+            const state = document.getElementById('statusState').textContent;
+            if (state === 'running' || state === 'paused') {
+                await sendControlCommand('pause');
+                await new Promise(resolve => setTimeout(resolve, 500));
+                await sendControlCommand('reset');
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
 
             const data = await apiCall('/api/files/load', 'POST', { filename });
             if (data && data.success) {
