@@ -373,30 +373,20 @@
         <!-- Combined Controls Row -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 20px; flex-wrap: wrap;">
             <!-- Test Selection Controls (Left) -->
-            <div class="test-selection-controls" style="flex: 1; text-align: left;">
-                <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <label for="testSelect" style="color: #9ca3af; font-size: 12px;">Select Test:</label>
-                        <select id="testSelect" onchange="loadSelectedTest()" style="padding: 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff; min-width: 200px;">
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- AST Controls -->
-            <div class="controls" style="text-align: left;">
-                <button class="btn" id="parseBtn" onclick="parseCode()">Parse Code</button>
-                <button class="btn" id="uploadASTBtn" onclick="uploadCurrentAST()" style="margin-left: 10px;" disabled>Upload AST</button>
-                <button class="btn" id="saveASTBtn" onclick="downloadAST()" style="margin-left: 10px;" disabled>Save AST</button>
-            </div>
+            <div class="test-selection-controls">
+                        <div class="controls" style="text-align: left;">
+                            <select id="testSelect" onchange="loadSelectedTest()" style="padding: 10px 8px; border-radius: 4px; background: #2a2a3e; color: #e0e0e0; border: 1px solid #00f0ff; min-width: 200px;"><option value="0">blink.ino</option><option value="1">fade.ino</option><option value="2">rainbow.ino</option><option value="3">rgb.ino</option></select><button class="btn" id="parseBtn" onclick="parseCode()">Verify</button>
+                            <button class="btn" id="uploadASTBtn" onclick="uploadCurrentAST()" style="margin-left: 10px;">Upload</button>
+                            <button class="btn" id="saveASTBtn" onclick="downloadAST()" style="margin-left: 10px;">Save</button>
+                        </div>
+                     </div>
 
             <!-- Execution Controls (Right) -->
             <div class="controls" style="text-align: right;">
                 <button class="btn" id="startBtn" onclick="startExecution()">▶️ Start</button>
-                <button class="btn pause" id="pauseBtn" onclick="pauseExecution()" disabled>⏸️ Pause</button>
-                <button class="btn" id="stepBtn" onclick="stepExecution()" disabled>📍 Step</button>
-                <button class="btn stop" id="stopBtn" onclick="stopExecution()" disabled>⏹️ Stop</button>
+                <button class="btn pause" id="pauseBtn" onclick="pauseExecution()" disabled="">⏸️ Pause</button>
+                <button class="btn" id="stepBtn" onclick="stepExecution()" disabled="">📍 Step</button>
+                <button class="btn stop" id="stopBtn" onclick="stopExecution()" disabled="">⏹️ Stop</button>
                 <button class="btn" id="resetBtn" onclick="resetInterpreter()">🔄 Reset</button>
             </div>
         </div>        <!-- Upload Progress -->
@@ -820,11 +810,13 @@ void loop() {
         }
 
         // Download CompactAST binary as .ast file
-        function downloadAST() {
-            // Check if CompactAST is available
+        async function downloadAST() {
             if (!currentCompactAST) {
-                alert('No AST available to save. Please parse code first.');
-                return;
+                const success = await parseCode();
+                if (!success) {
+                    alert('Parsing failed. Cannot save AST.');
+                    return;
+                }
             }
 
             if (parseHadErrors) {
@@ -898,44 +890,12 @@ void loop() {
 
         // Update Save AST button state and display
         function updateSaveButtonState() {
-            const saveBtn = document.getElementById('saveASTBtn');
-            if (!saveBtn) return;
-
-            // Enable button if CompactAST exists and no errors (or user accepts errors)
-            if (currentCompactAST && !parseHadErrors) {
-                saveBtn.disabled = false;
-
-                // Update button text with file size
-                const sizeKB = (currentCompactAST.byteLength / 1024).toFixed(1);
-                if (currentCompactAST.byteLength < 1024) {
-                    saveBtn.textContent = `Save AST (${currentCompactAST.byteLength} bytes)`;
-                } else if (currentCompactAST.byteLength < 1024 * 1024) {
-                    saveBtn.textContent = `Save AST (${sizeKB} KB)`;
-                } else {
-                    const sizeMB = (currentCompactAST.byteLength / (1024 * 1024)).toFixed(1);
-                    saveBtn.textContent = `Save AST (${sizeMB} MB)`;
-                }
-            } else if (currentCompactAST && parseHadErrors) {
-                // Enable but warn about errors
-                saveBtn.disabled = false;
-                saveBtn.textContent = 'Save AST (⚠️ has errors)';
-            } else {
-                // Disable if no AST available
-                saveBtn.disabled = true;
-                saveBtn.textContent = 'Save AST';
-            }
+            // Always enabled
         }
 
         // Update Upload AST button state and display
         function updateUploadButtonState() {
-            const uploadBtn = document.getElementById('uploadASTBtn');
-            if (!uploadBtn) return;
-
-            if (currentCompactAST && !parseHadErrors) {
-                uploadBtn.disabled = false;
-            } else {
-                uploadBtn.disabled = true;
-            }
+            // Always enabled
         }
 
         function containsErrors(node) {
@@ -986,10 +946,13 @@ void loop() {
         }
 
         // ===== FILE UPLOAD HANDLING =====
-        function uploadCurrentAST() {
+        async function uploadCurrentAST() {
             if (!currentCompactAST) {
-                alert('No AST available to upload. Please parse code first.');
-                return;
+                const success = await parseCode();
+                if (!success) {
+                    alert('Parsing failed. Cannot upload AST.');
+                    return;
+                }
             }
 
             if (parseHadErrors) {
