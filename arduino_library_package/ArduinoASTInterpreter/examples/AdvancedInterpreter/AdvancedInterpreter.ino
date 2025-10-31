@@ -268,7 +268,7 @@ enum AppExecutionState {
 // ============================================================================
 
 // Set to true to load AST from LittleFS filesystem, false for embedded mode
-#define USE_FILESYSTEM false
+#define USE_FILESYSTEM true
 
 // LittleFS filesystem configuration
 #define LITTLEFS_FORMAT_ON_FAIL true
@@ -743,9 +743,53 @@ void setup() {
         Serial.println("⚠ WARNING: Failed to initialize configuration, using defaults");
     }
 
-        // Initialize WiFi and mDNS
+        #include <time.h>
 
-        wifiManager.begin();
+        
+
+        // ... (other includes)
+
+        
+
+        // NTP server configuration
+
+        const char* ntpServer = "pool.ntp.org";
+
+        const long  gmtOffset_sec = 0;
+
+        const int   daylightOffset_sec = 3600;
+
+        
+
+        // ... (global variables)
+
+        
+
+        // ... (setup function)
+
+            // Initialize WiFi and mDNS
+
+            wifiManager.begin();
+
+        
+
+            // Set time via NTP
+
+            configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+
+            struct tm timeinfo;
+
+            if (getLocalTime(&timeinfo)) {
+
+                Serial.println("✓ Time set via NTP");
+
+            } else {
+
+                Serial.println("✗ ERROR: Failed to set time via NTP");
+
+            }
+
+        
 
     
 

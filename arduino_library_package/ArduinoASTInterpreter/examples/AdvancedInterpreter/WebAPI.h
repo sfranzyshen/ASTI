@@ -244,6 +244,7 @@ private:
                 fileObj["name"] = filename;
                 fileObj["size"] = file.size();
                 fileObj["path"] = String("/") + filename;
+                fileObj["lastWrite"] = file.getLastWrite();
             }
 
             file = root.openNextFile();
