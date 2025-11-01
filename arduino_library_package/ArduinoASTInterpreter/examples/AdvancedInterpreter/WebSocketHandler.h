@@ -25,11 +25,13 @@
 #include <AsyncWebSocket.h>
 #include <ArduinoJson.h>
 
+#if USE_INTERPRETER
 // Forward declarations
 extern AppExecutionState state;
 extern unsigned long loopIteration;
 extern unsigned long startTime;
 extern unsigned long commandsExecuted;
+#endif
 
 // ============================================================================
 // WEBSOCKET CONFIGURATION
@@ -56,6 +58,7 @@ private:
     uint32_t connectedClients_;
     bool autoStatusBroadcast_;
 
+#if USE_INTERPRETER
     /**
      * Get state as string
      */
@@ -68,6 +71,7 @@ private:
             default: return "unknown";
         }
     }
+#endif
 
     /**
      * Format uptime as string
@@ -101,11 +105,13 @@ private:
         doc["timestamp"] = millis();
 
         JsonObject data = doc.createNestedObject("data");
+#if USE_INTERPRETER
         data["state"] = getStateString();
         data["iteration"] = loopIteration;
         data["uptime"] = millis() - startTime;
         data["uptimeStr"] = formatUptime(millis() - startTime);
         data["commandsExecuted"] = commandsExecuted;
+#endif
         data["memoryFree"] = ESP.getFreeHeap();
         data["connectedClients"] = connectedClients_;
 

@@ -179,15 +179,6 @@ public:
         Serial.println("   Web Server Initialization");
         Serial.println("=================================================");
 
-        // Check if LittleFS is mounted
-        if (!LittleFS.begin(false)) {
-            Serial.println("✗ ERROR: LittleFS not mounted");
-            Serial.println("  Web interface files must be uploaded to LittleFS");
-            return false;
-        }
-
-        Serial.println("✓ LittleFS mounted successfully");
-
         // Check if index.html exists
         if (!LittleFS.exists(WebServerConfig::DEFAULT_INDEX)) {
             Serial.println("⚠ WARNING: index.html not found in /data/ folder");

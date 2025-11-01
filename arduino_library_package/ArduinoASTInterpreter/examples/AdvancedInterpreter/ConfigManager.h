@@ -26,16 +26,20 @@
  * Runtime configuration structure
  */
 struct InterpreterConfig {
+#if USE_INTERPRETER
     bool autoStartEnabled;              // Auto-start interpreter on boot
     String defaultAstFile;              // Default AST file to load
     unsigned long statusUpdateInterval; // Status update interval (milliseconds)
+#endif
     bool webInterfaceEnabled;           // Enable web interface (for future use)
 
     // Constructor with defaults
     InterpreterConfig() :
+#if USE_INTERPRETER
         autoStartEnabled(false),
         defaultAstFile("/blink.ast"),
         statusUpdateInterval(1000),
+#endif
         webInterfaceEnabled(true) {}
 };
 
@@ -54,11 +58,14 @@ private:
 
     // Configuration keys
     static constexpr const char* NAMESPACE = "ast_interp";
+#if USE_INTERPRETER
     static constexpr const char* KEY_AUTO_START = "autoStart";
     static constexpr const char* KEY_DEFAULT_FILE = "defaultFile";
     static constexpr const char* KEY_STATUS_INTERVAL = "statusInt";
+#endif
     static constexpr const char* KEY_WEB_ENABLED = "webEnabled";
 
+#if USE_INTERPRETER
     // Validation constants
     static constexpr unsigned long MIN_STATUS_INTERVAL = 100;    // 100ms minimum
     static constexpr unsigned long MAX_STATUS_INTERVAL = 60000;  // 60s maximum
@@ -91,6 +98,7 @@ private:
 
         return true;
     }
+#endif
 
 public:
     ConfigManager() : initialized_(false) {}
@@ -130,6 +138,7 @@ public:
      * Load configuration from NVS
      */
     void loadConfig() {
+#if USE_INTERPRETER
         // Load auto-start setting
         config_.autoStartEnabled = prefs_.getBool(KEY_AUTO_START, false);
 
@@ -146,6 +155,7 @@ public:
             Serial.println("⚠ WARNING: Invalid status interval in config, using default");
             config_.statusUpdateInterval = 1000;
         }
+#endif
 
         // Load web interface enabled flag
         config_.webInterfaceEnabled = prefs_.getBool(KEY_WEB_ENABLED, true);
@@ -162,6 +172,7 @@ public:
             return false;
         }
 
+#if USE_INTERPRETER
         // Validate before saving
         if (!validateFilename(config_.defaultAstFile)) {
             Serial.println("✗ ERROR: Invalid default file, not saving");
@@ -177,6 +188,7 @@ public:
         prefs_.putBool(KEY_AUTO_START, config_.autoStartEnabled);
         prefs_.putString(KEY_DEFAULT_FILE, config_.defaultAstFile);
         prefs_.putULong(KEY_STATUS_INTERVAL, config_.statusUpdateInterval);
+#endif
         prefs_.putBool(KEY_WEB_ENABLED, config_.webInterfaceEnabled);
 
         Serial.println("✓ Configuration saved to NVS");
@@ -212,6 +224,7 @@ public:
     void printConfig() const {
         Serial.println();
         Serial.println("========== Current Configuration ==========");
+#if USE_INTERPRETER
         Serial.print("  Auto-start: ");
         Serial.println(config_.autoStartEnabled ? "Enabled" : "Disabled");
         Serial.print("  Default file: ");
@@ -219,6 +232,7 @@ public:
         Serial.print("  Status interval: ");
         Serial.print(config_.statusUpdateInterval);
         Serial.println(" ms");
+#endif
         Serial.print("  Web interface: ");
         Serial.println(config_.webInterfaceEnabled ? "Enabled" : "Disabled");
         Serial.println("===========================================");
@@ -239,6 +253,7 @@ public:
         config_ = newConfig;
     }
 
+#if USE_INTERPRETER
     /**
      * Set auto-start enabled
      */
@@ -290,6 +305,7 @@ public:
     unsigned long getStatusInterval() const {
         return config_.statusUpdateInterval;
     }
+#endif
 
     /**
      * Set web interface enabled
@@ -310,13 +326,16 @@ public:
      */
     String toJSON() const {
         String json = "{";
+#if USE_INTERPRETER
         json += "\"autoStart\":";
         json += config_.autoStartEnabled ? "true" : "false";
         json += ",\"defaultFile\":\"";
         json += config_.defaultAstFile;
         json += "\",\"statusInterval\":";
         json += String(config_.statusUpdateInterval);
-        json += ",\"webEnabled\":";
+        json += ",";
+#endif
+        json += "\"webEnabled\":";
         json += config_.webInterfaceEnabled ? "true" : "false";
         json += "}";
         return json;

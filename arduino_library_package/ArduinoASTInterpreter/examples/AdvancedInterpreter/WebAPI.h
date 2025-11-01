@@ -137,13 +137,16 @@ private:
     void handleGetStatus(AsyncWebServerRequest* request) {
         StaticJsonDocument<512> doc;
 
+#if USE_INTERPRETER
         doc["state"] = getStateString();
         doc["iteration"] = loopIteration;
         doc["uptime"] = millis() - startTime;
         doc["uptimeStr"] = formatUptime(millis() - startTime);
         doc["commandsExecuted"] = commandsExecuted;
+#endif
         doc["memoryFree"] = ESP.getFreeHeap();
         doc["filesystemEnabled"] = filesystemEnabled_;
+        doc["interpreter"] = USE_INTERPRETER;
         doc["timestamp"] = millis();
 
         String output;

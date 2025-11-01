@@ -4,9 +4,9 @@
  * Advanced demonstration of ArduinoASTInterpreter with continuous execution and menu control.
  * Hosts the REAL interpreter, processes commands, and executes on real ESP32 hardware.
  *
- * ============================================================================
+ * ============================================================================ 
  * FEATURES
- * ============================================================================
+ * ============================================================================ 
  * - Continuous Loop Execution: Runs infinitely (not just once)
  * - Menu-Driven Interface: Serial Monitor control (Run/Pause/Reset/Status/Step)
  * - Web Interface: Browser-based control with real-time status updates
@@ -20,9 +20,9 @@
  * - Real-time WebSocket: Sub-second status updates in browser
  * - RESTful API: Complete control via HTTP endpoints
  *
- * ============================================================================
+ * ============================================================================ 
  * HARDWARE REQUIREMENTS
- * ============================================================================
+ * ============================================================================ 
  * - ESP32-based board (ESP32, ESP32-S3, Nano ESP32, etc.)
  * - Minimum 4MB Flash (8MB recommended)
  * - WiFi capability (built-in to ESP32)
@@ -33,9 +33,9 @@
  * - ESP32 DevKit C (FQBN: esp32:esp32:esp32)
  * - ESP32-S3 DevKit-C (FQBN: esp32:esp32:esp32s3)
  *
- * ============================================================================
+ * ============================================================================ 
  * REQUIRED LIBRARIES
- * ============================================================================
+ * ============================================================================ 
  * Install via Arduino Library Manager or PlatformIO:
  *
  * 1. ESPAsyncWebServer (by me-no-dev)
@@ -57,9 +57,9 @@
  * - Preferences.h (ESP32 built-in)
  * - FS.h (ESP32 built-in)
  *
- * ============================================================================
+ * ============================================================================ 
  * SETUP INSTRUCTIONS
- * ============================================================================
+ * ============================================================================ 
  *
  * STEP 1: Configure WiFi Credentials
  * ------------------------------------
@@ -118,17 +118,17 @@
  * Primary Access: http://astinterpreter.local (mDNS)
  * Fallback: Use the DHCP-assigned IP address shown above
  *
- * ============================================================================
+ * ============================================================================ 
  * DUAL-MODE OPERATION
- * ============================================================================
+ * ============================================================================ 
  * - Embedded Mode (USE_FILESYSTEM=false): Uses PROGMEM array (default)
  * - Filesystem Mode (USE_FILESYSTEM=true): Loads AST from LittleFS filesystem
  *
  * Change mode by modifying USE_FILESYSTEM define below.
  *
- * ============================================================================
+ * ============================================================================ 
  * SERIAL MENU COMMANDS
- * ============================================================================
+ * ============================================================================ 
  * The serial interface continues to work alongside the web interface:
  * - 1 or R: Run/Resume execution
  * - 2 or P: Pause execution
@@ -137,9 +137,9 @@
  * - 5 or H: Show help menu
  * - 6 or T: Step (execute one command)
  *
- * ============================================================================
+ * ============================================================================ 
  * WEB INTERFACE FEATURES
- * ============================================================================
+ * ============================================================================ 
  * Access via: http://astinterpreter.local OR http://<dhcp-assigned-ip>
  *
  * Control Panel:
@@ -167,9 +167,9 @@
  * - Status update interval
  * - Persistent storage (survives reboots)
  *
- * ============================================================================
+ * ============================================================================ 
  * API ENDPOINTS
- * ============================================================================
+ * ============================================================================ 
  * RESTful API for programmatic control:
  *
  * Status:
@@ -195,9 +195,9 @@
  *
  * See README_WebInterface.md for complete API documentation.
  *
- * ============================================================================
+ * ============================================================================ 
  * TROUBLESHOOTING
- * ============================================================================
+ * ============================================================================ 
  * WiFi Not Connecting:
  * - Verify SSID and password in WiFiConfig.h
  * - Check router allows DHCP clients
@@ -217,58 +217,32 @@
  *
  * See README_WebInterface.md for complete troubleshooting guide.
  *
- * ============================================================================
+ * ============================================================================ 
  * VERSION INFORMATION
- * ============================================================================
+ * ============================================================================ 
  * Sketch Version: 22.0.0
  * ASTInterpreter: 22.0.0
  * CompactAST: 3.2.0
  * ArduinoParser: 6.0.0
  *
- * ============================================================================
+ * ============================================================================ 
  * ADDITIONAL DOCUMENTATION
- * ============================================================================
+ * ============================================================================ 
  * - README_WebInterface.md: Complete web interface documentation
  * - docs/ESP32_DEPLOYMENT_GUIDE.md: ESP32 deployment details
  * - CLAUDE.md: Project-wide documentation and version history
  */
 
-// ============================================================================
-// EXECUTION STATE ENUM (must be defined before includes)
-// ============================================================================
-
-// Execution state
-enum AppExecutionState {
-    STATE_STOPPED,
-    STATE_RUNNING,
-    STATE_PAUSED,
-    STATE_STEP_MODE
-};
-
-// ============================================================================
-// INCLUDES
-// ============================================================================
-
-#include <ArduinoASTInterpreter.h>
-#include "FS.h"
-#include <LittleFS.h>
-#include "ImmediateCommandExecutor.h"
-#include "CommandExecutor.h"
-#include "ESP32DataProvider.h"
-#include "SerialMenu.h"
-
-#include "ConfigManager.h"
-#include "WebServerManager.h"
-#include "WebAPI.h"
-#include "WebSocketHandler.h"
-#include "esp_task_wdt.h"  // Task watchdog timer configuration
-
-// ============================================================================
+// ============================================================================ 
 // CONFIGURATION
-// ============================================================================
+// ============================================================================ 
+
+// Set to true to include the interpreter, false for a barebones webserver
+#define USE_INTERPRETER true
 
 // Set to true to load AST from LittleFS filesystem, false for embedded mode
-#define USE_FILESYSTEM true
+// This is only effective if USE_INTERPRETER is true
+#define USE_FILESYSTEM (USE_INTERPRETER && true)
 
 // LittleFS filesystem configuration
 #define LITTLEFS_FORMAT_ON_FAIL true
@@ -282,9 +256,45 @@ enum AppExecutionState {
 // Status update interval (milliseconds)
 #define STATUS_UPDATE_INTERVAL 10000  // Status every 10 seconds
 
-// ============================================================================
+
+// ============================================================================ 
+// EXECUTION STATE ENUM (must be defined before includes)
+// ============================================================================ 
+#if USE_INTERPRETER
+// Execution state
+enum AppExecutionState {
+    STATE_STOPPED,
+    STATE_RUNNING,
+    STATE_PAUSED,
+    STATE_STEP_MODE
+};
+#endif
+
+// =========================================================================== 
+// INCLUDES
+// =========================================================================== 
+
+#if USE_INTERPRETER
+#include <ArduinoASTInterpreter.h>
+#include "ImmediateCommandExecutor.h"
+#include "CommandExecutor.h"
+#include "ESP32DataProvider.h"
+#include "SerialMenu.h"
+#endif
+
+#include "FS.h"
+#include <LittleFS.h>
+#include "ConfigManager.h"
+#include "WebServerManager.h"
+#include "WebAPI.h"
+#include "WebSocketHandler.h"
+#include "esp_task_wdt.h"  // Task watchdog timer configuration
+
+
+#if USE_INTERPRETER
+// ============================================================================ 
 // EMBEDDED MODE AST BINARY - Blink.ino
-// ============================================================================
+// ============================================================================ 
 
 // Pre-compiled CompactAST binary for Blink.ino:
 //   void setup() {
@@ -325,75 +335,15 @@ const uint8_t PROGMEM astBinary[] = {
   0x43, 0x02, 0x03, 0x00, 0x0c, 0x04, 0x00, 0x40, 0x02, 0x02, 0x00, 0x03,
   0x0d, 0x40, 0x02, 0x02, 0x00, 0x03, 0x00, 0x11, 0x01, 0x02, 0x00, 0x1d,
   0x00, 0x33, 0x01, 0x04, 0x00, 0x1e, 0x00, 0x1f, 0x00, 0x43, 0x02, 0x03,
-  0x00, 0x0c, 0x05, 0x00, 0x40, 0x02, 0x03, 0x00, 0x05, 0xe8, 0x03, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+  0x00, 0x0c, 0x05, 0x00, 0x40, 0x02, 0x03, 0x00, 0x05, 0xe8, 0x03
 };
+#endif
 
-// ============================================================================
+// ============================================================================ 
 // GLOBAL STATE
-// ============================================================================
+// ============================================================================ 
 
+#if USE_INTERPRETER
 AppExecutionState state = STATE_STOPPED;
 unsigned long loopIteration = 0;
 unsigned long startTime = 0;
@@ -407,6 +357,7 @@ ImmediateCommandExecutor immediateExecutor(&executor);  // Zero-copy command exe
 ESP32DataProvider dataProvider;
 ASTInterpreter* interpreter = nullptr;
 uint8_t* astBuffer = nullptr;
+#endif
 
 // Network and Configuration
 WiFiManager wifiManager;
@@ -415,22 +366,14 @@ WebServerManager webServer;
 WebAPI webAPI;
 WebSocketHandler webSocket;
 
-// ============================================================================
+#if USE_INTERPRETER
+// ============================================================================ 
 // FILESYSTEM HELPER FUNCTIONS
-// ============================================================================
+// ============================================================================ 
 
-bool initFilesystem() {
-    Serial.println("Initializing LittleFS filesystem...");
 
-    if (!LittleFS.begin(LITTLEFS_FORMAT_ON_FAIL)) {
-        Serial.println("✗ ERROR: LittleFS mount failed");
-        return false;
-    }
 
-    Serial.println("✓ LittleFS mounted successfully");
-    return true;
-}
-
+#if USE_INTERPRETER
 uint8_t* readASTFromFile(const char* path, size_t* size) {
     Serial.print("Reading AST file: ");
     Serial.println(path);
@@ -465,10 +408,10 @@ uint8_t* readASTFromFile(const char* path, size_t* size) {
     Serial.println("✓ File read successfully");
     return buffer;
 }
+#endif // USE_INTERPRETER
 
 // ============================================================================
-// INTERPRETER MANAGEMENT
-// ============================================================================
+// INTERPRETER MANAGEMENT// ============================================================================ 
 
 /**
  * Load a specific AST file from filesystem
@@ -595,20 +538,16 @@ void resetInterpreter() {
             astBuffer = nullptr;
         }
 
-        if (initFilesystem()) {
-            // Use configured default file instead of hardcoded constant
-            String defaultFile = configManager.getDefaultFile();
-            Serial.print("[RESET] Loading configured default file: ");
-            Serial.println(defaultFile);
+        // Use configured default file instead of hardcoded constant
+        String defaultFile = configManager.getDefaultFile();
+        Serial.print("[RESET] Loading configured default file: ");
+        Serial.println(defaultFile);
 
-            astBuffer = readASTFromFile(defaultFile.c_str(), &astSize);
-            if (astBuffer) {
-                astData = astBuffer;
-            } else {
-                Serial.println("⚠ WARNING: Falling back to embedded mode");
-                useFilesystem = false;
-            }
+        astBuffer = readASTFromFile(defaultFile.c_str(), &astSize);
+        if (astBuffer) {
+            astData = astBuffer;
         } else {
+            Serial.println("⚠ WARNING: Falling back to embedded mode");
             useFilesystem = false;
         }
     }
@@ -700,14 +639,30 @@ void executeOneCommand() {
         Serial.println(" commands");
     }
 }
+#endif // USE_INTERPRETER
 
-// ============================================================================
+// ============================================================================ 
 // SETUP
-// ============================================================================
+// ============================================================================ 
+
+bool initFilesystem() {
+    Serial.println("Initializing LittleFS filesystem...");
+
+    if (!LittleFS.begin(LITTLEFS_FORMAT_ON_FAIL)) {
+        Serial.println("✗ ERROR: LittleFS mount failed");
+        return false;
+    }
+
+    Serial.println("✓ LittleFS mounted successfully");
+    return true;
+}
 
 void setup() {
     Serial.begin(115200);
     delay(1000);
+
+    // Initialize filesystem
+    initFilesystem();
 
     // CRITICAL: Configure Task Watchdog Timer
     // ESP32 default is ~5 seconds, we need more for intensive interpreter loops
@@ -719,12 +674,12 @@ void setup() {
     };
     esp_task_wdt_init(&wdt_config);
 
-    Serial.println("========================================");
+    Serial.println("==========================================");
     Serial.println("  TASK WATCHDOG CONFIGURATION");
-    Serial.println("========================================");
+    Serial.println("==========================================");
     Serial.println("  Timeout: 15 seconds");
     Serial.println("  Allows long interpreter loops without reboot");
-    Serial.println("========================================");
+    Serial.println("==========================================");
     Serial.println();
 
     // Configure LED pin
@@ -732,10 +687,16 @@ void setup() {
     digitalWrite(BLINK_LED, LOW);
 
     // Print banner
-    #if USE_FILESYSTEM
-        menu.printBanner("22.0.0", PLATFORM_NAME, "Filesystem + Web", "Blink (LED_BUILTIN)");
+    #if USE_INTERPRETER
+        #if USE_FILESYSTEM
+            menu.printBanner("22.0.0", PLATFORM_NAME, "Filesystem + Web", "Blink (LED_BUILTIN)");
+        #else
+            menu.printBanner("22.0.0", PLATFORM_NAME, "Embedded + Web", "Blink (LED_BUILTIN)");
+        #endif
     #else
-        menu.printBanner("22.0.0", PLATFORM_NAME, "Embedded + Web", "Blink (LED_BUILTIN)");
+        Serial.println("==========================================");
+        Serial.println("  Barebones Web Server Mode");
+        Serial.println("==========================================");
     #endif
 
     // Initialize configuration manager
@@ -743,133 +704,63 @@ void setup() {
         Serial.println("⚠ WARNING: Failed to initialize configuration, using defaults");
     }
 
-        #include <time.h>
+    // Initialize WiFi and mDNS
+    wifiManager.begin();
 
-        
+    // Set time via NTP
+    configTime(0, 3600, "pool.ntp.org");
+    struct tm timeinfo;
+    if (getLocalTime(&timeinfo)) {
+        Serial.println("✓ Time set via NTP");
+    } else {
+        Serial.println("✗ ERROR: Failed to set time via NTP");
+    }
 
-        // ... (other includes)
+    // Initialize web server
+    if (webServer.begin()) {
+        // Initialize WebSocket handler
+        webSocket.begin(webServer.getServer());
 
-        
+        // Initialize Web API
+        webAPI.begin(webServer.getServer());
 
-        // NTP server configuration
+        // Enable filesystem support in API if USE_FILESYSTEM is enabled
+        #if USE_FILESYSTEM
+            webAPI.setFilesystemEnabled(true);
+        #else
+            webAPI.setFilesystemEnabled(false);
+        #endif
 
-        const char* ntpServer = "pool.ntp.org";
-
-        const long  gmtOffset_sec = 0;
-
-        const int   daylightOffset_sec = 3600;
-
-        
-
-        // ... (global variables)
-
-        
-
-        // ... (setup function)
-
-            // Initialize WiFi and mDNS
-
-            wifiManager.begin();
-
-        
-
-            // Set time via NTP
-
-            configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-
-            struct tm timeinfo;
-
-            if (getLocalTime(&timeinfo)) {
-
-                Serial.println("✓ Time set via NTP");
-
-            } else {
-
-                Serial.println("✗ ERROR: Failed to set time via NTP");
-
-            }
-
-        
-
-    
-
-        // Initialize web server
-
-        if (webServer.begin()) {
-
-            // Initialize WebSocket handler
-
-            webSocket.begin(webServer.getServer());
-
-    
-
-            // Initialize Web API
-
-            webAPI.begin(webServer.getServer());
-
-    
-
-            // Enable filesystem support in API if USE_FILESYSTEM is enabled
-
-            #if USE_FILESYSTEM
-
-                webAPI.setFilesystemEnabled(true);
-
-            #else
-
-                webAPI.setFilesystemEnabled(false);
-
-            #endif
-
-    
-
-            // Print access URLs
-
-            Serial.println();
-
-            Serial.println("========================================");
-
-            Serial.println("   WEB INTERFACE READY");
-
-            Serial.println("========================================");
-
-            if (wifiManager.isConnected()) {
-
-                Serial.print("   ");
-
-                Serial.println(wifiManager.getMDNSURL());
-
-                Serial.print("   http://");
-
-                Serial.println(wifiManager.getLocalIP());
-
-            } else {
-
-                Serial.print("   http://");
-
-                Serial.println(wifiManager.getLocalIP());
-
-            }
-
-            Serial.println("========================================");
-
-            Serial.println();
-
+        // Print access URLs
+        Serial.println();
+        Serial.println("==========================================");
+        Serial.println("   WEB INTERFACE READY");
+        Serial.println("==========================================");
+        if (wifiManager.isConnected()) {
+            Serial.print("   ");
+            Serial.println(wifiManager.getMDNSURL());
+            Serial.print("   http://");
+            Serial.println(wifiManager.getLocalIP());
         } else {
-
-            Serial.println("⚠ WARNING: Web server initialization failed");
-
+            Serial.print("   http://");
+            Serial.println(wifiManager.getLocalIP());
         }
+        Serial.println("==========================================");
+        Serial.println();
+    } else {
+        Serial.println("⚠ WARNING: Web server initialization failed");
+    }
 
+#if USE_INTERPRETER
     // Initialize interpreter
     resetInterpreter();
 
     // Check for auto-start
     if (configManager.isAutoStartEnabled()) {
         Serial.println();
-        Serial.println("========================================");
+        Serial.println("==========================================");
         Serial.println("  Auto-start enabled - starting now...");
-        Serial.println("========================================");
+        Serial.println("==========================================");
         Serial.println();
         delay(1000);
         startExecution();
@@ -877,11 +768,12 @@ void setup() {
 
     // Print menu
     menu.printMenu();
+#endif
 }
 
-// ============================================================================
+// ============================================================================ 
 // LOOP
-// ============================================================================
+// ============================================================================ 
 
 void loop() {
     // Maintain WiFi connection
@@ -897,6 +789,7 @@ void loop() {
         lastCleanup = millis();
     }
 
+#if USE_INTERPRETER
     // Check for menu commands
     MenuCommand cmd = menu.readCommand();
 
@@ -969,6 +862,7 @@ void loop() {
             menu.printBriefStatus(loopIteration, uptime);
         }
     }
+#endif
 
     // Small delay to prevent CPU spinning
     delay(1);

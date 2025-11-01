@@ -432,7 +432,7 @@
         </div>
 
         <!-- Control Panel -->
-        <div class="card">
+        <div class="card interpreter-only">
             <div class="card-title">⚙️ Execution Control</div>
             <div class="control-grid">
                 <button class="btn btn-success" onclick="sendControlCommand('run')">
@@ -455,7 +455,7 @@
         </div>
 
         <!-- File Manager -->
-        <div class="card">
+        <div class="card interpreter-only">
             <div class="card-title">📁 File Manager</div>
             <div id="fileStats" style="color: var(--text-secondary); margin-bottom: 10px;"></div>
 
@@ -507,13 +507,13 @@
         <!-- Configuration -->
         <div class="card">
             <div class="card-title">⚙️ Configuration</div>
-            <div class="config-item">
+            <div class="config-item interpreter-only">
                 <label class="checkbox-container">
                     <input type="checkbox" id="configAutoStart">
                     <span>Auto-start on power-up</span>
                 </label>
             </div>
-            <div class="config-item">
+            <div class="config-item interpreter-only">
                 <label class="config-label">Default AST File</label>
                 <select id="configDefaultFile">
                     <option value="/blink.ast">/blink.ast</option>
@@ -889,6 +889,14 @@
             // Update filesystem availability
             if (status.filesystemEnabled !== undefined) {
                 filesystemEnabled = status.filesystemEnabled;
+            }
+
+            // Conditionally display interpreter-only elements
+            const interpreterOnlyElements = document.querySelectorAll('.interpreter-only');
+            if (status.interpreter) {
+                interpreterOnlyElements.forEach(el => el.style.display = 'block');
+            } else {
+                interpreterOnlyElements.forEach(el => el.style.display = 'none');
             }
         }
 

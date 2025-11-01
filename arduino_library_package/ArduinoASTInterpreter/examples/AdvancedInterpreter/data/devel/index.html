@@ -1333,6 +1333,22 @@ void loop() {
         
         // Load test files and initialize dropdowns
         loadTestFiles();
+
+        // Fetch status and disable upload if interpreter is not enabled
+        async function checkInterpreterStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const status = await response.json();
+                if (status && status.interpreter === false) {
+                    const uploadBtn = document.getElementById('uploadASTBtn');
+                    uploadBtn.disabled = true;
+                    uploadBtn.title = 'Interpreter not enabled in firmware';
+                }
+            } catch (error) {
+                console.error('Error fetching interpreter status:', error);
+            }
+        }
+        checkInterpreterStatus();
         
         // Note: Removed auto-execution - user must click Start button
     </script>
