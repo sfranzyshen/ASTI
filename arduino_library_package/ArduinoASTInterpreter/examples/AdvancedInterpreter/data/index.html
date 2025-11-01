@@ -401,6 +401,10 @@
         <!-- Header -->
 <div class="header">
     <h1>AST Interpreter</h1>
+    <div class="connection-status">
+        <div id="connectionDot" class="status-dot"></div>
+        <span id="connectionText">Connecting...</span>
+    </div>
     <a href="devel/index.html" target="_blank" class="btn-header">Open Devel</a>
 </div>
 
@@ -591,7 +595,6 @@
         }
 
         function handleWebSocketMessage(data) {
-            console.log('WebSocket message:', data.type);
 
             switch (data.type) {
                 case 'status_update':
@@ -885,7 +888,6 @@
 
         // ===== UI UPDATES =====
         function updateStatus(status) {
-            console.log('status.interpreter:', status.interpreter);
             document.getElementById('statusState').textContent = status.state;
             document.getElementById('statusState').className = `status-value ${status.state}`;
             document.getElementById('statusIteration').textContent = status.iteration.toLocaleString();
@@ -900,7 +902,11 @@
 
             // Conditionally display interpreter-only elements
             const interpreterOnlyElements = document.querySelectorAll('.interpreter-only');
-            interpreterOnlyElements.forEach(el => el.style.display = 'block');
+            if (status.interpreter) {
+                interpreterOnlyElements.forEach(el => el.style.display = 'block');
+            } else {
+                interpreterOnlyElements.forEach(el => el.style.display = 'none');
+            }
         }
 
         function renderFileList(files) {

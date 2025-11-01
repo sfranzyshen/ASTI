@@ -135,7 +135,7 @@ private:
      * Get status endpoint: GET /api/status
      */
     void handleGetStatus(AsyncWebServerRequest* request) {
-        StaticJsonDocument<512> doc;
+        StaticJsonDocument<1024> doc;
 
 #if USE_INTERPRETER
         doc["state"] = getStateString();
@@ -147,10 +147,9 @@ private:
         doc["memoryFree"] = ESP.getFreeHeap();
         doc["filesystemEnabled"] = filesystemEnabled_;
         doc["interpreter"] = USE_INTERPRETER;
-        doc["timestamp"] = millis();
-
-        String output;
-        serializeJson(doc, output);
+                doc["timestamp"] = millis();
+            
+                String output;        serializeJson(doc, output);
 
         auto response = request->beginResponse(200, "application/json", output);
         addCORSHeaders(response);

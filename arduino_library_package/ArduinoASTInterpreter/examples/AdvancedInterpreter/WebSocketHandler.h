@@ -99,7 +99,7 @@ private:
      * Create status update JSON message
      */
     String createStatusUpdate() {
-        StaticJsonDocument<512> doc;
+        StaticJsonDocument<1024> doc;
 
         doc["type"] = "status_update";
         doc["timestamp"] = millis();
@@ -114,6 +114,7 @@ private:
 #endif
         data["memoryFree"] = ESP.getFreeHeap();
         data["connectedClients"] = connectedClients_;
+        data["interpreter"] = USE_INTERPRETER;
 
         String output;
         serializeJson(doc, output);
