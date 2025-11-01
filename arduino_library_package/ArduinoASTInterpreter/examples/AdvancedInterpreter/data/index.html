@@ -499,6 +499,10 @@
                 <label class="config-label" for="wifiPassword">Password</label>
                 <input type="password" id="wifiPassword" placeholder="Enter Password">
             </div>
+            <div class="config-item">
+                <label class="config-label" for="wifiHostname">Device Hostname (mDNS)</label>
+                <input type="text" id="wifiHostname" placeholder="astinterpreter.local">
+            </div>
             <button class="btn btn-primary" onclick="saveWifiConfiguration()" style="width: 100%; margin-top: 10px;">
                 <span>💾 Save & Reboot</span>
             </button>
@@ -852,19 +856,21 @@
             const data = await apiCall('/api/wifi/config');
             if (data) {
                 document.getElementById('wifiSSID').value = data.ssid;
+                document.getElementById('wifiHostname').value = data.hostname || 'astinterpreter'; // Default to astinterpreter
             }
         }
 
         async function saveWifiConfiguration() {
             const ssid = document.getElementById('wifiSSID').value;
             const password = document.getElementById('wifiPassword').value;
+            const hostname = document.getElementById('wifiHostname').value;
 
             if (!ssid) {
                 showToast('SSID cannot be empty', 'error');
                 return;
             }
 
-            const data = await apiCall('/api/wifi/config', 'POST', { ssid, password });
+            const data = await apiCall('/api/wifi/config', 'POST', { ssid, password, hostname });
             if (data && data.success) {
                 showToast('WiFi configuration saved. Rebooting...', 'success');
                 setTimeout(() => {
@@ -879,6 +885,7 @@
 
         // ===== UI UPDATES =====
         function updateStatus(status) {
+            console.log('status.interpreter:', status.interpreter);
             document.getElementById('statusState').textContent = status.state;
             document.getElementById('statusState').className = `status-value ${status.state}`;
             document.getElementById('statusIteration').textContent = status.iteration.toLocaleString();
@@ -893,11 +900,7 @@
 
             // Conditionally display interpreter-only elements
             const interpreterOnlyElements = document.querySelectorAll('.interpreter-only');
-            if (status.interpreter) {
-                interpreterOnlyElements.forEach(el => el.style.display = 'block');
-            } else {
-                interpreterOnlyElements.forEach(el => el.style.display = 'none');
-            }
+            interpreterOnlyElements.forEach(el => el.style.display = 'block');
         }
 
         function renderFileList(files) {

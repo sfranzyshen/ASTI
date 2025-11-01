@@ -534,6 +534,7 @@ private:
     void handleGetWifiConfig(AsyncWebServerRequest* request) {
         StaticJsonDocument<256> doc;
         doc["ssid"] = wifiManager.getSSID();
+        doc["hostname"] = wifiManager.getHostname();
 
         String output;
         serializeJson(doc, output);
@@ -562,6 +563,7 @@ private:
 
         String ssid = doc["ssid"] | "";
         String password = doc["password"] | "";
+        String hostname = doc["hostname"] | "";
 
         if (ssid.length() == 0) {
             auto response = request->beginResponse(400, "application/json",
@@ -571,7 +573,7 @@ private:
             return;
         }
 
-        wifiManager.saveCredentials(ssid, password);
+        wifiManager.saveCredentials(ssid, password, hostname);
 
         auto response = request->beginResponse(200, "application/json",
                                               createSuccessJSON("WiFi configuration updated"));

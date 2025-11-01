@@ -20,6 +20,9 @@
 #include <ESPmDNS.h>
 #include <Preferences.h>
 
+// Default mDNS hostname
+#define MDNS_HOSTNAME "astinterpreter"
+
 // ============================================================================
 // WIFI MANAGER CLASS
 // ============================================================================
@@ -33,20 +36,22 @@ private:
     String mdnsURL_;
     String ssid_;
     String password_;
+    String hostname_;
     Preferences preferences_;
 
     const char* ap_ssid_ = "ASTInterpreter-Setup";
 
     bool setupMDNS() {
-        if (!MDNS.begin("astinterpreter")) {
+        if (!MDNS.begin(hostname_.c_str())) {
             Serial.println("✗ ERROR: Failed to start mDNS responder");
             return false;
         }
 
-        mdnsURL_ = "http://astinterpreter.local";
+        mdnsURL_ = "http://" + hostname_ + ".local";
 
         Serial.println("✓ mDNS responder started");
-        Serial.print("  Hostname: astinterpreter");
+        Serial.print("  Hostname: ");
+        Serial.print(hostname_);
         Serial.print("  URL: ");
         Serial.println(mdnsURL_);
 
@@ -59,6 +64,7 @@ private:
         preferences_.begin("wifi-config", false);
         ssid_ = preferences_.getString("ssid", "");
         password_ = preferences_.getString("password", "");
+        hostname_ = preferences_.getString("hostname", MDNS_HOSTNAME);
         preferences_.end();
     }
 
@@ -83,7 +89,7 @@ public:
         Serial.println("=================================================");
 
         WiFi.mode(WIFI_STA);
-        WiFi.setHostname("astinterpreter");
+        WiFi.setHostname(hostname_.c_str());
 
         Serial.println();
         Serial.print("Connecting to WiFi: ");
@@ -138,6 +144,11 @@ public:
         Serial.println(ap_ssid_);
         Serial.print("  AP IP Address: ");
         Serial.println(localIP_);
+        
+        if (!setupMDNS()) {
+            Serial.println("⚠ WARNING: mDNS setup failed, use IP address instead");
+        }
+
         Serial.println("  Connect to this network to configure WiFi.");
         Serial.println("=================================================");
         Serial.println();
@@ -155,10 +166,14 @@ public:
         }
     }
 
-    void saveCredentials(const String& ssid, const String& password) {
+    void saveCredentials(const String& ssid, const String& password, const String& hostname) {
         preferences_.begin("wifi-config", false);
         preferences_.putString("ssid", ssid);
         preferences_.putString("password", password);
+        if (hostname != "") {
+            preferences_.putString("hostname", hostname);
+            hostname_ = hostname;
+        }
         preferences_.end();
         ssid_ = ssid;
         password_ = password;
@@ -174,6 +189,10 @@ public:
 
     String getLocalIP() const {
         return localIP_;
+    }
+
+    String getHostname() const {
+        return hostname_;
     }
 
     String getMDNSURL() const {
