@@ -27,22 +27,26 @@
 #include "WiFiConfig.h"
 
 // Forward declarations (these will be defined in AdvancedInterpreter.ino)
+#if USE_INTERPRETER
 extern AppExecutionState state;
 extern unsigned long loopIteration;
 extern unsigned long startTime;
 extern unsigned long commandsExecuted;
 extern ASTInterpreter* interpreter;
-extern ConfigManager configManager;
 extern ImmediateCommandExecutor immediateExecutor;
+#endif
+extern ConfigManager configManager;
 extern WiFiManager wifiManager;
 
 // Function pointers for control actions (will be set by AdvancedInterpreter.ino)
+#if USE_INTERPRETER
 extern void startExecution();
 extern void pauseExecution();
 extern void resumeExecution();
 extern void resetInterpreter();
 extern void executeOneCommand();
 extern bool loadASTFile(const char* filename);
+#endif
 
 // ============================================================================
 // WEB API CLASS
@@ -96,6 +100,7 @@ private:
         return output;
     }
 
+#if USE_INTERPRETER
     /**
      * Get state as string
      */
@@ -108,6 +113,7 @@ private:
             default: return "unknown";
         }
     }
+#endif
 
     /**
      * Format uptime as string
@@ -160,6 +166,7 @@ private:
      * Control run endpoint: POST /api/control/run
      */
     void handleControlRun(AsyncWebServerRequest* request) {
+#if USE_INTERPRETER
         if (state == STATE_STOPPED) {
             startExecution();
         } else if (state == STATE_PAUSED || state == STATE_STEP_MODE) {
@@ -170,24 +177,38 @@ private:
                                               createSuccessJSON("Execution started/resumed"));
         addCORSHeaders(response);
         request->send(response);
+#else
+        auto response = request->beginResponse(503, "application/json",
+                                              createErrorJSON("Interpreter not available"));
+        addCORSHeaders(response);
+        request->send(response);
+#endif
     }
 
     /**
      * Control pause endpoint: POST /api/control/pause
      */
     void handleControlPause(AsyncWebServerRequest* request) {
+#if USE_INTERPRETER
         pauseExecution();
 
         auto response = request->beginResponse(200, "application/json",
                                               createSuccessJSON("Execution paused"));
         addCORSHeaders(response);
         request->send(response);
+#else
+        auto response = request->beginResponse(503, "application/json",
+                                              createErrorJSON("Interpreter not available"));
+        addCORSHeaders(response);
+        request->send(response);
+#endif
     }
 
     /**
      * Control reset endpoint: POST /api/control/reset
      */
     void handleControlReset(AsyncWebServerRequest* request) {
+#if USE_INTERPRETER
         state = STATE_STOPPED;
         resetInterpreter();
 
@@ -195,12 +216,19 @@ private:
                                               createSuccessJSON("Interpreter reset"));
         addCORSHeaders(response);
         request->send(response);
+#else
+        auto response = request->beginResponse(503, "application/json",
+                                              createErrorJSON("Interpreter not available"));
+        addCORSHeaders(response);
+        request->send(response);
+#endif
     }
 
     /**
      * Control step endpoint: POST /api/control/step
      */
     void handleControlStep(AsyncWebServerRequest* request) {
+#if USE_INTERPRETER
         state = STATE_STEP_MODE;
         executeOneCommand();
 
@@ -208,6 +236,12 @@ private:
                                               createSuccessJSON("Step executed"));
         addCORSHeaders(response);
         request->send(response);
+#else
+        auto response = request->beginResponse(503, "application/json",
+                                              createErrorJSON("Interpreter not available"));
+        addCORSHeaders(response);
+        request->send(response);
+#endif
     }
 
     /**
@@ -268,6 +302,7 @@ private:
      */
     void handleLoadFile(AsyncWebServerRequest* request, uint8_t* data, size_t len,
                        size_t index, size_t total) {
+#if USE_INTERPRETER
         // Check if filesystem is available
         if (!filesystemEnabled_) {
             auto response = request->beginResponse(503, "application/json",
@@ -325,6 +360,12 @@ private:
 
         addCORSHeaders(response);
         request->send(response);
+#else
+        auto response = request->beginResponse(503, "application/json",
+                                              createErrorJSON("Interpreter not available"));
+        addCORSHeaders(response);
+        request->send(response);
+#endif
     }
 
     /**
@@ -491,6 +532,7 @@ private:
         // Update configuration
         bool changed = false;
 
+#if USE_INTERPRETER
         if (doc.containsKey("autoStart")) {
             configManager.setAutoStart(doc["autoStart"]);
             changed = true;
@@ -509,6 +551,7 @@ private:
                 changed = true;
             }
         }
+#endif
 
         // Save configuration
         if (changed) {

@@ -888,24 +888,31 @@
 
         // ===== UI UPDATES =====
         function updateStatus(status) {
-            document.getElementById('statusState').textContent = status.state;
-            document.getElementById('statusState').className = `status-value ${status.state}`;
-            document.getElementById('statusIteration').textContent = status.iteration.toLocaleString();
-            document.getElementById('statusUptime').textContent = status.uptimeStr;
-            document.getElementById('statusCommands').textContent = status.commandsExecuted.toLocaleString();
-            document.getElementById('statusMemory').textContent = formatBytes(status.memoryFree);
+            const interpreterOnlyElements = document.querySelectorAll('.interpreter-only');
+            const isInterpreterEnabled = status.interpreter;
 
-            // Update filesystem availability
-            if (status.filesystemEnabled !== undefined) {
-                filesystemEnabled = status.filesystemEnabled;
+            interpreterOnlyElements.forEach(el => {
+                el.style.display = isInterpreterEnabled ? 'block' : 'none';
+            });
+
+            if (isInterpreterEnabled) {
+                document.getElementById('statusState').textContent = status.state;
+                document.getElementById('statusState').className = `status-value ${status.state}`;
+                document.getElementById('statusIteration').textContent = status.iteration.toLocaleString();
+                document.getElementById('statusUptime').textContent = status.uptimeStr;
+                document.getElementById('statusCommands').textContent = status.commandsExecuted.toLocaleString();
+            } else {
+                document.getElementById('statusState').textContent = 'N/A';
+                document.getElementById('statusState').className = 'status-value';
+                document.getElementById('statusIteration').textContent = 'N/A';
+                document.getElementById('statusUptime').textContent = 'N/A';
+                document.getElementById('statusCommands').textContent = 'N/A';
             }
 
-            // Conditionally display interpreter-only elements
-            const interpreterOnlyElements = document.querySelectorAll('.interpreter-only');
-            if (status.interpreter) {
-                interpreterOnlyElements.forEach(el => el.style.display = 'block');
-            } else {
-                interpreterOnlyElements.forEach(el => el.style.display = 'none');
+            document.getElementById('statusMemory').textContent = formatBytes(status.memoryFree);
+
+            if (status.filesystemEnabled !== undefined) {
+                filesystemEnabled = status.filesystemEnabled;
             }
         }
 

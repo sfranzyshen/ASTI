@@ -641,6 +641,16 @@ void executeOneCommand() {
 }
 #endif // USE_INTERPRETER
 
+#if !USE_INTERPRETER
+// Dummy implementations when interpreter is disabled
+void startExecution() {}
+void pauseExecution() {}
+void resumeExecution() {}
+void resetInterpreter() {}
+void executeOneCommand() {}
+bool loadASTFile(const char* filename) { return false; }
+#endif
+
 // ============================================================================ 
 // SETUP
 // ============================================================================ 
