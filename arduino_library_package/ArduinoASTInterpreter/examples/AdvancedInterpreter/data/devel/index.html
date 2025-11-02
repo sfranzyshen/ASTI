@@ -409,10 +409,13 @@
                 <div class="panel-header">
                     <div class="panel-title" id="arduinoCodePanelTitle">📝 Arduino Code</div>
                     <div class="panel-controls">
+                        <button class="panel-btn" onclick="saveCode()">Save</button>
+                        <button class="panel-btn" onclick="loadCode()">Load</button>
                         <button class="panel-btn" onclick="clearCode()">Clear</button>
                     </div>
                 </div>
                 <div class="panel-content editor-container">
+                    <input type="file" id="fileLoader" accept=".ino" style="display: none;" onchange="handleFileLoad(event)"/>
                     <div class="editor-wrapper">
                         <textarea class="line-numbers" id="lineNumbers" readonly>1</textarea>
                         <textarea class="editor code-input-with-lines" id="codeEditor" placeholder="Enter your Arduino code here...">void setup() {
@@ -1290,6 +1293,45 @@ void loop() {
         function clearCode() {
             document.getElementById('codeEditor').value = '';
             updateLineCounters();
+        }
+
+        function saveCode() {
+            const code = document.getElementById('codeEditor').value;
+            const sketchName = currentTestName || 'sketch.ino';
+            const filename = sketchName.endsWith('.ino') ? sketchName : sketchName + '.ino';
+
+            const blob = new Blob([code], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+
+        function loadCode() {
+            document.getElementById('fileLoader').click();
+        }
+
+        function handleFileLoad(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+                    document.getElementById('codeEditor').value = content;
+                    updateLineCounters();
+                    updateLineNumbers();
+                    currentTestName = file.name;
+                    updateSketchName();
+                };
+                reader.readAsText(file);
+            }
         }
 
         // Line number management
