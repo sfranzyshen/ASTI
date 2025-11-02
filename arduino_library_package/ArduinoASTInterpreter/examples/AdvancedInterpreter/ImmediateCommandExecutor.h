@@ -51,6 +51,33 @@ public:
     void resetStats() {
         totalExecuted_ = 0;
     }
+
+    void executePinMode(int pin, int mode) {
+        if (executor_) {
+            String cmd = "{\"type\":\"PIN_MODE\",\"pin\":_PIN_,\"mode\":_MODE_}";
+            cmd.replace("_PIN_", String(pin));
+            cmd.replace("_MODE_", String(mode));
+            executor_->execute(cmd);
+        }
+    }
+
+    void executeDigitalWrite(int pin, int value) {
+        if (executor_) {
+            String cmd = "{\"type\":\"DIGITAL_WRITE\",\"pin\":_PIN_,\"value\":_VALUE_}";
+            cmd.replace("_PIN_", String(pin));
+            cmd.replace("_VALUE_", String(value));
+            executor_->execute(cmd);
+        }
+    }
+
+    void executeAnalogWrite(int pin, int value) {
+        if (executor_) {
+            String cmd = "{\"type\":\"ANALOG_WRITE\",\"pin\":_PIN_,\"value\":_VALUE_}";
+            cmd.replace("_PIN_", String(pin));
+            cmd.replace("_VALUE_", String(value));
+            executor_->execute(cmd);
+        }
+    }
 };
 
 #endif // IMMEDIATE_COMMAND_EXECUTOR_H

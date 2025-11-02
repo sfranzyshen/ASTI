@@ -100,20 +100,16 @@ private:
         return output;
     }
 
-#if USE_INTERPRETER
-    /**
-     * Get state as string
-     */
     String getStateString() const {
         switch (state) {
             case STATE_STOPPED: return "stopped";
             case STATE_RUNNING: return "running";
             case STATE_PAUSED: return "paused";
             case STATE_STEP_MODE: return "step";
+            case STATE_REMOTE: return "remote";
             default: return "unknown";
         }
     }
-#endif
 
     /**
      * Format uptime as string

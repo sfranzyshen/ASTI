@@ -364,6 +364,10 @@
                 <span>Status: <span id="statusText">IDLE</span></span>
             </div>
             <div class="status-item">
+                <div class="status-indicator" id="wsConnectionIndicator"></div>
+                <span>WS: <span id="wsConnectionStatus">DISCONNECTED</span></span>
+            </div>
+            <div class="status-item">
                 <span>Commands: <span id="commandCount">0</span></span>
             </div>
             <div class="status-item">
@@ -479,6 +483,58 @@ void loop() {
         let currentCompactAST = null;
         let currentTestName = null;
         let parseHadErrors = false;
+        let ws = null;
+
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws`;
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                console.log('WebSocket connected');
+                updateWSConnectionStatus(true);
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === 'status_update') {
+                    // Can be used to get status from device
+                }
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                updateWSConnectionStatus(false);
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket disconnected');
+                updateWSConnectionStatus(false);
+                setTimeout(connectWebSocket, 3000);
+            };
+        }
+
+        function updateWSConnectionStatus(connected) {
+            const indicator = document.getElementById('wsConnectionIndicator');
+            const text = document.getElementById('wsConnectionStatus');
+
+            if (connected) {
+                indicator.className = 'status-indicator running';
+                text.textContent = 'CONNECTED';
+            } else {
+                indicator.className = 'status-indicator error';
+                text.textContent = 'DISCONNECTED';
+            }
+        }
+
+        function sendWebSocketMessage(message) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify(message));
+            }
+        }
+
+
         
         function generateSketchName() {
             const now = new Date();
@@ -1089,310 +1145,624 @@ void loop() {
                 .replace(/\r/g, '\\r');  // Actual carriage return → literal \r
         }
 
-        // Display functions - completely simple, no scroll management
-        function displayCommand(command) {
-            // Only filter out truly invalid commands and redundant library instantiation
-            if (!command || command.type === undefined || command.type === 'LIBRARY_OBJECT_INSTANTIATION') {
-                return; // Skip invalid commands and redundant library instantiation (VAR_SET shows this better)
-            }
-            
-            const commandOutput = document.getElementById('commandOutput');
-            const commandEl = document.createElement('div');
-            commandEl.className = `command ${command.type}`;
-            
-            const time = command.timestamp ? new Date(command.timestamp).toLocaleTimeString() : new Date().toLocaleTimeString();
-            let content = `<span class="timestamp">[${time}]</span> `;
-            
-            switch (command.type) {
-                case 'PIN_MODE':
-                    // Display numeric values directly instead of symbolic names
-                    content += `pinMode(${command.pin}, ${command.mode})`;
-                    break;
-                case 'DIGITAL_WRITE':
-                    // Display numeric values directly instead of symbolic names
-                    content += `digitalWrite(${command.pin}, ${command.value})`;
-                    break;
-                case 'ANALOG_WRITE':
-                    content += `analogWrite(${command.pin}, ${command.value})`;
-                    break;
-                case 'DIGITAL_READ':
-                    content += `digitalRead(${command.pin})`;
-                    break;
-                case 'ANALOG_READ':
-                    content += `analogRead(${command.pin})`;
-                    break;
-                case 'DELAY':
-                    content += `delay(${command.duration})`;
-                    break;
-                case 'DELAY_MICROSECONDS':
-                    content += `delayMicroseconds(${command.duration})`;
-                    break;
-                case 'VERSION_INFO':
-                    content += `🔢 ${command.component} v${command.version} (${command.status})`;
-                    break;
-                case 'SETUP_START':
-                case 'SETUP_END':
-                case 'LOOP_START':
-                case 'LOOP_END':
-                case 'PROGRAM_START':
-                case 'PROGRAM_END':
-                    content += `${command.message || command.type}`;
-                    break;
-                case 'FUNCTION_CALL':
-                    if (command.function === 'loop') {
-                        if (command.completed) {
-                            content += `✓ ${command.message}`;
-                        } else {
-                            content += `▶ ${command.message}`;
-                        }
-                    } else {
-                        content += escapeForDisplay(command.message) || `${command.function}()`;
+                // Display functions - completely simple, no scroll management
+
+                function displayCommand(command) {
+
+                    // Only filter out truly invalid commands and redundant library instantiation
+
+                    if (!command || command.type === undefined || command.type === 'LIBRARY_OBJECT_INSTANTIATION') {
+
+                        return; // Skip invalid commands and redundant library instantiation (VAR_SET shows this better)
+
                     }
-                    break;
-                case 'CONDITION_EVAL':
-                    content += `🔍 ${command.message}`;
-                    break;
-                case 'VAR_SET':
-                    // Improve object display formatting
-                    let displayValue = command.value;
-                    if (typeof displayValue === 'object' && displayValue !== null) {
-                        // Handle sanitized ArduinoObjects
-                        if (displayValue.__type === 'ArduinoObject') {
-                            const args = displayValue.constructorArgs.length > 0 ? 
-                                `(${displayValue.constructorArgs.join(', ')})` : '()';
-                            displayValue = `🔧 ${displayValue.className}${args}`;
-                        } else if (displayValue.toString && displayValue.toString() !== '[object Object]') {
-                            displayValue = displayValue.toString();
-                        } else if (displayValue.value !== undefined) {
-                            displayValue = displayValue.value; // Extract value from ArduinoNumber, etc.
-                        } else {
-                            displayValue = JSON.stringify(displayValue);
-                        }
+
+        
+
+                    // Forward relevant commands to the device
+
+                    if (['PIN_MODE', 'DIGITAL_WRITE', 'ANALOG_WRITE'].includes(command.type)) {
+
+                        sendWebSocketMessage({ type: 'remote_command', data: command });
+
                     }
-                    content += `${command.variable} = ${displayValue}`;
-                    break;
-                case 'IF_STATEMENT':
-                    content += `if (${command.condition}) ${command.result ? '✓' : '✗'} → ${command.branch} branch`;
-                    break;
-                case 'SWITCH_STATEMENT':
-                    content += `${command.message}`;
-                    break;
-                case 'SWITCH_CASE':
-                    content += `case ${command.caseValue}: ${command.matched ? '✓ matched' : '✗ skipped'}`;
-                    break;
-                case 'FOR_LOOP':
-                    content += `${command.message}`;
-                    break;
-                case 'WHILE_LOOP':
-                    content += `${command.message}`;
-                    break;
-                case 'DO_WHILE_LOOP':
-                    content += `${command.message}`;
-                    break;
-                case 'BREAK_STATEMENT':
-                    content += `${command.message}`;
-                    break;
-                case 'CONTINUE_STATEMENT':
-                    content += `${command.message}`;
-                    break;
-                case 'ERROR':
-                    content += command.severity === 'error' ? `❌ ERROR: ${command.message}` : `ERROR: ${command.message}`;
-                    break;
-                case 'WARNING':
-                    content += command.severity === 'warning' ? `⚠️ WARNING: ${command.message}` : `⚠️ WARNING: ${command.message}`;
-                    break;
-                case 'LIBRARY_STATIC_METHOD_CALL':
-                    const staticDisplayName = command.variableName || command.library;
-                    if (command.calculatedValue !== undefined) {
-                        content += `${staticDisplayName}.${command.method}(${command.args.join(', ')}) → ${command.calculatedValue}`;
-                    } else {
-                        content += `${staticDisplayName}.${command.method}(${command.args.join(', ')})`;
-                    }
-                    break;
-                case 'LIBRARY_METHOD_CALL':
-                    const displayName = command.variableName || command.library;
-                    content += `${displayName}.${command.method}(${command.args.join(', ')})`;
-                    break;
-                case 'LIBRARY_METHOD_INTERNAL':
-                    // Handle internal method with calculated result
-                    const internalDisplayName = command.variableName || command.library;
-                    content += `${internalDisplayName}.${command.method}(${command.args.join(', ')}) → ${command.result}`;
-                    break;
-                case 'LIBRARY_METHOD_REQUEST':
-                    content += `⏳ Requesting ${command.library}.${command.method}()...`;
-                    break;
-                case 'LIBRARY_OBJECT_INSTANTIATION':
-                    const objectDisplayName = command.variableName || command.library;
-                    const args = command.constructorArgs && command.constructorArgs.length > 0 ? 
-                        `(${command.constructorArgs.join(', ')})` : '()';
-                    content += `🔧 Creating ${command.library} ${objectDisplayName}${args}`;
-                    break;
-                case 'ANALOG_READ_REQUEST':
-                    content += `analogRead(${command.pin})`;
-                    break;
-                case 'DIGITAL_READ_REQUEST':
-                    content += `digitalRead(${command.pin})`;
-                    break;
-                case 'MILLIS_REQUEST':
-                    content += `millis()`;
-                    break;
-                case 'MICROS_REQUEST':
-                    content += `micros()`;
-                    break;
-                case 'AVR_FUNCTION_CALL':
-                    content += `${command.function}(${command.args.join(', ')})`;
-                    break;
-                default:
-                    // Handle VERSION_INFO with new clean format
-                    if (command.type === 'VERSION_INFO') {
-                        if (command.component === 'interpreter') {
-                            content += `🤖 Arduino Interpreter v${command.version} ${command.status}`;
-                        } else if (command.component === 'parser') {
-                            content += `📝 Using Parser v${command.version}`;
-                        } else {
-                            content += `${command.component} v${command.version} ${command.status}`;
-                        }
-                    } else if (command.type === 'SWITCH_CASE') {
-                        content += `case ${command.caseValue}: ${command.matched ? '✓ matched' : '✗ skipped'}`;
-                    } else if (command.type === 'BREAK_STATEMENT' && command.action) {
-                        content += `break; ✓ ${command.action.replace('_', ' ')}`;
-                    } else if (command.type === 'IF_STATEMENT' && command.branch) {
-                        content += `if (${command.condition}) ${command.result ? '✓' : '✗'} → ${command.branch} branch`;
-                    } else {
-                        // Improved fallback handling - avoid JSON pollution
-                        if (command.message) {
-                            content += command.message;
-                        } else if (command.type) {
-                            content += `${command.type}`;
-                        } else {
-                            // Last resort - but filter out truly unhelpful content
-                            const jsonStr = JSON.stringify(command);
-                            if (jsonStr && jsonStr !== '{}' && jsonStr !== 'null' && jsonStr !== 'undefined') {
-                                content += jsonStr;
+
+                    
+
+                    const commandOutput = document.getElementById('commandOutput');
+
+                    const commandEl = document.createElement('div');
+
+                    commandEl.className = `command ${command.type}`;
+
+                    
+
+                    const time = command.timestamp ? new Date(command.timestamp).toLocaleTimeString() : new Date().toLocaleTimeString();
+
+                    let content = `<span class="timestamp">[${time}]</span> `;
+
+                    
+
+                    switch (command.type) {
+
+                        case 'PIN_MODE':
+
+                            // Display numeric values directly instead of symbolic names
+
+                            content += `pinMode(${command.pin}, ${command.mode})`;
+
+                            break;
+
+                        case 'DIGITAL_WRITE':
+
+                            // Display numeric values directly instead of symbolic names
+
+                            content += `digitalWrite(${command.pin}, ${command.value})`;
+
+                            break;
+
+                        case 'ANALOG_WRITE':
+
+                            content += `analogWrite(${command.pin}, ${command.value})`;
+
+                            break;
+
+                        case 'DIGITAL_READ':
+
+                            content += `digitalRead(${command.pin})`;
+
+                            break;
+
+                        case 'ANALOG_READ':
+
+                            content += `analogRead(${command.pin})`;
+
+                            break;
+
+                        case 'DELAY':
+
+                            content += `delay(${command.duration})`;
+
+                            break;
+
+                        case 'DELAY_MICROSECONDS':
+
+                            content += `delayMicroseconds(${command.duration})`;
+
+                            break;
+
+                        case 'VERSION_INFO':
+
+                            content += `🔢 ${command.component} v${command.version} (${command.status})`;
+
+                            break;
+
+                        case 'SETUP_START':
+
+                        case 'SETUP_END':
+
+                        case 'LOOP_START':
+
+                        case 'LOOP_END':
+
+                        case 'PROGRAM_START':
+
+                        case 'PROGRAM_END':
+
+                            content += `${command.message || command.type}`;
+
+                            break;
+
+                        case 'FUNCTION_CALL':
+
+                            if (command.function === 'loop') {
+
+                                if (command.completed) {
+
+                                    content += `✓ ${command.message}`;
+
+                                } else {
+
+                                    content += `▶ ${command.message}`;
+
+                                }
+
                             } else {
-                                return; // Skip completely unhelpful commands
+
+                                content += escapeForDisplay(command.message) || `${command.function}()`;
+
                             }
-                        }
+
+                            break;
+
+                        case 'CONDITION_EVAL':
+
+                            content += `🔍 ${command.message}`;
+
+                            break;
+
+                        case 'VAR_SET':
+
+                            // Improve object display formatting
+
+                            let displayValue = command.value;
+
+                            if (typeof displayValue === 'object' && displayValue !== null) {
+
+                                // Handle sanitized ArduinoObjects
+
+                                if (displayValue.__type === 'ArduinoObject') {
+
+                                    const args = displayValue.constructorArgs.length > 0 ? 
+
+                                        `(${displayValue.constructorArgs.join(', ')})` : '()';
+
+                                    displayValue = `🔧 ${displayValue.className}${args}`;
+
+                                } else if (displayValue.toString && displayValue.toString() !== '[object Object]') {
+
+                                    displayValue = displayValue.toString();
+
+                                } else if (displayValue.value !== undefined) {
+
+                                    displayValue = displayValue.value; // Extract value from ArduinoNumber, etc.
+
+                                } else {
+
+                                    displayValue = JSON.stringify(displayValue);
+
+                                }
+
+                            }
+
+                            content += `${command.variable} = ${displayValue}`;
+
+                            break;
+
+                        case 'IF_STATEMENT':
+
+                            content += `if (${command.condition}) ${command.result ? '✓' : '✗'} → ${command.branch} branch`;
+
+                            break;
+
+                        case 'SWITCH_STATEMENT':
+
+                            content += `${command.message}`;
+
+                            break;
+
+                        case 'SWITCH_CASE':
+
+                            content += `case ${command.caseValue}: ${command.matched ? '✓ matched' : '✗ skipped'}`;
+
+                            break;
+
+                        case 'FOR_LOOP':
+
+                            content += `${command.message}`;
+
+                            break;
+
+                        case 'WHILE_LOOP':
+
+                            content += `${command.message}`;
+
+                            break;
+
+                        case 'DO_WHILE_LOOP':
+
+                            content += `${command.message}`;
+
+                            break;
+
+                        case 'BREAK_STATEMENT':
+
+                            content += `${command.message}`;
+
+                            break;
+
+                        case 'CONTINUE_STATEMENT':
+
+                            content += `${command.message}`;
+
+                            break;
+
+                        case 'ERROR':
+
+                            content += command.severity === 'error' ? `❌ ERROR: ${command.message}` : `ERROR: ${command.message}`;
+
+                            break;
+
+                        case 'WARNING':
+
+                            content += command.severity === 'warning' ? `⚠️ WARNING: ${command.message}` : `⚠️ WARNING: ${command.message}`;
+
+                            break;
+
+                        case 'LIBRARY_STATIC_METHOD_CALL':
+
+                            const staticDisplayName = command.variableName || command.library;
+
+                            if (command.calculatedValue !== undefined) {
+
+                                content += `${staticDisplayName}.${command.method}(${command.args.join(', ')}) → ${command.calculatedValue}`;
+
+                            } else {
+
+                                content += `${staticDisplayName}.${command.method}(${command.args.join(', ')})`;
+
+                            }
+
+                            break;
+
+                        case 'LIBRARY_METHOD_CALL':
+
+                            const displayName = command.variableName || command.library;
+
+                            content += `${displayName}.${command.method}(${command.args.join(', ')})`;
+
+                            break;
+
+                        case 'LIBRARY_METHOD_INTERNAL':
+
+                            // Handle internal method with calculated result
+
+                            const internalDisplayName = command.variableName || command.library;
+
+                            content += `${internalDisplayName}.${command.method}(${command.args.join(', ')}) → ${command.result}`;
+
+                            break;
+
+                        case 'LIBRARY_METHOD_REQUEST':
+
+                            content += `⏳ Requesting ${command.library}.${command.method}()...`;
+
+                            break;
+
+                        case 'LIBRARY_OBJECT_INSTANTIATION':
+
+                            const objectDisplayName = command.variableName || command.library;
+
+                            const args = command.constructorArgs && command.constructorArgs.length > 0 ? 
+
+                                `(${command.constructorArgs.join(', ')})` : '()';
+
+                            content += `🔧 Creating ${command.library} ${objectDisplayName}${args}`;
+
+                            break;
+
+                        case 'ANALOG_READ_REQUEST':
+
+                            content += `analogRead(${command.pin})`;
+
+                            break;
+
+                        case 'DIGITAL_READ_REQUEST':
+
+                            content += `digitalRead(${command.pin})`;
+
+                            break;
+
+                        case 'MILLIS_REQUEST':
+
+                            content += `millis()`;
+
+                            break;
+
+                        case 'MICROS_REQUEST':
+
+                            content += `micros()`;
+
+                            break;
+
+                        case 'AVR_FUNCTION_CALL':
+
+                            content += `${command.function}(${command.args.join(', ')})`;
+
+                            break;
+
+                        default:
+
+                            // Handle VERSION_INFO with new clean format
+
+                            if (command.type === 'VERSION_INFO') {
+
+                                if (command.component === 'interpreter') {
+
+                                    content += `🤖 Arduino Interpreter v${command.version} ${command.status}`;
+
+                                } else if (command.component === 'parser') {
+
+                                    content += `📝 Using Parser v${command.version}`;
+
+                                }
+
+                            } else if (command.type === 'SWITCH_CASE') {
+
+                                content += `case ${command.caseValue}: ${command.matched ? '✓ matched' : '✗ skipped'}`;
+
+                            } else if (command.type === 'BREAK_STATEMENT' && command.action) {
+
+                                content += `break; ✓ ${command.action.replace('_', ' ')}`;
+
+                            } else if (command.type === 'IF_STATEMENT' && command.branch) {
+
+                                content += `if (${command.condition}) ${command.result ? '✓' : '✗'} → ${command.branch} branch`;
+
+                            } else {
+
+                                // Improved fallback handling - avoid JSON pollution
+
+                                if (command.message) {
+
+                                    content += command.message;
+
+                                } else if (command.type) {
+
+                                    content += `${command.type}`;
+
+                                } else {
+
+                                    // Last resort - but filter out truly unhelpful content
+
+                                    const jsonStr = JSON.stringify(command);
+
+                                    if (jsonStr && jsonStr !== '{}' && jsonStr !== 'null' && jsonStr !== 'undefined') {
+
+                                        content += jsonStr;
+
+                                    } else {
+
+                                        return; // Skip completely unhelpful commands
+
+                                    }
+
+                                }
+
+                            }
+
                     }
-            }
-            
-            commandEl.innerHTML = content;
-            // Add new commands at the top so latest is always visible
-            commandOutput.insertBefore(commandEl, commandOutput.firstChild);
-            
-            // Update command counter
-            const commandCount = commandOutput.children.length;
-            document.getElementById('commandLineCounter').textContent = `${commandCount} commands`;
-        }
-        
-        function clearCommands() {
-            document.getElementById('commandOutput').innerHTML = '';
-            document.getElementById('commandLineCounter').textContent = '0 commands';
-        }
-        
-        function clearCode() {
-            document.getElementById('codeEditor').value = '';
-            updateLineCounters();
-        }
 
-        function saveCode() {
-            const code = document.getElementById('codeEditor').value;
-            const sketchName = currentTestName || 'sketch.ino';
-            const filename = sketchName.endsWith('.ino') ? sketchName : sketchName + '.ino';
+                    
 
-            const blob = new Blob([code], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
-        }
+                    commandEl.innerHTML = content;
 
-        function loadCode() {
-            document.getElementById('fileLoader').click();
-        }
+                    // Add new commands at the top so latest is always visible
 
-        function handleFileLoad(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const content = e.target.result;
-                    document.getElementById('codeEditor').value = content;
-                    updateLineCounters();
-                    updateLineNumbers();
-                    currentTestName = file.name;
-                    updateSketchName();
-                };
-                reader.readAsText(file);
-            }
-        }
+                    commandOutput.insertBefore(commandEl, commandOutput.firstChild);
 
-        // Line number management
-        function updateLineNumbers() {
-            const codeInput = document.getElementById('codeEditor');
-            const lineNumbers = document.getElementById('lineNumbers');
-            const lines = codeInput.value.split('\n');
-            const lineCount = lines.length;
-            
-            let lineNumberText = '';
-            for (let i = 1; i <= lineCount; i++) {
-                lineNumberText += i + (i < lineCount ? '\n' : '');
-            }
-            lineNumbers.value = lineNumberText;
-        }
-        
-        // Synchronize scrolling between line numbers and code
-        function syncScroll() {
-            const codeInput = document.getElementById('codeEditor');
-            const lineNumbers = document.getElementById('lineNumbers');
-            lineNumbers.scrollTop = codeInput.scrollTop;
-        }
-        
-        
-        
-        // No scroll management needed - browser handles it naturally
-        
-        // Event listeners
-        const codeEditor = document.getElementById('codeEditor');
-        codeEditor.addEventListener('input', () => {
-            updateLineCounters();
-            updateLineNumbers();
-        });
-        codeEditor.addEventListener('scroll', syncScroll);
-        
-        // Initialize
-        updateLineCounters();
-        updateLineNumbers();
-        updateStatus('IDLE', 0, 0, 0);
-        updateButtons('IDLE');
-        
-        // Load test files and initialize dropdowns
-        loadTestFiles();
+                    
 
-        // Fetch status and disable upload if interpreter is not enabled
-        async function checkInterpreterStatus() {
-            try {
-                const response = await fetch('/api/status');
-                const status = await response.json();
-                if (status && status.interpreter === false) {
-                    const uploadBtn = document.getElementById('uploadASTBtn');
-                    uploadBtn.disabled = true;
-                    uploadBtn.title = 'Interpreter not enabled in firmware';
+                    // Update command counter
+
+                    const commandCount = commandOutput.children.length;
+
+                    document.getElementById('commandLineCounter').textContent = `${commandCount} commands`;
+
                 }
-            } catch (error) {
-                console.error('Error fetching interpreter status:', error);
-            }
-        }
-        checkInterpreterStatus();
+
+                
+
+                function clearCommands() {
+
+                    document.getElementById('commandOutput').innerHTML = '';
+
+                    document.getElementById('commandLineCounter').textContent = '0 commands';
+
+                }
+
+                
+
+                function clearCode() {
+
+                    document.getElementById('codeEditor').value = '';
+
+                    updateLineCounters();
+
+                }
+
         
-        // Note: Removed auto-execution - user must click Start button
-    </script>
-</body>
-</html>
+
+                function saveCode() {
+
+                    const code = document.getElementById('codeEditor').value;
+
+                    const sketchName = currentTestName || 'sketch.ino';
+
+                    const filename = sketchName.endsWith('.ino') ? sketchName : sketchName + '.ino';
+
+        
+
+                    const blob = new Blob([code], { type: 'text/plain' });
+
+                    const url = URL.createObjectURL(blob);
+
+                    const a = document.createElement('a');
+
+                    a.href = url;
+
+                    a.download = filename;
+
+                    a.style.display = 'none';
+
+                    document.body.appendChild(a);
+
+                    a.click();
+
+                    setTimeout(() => {
+
+                        document.body.removeChild(a);
+
+                        URL.revokeObjectURL(url);
+
+                    }, 100);
+
+                }
+
+        
+
+                function loadCode() {
+
+                    document.getElementById('fileLoader').click();
+
+                }
+
+        
+
+                function handleFileLoad(event) {
+
+                    const file = event.target.files[0];
+
+                    if (file) {
+
+                        const reader = new FileReader();
+
+                        reader.onload = (e) => {
+
+                            const content = e.target.result;
+
+                            document.getElementById('codeEditor').value = content;
+
+                            updateLineCounters();
+
+                            updateLineNumbers();
+
+                            currentTestName = file.name;
+
+                            updateSketchName();
+
+                        };
+
+                        reader.readAsText(file);
+
+                    }
+
+                }
+
+        
+
+                // Line number management
+
+                function updateLineNumbers() {
+
+                    const codeInput = document.getElementById('codeEditor');
+
+                    const lineNumbers = document.getElementById('lineNumbers');
+
+                    const lines = codeInput.value.split('\n');
+
+                    const lineCount = lines.length;
+
+                    
+
+                    let lineNumberText = '';
+
+                    for (let i = 1; i <= lineCount; i++) {
+
+                        lineNumberText += i + (i < lineCount ? '\n' : '');
+
+                    }
+
+                    lineNumbers.value = lineNumberText;
+
+                }
+
+                
+
+                // Synchronize scrolling between line numbers and code
+
+                function syncScroll() {
+
+                    const codeInput = document.getElementById('codeEditor');
+
+                    const lineNumbers = document.getElementById('lineNumbers');
+
+                    lineNumbers.scrollTop = codeInput.scrollTop;
+
+                }
+
+                
+
+                
+
+                
+
+                // No scroll management needed - browser handles it naturally
+
+                
+
+                // Event listeners
+
+                const codeEditor = document.getElementById('codeEditor');
+
+                codeEditor.addEventListener('input', () => {
+
+                    updateLineCounters();
+
+                    updateLineNumbers();
+
+                });
+
+                codeEditor.addEventListener('scroll', syncScroll);
+
+                
+
+                // Initialize
+
+                updateLineCounters();
+
+                updateLineNumbers();
+
+                updateStatus('IDLE', 0, 0, 0);
+
+                updateButtons('IDLE');
+
+                
+
+                // Load test files and initialize dropdowns
+
+                loadTestFiles();
+
+        
+
+                // Fetch status and disable upload if interpreter is not enabled
+
+                async function checkInterpreterStatus() {
+
+                    try {
+
+                        const response = await fetch('/api/status');
+
+                        const status = await response.json();
+
+                        if (status && status.interpreter === false) {
+
+                            const uploadBtn = document.getElementById('uploadASTBtn');
+
+                            uploadBtn.disabled = true;
+
+                            uploadBtn.title = 'Interpreter not enabled in firmware';
+
+                        }
+
+                    } catch (error) {
+
+                        console.error('Error fetching interpreter status:', error);
+
+                    }
+
+                }
+
+                checkInterpreterStatus();
+
+                connectWebSocket();
+
+                
+
+                // Note: Removed auto-execution - user must click Start button
+
+            </script>
+
+        </body>
+
+        </html>

@@ -266,7 +266,8 @@ enum AppExecutionState {
     STATE_STOPPED,
     STATE_RUNNING,
     STATE_PAUSED,
-    STATE_STEP_MODE
+    STATE_STEP_MODE,
+    STATE_REMOTE
 };
 #endif
 

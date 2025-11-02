@@ -31,6 +31,7 @@ extern AppExecutionState state;
 extern unsigned long loopIteration;
 extern unsigned long startTime;
 extern unsigned long commandsExecuted;
+extern ImmediateCommandExecutor immediateExecutor;
 #endif
 
 // ============================================================================
@@ -68,6 +69,7 @@ private:
             case STATE_RUNNING: return "running";
             case STATE_PAUSED: return "paused";
             case STATE_STEP_MODE: return "step";
+            case STATE_REMOTE: return "remote";
             default: return "unknown";
         }
     }
@@ -190,8 +192,13 @@ private:
     /**
      * Handle client messages
      */
+#if USE_INTERPRETER
+#undef pinMode
+#undef digitalWrite
+#undef analogWrite
+#endif
     void handleClientMessage(AsyncWebSocketClient* client, const String& message) {
-        StaticJsonDocument<256> doc;
+        StaticJsonDocument<1024> doc;
         DeserializationError error = deserializeJson(doc, message);
 
         if (error) {
@@ -213,6 +220,32 @@ private:
         } else if (type == "request_status") {
             // Send status update to requesting client
             client->text(createStatusUpdate());
+        } else if (type == "remote_command") {
+#if USE_INTERPRETER
+            const JsonObject& data = doc["data"];
+            String commandType = data["type"] | "";
+
+            if (state == STATE_STOPPED) {
+                state = STATE_REMOTE;
+            }
+
+            if (state == STATE_REMOTE) {
+                if (data.containsKey("iteration")) {
+                    loopIteration = data["iteration"];
+                }
+                if (data.containsKey("commandsExecuted")) {
+                    commandsExecuted = data["commandsExecuted"];
+                }
+
+                if (commandType == "PIN_MODE") {
+                    immediateExecutor.executePinMode(data["pin"], data["mode"]);
+                } else if (commandType == "DIGITAL_WRITE") {
+                    immediateExecutor.executeDigitalWrite(data["pin"], data["value"]);
+                } else if (commandType == "ANALOG_WRITE") {
+                    immediateExecutor.executeAnalogWrite(data["pin"], data["value"]);
+                }
+            }
+#endif
         } else {
             sendError(client->id(), "Unknown message type: " + type);
         }
