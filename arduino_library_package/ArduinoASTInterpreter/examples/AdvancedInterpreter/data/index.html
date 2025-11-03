@@ -665,12 +665,15 @@
             }
         }
 
-        async function loadFiles() {
+        async function loadFiles(updateDropdown = false) {
             const data = await apiCall('/api/files');
             if (data && data.files) {
                 currentFiles = data.files;
                 renderFileList(data.files);
-                updateFileSelect(data.files);
+
+                if (updateDropdown) {
+                    updateFileSelect(data.files);
+                }
 
                 const stats = document.getElementById('fileStats');
                 const totalSize = data.files.reduce((sum, f) => sum + f.size, 0);
@@ -716,7 +719,7 @@
             const data = await apiCall(`/api/files/delete?name=${encodeURIComponent(filename)}`, 'DELETE');
             if (data && data.success) {
                 showToast(`Deleted: ${filename}`, 'success');
-                loadFiles();
+                loadFiles(true);
             }
         }
 
@@ -812,7 +815,7 @@
                     // Reload file list after short delay
                     setTimeout(() => {
                         progressDiv.style.display = 'none';
-                        loadFiles();
+                        loadFiles(true);
                     }, 2000);
                 } else {
                     throw new Error(data.error || 'Upload failed');
@@ -1019,12 +1022,12 @@
             console.log('Initializing web interface...');
             connectWebSocket();
             fetchStatus();
-            loadFiles();
+            loadFiles(true); // Initial load with dropdown update
             loadConfiguration();
             loadWifiConfiguration();
 
-            // Periodically refresh file list
-            setInterval(loadFiles, 3000);
+            // Periodically refresh file list without updating dropdown
+            setInterval(() => loadFiles(false), 3000);
         });
     </script>
 </body>

@@ -100,6 +100,7 @@ private:
         return output;
     }
 
+#if USE_INTERPRETER
     String getStateString() const {
         switch (state) {
             case STATE_STOPPED: return "stopped";
@@ -110,6 +111,7 @@ private:
             default: return "unknown";
         }
     }
+#endif
 
     /**
      * Format uptime as string
