@@ -1,8 +1,8 @@
 # AST Interpreter
 
-**A complete dual-platform Arduino/C++ code interpreter system with modular library architecture**
+**A complete multi-platform 'Arduino/C++ code interpreter' system with modular library architecture**
 
-AST Interpreter is a modular system that transforms Arduino/C++ source code into executable command streams through a sophisticated multi-stage processing pipeline. It provides full Arduino language support with hardware simulation, making it perfect for educational tools, code validation, and Arduino development environments.
+AST Interpreter is a modular system that transforms Arduino/C++ source code (Sketches) into executable command streams through a sophisticated multi-stage processing pipeline. It provides full Arduino language support with hardware simulation, making it perfect for educational tools, code validation, and Arduino development environments.
 
 ## 🏗️ Three-Project Modular Architecture
 
@@ -26,7 +26,7 @@ The project is organized into three independent, reusable modules:
 - **Achievement**: Production-ready parser with 100% Arduino language support
 - **Output**: Clean Abstract Syntax Tree + CompactAST binary serialization
 
-### **ASTInterpreter Core** (v21.2.1)
+### **ASTInterpreter Core** (v22.0.0)
 - **Purpose**: AST execution engine with Arduino hardware simulation
 - **Platform Support**: Linux/Desktop, WebAssembly/WASM, ESP32/Arduino - **ALL with RTTI flexibility!**
 - **Architecture**: Dual-mode C++ (RTTI/RTTI-free) + JavaScript, perfect cross-platform parity
@@ -52,7 +52,7 @@ The project is organized into three independent, reusable modules:
 ### **Three Library Modules:**
 1. **ArduinoParser** (v6.0.0) - Complete Arduino/C++ parsing with preprocessor
 2. **CompactAST** (v3.2.0) - Binary AST format with 12.5x compression
-3. **ASTInterpreter** (v21.2.1) - Execution engine with hardware simulation
+3. **ASTInterpreter** (v22.0.0) - Execution engine with hardware simulation
 
 All implementations produce **identical command streams** with **100% cross-platform parity** (135/135 tests passing).
 
@@ -163,7 +163,7 @@ Commands contain only primitive data types for maximum compatibility with parent
 |-----------|---------|------------|----------------------|--------------|
 | **CompactAST** | v3.2.0 | 100% ✅ | Dual-Mode ✅ | Production Ready |
 | **ArduinoParser** | v6.0.0 | 100% ✅ | Full Compatibility ✅ | 135/135 (100%) |
-| **ASTInterpreter** | **v21.2.1** | 100% ✅ | **135/135 (100%)** ✅ | **Perfect Parity** 🎉 |
+| **ASTInterpreter** | **v22.0.0** | 100% ✅ | **135/135 (100%)** ✅ | **Perfect Parity** 🎉 |
 | **Platforms** | Oct 2025 | Node.js + Browser ✅ | **Linux + WASM + ESP32** ✅ | **WASM Ready** 🚀 |
 
 ### Test Coverage
@@ -656,4 +656,5 @@ and **sfranzyshen.org with [GNU AGPLv3](https://github.com/sfranzyshen/ASTInterp
 * After the Change Date of **8/26/2030**, the software will automatically be governed by the **AGPLv3**.
 
 * If you wish to use this software in a production environment before the Change Date, you must obtain a **commercial license**. Please contact us at [sfranzyshen@hotmail.com] for more details.
+
 
