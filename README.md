@@ -2,7 +2,7 @@
 
 **A complete multi-platform 'Arduino/C++ code interpreter' system with modular library architecture**
 
-AST Interpreter is a modular system that transforms Arduino/C++ source code (Sketches) into executable command streams through a sophisticated multi-stage processing pipeline. It provides full Arduino language support with hardware simulation, making it perfect for educational tools, code validation, and Arduino development environments.
+AST Interpreter is a modular system that transforms Arduino/C++ source code (Sketches) into command streams through a sophisticated multi-stage interpreter pipeline. It provides full Arduino language support with hardware simulation, making it perfect for educational tools, code validation, and Arduino development environments.
 
 ## 🏗️ Three-Project Modular Architecture
 
@@ -656,5 +656,6 @@ and **sfranzyshen.org with [GNU AGPLv3](https://github.com/sfranzyshen/ASTInterp
 * After the Change Date of **8/26/2030**, the software will automatically be governed by the **AGPLv3**.
 
 * If you wish to use this software in a production environment before the Change Date, you must obtain a **commercial license**. Please contact us at [sfranzyshen@hotmail.com] for more details.
+
 
 
