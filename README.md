@@ -1,8 +1,8 @@
-# Arduino AST Interpreter
+# ASTI - The Arduino Sketch Interpreter
 
-**A complete dual-platform Arduino/C++ code interpreter system with modular library architecture**
+**A complete Arduino/C++ code interpreter system with modular library architecture**
 
-Arduino AST Interpreter is a production-ready, modular system that transforms Arduino/C++ source code into executable command streams through a sophisticated multi-stage processing pipeline. It provides full Arduino language support with hardware simulation, making it perfect for educational tools, code validation, and Arduino development environments.
+ASTI is a production-ready, modular system that transforms Arduino/C++ source code into executable command streams through a sophisticated multi-stage processing pipeline. It provides full Arduino language support with hardware simulation, making it perfect for educational tools, code validation, and Arduino development environments.
 
 ## 🏗️ Three-Project Modular Architecture
 
@@ -125,7 +125,7 @@ All implementations produce **identical command streams** with **100% cross-plat
 ## Funding
 We are urgently in need of funding for this project to continue the longer term goals ... We will be start a tradition funding campaign but for now we are asking for small amount donations to help keep paying for a minimal subscription to claude code ... $20 per month minimum or $100 per month maximum is what we need ... If you can help please click the button
 
-[<img width="10%" height="10%" src="https://raw.githubusercontent.com/sfranzyshen/ASTInterpreter/refs/heads/main/paypal.png">](https://www.paypal.com/donate/?hosted_button_id=ZHGG4TAC94E86)
+[<img width="10%" height="10%" src="https://raw.githubusercontent.com/sfranzyshen/ASTI/refs/heads/main/paypal.png">](https://www.paypal.com/donate/?hosted_button_id=ZHGG4TAC94E86)
 
 ## 🚀 Processing Pipeline
 
@@ -682,9 +682,9 @@ The result demonstrates the power of AI-assisted development for complex compile
 
 ## 📜 Licensing
 
-This project is dual-licensed under the [**sfranzyshen.com Source-Available License 1.0**](https://github.com/sfranzyshen/ASTInterpreter/blob/main/sfranzyshen_source_available_license.md) 
+This project is dual-licensed under the [**sfranzyshen.com Source-Available License 1.0**](https://github.com/sfranzyshen/ASTI/blob/main/sfranzyshen_source_available_license.md) 
 
-and **sfranzyshen.org with [GNU AGPLv3](https://github.com/sfranzyshen/ASTInterpreter/blob/main/gnu-agpl-v3.0.md)**.
+and **sfranzyshen.org with [GNU AGPLv3](https://github.com/sfranzyshen/ASTI/blob/main/gnu-agpl-v3.0.md)**.
 
 * You may use this software under the terms of the **Source-Available License** for non-production purposes (e.g., development, testing).
 * After the Change Date of **8/26/2030**, the software will automatically be governed by the **AGPLv3**.
