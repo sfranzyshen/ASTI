@@ -1,4 +1,4 @@
-# ASTI - The Arduino Sketch Interpreter
+# ASTI - Arduino Sketch Interpreter
 
 **A complete multi-platform 'Arduino/C++ code interpreter' system with modular library architecture**
 
@@ -656,6 +656,7 @@ and **sfranzyshen.org with [GNU AGPLv3](https://github.com/sfranzyshen/ASTInterp
 * After the Change Date of **8/26/2030**, the software will automatically be governed by the **AGPLv3**.
 
 * If you wish to use this software in a production environment before the Change Date, you must obtain a **commercial license**. Please contact us at [sfranzyshen@hotmail.com] for more details.
+
 
 
 
