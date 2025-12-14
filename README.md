@@ -1,4 +1,4 @@
-# ASTI - The Arduino Sketch Interpreter
+# ASTI - Arduino Sketch Interpreter
 
 **A complete Arduino/C++ code interpreter system with modular library architecture**
 
