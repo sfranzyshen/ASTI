@@ -516,7 +516,7 @@ Library Manager → Search "ArduinoASTInterpreter" → Install
 
 **PlatformIO:**
 ```ini
-lib_deps = https://github.com/sfranzyshen/ASTInterpreter.git
+lib_deps = https://github.com/sfranzyshen/ASTI.git
 ```
 
 ### Quick Start
